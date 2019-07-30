@@ -1,0 +1,16 @@
+unit Interfaces.View.Main;
+
+interface
+
+uses
+  Interfaces.Model.Pattern.Observer;
+
+type
+  IViewDeskMain = interface(IIsObserver)
+  ['{EA3522FB-5D9E-4DFC-B5AF-3B4741A57842}']
+
+  end;
+
+implementation
+
+end.

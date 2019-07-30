@@ -1,0 +1,421 @@
+unit Model.AppSettings;
+
+interface
+
+type
+  TAppSettings = class
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    class function GetIniFileName: String; static;
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    class property IniFileName: String read GetIniFileName;
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    class function GetSetting(const ASection, ASetting, ADefault: String): String; overload;
+    class function GetSetting(const ASection, ASetting: String): String; overload;
+    class function GetSetting(const ASetting: String): String; overload;
+    class procedure SetSetting(const ASection, ASetting, AValue: String); overload;
+    class procedure SetSetting(const ASetting, AValue: String); overload;
+
+    class function GetBoolSetting(const ASection, ASetting: String; const ADefault: Boolean): Boolean; overload;
+    class function GetBoolSetting(const ASection, ASetting: String): Boolean; overload;
+    class function GetBoolSetting(const ASetting: String): Boolean; overload;
+    class procedure SetBoolSetting(const ASection, ASetting: String; const AValue: Boolean); overload;
+    class procedure SetBoolSetting(const ASetting: String; const AValue: Boolean); overload;
+
+    class function GetIntegerSetting(const ASection, ASetting: String; const ADefault: Integer): Integer; overload;
+    class function GetIntegerSetting(const ASetting: String; const ADefault: Integer): Integer; overload;
+    class function GetIntegerSetting(const ASection, ASetting: String): Integer; overload;
+    class function GetIntegerSetting(const ASetting: String): Integer; overload;
+    class procedure SetIntegerSetting(const ASection, ASetting: String; const AValue: Integer); overload;
+    class procedure SetIntegerSetting(const ASetting: String; const AValue: Integer); overload;
+
+    class function GetFloatSetting(const ASection, ASetting: String; const ADefault: Double): Double; overload;
+    class function GetFloatSetting(const ASection, ASetting: String): Double; overload;
+    class function GetFloatSetting(const ASetting: String): Double; overload;
+    class procedure SetFloatSetting(const ASection, ASetting: String; const AValue: Double); overload;
+    class procedure SetFloatSetting(const ASetting: String; const AValue: Double); overload;
+
+    class function GetDateSetting(const ASection, ASetting: String; const ADefault: TDate): TDate; overload;
+    class function GetDateSetting(const ASection, ASetting: String): TDate; overload;
+    class function GetDateSetting(const ASetting: String): TDate; overload;
+    class procedure SetDateSetting(const ASection, ASetting: String; const AValue: TDate); overload;
+    class procedure SetDateSetting(const ASetting: String; const AValue: TDate); overload;
+
+    class function GetTimeSetting(const ASection, ASetting: String; const ADefault: TTime): TTime; overload;
+    class function GetTimeSetting(const ASection, ASetting: String): TTime; overload;
+    class function GetTimeSetting(const ASetting: String): TTime; overload;
+    class procedure SetTimeSetting(const ASection, ASetting: String; const AValue: TTime); overload;
+    class procedure SetTimeSetting(const ASetting: String; const AValue: TTime); overload;
+
+    class function GetDateTimeSetting(const ASection, ASetting: String; const ADefault: TDateTime): TDateTime; overload;
+    class function GetDateTimeSetting(const ASection, ASetting: String): TDateTime; overload;
+    class function GetDateTimeSetting(const ASetting: String): TDateTime; overload;
+    class procedure SetDateTimeSetting(const ASection, ASetting: String; const AValue: TDateTime); overload;
+    class procedure SetDateTimeSetting(const ASetting: String; const AValue: TDateTime); overload;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+implementation
+
+uses
+  System.IniFiles,
+  System.SysUtils;
+
+{ TAppSettings }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+class function TAppSettings.GetIniFileName: String;
+begin
+  Result := '.\Settings.ini';
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+class function TAppSettings.GetSetting(const ASection, ASetting, ADefault: String): String;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadString(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetSetting(const ASection, ASetting: String): String;
+begin
+  Result := GetSetting(ASection, ASetting, '');
+end;
+
+class function TAppSettings.GetSetting(const ASetting: String): String;
+begin
+  Result := GetSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetSetting(const ASection, ASetting, AValue: String);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteString(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetSetting(const ASetting, AValue: String);
+begin
+  SetSetting('setttings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetBoolSetting(const ASection, ASetting: String; const ADefault: Boolean): Boolean;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadBool(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetBoolSetting(const ASection, ASetting: String): Boolean;
+begin
+  Result := GetBoolSetting(ASection, ASetting, True);
+end;
+
+class function TAppSettings.GetBoolSetting(const ASetting: String): Boolean;
+begin
+  Result := GetBoolSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetBoolSetting(const ASection, ASetting: String; const AValue: Boolean);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteBool(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetBoolSetting(const ASetting: String; const AValue: Boolean);
+begin
+  SetBoolSetting('Setttings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetIntegerSetting(const ASection, ASetting: String; const ADefault: Integer): Integer;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadInteger(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetIntegerSetting(const ASetting: String; const ADefault: Integer): Integer;
+begin
+  Result := GetIntegerSetting('Settings', ASetting, ADefault);
+end;
+
+class function TAppSettings.GetIntegerSetting(const ASection, ASetting: String): Integer;
+begin
+  Result := GetIntegerSetting(ASection, ASetting, 0);
+end;
+
+class function TAppSettings.GetIntegerSetting(const ASetting: String): Integer;
+begin
+  Result := GetIntegerSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetIntegerSetting(const ASection, ASetting: String; const AValue: Integer);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteInteger(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetIntegerSetting(const ASetting: String; const AValue: Integer);
+begin
+  SetIntegerSetting('Settings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetFloatSetting(const ASection, ASetting: String; const ADefault: Double): Double;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadFloat(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetFloatSetting(const ASection, ASetting: String): Double;
+begin
+  Result := GetFloatSetting(ASection, ASetting, 0);
+end;
+
+class function TAppSettings.GetFloatSetting(const ASetting: String): Double;
+begin
+  Result := GetFloatSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetFloatSetting(const ASection, ASetting: String; const AValue: Double);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteFloat(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetFloatSetting(const ASetting: String; const AValue: Double);
+begin
+  SetFloatSetting('Settings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetDateSetting(const ASection, ASetting: String; const ADefault: TDate): TDate;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadDate(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetDateSetting(const ASection, ASetting: String): TDate;
+begin
+  Result := GetDateSetting(ASection, ASetting, Date);
+end;
+
+class function TAppSettings.GetDateSetting(const ASetting: String): TDate;
+begin
+  Result := GetDateSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetDateSetting(const ASection, ASetting: String; const AValue: TDate);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteDate(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetDateSetting(const ASetting: String; const AValue: TDate);
+begin
+  SetDateSetting('Settings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetTimeSetting(const ASection, ASetting: String; const ADefault: TTime): TTime;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadTime(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetTimeSetting(const ASection, ASetting: String): TTime;
+begin
+  Result := GetTimeSetting(ASection, ASetting, Time);
+end;
+
+class function TAppSettings.GetTimeSetting(const ASetting: String): TTime;
+begin
+  Result := GetTimeSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetTimeSetting(const ASection, ASetting: String; const AValue: TTime);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteTime(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetTimeSetting(const ASetting: String; const AValue: TTime);
+begin
+  SetTimeSetting('Settings', ASetting, AValue);
+end;
+
+
+class function TAppSettings.GetDateTimeSetting(const ASection, ASetting: String; const ADefault: TDateTime): TDateTime;
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    Result := LIniFile.ReadDateTime(ASection, ASetting, ADefault);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class function TAppSettings.GetDateTimeSetting(const ASection, ASetting: String): TDateTime;
+begin
+  Result := GetDateTimeSetting(ASection, ASetting, Now);
+end;
+
+class function TAppSettings.GetDateTimeSetting(const ASetting: String): TDateTime;
+begin
+  Result := GetDateTimeSetting('Settings', ASetting);
+end;
+
+class procedure TAppSettings.SetDateTimeSetting(const ASection, ASetting: String; const AValue: TDateTime);
+var
+  LIniFile: TIniFile;
+begin
+  LIniFile := TIniFile.Create(IniFileName);
+  try
+    LIniFile.WriteDateTime(ASection, ASetting, AValue);
+  finally
+    LIniFile.Free;
+  end;
+end;
+
+class procedure TAppSettings.SetDateTimeSetting(const ASetting: String; const AValue: TDateTime);
+begin
+  SetDateTimeSetting('Settings', ASetting, AValue);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+end.

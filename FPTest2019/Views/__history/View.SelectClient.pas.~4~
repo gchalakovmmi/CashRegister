@@ -1,0 +1,46 @@
+unit View.SelectClient;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids;
+
+type
+  TViewSelectClient = class(TForm)
+    Edit: TDBEdit;
+    Grid: TDBGrid;
+
+    procedure GridKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewSelectClient: TViewSelectClient;
+
+implementation
+
+{$R *.dfm}
+
+procedure TViewSelectClient.GridKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+
+end;
+
+end.

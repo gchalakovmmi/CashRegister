@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2019.06.14 11:08:00.767,=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019.06.14 11:09:36.174,Z:\!anet4\Sources\FiscalDeviceTester\View.Main.dfm=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2019.06.14 11:09:36.174,Z:\!anet4\Sources\FiscalDeviceTester\View.Main.pas=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019.06.14 11:09:44.738,Z:\!anet4\Sources\FiscalDeviceTester\FiscalDeviceTester.dproj=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019.06.14 11:13:18.783,=Z:\!anet4\Sources\FiscalDeviceTester\Unit1.pas</Transaction>
+    <Transaction>2019.06.14 11:13:56.316,Z:\!anet4\Sources\FiscalDeviceTester\Model.FiscalDevice.pas=Z:\!anet4\Sources\FiscalDeviceTester\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

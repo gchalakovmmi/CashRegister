@@ -1,0 +1,1528 @@
+﻿unit ViewModel.Main;
+
+interface
+
+uses
+  Interfaces.ViewModel.Main;
+
+  function CreateViewModelMain: IViewModelMain;
+
+implementation
+
+uses
+  System.SysUtils,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+
+  Interfaces.Model.Main,
+  Model.Main;
+
+//  Interfaces.ViewModel.Desk.BillsList.Overview,
+//  Interfaces.ViewModel.Desk.BillsList.Selection,
+//  Interfaces.ViewModel.Desk.NewClient,
+//  Interfaces.ViewModel.Desk.NewBill,
+//  Interfaces.ViewModel.Desk.EditBill,
+//  Interfaces.ViewModel.Desk.Select.List,
+//  Interfaces.ViewModel.Desk.InfoPanel,
+//  Interfaces.ViewModel.Desk.EditPanel,
+//
+//  Interfaces.Model.Classes.Client,
+//  Interfaces.Model.Classes.Region,
+//  Interfaces.Model.Classes.Source,
+//  Interfaces.Model.Classes.Zone,
+//  Interfaces.Model.Classes.Destination,
+//  Interfaces.Model.Classes.Category,
+//  Interfaces.Model.Classes.Article,
+//  Interfaces.Model.Classes.Modificator,
+//  Interfaces.Model.Classes.Bill,
+//  Interfaces.Model.Classes.Bill.Detail,
+//  Interfaces.Model.Classes.Bill.Check,
+//  Interfaces.Model.Classes.BillDetailItem;
+
+type
+  TViewModelMain = class(TInterfacedObject, IViewModelMain)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure OnTimer(Sender: TObject);
+
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure ProcessNotificationDeskIdle(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskIdleUser(const AModelNotification: IModelNotification);
+
+    procedure ProcessNotificationDeskSelectClient(const AModelNotification: IModelNotification);
+
+    procedure ProcessNotificationDeskNewClientSelectPhone(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectName(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectRegion(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectAddress(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectFloor(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectAppartment(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectBuzzer(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectDoorCode(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewClientSelectNotes(const AModelNotification: IModelNotification);
+
+    procedure ProcessNotificationDeskNewBillSelectSource(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewBillSelectSourceNo(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewBillSelectZone(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewBillSelectDestination(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewBillSelectClient(const AModelNotification: IModelNotification);
+    procedure ProcessNotificationDeskNewBillSelectGuests(const AModelNotification: IModelNotification);
+
+
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+
+    procedure EditBillPrevItem;
+    procedure EditBillNextItem;
+    procedure EditBillTryAssignGuest(const AGuestString: String);
+    procedure EditBillTryAssignQuantity(const AQuantityString: String);
+    procedure EditBillTryArticleSplit(const AQuantityString: String);
+    procedure EditBillTryGoToSelectModificatorStage;
+    procedure EditBillConfirmAll;
+    procedure EditBillCancelCurrentItem;
+    procedure EditBillServeCurrentItem;
+    procedure EditBillServeAllItems;
+    procedure EditBillAssignCheckForArticle;
+    procedure EditBillAssignCheckForGuest;
+    procedure EditBillAssignCurrentCheckForAllGuests;
+    procedure EditBillPrintPreCheck;
+    procedure EditBillPayment;
+    procedure EditBillDelivered;
+    procedure EditBillPaid;
+
+    procedure EditBillCategorySelect(const ACategory: IModelClassCategory);
+    procedure EditBillArticleSelect(const AArticle: IModelClassArticle);
+    procedure EditBillTryArticleSelect(const AArticleCodeString: String);
+    procedure EditBillModificatorSelect(const AModificator: IModelClassModificator);
+    procedure EditBillPaymentSelect(const APayment: Integer);
+    procedure EditBillCheckForArticleSelect(const ABillCheckGID: Integer);
+    procedure EditBillCheckForGuestSelect(const ABillCheckGID: Integer);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModel: IModelDeskMain;
+    FObserver: IObserver;
+    FObservable: IObservable;
+//    FAppStage: TAppStageDesk;
+
+//    FViewModelDeskBillsListOverview: IViewModelDeskBillsListOverview;
+//    FViewModelDeskBillsListSelection: IViewModelDeskBillsListSelection;
+//    FViewModelDeskNewClient: IViewModelDeskNewClient;
+//    FViewModelDeskNewBill: IViewModelDeskNewBill;
+//    FViewModelDeskEditBill: IViewModelDeskEditBill;
+//    FViewModelDeskSelectList: IViewModelDeskSelectList;
+//    FViewModelDeskInfoPanel: IViewModelDeskInfoPanel;
+//    FViewModelDeskEditPanel: IViewModelDeskEditPanel;
+
+    FTimer: TTimer;
+    FUpdateGUITimeOut: Integer;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetModel: IModelMain;
+    procedure SetModel(const Value: IModelMain);
+    function GetObserver: IObserver;
+    procedure SetObserver(const Value: IObserver);
+    function GetObservable: IObservable;
+    procedure SetObservable(const Value: IObservable);
+//    function GetAppStage: TAppStageDesk;
+//    procedure SetAppStage(const Value: TAppStageDesk);
+
+//    function GetViewModelDeskBillsListOverview: IViewModelDeskBillsListOverview;
+//    procedure SetViewModelDeskBillsListOverview(const Value: IViewModelDeskBillsListOverview);
+//    function GetViewModelDeskBillsListSelection: IViewModelDeskBillsListSelection;
+//    procedure SetViewModelDeskBillsListSelection(const Value: IViewModelDeskBillsListSelection);
+//    function GetViewModelDeskNewClient: IViewModelDeskNewClient;
+//    procedure SetViewModelDeskNewClient(const Value: IViewModelDeskNewClient);
+//    function GetViewModelDeskNewBill: IViewModelDeskNewBill;
+//    procedure SetViewModelDeskNewBill(const Value: IViewModelDeskNewBill);
+//    function GetViewModelDeskEditBill: IViewModelDeskEditBill;
+//    procedure SetViewModelDeskEditBill(const Value: IViewModelDeskEditBill);
+//    function GetViewModelDeskSelectList: IViewModelDeskSelectList;
+//    procedure SetViewModelDeskSelectList(const Value: IViewModelDeskSelectList);
+//    function GetViewModelDeskInfoPanel: IViewModelDeskInfoPanel;
+//    procedure SetViewModelDeskInfoPanel(const Value: IViewModelDeskInfoPanel);
+//    function GetViewModelDeskEditPanel: IViewModelDeskEditPanel;
+//    procedure SetViewModelDeskEditPanel(const Value: IViewModelDeskEditPanel);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Model: IModelMain read GetModel write SetModel;
+    property Observer: IObserver read GetObserver write SetObserver;
+    property Observable: IObservable read GetObservable write SetObservable;
+//    property AppStage: TAppStageDesk read GetAppStage write SetAppStage;
+
+//    property ViewModelDeskBillsListOverview: IViewModelDeskBillsListOverview read GetViewModelDeskBillsListOverview write SetViewModelDeskBillsListOverview;
+//    property ViewModelDeskBillsListSelection: IViewModelDeskBillsListSelection read GetViewModelDeskBillsListSelection write SetViewModelDeskBillsListSelection;
+//    property ViewModelDeskNewClient: IViewModelDeskNewClient read GetViewModelDeskNewClient write SetViewModelDeskNewClient;
+//    property ViewModelDeskNewBill: IViewModelDeskNewBill read GetViewModelDeskNewBill write SetViewModelDeskNewBill;
+//    property ViewModelDeskEditBill: IViewModelDeskEditBill read GetViewModelDeskEditBill write SetViewModelDeskEditBill;
+//    property ViewModelDeskSelectList: IViewModelDeskSelectList read GetViewModelDeskSelectList write SetViewModelDeskSelectList;
+//    property ViewModelDeskInfoPanel: IViewModelDeskInfoPanel read GetViewModelDeskInfoPanel write SetViewModelDeskInfoPanel;
+//    property ViewModelDeskEditPanel: IViewModelDeskEditPanel read GetViewModelDeskEditPanel write SetViewModelDeskEditPanel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewMainGUIRecord;
+    procedure UpdateData;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateViewModelMain: IViewModelMain;
+begin
+  Result := TViewModelMain.Create;
+end;
+
+{ TViewModelDeskMain }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelDeskMain.OnTimer(Sender: TObject);
+begin
+  FTimer.Enabled := False;
+
+  if FUpdateGUITimeOut > 0 then begin
+    FUpdateGUITimeOut := FUpdateGUITimeOut - 1;
+    if FUpdateGUITimeOut = 0 then begin
+      FUpdateGUITimeOut := 10;
+      SendNotification([actUpdateGUI]);
+    end;
+  end;
+
+  FTimer.Enabled := True;
+end;
+
+procedure TViewModelDeskMain.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//  case AppStage of
+//    asDeskIdle: ProcessNotificationDeskIdle(AModelNotification);
+//    asDeskIdleUser: ProcessNotificationDeskIdleUser(AModelNotification);
+//
+//    asDeskSelectClient: ProcessNotificationDeskSelectClient(AModelNotification);
+//
+//    asDeskNewClientSelectPhone: ProcessNotificationDeskNewClientSelectPhone(AModelNotification);
+//    asDeskNewClientSelectName: ProcessNotificationDeskNewClientSelectName(AModelNotification);
+//    asDeskNewClientSelectRegion: ProcessNotificationDeskNewClientSelectRegion(AModelNotification);
+//    asDeskNewClientSelectAddress: ProcessNotificationDeskNewClientSelectAddress(AModelNotification);
+//    asDeskNewClientSelectFloor: ProcessNotificationDeskNewClientSelectFloor(AModelNotification);
+//    asDeskNewClientSelectAppartment: ProcessNotificationDeskNewClientSelectAppartment(AModelNotification);
+//    asDeskNewClientSelectBuzzer: ProcessNotificationDeskNewClientSelectBuzzer(AModelNotification);
+//    asDeskNewClientSelectDoorCode: ProcessNotificationDeskNewClientSelectDoorCode(AModelNotification);
+//    asDeskNewClientSelectNotes: ProcessNotificationDeskNewClientSelectNotes(AModelNotification);
+//
+//    asDeskNewBillSelectSource: ProcessNotificationDeskNewBillSelectSource(AModelNotification);
+//    asDeskNewBillSelectSourceNo: ProcessNotificationDeskNewBillSelectSourceNo(AModelNotification);
+//    asDeskNewBillSelectZone: ProcessNotificationDeskNewBillSelectZone(AModelNotification);
+//    asDeskNewBillSelectDestination: ProcessNotificationDeskNewBillSelectDestination(AModelNotification);
+//    asDeskNewBillSelectClient: ProcessNotificationDeskNewBillSelectClient(AModelNotification);
+//    asDeskNewBillSelectGuests: ProcessNotificationDeskNewBillSelectGuests(AModelNotification);
+//
+//    asDeskEditBillSelectCategory,
+//    asDeskEditBillSelectArticle,
+//    asDeskEditBillSelectModificator,
+//    asDeskEditBillSelectPayment,
+//    asDeskEditBillSelectCheckForArticle,
+//    asDeskEditBillSelectCheckForGuest:
+//    begin
+//      if actPrevPage in AModelNotification.Actions then begin
+//        if ViewModelDeskSelectList.IsFirstPage then begin
+//          if AppStage in assDeskEditStages then begin
+//            ViewModelDeskSelectList.SetupSelectCategory;
+//            AppStage := asDeskEditBillSelectCategory;
+//          end else begin
+//            AppStage := asDeskIdleUser;
+//          end;
+//        end else begin
+//          ViewModelDeskSelectList.PrevPage;
+//        end;
+//      end;
+//
+//      if actNextPage in AModelNotification.Actions then begin
+//        ViewModelDeskSelectList.NextPage;
+//      end;
+//
+//      if actDivPressed in AModelNotification.Actions then begin
+//        EditBillTryAssignGuest((AModelNotification as IModelNotificationEdit).Edit);
+//      end;
+//      if actMulPressed in AModelNotification.Actions then begin
+//        EditBillTryAssignQuantity((AModelNotification as IModelNotificationEdit).Edit);
+//      end;
+//      if actSubPressed in AModelNotification.Actions then begin
+//        EditBillTryArticleSplit((AModelNotification as IModelNotificationEdit).Edit);
+//      end;
+//      if actAddPressed in AModelNotification.Actions then begin
+//        EditBillTryGoToSelectModificatorStage;
+//      end;
+//      if actRetPressed in AModelNotification.Actions then begin
+//        EditBillTryArticleSelect((AModelNotification as IModelNotificationEdit).Edit);
+//      end;
+//      if actUpPressed in AModelNotification.Actions then begin
+//        EditBillPrevItem;
+//      end;
+//      if actDownPressed in AModelNotification.Actions then begin
+//        EditBillNextItem;
+//      end;
+//      if actF1Pressed in AModelNotification.Actions then begin
+//        EditBillConfirmAll;
+//      end;
+//      if actF2Pressed in AModelNotification.Actions then begin
+//        EditBillCancelCurrentItem;
+//      end;
+//      if actF3Pressed in AModelNotification.Actions then begin
+//        EditBillServeCurrentItem;
+//      end;
+//      if actF4Pressed in AModelNotification.Actions then begin
+//        EditBillServeAllItems;
+//      end;
+//      if actF5Pressed in AModelNotification.Actions then begin
+//        EditBillAssignCheckForArticle;
+//      end;
+//      if actF6Pressed in AModelNotification.Actions then begin
+//        EditBillAssignCheckForGuest;
+//      end;
+//      if actF7Pressed in AModelNotification.Actions then begin
+//        EditBillAssignCurrentCheckForAllGuests;
+//      end;
+//      if actF8Pressed in AModelNotification.Actions then begin
+//        EditBillPrintPreCheck;
+//      end;
+//      if actF9Pressed in AModelNotification.Actions then begin
+//        EditBillPayment;
+//      end;
+//      if actF10Pressed in AModelNotification.Actions then begin
+//        EditBillPaid;
+//      end;
+//
+//      if actSelectCategory in AModelNotification.Actions then begin
+//        EditBillCategorySelect((AModelNotification as IModelNotificationCategory).Category); Exit;
+//      end;
+//
+//      if actSelectArticle in AModelNotification.Actions then begin
+//        EditBillArticleSelect((AModelNotification as IModelNotificationArticle).Article); Exit;
+//      end;
+//
+//      if actSelectModificator in AModelNotification.Actions then begin
+//        EditBillModificatorSelect((AModelNotification as IModelNotificationModificator).Modificator); Exit;
+//      end;
+//
+//      if actSelectPayment in AModelNotification.Actions then begin
+//        EditBillPaymentSelect((AModelNotification as IModelNotificationGID).GID); Exit;
+//      end;
+//
+//      if actSelectCheckForArticle in AModelNotification.Actions then begin
+//        EditBillCheckForArticleSelect((AModelNotification as IModelNotificationGID).GID); Exit;
+//      end;
+//
+//      if actSelectCheckForGuest in AModelNotification.Actions then begin
+//        EditBillCheckForGuestSelect((AModelNotification as IModelNotificationGID).GID); Exit;
+//      end;
+//
+//    end;
+//  end;
+//
+//  SendNotification([actUpdateGUI]);
+end;
+
+//procedure TViewModelDeskMain.ProcessNotificationDeskIdle(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    Halt;
+//  end;
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ModelDataUsers.Login('���������', (AModelNotification as IModelNotificationEdit).Edit);
+//    if ModelDataUsers.IsLoggedUser then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ModelDataUsers.Login('�������������', (AModelNotification as IModelNotificationEdit).Edit);
+//      if ModelDataUsers.IsLoggedUser then begin
+//        AppStage := asDeskIdleUser;
+//      end else begin
+//        ShowMessage('�� � ��������� ���������!');
+//        AppStage := asDeskIdle;
+//      end;
+//    end;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskIdleUser(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdle;
+//  end;
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actSelectBill in AModelNotification.Actions then begin
+//    ViewModelDeskEditBill.Model.Bill := (AModelNotification as IModelNotificationBill).Bill;
+//    AppStage := asDeskEditBillSelectCategory;
+//  end;
+//end;
+//
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskSelectClient(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actKeyPressed in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.SetupSelectClient((AModelNotification as IModelNotificationEdit).Edit);
+//  end;
+//  if actSelectClient in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBillForClient((AModelNotification as IModelNotificationClient).Client, 1, Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectPhone(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignPhone((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectName;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectName(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignName((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectRegion;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectRegion(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignName((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectRegion;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actSelectClientRegion in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignRegion((AModelNotification as IModelNotificationRegion).Region);
+//    AppStage := asDeskNewClientSelectAddress;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectAddress(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignAddress((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectFloor;
+//  end;
+//  if actKeyPressed in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.SetupNewClientAddress((AModelNotification as IModelNotificationEdit).Edit);
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actSelectClientAddress in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignAddress((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectFloor;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectFloor(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignFloor((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectAppartment;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectAppartment(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignAppartment((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectBuzzer;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectBuzzer(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignBuzzer((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectDoorCode;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectDoorCode(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignDoorCode((AModelNotification as IModelNotificationEdit).Edit);
+//    AppStage := asDeskNewClientSelectNotes;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewClientSelectNotes(const AModelNotification: IModelNotification);
+//var
+//  LClient: IModelClassClient;
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.AssignNotes((AModelNotification as IModelNotificationEdit).Edit);
+//
+//    LClient := ViewModelDeskNewClient.Model.Client;
+//    ModelDataClients.AddClient(LClient);
+//    ViewModelDeskNewBill.CreateNewBillForClient(LClient, 1, Model.UserGID, Model.UserName);
+//
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectSource(const AModelNotification: IModelNotification);
+//var
+//  LSource: IModelClassSource;
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    LSource := Model.GetSourceByGIDString((AModelNotification as IModelNotificationEdit).Edit);
+//    if Assigned(LSource) then begin
+//      ViewModelDeskNewBill.AssignSource(LSource, Model.UserGID, Model.UserName);
+//      if (LSource.PartnerName <> '�� �����') and (LSource.PartnerName <> '�� ��������') then begin
+//        AppStage := asDeskNewBillSelectSourceNo;
+//      end else begin
+//        AppStage := asDeskNewBillSelectZone;
+//      end;
+//    end;
+//  end;
+//  if actSelectSource in AModelNotification.Actions then begin
+//    LSource := (AModelNotification as IModelNotificationSource).Source;
+//    ViewModelDeskNewBill.AssignSource(LSource, Model.UserGID, Model.UserName);
+//    if (LSource.PartnerName <> '�� �����') and (LSource.PartnerName <> '�� ��������') then begin
+//      AppStage := asDeskNewBillSelectSourceNo;
+//    end else begin
+//      AppStage := asDeskNewBillSelectZone;
+//    end;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectSourceNo(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.AssignSourceNo((AModelNotification as IModelNotificationEdit).Edit, Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectZone;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectZone(const AModelNotification: IModelNotification);
+//var
+//  LZone: IModelClassZone;
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    LZone := Model.GetZoneByGIDString((AModelNotification as IModelNotificationEdit).Edit);
+//    if Assigned(LZone) then begin
+//      ViewModelDeskSelectList.SetupSelectDestination(LZone.Name);
+//      AppStage := asDeskNewBillSelectDestination;
+//    end;
+//  end;
+//  if actSelectZone in AModelNotification.Actions then begin
+//    LZone := (AModelNotification as IModelNotificationZone).Zone;
+//    ViewModelDeskSelectList.SetupSelectDestination(LZone.Name);
+//    AppStage := asDeskNewBillSelectDestination;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectDestination(const AModelNotification: IModelNotification);
+//var
+//  LDestination: IModelClassDestination;
+//  LBill: IModelClassBill;
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    LDestination := Model.GetDestinationByGIDString((AModelNotification as IModelNotificationEdit).Edit);
+//    if Assigned(LDestination) then begin
+//      ViewModelDeskNewBill.AssignDestination(LDestination, Model.UserGID, Model.UserName);
+//      if ViewModelDeskNewBill.Model.Bill.GuestsCount = 0 then begin
+//        if LDestination.ZoneGID < 2 then begin
+//          AppStage := asDeskNewBillSelectGuests;
+//        end else begin
+//          ViewModelDeskNewBill.AssignGuestsCount(1, Model.UserGID, Model.UserName);
+//          AppStage := asDeskNewBillSelectClient;
+//        end;
+//      end else begin
+//        LBill := ViewModelDeskNewBill.Model.Bill;
+//        ModelDataBills.AddBill(LBill);
+//        ViewModelDeskEditBill.Model.Bill := LBill;
+//        AppStage := asDeskEditBillSelectCategory;
+//      end;
+//    end;
+//  end;
+//  if actSelectDestination in AModelNotification.Actions then begin
+//    LDestination := (AModelNotification as IModelNotificationDestination).Destination;
+//    ViewModelDeskNewBill.AssignDestination(LDestination, Model.UserGID, Model.UserName);
+//    if ViewModelDeskNewBill.Model.Bill.GuestsCount = 0 then begin
+//      if (AModelNotification as IModelNotificationDestination).Destination.ZoneGID < 2 then begin
+//        AppStage := asDeskNewBillSelectGuests;
+//      end else begin
+//        ViewModelDeskNewBill.AssignGuestsCount(1, Model.UserGID, Model.UserName);
+//        AppStage := asDeskNewBillSelectClient;
+//      end;
+//    end else begin
+//      LBill := ViewModelDeskNewBill.Model.Bill;
+//      ModelDataBills.AddBill(LBill);
+//      ViewModelDeskEditBill.Model.Bill := LBill;
+//      AppStage := asDeskEditBillSelectCategory;
+//    end;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectClient(const AModelNotification: IModelNotification);
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    if ViewModelDeskSelectList.IsFirstPage then begin
+//      AppStage := asDeskIdleUser;
+//    end else begin
+//      ViewModelDeskSelectList.PrevPage;
+//    end;
+//  end;
+//  if actNextPage in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.NextPage;
+//  end;
+//
+//  if actKeyPressed in AModelNotification.Actions then begin
+//    ViewModelDeskSelectList.SetupSelectClient((AModelNotification as IModelNotificationEdit).Edit);
+//  end;
+//  if actSelectClient in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.AssignClientToGuest((AModelNotification as IModelNotificationClient).Client, 1, Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.ProcessNotificationDeskNewBillSelectGuests(const AModelNotification: IModelNotification);
+//var
+//  LGuestsCount: Integer;
+//  LBill: IModelClassBill;
+//begin
+//  if actEscPressed in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//  if actPrevPage in AModelNotification.Actions then begin
+//    AppStage := asDeskIdleUser;
+//  end;
+//
+//  if actRetPressed in AModelNotification.Actions then begin
+//    if TryStrToInt((AModelNotification as IModelNotificationEdit).Edit, LGuestsCount) then begin
+//      ViewModelDeskNewBill.AssignGuestsCount(LGuestsCount, Model.UserGID, Model.UserName);
+//      LBill := ViewModelDeskNewBill.Model.Bill;
+//      ModelDataBills.AddBill(LBill);
+//      ViewModelDeskEditBill.Model.Bill := LBill;
+//
+//      AppStage := asDeskEditBillSelectCategory;
+//    end;
+//  end;
+//
+//  if actA1pressed in AModelNotification.Actions then begin
+//    AppStage := asDeskSelectClient;
+//  end;
+//  if actA2Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewClient.CreateNewClient;
+//    AppStage := asDeskNewClientSelectPhone;
+//  end;
+//  if actA3Pressed in AModelNotification.Actions then begin
+//    ViewModelDeskNewBill.CreateNewBill(Model.UserGID, Model.UserName);
+//    AppStage := asDeskNewBillSelectSource;
+//  end;
+//end;
+
+
+
+procedure TViewModelMain.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+
+
+//procedure TViewModelDeskMain.EditBillPrevItem;
+//begin
+//  ViewModelDeskEditBill.PrevItem;
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillNextItem;
+//begin
+//  ViewModelDeskEditBill.NextItem;
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillTryAssignGuest(const AGuestString: String);
+//begin
+//  ViewModelDeskEditBill.TryAssignGuest(AGuestString, Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillTryAssignQuantity(const AQuantityString: String);
+//var
+//  LQuantity: Double;
+//begin
+//  if TryStrToFloat(AQuantityString, LQuantity) then begin
+//    ViewModelDeskEditBill.Quantity := LQuantity;
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillTryArticleSplit(const AQuantityString: String);
+//var
+//  LQuantity: Double;
+//begin
+//  if TryStrToFloat(AQuantityString, LQuantity) then begin
+//    ViewModelDeskEditBill.SplitArticle(LQuantity, Model.UserGID, Model.UserName);
+//  end;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillTryGoToSelectModificatorStage;
+//var
+//  LArticle: IModelClassArticle;
+//begin
+//  LArticle := ViewModelDeskEditBill.CurrentArticle;
+//  if not Assigned(LArticle) then Exit;
+//  ViewModelDeskSelectList.SetupSelectModificator(LArticle);
+//  ViewModelDeskSelectList.UpdateData;
+//  AppStage := asDeskEditBillSelectModificator;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillConfirmAll;
+//begin
+//  ViewModelDeskEditBill.ConfirmAll(Model.UserGID, Model.UserName);
+//  ModelDataBills.UpdateInDataSet;
+//  ModelDataBills.UpdateInServer;
+//  AppStage := asDeskIdleUser;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillCancelCurrentItem;
+//begin
+//  ViewModelDeskEditBill.CancelCurrentItem(Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillServeCurrentItem;
+//begin
+//  ViewModelDeskEditBill.ServeCurrentItem(Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillServeAllItems;
+//begin
+//  ViewModelDeskEditBill.ServeAllItems(Model.UserGID, Model.UserName);
+//  ModelDataBills.UpdateInDataSet;
+//  ModelDataBills.UpdateInServer;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillAssignCheckForArticle;
+//begin
+//  ViewModelDeskSelectList.SetupSelectCheckForArticle(ViewModelDeskEditBill.Model.Bill.Checks);
+//  ViewModelDeskSelectList.UpdateData;
+//  AppStage := asDeskEditBillSelectCheckForArticle;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillAssignCheckForGuest;
+//begin
+//  ViewModelDeskSelectList.SetupSelectCheckForGuest(ViewModelDeskEditBill.Model.Bill.Checks);
+//  ViewModelDeskSelectList.UpdateData;
+//  AppStage := asDeskEditBillSelectCheckForGuest;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillAssignCurrentCheckForAllGuests;
+//begin
+//  ViewModelDeskEditBill.AssignCurrentCheckForAllGuests(Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillPrintPreCheck;
+//begin
+//  ViewModelDeskEditBill.PrintPreCheck(Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillPayment;
+//var
+//  LBill: IModelClassBill;
+//  LBillCheck: IModelClassBillCheck;
+//  LPayment: Integer;
+//begin
+//  LBill := ViewModelDeskEditBill.Model.Bill;
+//  if not Assigned(LBill) then Exit;
+//
+//  LBillCheck := ViewModelDeskEditBill.CurrentBillCheck;
+//  if not Assigned(LBillCheck) then Exit;
+//
+//  LPayment := Trunc(LBill.GetCheckTotal(LBillCheck.GID) * 100);
+//  ViewModelDeskSelectList.SetupSelectPayment(LPayment);
+//  ViewModelDeskSelectList.UpdateData;
+//  AppStage := asDeskEditBillSelectPayment;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillDelivered;
+//begin
+//  ViewModelDeskEditBill.Delivered(Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillPaid;
+//begin
+//  ViewModelDeskEditBill.CheckPaid(Model.UserGID, Model.UserName);
+//end;
+//
+//
+//procedure TViewModelDeskMain.EditBillCategorySelect(const ACategory: IModelClassCategory);
+//begin
+//  ViewModelDeskSelectList.SetupSelectArticle(ACategory.GID);
+//  AppStage := asDeskEditBillSelectArticle;
+//end;
+//
+//
+//procedure TViewModelDeskMain.EditBillArticleSelect(const AArticle: IModelClassArticle);
+//begin
+//  ViewModelDeskEditBill.AddArticle(AArticle, Model.UserGID, Model.UserName);
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+//
+//procedure TViewModelDeskMain.EditBillTryArticleSelect(const AArticleCodeString: String);
+//var
+//  LArticle: IModelClassArticle;
+//begin
+//  LArticle := Model.GetArticleByCodeString(AArticleCodeString);
+//  if Assigned(LArticle) then begin
+//    EditBillArticleSelect(LArticle);
+//  end;
+//end;
+//
+//
+//procedure TViewModelDeskMain.EditBillModificatorSelect(const AModificator: IModelClassModificator);
+//begin
+//  ViewModelDeskEditBill.AddModificator(AModificator, Model.UserGID, Model.UserName);
+//end;
+//
+//procedure TViewModelDeskMain.EditBillPaymentSelect(const APayment: Integer);
+//begin
+//  ViewModelDeskEditBill.PrintCheck(APayment, Model.UserGID, Model.UserName);
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+//
+//
+//procedure TViewModelDeskMain.EditBillCheckForArticleSelect(const ABillCheckGID: Integer);
+//begin
+//  ViewModelDeskEditBill.AssignCheckToArticle(ABillCheckGID, Model.UserGID, Model.UserName);
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+//
+//
+//procedure TViewModelDeskMain.EditBillCheckForGuestSelect(const ABillCheckGID: Integer);
+//begin
+//  ViewModelDeskEditBill.AssignCheckToGuest(ABillCheckGID, Model.UserGID, Model.UserName);
+//  ViewModelDeskSelectList.SetupSelectCategory;
+//  AppStage := asDeskEditBillSelectCategory;
+//end;
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelMain.GetModel: IModelMain;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelMain.SetModel(const Value: IModelMain);
+begin
+  FModel := Value;
+end;
+
+//function TViewModelDeskMain.GetAppStage: TAppStageDesk;
+//begin
+//  Result := FAppStage;
+//end;
+//
+//procedure TViewModelDeskMain.SetAppStage(const Value: TAppStageDesk);
+//begin
+//  FAppStage := Value;
+//  case FAppStage of
+//    asDeskIdle: begin
+//      ModelDataUsers.Logout;
+//      SendNotification([actEditModePassword]);
+//    end;
+//    asDeskSelectClient: begin
+//      ViewModelDeskSelectList.SetupSelectClient('');
+//    end;
+//
+//    asDeskNewClientSelectPhone: begin
+//      ViewModelDeskSelectList.SetupNewClientPhone;
+//    end;
+//    asDeskNewClientSelectName: begin
+//      ViewModelDeskSelectList.SetupNewClientName;
+//    end;
+//    asDeskNewClientSelectRegion: begin
+//      ViewModelDeskSelectList.SetupNewClientRegion;
+//    end;
+//    asDeskNewClientSelectAddress: begin
+//      ViewModelDeskSelectList.SetupNewClientAddress('');
+//    end;
+//    asDeskNewClientSelectFloor: begin
+//      ViewModelDeskSelectList.SetupNewClientFloor;
+//    end;
+//    asDeskNewClientSelectAppartment: begin
+//      ViewModelDeskSelectList.SetupNewClientAppartment;
+//    end;
+//    asDeskNewClientSelectBuzzer: begin
+//      ViewModelDeskSelectList.SetupNewClientBuzzer;
+//    end;
+//    asDeskNewClientSelectDoorCode: begin
+//      ViewModelDeskSelectList.SetupNewClientDoorCode;
+//    end;
+//    asDeskNewClientSelectNotes: begin
+//      ViewModelDeskSelectList.SetupNewClientNotes;
+//    end;
+//
+//    asDeskNewBillSelectSource: begin
+//      ViewModelDeskSelectList.SetupSelectSource;
+//    end;
+//    asDeskNewBillSelectSourceNo: begin
+//      ViewModelDeskSelectList.SetupSelectSourceNo;
+//    end;
+//    asDeskNewBillSelectZone: begin
+//      ViewModelDeskSelectList.SetupSelectZone;
+//    end;
+//    asDeskNewBillSelectDestination: begin
+//
+//    end;
+//    asDeskNewBillSelectClient: begin
+//      ViewModelDeskSelectList.SetupSelectClient('');
+//    end;
+//    asDeskNewBillSelectGuests: begin
+//      ViewModelDeskSelectList.SetupSelectGuests;
+//    end;
+//
+//
+//    asDeskEditBillSelectCategory: begin
+//      ViewModelDeskSelectList.SetupSelectCategory;
+//    end;
+//  else
+//    begin
+//      SendNotification([actEditModeNormal]);
+//    end;
+//  end;
+//end;
+
+function TViewModelMain.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+procedure TViewModelMain.SetObserver(const Value: IObserver);
+begin
+  FObserver := Value;
+end;
+
+function TViewModelMain.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+procedure TViewModelMain.SetObservable(const Value: IObservable);
+begin
+  FObservable := Value;
+end;
+
+
+//function TViewModelDeskMain.GetViewModelDeskBillsListOverview: IViewModelDeskBillsListOverview;
+//begin
+//  Result := FViewModelDeskBillsListOverview;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskBillsListOverview(const Value: IViewModelDeskBillsListOverview);
+//begin
+//  FViewModelDeskBillsListOverview := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskBillsListSelection: IViewModelDeskBillsListSelection;
+//begin
+//  Result := FViewModelDeskBillsListSelection;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskBillsListSelection(const Value: IViewModelDeskBillsListSelection);
+//begin
+//  FViewModelDeskBillsListSelection := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskNewClient: IViewModelDeskNewClient;
+//begin
+//  Result := FViewModelDeskNewClient;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskNewClient(const Value: IViewModelDeskNewClient);
+//begin
+//  FViewModelDeskNewClient := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskNewBill: IViewModelDeskNewBill;
+//begin
+//  Result := FViewModelDeskNewBill;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskNewBill(const Value: IViewModelDeskNewBill);
+//begin
+//  FViewModelDeskNewBill := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskEditBill: IViewModelDeskEditBill;
+//begin
+//  Result := FViewModelDeskEditBill;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskEditBill(const Value: IViewModelDeskEditBill);
+//begin
+//  FViewModelDeskEditBill := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskSelectList: IViewModelDeskSelectList;
+//begin
+//  Result := FViewModelDeskSelectList;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskSelectList(const Value: IViewModelDeskSelectList);
+//begin
+//  FViewModelDeskSelectList := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskInfoPanel: IViewModelDeskInfoPanel;
+//begin
+//  Result := FViewModelDeskInfoPanel;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskInfoPanel(const Value: IViewModelDeskInfoPanel);
+//begin
+//  FViewModelDeskInfoPanel := Value;
+//end;
+//
+//function TViewModelDeskMain.GetViewModelDeskEditPanel: IViewModelDeskEditPanel;
+//begin
+//  Result := FViewModelDeskEditPanel;
+//end;
+//
+//procedure TViewModelDeskMain.SetViewModelDeskEditPanel(const Value: IViewModelDeskEditPanel);
+//begin
+//  FViewModelDeskEditPanel := Value;
+//end;
+//
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelMain.GetGUIRecord: TViewMainGUIRecord;
+begin
+//  Result.ViewDeskBillsListOverviewPositionX := 0;
+//  Result.ViewDeskBillsListOverviewPositionY := 0;
+//  Result.ViewDeskBillsListOverviewWidth := 1360;
+//  Result.ViewDeskBillsListOverviewHeight := 1050;
+//
+//  Result.ViewDeskBillsListSelectionPositionX := 0;
+//  Result.ViewDeskBillsListSelectionPositionY := 0;
+//  Result.ViewDeskBillsListSelectionWidth := 1360;
+//  Result.ViewDeskBillsListSelectionHeight := 1050;
+//
+//  Result.ViewDeskNewClientPositionX := 0;
+//  Result.ViewDeskNewClientPositionY := 0;
+//  Result.ViewDeskNewClientWidth := 1000;
+//  Result.ViewDeskNewClientHeight := 1050;
+//
+//  Result.ViewDeskNewBillPositionX := 0;
+//  Result.ViewDeskNewBillPositionY := 0;
+//  Result.ViewDeskNewBillWidth := 1000;
+//  Result.ViewDeskNewBillHeight := 1050;
+//
+//  Result.ViewDeskEditBillPositionX := 0;
+//  Result.ViewDeskEditBillPositionY := 0;
+//  Result.ViewDeskEditBillWidth := 1000;
+//  Result.ViewDeskEditBillHeight := 1050;
+//
+//  Result.ViewDeskSelectListPositionX := 1000;
+//  Result.ViewDeskSelectListPositionY := 0;
+//  Result.ViewDeskSelectListWidth := 360;
+//  Result.ViewDeskSelectListHeight := 1050;
+//
+//  Result.ViewDeskEditPanelPositionX := 1360;
+//  Result.ViewDeskEditPanelPositionY := 0;
+//  Result.ViewDeskEditPanelWidth := 320;
+//  Result.ViewDeskEditPanelHeight := 909;
+//
+//  Result.ViewDeskInfoPanelPositionX := 1360;
+//  Result.ViewDeskInfoPanelPositionY := 909;
+//  Result.ViewDeskInfoPanelWidth := 320;
+//  Result.ViewDeskInfoPanelHeight := 141;
+//
+//  case AppStage of
+//    asDeskIdle: begin
+//      Result.ViewDeskBillsListOverviewVisible := True;
+//      Result.ViewDeskBillsListSelectionVisible := False;
+//      Result.ViewDeskNewClientVisible := False;
+//      Result.ViewDeskNewBillVisible := False;
+//      Result.ViewDeskEditBillVisible := False;
+//      Result.ViewDeskSelectListVisible := False;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//    asDeskIdleUser: begin
+//      Result.ViewDeskBillsListOverviewVisible := False;
+//      Result.ViewDeskBillsListSelectionVisible := True;
+//      Result.ViewDeskNewClientVisible := False;
+//      Result.ViewDeskNewBillVisible := False;
+//      Result.ViewDeskEditBillVisible := False;
+//      Result.ViewDeskSelectListVisible := False;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//    asDeskSelectClient: begin
+//      Result.ViewDeskBillsListOverviewVisible := False;
+//      Result.ViewDeskBillsListSelectionVisible := False;
+//      Result.ViewDeskNewClientVisible := False;
+//      Result.ViewDeskNewBillVisible := False;
+//      Result.ViewDeskEditBillVisible := False;
+//      Result.ViewDeskSelectListVisible := True;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//    asDeskNewClientSelectPhone,
+//    asDeskNewClientSelectName,
+//    asDeskNewClientSelectRegion,
+//    asDeskNewClientSelectAddress,
+//    asDeskNewClientSelectFloor,
+//    asDeskNewClientSelectAppartment,
+//    asDeskNewClientSelectBuzzer,
+//    asDeskNewClientSelectDoorCode,
+//    asDeskNewClientSelectNotes: begin
+//      Result.ViewDeskBillsListOverviewVisible := False;
+//      Result.ViewDeskBillsListSelectionVisible := False;
+//      Result.ViewDeskNewClientVisible := True;
+//      Result.ViewDeskNewBillVisible := False;
+//      Result.ViewDeskEditBillVisible := False;
+//      Result.ViewDeskSelectListVisible := True;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//    asDeskNewBillSelectSource,
+//    asDeskNewBillSelectSourceNo,
+//    asDeskNewBillSelectZone,
+//    asDeskNewBillSelectDestination,
+//    asDeskNewBillSelectClient,
+//    asDeskNewBillSelectGuests: begin
+//      Result.ViewDeskBillsListOverviewVisible := False;
+//      Result.ViewDeskBillsListSelectionVisible := False;
+//      Result.ViewDeskNewClientVisible := False;
+//      Result.ViewDeskNewBillVisible := True;
+//      Result.ViewDeskEditBillVisible := False;
+//      Result.ViewDeskSelectListVisible := True;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//    asDeskEditBillSelectCategory,
+//    asDeskEditBillSelectArticle,
+//    asDeskEditBillSelectModificator,
+//    asDeskEditBillSelectPayment,
+//    asDeskEditBillSelectCheckForArticle,
+//    asDeskEditBillSelectCheckForGuest: begin
+//      Result.ViewDeskBillsListOverviewVisible := False;
+//      Result.ViewDeskBillsListSelectionVisible := False;
+//      Result.ViewDeskNewClientVisible := False;
+//      Result.ViewDeskNewBillVisible := False;
+//      Result.ViewDeskEditBillVisible := True;
+//      Result.ViewDeskSelectListVisible := True;
+//      Result.ViewDeskInfoPanelVisible := True;
+//      Result.ViewDeskEditPanelVisible := True;
+//    end;
+//
+  end;
+end;
+
+procedure TViewModelDeskMain.UpdateData;
+begin
+  ViewModelDeskBillsListOverview.UpdateData;
+  ViewModelDeskBillsListSelection.UpdateData;
+  ViewModelDeskNewClient.UpdateData;
+  ViewModelDeskNewBill.UpdateData;
+  ViewModelDeskEditBill.UpdateData;
+  ViewModelDeskSelectList.UpdateData;
+  ViewModelDeskEditPanel.UpdateData(AppStage);
+  ViewModelDeskInfoPanel.UpdateData;
+end;
+
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelDeskMain.Create;
+begin
+  inherited;
+  FModel := CreateModelMain;
+  Observer := CreateObserverClass;
+  Observer.SetUpdateObserverMethod(ProcessNotification);
+//  FAppStage := asDeskIdle;
+//  FTimer := TTimer.Create(nil);
+//  FTimer.Interval := 1000;
+//  FTimer.OnTimer := OnTimer;
+//  FTimer.Enabled := True;
+end;
+
+destructor TViewModelDeskMain.Destroy;
+begin
+//  FTimer.DisposeOf;
+//
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

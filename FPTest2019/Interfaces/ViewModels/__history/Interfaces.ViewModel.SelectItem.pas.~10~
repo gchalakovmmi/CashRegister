@@ -1,0 +1,31 @@
+unit Interfaces.ViewModel.SelectItem;
+
+interface
+
+uses
+  System.Classes,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.SelectItem;
+
+type
+  IViewModelSelectItem = interface
+  ['{ED9D064E-622E-4CAB-8530-E326B617065A}']
+    // Properties
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelSelectItem;
+    procedure SetModel(const Value: IModelSelectItem);
+    property Model: IModelSelectItem read GetModel write SetModel;
+
+    // Methods
+    function GetGUIRecord: TViewSelectItemGUIRecord;
+    procedure SetupSelection(Key: Char);
+    procedure GridKeyDown(var Key: Word; Shift: TShiftState);
+    procedure GridKeyPressed(Key: Char);
+  end;
+
+implementation
+
+end.

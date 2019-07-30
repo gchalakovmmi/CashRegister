@@ -1,0 +1,24 @@
+unit Interfaces.Model.Classes.Sales;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Sale;
+
+type
+  IModelClassSales = interface
+  ['{C99AA938-DA24-4A3F-BC9D-C0352CE35F8D}']
+    function GetList: TList<IModelClassSale>;
+
+    property List: TList<IModelClassSale> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,17 @@
+unit Interfaces.Model.Main;
+
+interface
+
+type
+  IModelMain = interface
+  ['{5AB0C849-73FA-4DDA-9E89-14C9D1E44BB4}']
+    function GetUserGID: Integer;
+    function GetUserName: String;
+
+    property UserGID: Integer read GetUserGID;
+    property UserName: String read GetUserName;
+  end;
+
+implementation
+
+end.

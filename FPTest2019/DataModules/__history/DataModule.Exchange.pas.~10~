@@ -1,0 +1,218 @@
+unit DataModule.Exchange;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes;
+
+type
+  TDataModuleExchange = class(TDataModule)
+
+  {$REGION 'Published Methods'}
+  published
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    function SubTotal(AOperationID: Integer): Double;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure OpenSale;
+    procedure RegistrationOfSale;
+    procedure RegistrationOfCancelation;
+    procedure DiscardSale;
+
+
+    procedure StoreItem(AOperationID, ADocNumber, AClientID: Integer; AClientVIP: String; AClientMarkUp: Double; AItemID: Integer; AItemBarcode, AItemName, AItemMeasure: String; ACoeff, AQuantity, AClientPrice, ADiscount, AVendorPrice, ATotal, ATotalToBe: Double; ATyped: String);
+    procedure StoreVoucherPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+    procedure StoreCardPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+    procedure StoreCashPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+    procedure StoreExchangeFile;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+
+  end;
+
+var
+  DataModuleExchange: TDataModuleExchange;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+function TDataModuleExchange.SubTotal(AOperationID: Integer): Double;
+//var
+//  q: TQuery;
+begin
+//  q := TQuery.Create(Self);
+//  q.DatabaseName := 'c:\eurocrypt\data\temp';
+//  q.SQL.Add('SELECT SUM(TOTAL) T FROM "'+'c:\eurocrypt\data\temp\t'+IntToStr(AOperationID)+'_'+FormatDateTime('yyyy.mm', Date)+'_'+IntToStr(dmMain.ServerID)+'_3002.tmp'+'" WHERE OPERATIONID = '+InttoStr(AOperationID));
+//  q.Open;
+//  Result := q.FieldByName('T').AsFloat;
+//  q.Free;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TDataModuleExchange.OpenSale;
+begin
+
+end;
+
+procedure TDataModuleExchange.RegistrationOfSale;
+begin
+
+end;
+
+procedure TDataModuleExchange.RegistrationOfCancelation;
+begin
+
+end;
+
+procedure TDataModuleExchange.DiscardSale;
+begin
+
+end;
+
+procedure TDataModuleExchange.StoreItem(AOperationID, ADocNumber, AClientID: Integer; AClientVIP: String; AClientMarkUp: Double; AItemID: Integer; AItemBarcode, AItemName, AItemMeasure: String; ACoeff, AQuantity, AClientPrice, ADiscount, AVendorPrice, ATotal, ATotalToBe: Double; ATyped: String);
+//var
+//  sSQL: String;
+//  D: TDateTime;
+//  LSubTotal: Double;
+begin
+//  sSQL := GenerateItemSQL(
+//    AOperationID,
+//    ADocNumber,
+//    AClientID,
+//    AClientVIP,
+//    AClientMarkUp,
+//    AItemID,
+//    AItemBarcode,
+//    AItemName,
+//    AItemMeasure,
+//    ACoeff,
+//    AQuantity,
+//    AClientPrice,
+//    ADiscount,
+//    AVendorPrice,
+//    ATotal,
+//    ATyped
+//  );
+//  sSQL := 'INSERT INTO "T'+IntToStr(AOperationID)+'_'+FormatDateTime('yyyy.mm', Date)+'_'+IntToStr(dmMain.ServerID)+'_3002.tmp" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+sSQL+')';
+//
+//  // Store to Temp File
+//  repeat
+//    D := Now;
+//    dmMain.DOTempSQL(sSQL, 3002, AOperationID);
+//    fmOpSell.StatusBar.Panels[1].Text := FormatFloat('0ms', MillisecondsBetween(Now, D));
+//    LSubTotal := SubTotal(AOperationID);
+//    if Abs(LSubTotal - ATotalToBe) > 0.001 then fmMessage.ShowBadMessagePlus('Продажбата не е записана във временния файл . . .'+FloatToStr(LSubTotal)+'<>'+FloatToStr(ATotalToBe));
+//  until Abs(LSubTotal - ATotalToBe) < 0.001;
+end;
+
+procedure TDataModuleExchange.StoreVoucherPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  sSQL := ModelOpSell.GenerateVoucherPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "T'+IntToStr(AOperationID)+'_'+FormatDateTime('yyyy.mm', Date)+'_'+IntToStr(dmMain.ServerID)+'_3002.tmp" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOTempSQL(sSQL, 3002, AOperationID);
+end;
+
+procedure TDataModuleExchange.StoreCardPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  sSQL := ModelOpSell.GenerateCardPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "T'+IntToStr(AOperationID)+'_'+FormatDateTime('yyyy.mm', Date)+'_'+IntToStr(dmMain.ServerID)+'_3002.tmp" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOTempSQL(sSQL, 3002, AOperationID);
+end;
+
+procedure TDataModuleExchange.StoreCashPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  sSQL := ModelOpSell.GenerateCashPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "T'+IntToStr(AOperationID)+'_'+FormatDateTime('yyyy.mm', Date)+'_'+IntToStr(dmMain.ServerID)+'_3002.tmp" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOTempSQL(sSQL, 3002, AOperationID);
+end;
+
+
+procedure TDataModuleExchange.StoreExchangeFile;
+begin
+
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,237 @@
+unit View.SelectSale;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.WinXPickers,
+  Vcl.StdCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.SelectSale;
+
+type
+  TViewSelectSale = class(TForm, IObserver, IObservable)
+    ButtonExit: TButton;
+    ButtonReversal: TButton;
+    ButtonInvoice: TButton;
+    ButtonDuplicate: TButton;
+    DatePicker: TDatePicker;
+    GridSales: TDBGrid;
+    GridSaleDetails: TDBGrid;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonExitClick(Sender: TObject);
+    procedure ButtonReversalClick(Sender: TObject);
+    procedure ButtonInvoiceClick(Sender: TObject);
+    procedure ButtonDuplicateClick(Sender: TObject);
+    procedure DatePickerChange(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FViewModel: IViewModelSelectSale;
+    FObserver: IObserver;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+    function GetViewModel: IViewModelSelectSale;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+    property ViewModel: IViewModelSelectSale read GetViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowSelectSale;
+
+implementation
+
+uses
+  View.Message,
+  Helper.MyFuncs,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  DataModule.Items,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  ViewModel.SelectSale;
+
+{$R *.dfm}
+
+{ TViewSelectSale }
+
+{$REGION 'Published Methods'}
+
+procedure TViewSelectSale.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObServable := CreateObservableClass;
+
+  FViewModel := CreateViewModelSelectSale;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  DatePicker.Date := Date;
+
+  ViewModel.RefreshData;
+
+  UpdateGUI;
+end;
+
+procedure TViewSelectSale.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FViewModel.Observable.UnSubscribe(FObserver);
+
+  Action := caFree;
+end;
+
+procedure TViewSelectSale.ButtonExitClick(Sender: TObject);
+begin
+  ViewModel.ButtonExitClick;
+end;
+
+procedure TViewSelectSale.ButtonReversalClick(Sender: TObject);
+begin
+  ViewModel.ButtonReversalClick;
+end;
+
+procedure TViewSelectSale.ButtonInvoiceClick(Sender: TObject);
+begin
+  ViewModel.ButtonInvoiceClick;
+end;
+
+procedure TViewSelectSale.ButtonDuplicateClick(Sender: TObject);
+begin
+  ViewModel.ButtonDuplicateClick;
+end;
+
+procedure TViewSelectSale.DatePickerChange(Sender: TObject);
+begin
+  ViewModel.DatePickerChange(DatePicker.Date);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewSelectSale.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewSelectSale.UpdateGUI;
+var
+  LViewSelectSaleGUIRecord: TViewSelectSaleGUIRecord;
+begin
+  LViewSelectSaleGUIRecord := ViewModel.GetGUIRecord;
+
+//  Top := LViewSelectSaleGUIRecord.Top;
+//  Left := LViewSelectSaleGUIRecord.Left;
+//  Edit.Text := LViewSelectSaleGUIRecord.EditText;
+//
+//  ActiveControl := Grid;
+
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewSelectSale.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewSelectSale.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewSelectSale.GetViewModel: IViewModelSelectSale;
+begin
+  Result := FViewModel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowSelectSale;
+var
+  LViewSelectSale: TViewSelectSale;
+begin
+  LViewSelectSale := TViewSelectSale.Create(nil);
+  LViewSelectSale.ShowModal;
+end;
+
+end.

@@ -1,0 +1,136 @@
+unit Interfaces.Model.Notification;
+
+interface
+
+uses
+  Interfaces.Enums;
+//  ,
+//  Interfaces.Model.Classes.Client,
+//  Interfaces.Model.Classes.Bill,
+//  Interfaces.Model.Classes.Region,
+//  Interfaces.Model.Classes.Source,
+//  Interfaces.Model.Classes.Zone,
+//  Interfaces.Model.Classes.Destination,
+//  Interfaces.Model.Classes.Bill.Detail,
+//  Interfaces.Model.Classes.Category,
+//  Interfaces.Model.Classes.Article,
+//  Interfaces.Model.Classes.Modificator,
+//  Interfaces.Model.Classes.Section;
+
+type
+  IModelNotification = interface
+  ['{E7643E7D-F135-41C6-B7E4-8516F8211D53}']
+    function GetActions: TInterfaceActions;
+    procedure SetActions(const Value: TInterfaceActions);
+
+    property Actions: TInterfaceActions read GetActions write SetActions;
+  end;
+
+  IModelNotificationGID = interface(IModelNotification)
+  ['{89C6AF3E-55CE-4BC0-A588-0DE581EA94B6}']
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+
+    property GID: Integer read GetGID write SetGID;
+  end;
+
+//  IModelNotificationEdit = interface(IModelNotification)
+//  ['{4F14254A-F0D4-4942-BE37-7857D7BB9A64}']
+//    function GetEdit: String;
+//    procedure SetEdit(const Value: String);
+//
+//    property Edit: String read GetEdit write SetEdit;
+//  end;
+//
+//  IModelNotificationClient = interface(IModelNotification)
+//  ['{1949ABAD-30AD-4B71-A5D7-13571069B9A6}']
+//    function GetClient: IModelClassClient;
+//    procedure SetClient(const Value: IModelClassClient);
+//
+//    property Client: IModelClassClient read GetClient write SetClient;
+//  end;
+//
+//  IModelNotificationBill = interface(IModelNotification)
+//  ['{4878685C-9BEB-4C67-8BC2-39330E53069D}']
+//    function GetBill: IModelClassBill;
+//    procedure SetBill(const Value: IModelClassBill);
+//
+//    property Bill: IModelClassBill read GetBill write SetBill;
+//  end;
+//
+//  IModelNotificationSource = interface(IModelNotification)
+//  ['{1B59FE6B-CD35-40B0-A818-1B341E25A58D}']
+//    function GetSource: IModelClassSource;
+//    procedure SetSource(const Value: IModelClassSource);
+//
+//    property Source: IModelClassSource read GetSource write SetSource;
+//  end;
+//
+//  IModelNotificationRegion = interface(IModelNotification)
+//  ['{5FFD2A1F-35C4-460D-B292-1568B81254B8}']
+//    function GetRegion: IModelClassRegion;
+//    procedure SetRegion(const Value: IModelClassRegion);
+//
+//    property Region: IModelClassRegion read GetRegion write SetRegion;
+//  end;
+//
+//  IModelNotificationZone = interface(IModelNotification)
+//  ['{7D8410CD-000D-4CE7-B508-5A401A88ED10}']
+//    function GetZone: IModelClassZone;
+//    procedure SetZone(const Value: IModelClassZone);
+//
+//    property Zone: IModelClassZone read GetZone write SetZone;
+//  end;
+//
+//  IModelNotificationDestination = interface(IModelNotification)
+//  ['{18ADE981-4003-4458-89D8-9055852BC242}']
+//    function GetDestination: IModelClassDestination;
+//    procedure SetDestination(const Value: IModelClassDestination);
+//
+//    property Destination: IModelClassDestination read GetDestination write SetDestination;
+//  end;
+//
+//  IModelNotificationBillDetail = interface(IModelNotification)
+//  ['{9066DDE5-B65F-48DC-B9A0-C7CC192F9C44}']
+//    function GetBillDetail: IModelClassBillDetail;
+//    procedure SetBillDetail(const Value: IModelClassBillDetail);
+//
+//    property BillDetail: IModelClassBillDetail read GetBillDetail write SetBillDetail;
+//  end;
+//
+//  IModelNotificationCategory = interface(IModelNotification)
+//  ['{02967A81-6852-4D66-B2C2-2F7CBF724A4C}']
+//    function GetCategory: IModelClassCategory;
+//    procedure SetCategory(const Value: IModelClassCategory);
+//
+//    property Category: IModelClassCategory read GetCategory write SetCategory;
+//  end;
+//
+//  IModelNotificationArticle = interface(IModelNotification)
+//  ['{E7643E7D-F135-41C6-B7E4-8516F8211D53}']
+//    function GetArticle: IModelClassArticle;
+//    procedure SetArticle(const Value: IModelClassArticle);
+//
+//    property Article: IModelClassArticle read GetArticle write SetArticle;
+//  end;
+//
+//  IModelNotificationModificator = interface(IModelNotification)
+//  ['{B8CAD7DC-B9D0-42DE-B29F-EE6B79344AD4}']
+//    function GetModificator: IModelClassModificator;
+//    procedure SetModificator(const Value: IModelClassModificator);
+//
+//    property Modificator: IModelClassModificator read GetModificator write SetModificator;
+//  end;
+//
+//  IModelNotificationSection = interface(IModelNotification)
+//  ['{3EE51ADD-5BDC-4243-84C6-B4954F9D36CE}']
+//    function GetSection: IModelClassSection;
+//    procedure SetSection(const Value: IModelClassSection);
+//
+//    property Section: IModelClassSection read GetSection write SetSection;
+//  end;
+
+implementation
+
+end.
+

@@ -1,0 +1,175 @@
+unit View_Main;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  Vcl.StdCtrls,
+	FP3530_TLB, Vcl.OleServer;
+
+const
+	caption_None                                   = '.....';
+	Hex_Digits                                     = 16;
+	Hex_Digit: array [0 .. Hex_Digits - 1] of Char = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+	en_Message_NoDriver                            = 'The program can not detect the driver. ' + sLineBreak + 'Please install "FP3530 - COMServer" or call the support team! ';
+
+type
+	TAfterCase = (             //
+	  ac_AfterStart_Program,   // After start of the program
+	  ac_AfterStart_Server,    //
+	  ac_AfterOpenConnection,  // After open connection to the device
+	  ac_AfterCloseConnection, // After close connection to the device
+	  ac_AfterStopServer,      //
+	  ac_AfterSettingsChange   // After changes from other client application
+	  );
+
+	TOldValues = record
+		Active_OnAfterCloseConnection: Boolean;
+		Active_OnAfterOpenConnection: Boolean;
+		Active_OnAfterSettingsChange: Boolean;
+		RegisterActiveObject: Boolean;
+		Save_Settings_AfterOpenConnection: Boolean;
+	end;
+
+  TViewMain = class(TForm)
+    fd: TCFD_BGR;
+    ButtonStartCOMServer: TButton;
+    ButtonOpenConnection: TButton;
+    procedure ButtonStartCOMServerClick(Sender: TObject);
+    procedure ButtonOpenConnectionClick(Sender: TObject);
+  private
+//		fWeHaveWaitEvent  : Boolean;
+//		fSYNCount         : Byte;
+//		fAppMessCount     : Byte;
+//		fTransportProtocol: TTransportProtocol;
+//		fComPort          : Integer;
+//		fBaudRate         : Integer;
+//		fLastError_Code   : Integer;
+//		fLastError_Message: WideString;
+//		fOldDudeInstance  : Variant;
+		fAfterCase        : TAfterCase;
+		fMyAfterCaseFlag  : Boolean;
+		fCanRefreshValues : Boolean;
+//		fErrorCode        : WideString;
+    function TryToStartCOMServer: Boolean;
+    procedure SetAfterCase(const Value: TAfterCase);
+    function SetTransportProtocol: Integer;
+  public
+		error_Code: Integer;
+		property afterCase: TAfterCase read fAfterCase write SetAfterCase;
+  end;
+
+var
+  ViewMain: TViewMain;
+
+implementation
+
+{$R *.dfm}
+
+function TViewMain.TryToStartCOMServer: Boolean;
+begin
+	try
+		fd.RemoteMachineName := '';
+		fd.Connect;
+		Result := True;
+	except
+		Result := False;
+	end;
+end;
+
+procedure TViewMain.SetAfterCase(const Value: TAfterCase);
+begin
+	fCanRefreshValues := False;
+
+	fAfterCase := Value;
+
+//	set_Other(Value);
+//	set_CheckBoxes(Value);
+//	set_LabelValues(Value);
+//	set_EditBoxes(Value);
+//	set_ComboBoxValues(Value);
+//	set_TabVisibility(Value);
+//	set_Buttons(Value);
+end;
+
+function TViewMain.SetTransportProtocol: Integer;
+var
+	lanPort: Word;
+begin
+	Result := -1;
+	fMyAfterCaseFlag := True;
+	try
+		try
+      Result := fd.set_TransportType(ctc_RS232);
+      if Result <> 0 then Exit;
+
+      Result := fd.set_RS232(3, 111500);
+      if Result <> 0 then Exit;
+			Result := 0;
+		except
+			On E: Exception do ShowMessage(E.Message);
+		end;
+	finally
+		fMyAfterCaseFlag := False;
+		afterCase := ac_AfterSettingsChange;
+	end;
+end;
+
+
+procedure TViewMain.ButtonOpenConnectionClick(Sender: TObject);
+begin
+	error_Code := 0;
+	ButtonOpenConnection.Enabled := False;
+	try
+		if not fd.connected_ToDevice then begin
+			error_Code := SetTransportProtocol;
+			if error_Code <> 0 then Exit;
+
+			error_Code := fd.open_Connection;
+			if error_Code <> 0 then Exit;
+		end;
+		// show_DeviceModel;
+	finally
+		if error_Code <> 0 then begin
+			ShowMessage(fd.lastError_Message);
+			ButtonOpenConnection.Enabled := True;
+		end else begin
+			if fd.connected_ToDevice then begin
+				if not fd.Active_OnAfterOpenConnection then begin
+          afterCase := ac_AfterOpenConnection;
+        end;
+      end;
+		end;
+		Self.Update;
+	end;
+end;
+
+procedure TViewMain.ButtonStartCOMServerClick(Sender: TObject);
+begin
+	ButtonStartCOMServer.Enabled := False;
+	if not TryToStartCOMServer then
+	begin
+		ShowMessage(en_Message_NoDriver);
+		ButtonStartCOMServer.Enabled := True;
+		Exit;
+	end;
+	try
+		try
+			afterCase := ac_AfterStart_Server;
+		except
+			On E: Exception do ShowMessage(E.Message);
+		end;
+	finally
+		if fd.connected_ToDevice then afterCase := ac_AfterOpenConnection;
+	end;
+end;
+
+end.

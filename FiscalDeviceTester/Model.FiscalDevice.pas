@@ -1,0 +1,10 @@
+unit Model.FiscalDevice;
+
+interface
+
+
+
+
+implementation
+
+end.

@@ -1,0 +1,22 @@
+unit Interfaces.Model.Classes.Sale.Details;
+
+interface
+
+uses
+  System.Generics.Collections,
+  Interfaces.Model.Classes.Sale.Detail;
+
+type
+  IModelClassSaleDetails = interface
+  ['{A590FE45-6329-434B-9087-202257666B95}']
+    function GetList: TList<IModelClassSaleDetail>;
+
+    property List: TList<IModelClassSaleDetail> read GetList;
+
+    procedure UpdateFromDataSet(const AParentGID: Integer);
+    procedure UpdateInDataSet;
+  end;
+
+implementation
+
+end.

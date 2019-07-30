@@ -1,0 +1,35 @@
+unit Interfaces.ViewModel.SelectSale;
+
+interface
+
+uses
+  System.Classes,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.SelectSale;
+
+type
+  IViewModelSelectSale = interface
+  ['{F973D623-CA4B-4789-834E-5089EEF50CB6}']
+    // Properties
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelSelectSale;
+    procedure SetModel(const Value: IModelSelectSale);
+    property Model: IModelSelectSale read GetModel write SetModel;
+
+    // Methods
+    function GetGUIRecord: TViewSelectSaleGUIRecord;
+
+    procedure ButtonExitClick;
+    procedure ButtonReversalClick;
+    procedure ButtonInvoiceClick;
+    procedure ButtonDuplicateClick;
+    procedure DatePickerChange(const ADate: TDate);
+    procedure RefreshData;
+  end;
+
+implementation
+
+end.

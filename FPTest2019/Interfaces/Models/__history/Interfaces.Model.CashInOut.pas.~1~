@@ -1,0 +1,13 @@
+unit Interfaces.Model.CashInOut;
+
+interface
+
+type
+  IModelCashInOut = interface
+  ['{FD0BF1AE-0814-419F-84AC-72C3709D8874}']
+
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,47 @@
+object ViewMessage: TViewMessage
+  Left = 543
+  Top = 414
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  ClientHeight = 83
+  ClientWidth = 288
+  Color = clBtnFace
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -19
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  StyleElements = []
+  OnKeyPress = FormKeyPress
+  PixelsPerInch = 96
+  TextHeight = 23
+  object lbMessage: TLabel
+    Left = 4
+    Top = 4
+    Width = 135
+    Height = 75
+    Alignment = taCenter
+    Caption = 'Label1'#13#10'Second line'#13#10'Second line'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    StyleElements = []
+  end
+  object Timer: TTimer
+    Enabled = False
+    OnTimer = TimerTimer
+    Left = 88
+    Top = 16
+  end
+  object tBlink: TTimer
+    Enabled = False
+    Interval = 300
+    OnTimer = tBlinkTimer
+    Left = 128
+    Top = 16
+  end
+end

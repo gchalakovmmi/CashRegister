@@ -1,0 +1,929 @@
+unit Model.Persistable;
+
+interface
+
+uses
+  System.JSON,
+  Data.DB,
+  Model.Persistable.Attribute;
+
+type
+  TModelPersistable = class
+
+  {$REGION 'Private Methods'}
+  protected
+    function UpdateSQL: String;
+    function DeleteSQL: String;
+    procedure InsertPersistableProperties;
+    procedure UpdatePersistableProperties;
+    procedure DeletePersistableProperties;
+    procedure FreePersistableProperties;
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: Int64;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetIsNew: Boolean;
+    function GetGID: Int64;
+    procedure SetGID(const Value: Int64);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property IsNew: Boolean read GetIsNew;
+
+    [TModelPersistable('gid')]
+    property GID: Int64 read GetGID write SetGID;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetNewID: Int64;
+    function InsertSQL: String;
+    procedure Save;
+    procedure Insert;
+    procedure Update;
+    procedure Delete;
+
+    procedure SaveToDataSet(ADataSet: TDataSet);
+    procedure InsertIntoDataSet(ADataSet: TDataSet);
+    procedure UpdateDataSet(ADataSet: TDataSet);
+    procedure DeleteFromDataSet(ADataSet: TDataSet);
+
+    function ToJSON: TJSONObject;
+    procedure ToFile(AFileName: String); virtual;
+
+    class function SQLTableName: String;
+    class function FieldsJSONArray: TJSONArray;
+    class function SQLParams(AExtraSQL: String = ''): String;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create; virtual;
+    constructor FromDataSet(ADataSet: TDataSet);
+    constructor FromFile(AFileName: String); virtual;
+    constructor FromJSON(AJSONObject: TJSONObject); virtual;
+    constructor FromSQL(AExtraSQL: String = ''); virtual;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+implementation
+
+uses
+  FMX.Dialogs,
+  System.Rtti,
+  System.SysUtils,
+  System.TypInfo,
+  System.IOUtils,
+  Model.SQLServer,
+  Model.Persistable.List;
+
+{ TModelPersistable }
+
+{$REGION 'Private Methods'}
+
+function TModelPersistable.GetNewID: Int64;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LClassAttribute: TCustomAttribute;
+  LSQLServer: TModelSQLServer;
+begin
+  Result := -1;
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LClassAttribute in LRttiType.GetAttributes do begin
+      if LClassAttribute is TModelPersistableAttribute then begin
+        LSQLServer := TModelSQLServer.Create(nil);
+        try
+          Result := LSQLServer.GetNewID(TModelPersistableAttribute(LClassAttribute).Attribute);
+        finally
+          LSQLServer.Free;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+function TModelPersistable.InsertSQL: String;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LFields: String;
+  LValues: String;
+  LValue: TValue;
+begin
+  LFields := '';
+  LValues := '';
+
+  LRttiContext := TRttiContext.Create;
+  try
+    LRttiType := LRttiContext.GetType(Self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          LValue := LRttiProperty.GetValue(self);
+          if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+            if LRttiProperty.PropertyType.Name = 'Boolean' then begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+              LValues := LValues + '"'+BoolToStr(LValue.AsBoolean)+'", ';
+            end else begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+              LValues := LValues + '"'+IntToStr(LValue.AsOrdinal)+'", ';
+            end;
+          end;
+          if LRttiProperty.PropertyType.Name = 'string' then begin
+            LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+            LValues := LValues + '"'+LValue.AsString+'", ';
+          end;
+          if LRttiProperty.PropertyType.Name = 'Integer' then begin
+            LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+            LValues := LValues + '"'+IntToStr(LValue.AsInteger)+'", ';
+          end;
+          if LRttiProperty.PropertyType.Name = 'Int64' then begin
+            LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+            LValues := LValues + '"'+IntToStr(LValue.AsInt64)+'", ';
+          end;
+          if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+            LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ', ';
+            LValues := LValues + '"'+FormatDateTime('yyyy-mm-dd hh:nn:ss', LRttiProperty.GetValue(self).AsExtended)+'", ';
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free();
+  end;
+
+  if LFields <> '' then begin
+    LFields := Copy(LFields, 1, Length(LFields) - 2);
+    LValues := Copy(LValues, 1, Length(LValues) - 2);
+  end;
+
+  Result := 'INSERT INTO '+SQLTableName+' ('+LFields+') VALUES ('+LValues+')';
+end;
+
+function TModelPersistable.UpdateSQL: String;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LFields: String;
+  LValue: TValue;
+begin
+  LFields := '';
+
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      if LRttiProperty.Name <> 'GID' then begin
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            LValue := LRttiProperty.GetValue(self);
+            if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+              if LRttiProperty.PropertyType.Name = 'Boolean' then begin
+                LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+BoolToStr(LValue.AsBoolean)+'", ';
+              end else begin
+                LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+IntToStr(LValue.AsOrdinal)+'", ';
+              end;
+            end;
+            if LRttiProperty.PropertyType.Name = 'string' then begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+LValue.AsString+'", ';
+            end;
+            if LRttiProperty.PropertyType.Name = 'Integer' then begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+IntToStr(LValue.AsInteger)+'", ';
+            end;
+            if LRttiProperty.PropertyType.Name = 'Int64' then begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+IntToStr(LValue.AsInt64)+'", ';
+            end;
+            if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+              LFields := LFields + TModelPersistableAttribute(LPropertyAttribute).Attribute + ' = "'+FormatDateTime('yyyy-mm-dd hh:nn:ss', LRttiProperty.GetValue(self).AsExtended)+'", ';
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free();
+  end;
+
+  if LFields <> '' then begin
+    LFields := Copy(LFields, 1, Length(LFields) - 2);
+  end;
+
+  Result := 'UPDATE '+SQLTableName+' SET '+LFields+' WHERE gid = '+IntToStr(GID);
+end;
+
+function TModelPersistable.DeleteSQL: String;
+begin
+  Result := 'DELETE FROM  '+SQLTableName+' WHERE gid = '+IntToStr(GID);
+end;
+
+procedure TModelPersistable.InsertPersistableProperties;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+begin
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+            LRttiProperty.PropertyType.GetMethod('Save').Invoke(LRttiProperty.GetValue(Self), []);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+procedure TModelPersistable.UpdatePersistableProperties;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+begin
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+            LRttiProperty.PropertyType.GetMethod('Save').Invoke(LRttiProperty.GetValue(Self), []);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+procedure TModelPersistable.DeletePersistableProperties;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+begin
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+            LRttiProperty.PropertyType.GetMethod('Delete').Invoke(LRttiProperty.GetValue(Self), []);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+procedure TModelPersistable.FreePersistableProperties;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+begin
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+            LRttiProperty.PropertyType.GetMethod('Free').Invoke(LRttiProperty.GetValue(Self), []);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelPersistable.GetIsNew: Boolean;
+begin
+  Result := (FGID = 0);
+end;
+
+function TModelPersistable.GetGID: Int64;
+begin
+  Result := FGID;
+end;
+
+procedure TModelPersistable.SetGID(const Value: Int64);
+begin
+  FGID := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelPersistable.Save;
+begin
+  if IsNew then begin
+    GID := GetNewID;
+    Insert;
+  end else begin
+    Update;
+  end;
+end;
+
+procedure TModelPersistable.Insert;
+var
+  LSQL: String;
+  LSQLServer: TModelSQLServer;
+begin
+  LSQL := InsertSQL;
+  LSQLServer := TModelSQLServer.Create(nil);
+  try
+    LSQLServer.ExecSQL(LSQL);
+  finally
+    LSQLServer.Free;
+  end;
+  InsertPersistableProperties;
+end;
+
+procedure TModelPersistable.Update;
+var
+  LSQL: String;
+  LSQLServer: TModelSQLServer;
+begin
+  LSQL := UpdateSQL;
+  LSQLServer := TModelSQLServer.Create(nil);
+  try
+    LSQLServer.ExecSQL(LSQL);
+  finally
+    LSQLServer.Free;
+  end;
+  UpdatePersistableProperties;
+end;
+
+procedure TModelPersistable.Delete;
+var
+  LSQL: String;
+  LSQLServer: TModelSQLServer;
+begin
+  LSQL := DeleteSQL;
+  LSQLServer := TModelSQLServer.Create(nil);
+  try
+    LSQLServer.ExecSQL(LSQL);
+  finally
+    LSQLServer.Free;
+  end;
+  DeletePersistableProperties;
+end;
+
+procedure TModelPersistable.SaveToDataSet(ADataSet: TDataSet);
+begin
+  if IsNew then begin
+    GID := GetNewID;
+    InsertIntoDataSet(ADataSet);
+  end else begin
+    UpdateDataSet(ADataSet);
+  end;
+end;
+
+procedure TModelPersistable.InsertIntoDataSet(ADataSet: TDataSet);
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LValue: TValue;
+begin
+  if not ADataSet.Locate('gid', GID, []) then begin
+    ADataSet.Append;
+
+    LRttiContext := TRttiContext.Create;
+    try
+      LRttiType := LRttiContext.GetType(self.ClassType);
+      for LRttiProperty in LRttiType.GetProperties do begin
+        LValue := LRttiProperty.GetValue(self);
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'string' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := LValue.AsString;
+            end;
+            if LRttiProperty.PropertyType.Name = 'Integer' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'Int64' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := FormatDateTime('yyyy-mm-dd hh:nn:ss', LRttiProperty.GetValue(self).AsExtended);
+            end;
+          end;
+        end;
+      end;
+    finally
+      LRttiContext.Free;
+    end;
+
+    ADataSet.Post;
+  end;
+end;
+
+procedure TModelPersistable.UpdateDataSet(ADataSet: TDataSet);
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LValue: TValue;
+begin
+  if ADataSet.Locate('gid', GID, []) then begin
+    ADataSet.Edit;
+
+    LRttiContext := TRttiContext.Create;
+    try
+      LRttiType := LRttiContext.GetType(self.ClassType);
+      for LRttiProperty in LRttiType.GetProperties do begin
+        LValue := LRttiProperty.GetValue(self);
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'string' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := LValue.AsString;
+            end;
+            if LRttiProperty.PropertyType.Name = 'Integer' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'Int64' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+            end;
+            if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+              ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := FormatDateTime('yyyy-mm-dd hh:nn:ss', LRttiProperty.GetValue(self).AsExtended);
+            end;
+          end;
+        end;
+      end;
+    finally
+      LRttiContext.Free;
+    end;
+
+    ADataSet.Post;
+  end;
+end;
+
+procedure TModelPersistable.DeleteFromDataSet(ADataSet: TDataSet);
+begin
+  if ADataSet.Locate('gid', GID, []) then begin
+    ADataSet.Delete;
+  end;
+  ADataSet.First;
+end;
+
+function TModelPersistable.ToJSON: TJSONObject;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LValue: TValue;
+  LToJSONMethod: TRttiMethod;
+  LJSONArray: TJSONArray;
+begin
+  Result := TJSONObject.Create;
+
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(Self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+            if LRttiProperty.PropertyType.Name = 'TJSONObject' then begin
+              LToJSONMethod := LRttiProperty.PropertyType.GetMethod('ToString');
+              LValue := LToJSONMethod.Invoke(LRttiProperty.GetValue(Self), []);
+              Result.AddPair(LRttiProperty.Name, TJSONObject.ParseJSONValue(LValue.AsString));
+            end else begin
+              LToJSONMethod := LRttiProperty.PropertyType.GetMethod('ToJSON');
+              if Assigned(LToJSONMethod) then begin
+                LValue := LToJSONMethod.Invoke(LRttiProperty.GetValue(Self), []);
+                LJSONArray := LValue.AsType<TJSONArray>;
+                Result.AddPair(LRttiProperty.Name, LJSONArray);
+              end;
+            end;
+          end else begin
+            LValue := LRttiProperty.GetValue(Self);
+            if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+              if LRttiProperty.PropertyType.Name = 'Boolean' then begin
+                Result.AddPair(LRttiProperty.Name, BoolToStr(LValue.AsBoolean));
+              end else begin
+                Result.AddPair(LRttiProperty.Name, IntToStr(LValue.AsOrdinal));
+              end;
+            end;
+            if LRttiProperty.PropertyType.Name = 'string' then begin
+              Result.AddPair(LRttiProperty.Name, '@'+LValue.AsString);
+            end;
+            if LRttiProperty.PropertyType.Name = 'Integer' then begin
+              Result.AddPair(LRttiProperty.Name, IntToStr(LValue.AsInteger));
+            end;
+            if LRttiProperty.PropertyType.Name = 'Int64' then begin
+              Result.AddPair(LRttiProperty.Name, IntToStr(LValue.AsInteger));
+            end;
+            if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+              Result.AddPair(LRttiProperty.Name, DateTimeToStr(LValue.AsType<TDateTime>, TFormatSettings.Create('en-US')));
+            end;
+            if LRttiProperty.PropertyType.Name = 'Double' then begin
+              Result.AddPair(LRttiProperty.Name, FloatToStr(LValue.AsExtended));
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+procedure TModelPersistable.ToFile(AFileName: String);
+var
+  LJSONObject: TJSONObject;
+begin
+  LJSONObject := ToJSON;
+  try
+    try
+      TFile.WriteAllText(AFileName, LJSONObject.ToString, TEncoding.UTF8);
+    except on E: Exception do
+      ShowMessage('TModelPersistable.ToFile exception: '+E.Message+' '+AFileName);
+    end;
+  finally
+    FreeAndNil(LJSONObject);
+  end;
+end;
+
+class function TModelPersistable.SQLTableName: String;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LClassAttribute: TCustomAttribute;
+begin
+  Result := '';
+  LRttiContext := TRttiContext.Create;
+  try
+    LRttiType := LRttiContext.GetType(Self);
+
+    for LClassAttribute in LRttiType.GetAttributes do begin
+      if LClassAttribute is TModelPersistableAttribute then begin
+        Result := TModelPersistableAttribute(LClassAttribute).Attribute;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+class function TModelPersistable.FieldsJSONArray: TJSONArray;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LJSONObject: TJSONObject;
+  LToJSONMethod: TRttiMethod;
+  LValue: TValue;
+  LJSONArray: TJSONArray;
+begin
+  Result := TJSONArray.Create;
+
+  LRttiContext := TRttiContext.Create();
+  try
+    LRttiType := LRttiContext.GetType(Self);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            LToJSONMethod := LRttiProperty.PropertyType.GetMethod('FieldsJSONArray');
+            LValue := LToJSONMethod.Invoke(LRttiProperty.GetValue(Self), []);
+            LJSONArray := LValue.AsType<TJSONArray>;
+            LJSONObject := TJSONObject.Create;
+            LJSONObject.AddPair('Name', '@'+TModelPersistableAttribute(LPropertyAttribute).Attribute);
+            LJSONObject.AddPair('JSONName', '@'+LRttiProperty.Name);
+            LJSONObject.AddPair('Type', '@class');
+            LJSONObject.AddPair('Fields', LJSONArray);
+            Result.Add(LJSONObject);
+          end;
+        end;
+      end else begin
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            LJSONObject := TJSONObject.Create;
+            LJSONObject.AddPair('Name', '@'+TModelPersistableAttribute(LPropertyAttribute).Attribute);
+            LJSONObject.AddPair('JSONName', '@'+LRttiProperty.Name);
+            LJSONObject.AddPair('Type', '@'+LRttiProperty.PropertyType.Name);
+            Result.Add(LJSONObject);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+class function TModelPersistable.SQLParams(AExtraSQL: String): String;
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+
+  LFieldsJSONArray: TJSONArray;
+
+  LJSONObject: TJSONObject;
+
+  LSQLParamsMethod: TRttiMethod;
+  LArgs: TArray<TValue>;
+  LValue: TValue;
+  LValueJSONObject: TJSONObject;
+
+  LParamsJSON: TJSONObject;
+begin
+  LParamsJSON := TJSONObject.Create;
+  try
+    LFieldsJSONArray := TJSONArray.Create;
+
+    LRttiContext := TRttiContext.Create();
+    try
+      LRttiType := LRttiContext.GetType(Self);
+
+      for LRttiProperty in LRttiType.GetProperties do begin
+        if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+          for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+            if LPropertyAttribute is TModelPersistableAttribute then begin
+              LSQLParamsMethod := LRttiProperty.PropertyType.GetMethod('SQLParams');
+              SetLength(LArgs, 2);
+              LArgs[0] := LRttiProperty.PropertyType;
+              LArgs[1] := '';
+              LValue := Invoke(LSQLParamsMethod.CodeAddress, LArgs, LSQLParamsMethod.CallingConvention, TypeInfo(String));
+              LValueJSONObject := TJSONObject.ParseJSONValue(LValue.AsString) as TJSONObject;
+              LJSONObject := TJSONObject.Create;
+              LJSONObject.AddPair('Name', '@'+TModelPersistableAttribute(LPropertyAttribute).Attribute);
+              LJSONObject.AddPair('JSONName', '@'+LRttiProperty.Name);
+              LJSONObject.AddPair('Type', '@class');
+              LJSONObject.AddPair('Params', LValueJSONObject);
+              LFieldsJSONArray.Add(LJSONObject);
+            end;
+          end;
+        end else begin
+          for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+            if LPropertyAttribute is TModelPersistableAttribute then begin
+              LJSONObject := TJSONObject.Create;
+              LJSONObject.AddPair('Name', '@'+TModelPersistableAttribute(LPropertyAttribute).Attribute);
+              LJSONObject.AddPair('JSONName', '@'+LRttiProperty.Name);
+              LJSONObject.AddPair('Type', '@'+LRttiProperty.PropertyType.Name);
+              LFieldsJSONArray.Add(LJSONObject);
+            end;
+          end;
+        end;
+      end;
+    finally
+      LRttiContext.Free;
+    end;
+
+    LParamsJSON.AddPair('SQLTableName', '@'+SQLTableName);
+    LParamsJSON.AddPair('ExtraSQL', '@'+AExtraSQL);
+    LParamsJSON.AddPair('Fields', LFieldsJSONArray);
+    Result := LParamsJSON.ToString;
+  finally
+    LParamsJSON.Free;
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelPersistable.Create;
+begin
+  inherited;
+  FGID := 0;
+end;
+
+constructor TModelPersistable.FromDataSet(ADataSet: TDataSet);
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LValue: TValue;
+begin
+  LRttiContext := TRttiContext.Create;
+  try
+    LRttiType := LRttiContext.GetType(self.ClassType);
+    for LRttiProperty in LRttiType.GetProperties do begin
+      for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+        if LPropertyAttribute is TModelPersistableAttribute then begin
+          if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+            LRttiProperty.SetValue(Self, TValue.FromVariant(ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsVariant));
+          end;
+          if LRttiProperty.PropertyType.Name = 'string' then begin
+            ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := LValue.AsString;
+          end;
+          if LRttiProperty.PropertyType.Name = 'Integer' then begin
+            ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+          end;
+          if LRttiProperty.PropertyType.Name = 'Int64' then begin
+            ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := IntToStr(LValue.AsInteger);
+          end;
+          if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+            ADataSet.FieldByName(TModelPersistableAttribute(LPropertyAttribute).Attribute).AsString := FormatDateTime('yyyy-mm-dd hh:nn:ss', LRttiProperty.GetValue(self).AsExtended);
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+constructor TModelPersistable.FromFile(AFileName: String);
+var
+  LText: String;
+  LJSONObject: TJSONObject;
+begin
+  if FileExists(AFileName) then begin
+    try
+      LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+    except on E: Exception do
+      ShowMessage('TModelPersistable.FromFile exception: '+E.Message+' '+AFileName);
+    end;
+    LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+    try
+      FromJSON(LJSONObject);
+    finally
+      FreeAndNil(LJSONObject);
+    end;
+  end else begin
+    Create;
+  end;
+end;
+
+constructor TModelPersistable.FromJSON(AJSONObject: TJSONObject);
+var
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LRttiProperty: TRttiProperty;
+  LPropertyAttribute: TCustomAttribute;
+  LValue: TValue;
+  LFromJSONConstructor: TRttiMethod;
+begin
+  LRttiContext := TRttiContext.Create;
+  try
+    LRttiType := LRttiContext.GetType(Self.ClassType);
+
+    for LRttiProperty in LRttiType.GetProperties do begin
+      if AJSONObject.Get(LRttiProperty.Name) <> nil then begin
+        for LPropertyAttribute in LRttiProperty.GetAttributes do begin
+          if LPropertyAttribute is TModelPersistableAttribute then begin
+            if LRttiProperty.PropertyType.TypeKind = tkClass then begin
+              if LRttiProperty.PropertyType.Name = 'TJSONObject' then begin
+                LRttiProperty.SetValue(Self, (AJSONObject.GetValue(LRttiProperty.Name) as TJSONObject).Clone);
+              end else begin
+                LFromJSONConstructor := LRttiProperty.PropertyType.GetMethod('FromJSON');
+                if Assigned(LFromJSONConstructor) then begin
+                  LRttiProperty.SetValue(
+                    Self,
+                    LFromJSONConstructor.Invoke(
+                      LRttiProperty.PropertyType.AsInstance.MetaclassType,
+                      [AJSONObject.GetValue(LRttiProperty.Name) as TJSONArray]
+                    )
+                  );
+                end;
+              end;
+            end else begin
+              if LRttiProperty.PropertyType.TypeKind = tkEnumeration then begin
+                if LRttiProperty.PropertyType.Name = 'Boolean' then begin
+                  TValue.Make(StrToInt(AJSONObject.GetValue(LRttiProperty.Name).Value), LRttiProperty.PropertyType.Handle, LValue);
+                  LRttiProperty.SetValue(Self, LValue.AsBoolean);
+                end else begin
+                  TValue.Make(StrToInt(AJSONObject.GetValue(LRttiProperty.Name).Value), LRttiProperty.PropertyType.Handle, LValue);
+                  LRttiProperty.SetValue(Self, LValue);
+                end;
+              end;
+              if LRttiProperty.PropertyType.Name = 'string' then begin
+                LRttiProperty.SetValue(Self, Copy(AJSONObject.GetValue(LRttiProperty.Name).Value, 2, MaxInt));
+              end;
+              if LRttiProperty.PropertyType.Name = 'Integer' then begin
+                LRttiProperty.SetValue(Self, StrToInt(AJSONObject.GetValue(LRttiProperty.Name).Value));
+              end;
+              if LRttiProperty.PropertyType.Name = 'Int64' then begin
+                if (LRttiProperty.Name = 'GID') and (AJSONObject.Get(LRttiProperty.Name) = nil) then begin
+                  GID := 0;
+                end else begin
+                  LRttiProperty.SetValue(Self, StrToInt64(AJSONObject.GetValue(LRttiProperty.Name).Value));
+                end;
+              end;
+              if LRttiProperty.PropertyType.Name = 'TDateTime' then begin
+                LRttiProperty.SetValue(Self, StrToDateTime(AJSONObject.GetValue(LRttiProperty.Name).Value, TFormatSettings.Create('en-US')));
+//                LRttiProperty.SetValue(Self, StrToDateTime(AJSONObject.GetValue(LRttiProperty.Name).Value));
+              end;
+              if LRttiProperty.PropertyType.Name = 'Double' then begin
+                LRttiProperty.SetValue(Self, StrToFloat(AJSONObject.GetValue(LRttiProperty.Name).Value));
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LRttiContext.Free;
+  end;
+end;
+
+constructor TModelPersistable.FromSQL(AExtraSQL: String);
+var
+  LParamsString: String;
+  LResultString: String;
+  LResultJSONArray: TJSONArray;
+  LSQLServer: TModelSQLServer;
+begin
+  LParamsString := SQLParams(AExtraSQL);
+  LSQLServer := TModelSQLServer.Create(nil);
+  try
+    LResultString := LSQLServer.GetPersistableList(LParamsString);
+  finally
+    LSQLServer.Free;
+  end;
+  LResultJSONArray := TJSONObject.ParseJSONValue(LResultString) as TJSONArray;
+  if LResultJSONArray.Size = 0 then begin
+    Create;
+  end else begin
+    FromJSON(LResultJSONArray.Get(0) as TJSONObject);
+  end;
+  LResultJSONArray.Free;
+end;
+
+destructor TModelPersistable.Destroy;
+begin
+  FreePersistableProperties;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

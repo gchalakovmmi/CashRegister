@@ -1,0 +1,30 @@
+unit Interfaces.ViewModel.SelectClient;
+
+interface
+
+uses
+  System.Classes,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.SelectClient;
+
+type
+  IViewModelSelectClient = interface
+  ['{408D6B53-DAEA-489B-823D-47C4A07293EF}']
+    // Properties
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelSelectClient;
+    procedure SetModel(const Value: IModelSelectClient);
+    property Model: IModelSelectClient read GetModel write SetModel;
+
+    // Methods
+    function GetGUIRecord(const AWidth, AHeight: Integer): TViewSelectClientGUIRecord;
+    procedure GridKeyDown(var Key: Word; Shift: TShiftState);
+    procedure GridKeyPress(Key: Char);
+  end;
+
+implementation
+
+end.

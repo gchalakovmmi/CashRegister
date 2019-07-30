@@ -1,0 +1,120 @@
+unit DataModule.Clients;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Data.DB,
+  Datasnap.DBClient,
+  Bde.DBTables,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.StorageBin,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TDataModuleClients = class(TDataModule)
+
+
+  {$REGION 'Published Methods'}
+    procedure FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FKeyWord: String;
+
+    FSelectedID: integer;
+    FSelectedTAXNUMBER: string;
+    FSelectedNAME: string;
+    FSelectedVIP: Boolean;
+    FSelectedMARKUP: real;
+    FSelectedLOYALTYCARDNUMBER: string;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    procedure SetKeyWord(const AValue: String);
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property KeyWord: String read FKeyWord write SetKeyWord;
+
+    property SelectedID : integer read FSelectedID write FSelectedID;
+    property SelectedTAXNUMBER : string read FSelectedTAXNUMBER write FSelectedTAXNUMBER;
+    property SelectedNAME : string read FSelectedNAME write FSelectedNAME;
+    property SelectedVIP : Boolean read FSelectedVIP write FSelectedVIP;
+    property SelectedMARKUP : real read FSelectedMARKUP write FSelectedMARKUP;
+    property SelectedLOYALTYCARDNUMBER : string read FSelectedLOYALTYCARDNUMBER write FSelectedLOYALTYCARDNUMBER;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure RefreshData;
+    procedure Refilter;
+    procedure ClearSelected;
+    procedure SelectCommonClient;
+    procedure Select;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+
+  end;
+
+var
+  DataModuleClients: TDataModuleClients;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModuleClients }
+
+procedure TDataModuleClients.RefreshData;
+begin
+
+end;
+
+procedure TDataModuleClients.SelectCommonClient;
+begin
+//  FClientGID := TAppSettings.GetIntegerSetting('CommonClientGID', 105);
+//  FClient := TAppSettings.GetSetting('CommonClient', 'Œ¡Ÿ»  À»≈Õ“» ¬ Ã¿√¿«»Õ ¿Õ≈“ 4');
+//  FClientVIP := False;
+//  FClientMarkUp := 0;
+//  FTotalToBe := 0;
+//  FInSale := False;
+//  FVIPSale := False;
+//  FReturnsAllowed := True;
+//  FShow := '';
+end;
+
+end.

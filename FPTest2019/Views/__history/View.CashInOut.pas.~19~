@@ -1,0 +1,194 @@
+unit View.CashInOut;
+
+interface
+
+uses
+  System.Classes,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.ViewModel.CashInOut;
+
+type
+  TViewCashInOut = class(TForm, IObserver, IObservable)
+    LabelCash: TLabel;
+    ButtonCashIn: TButton;
+    ButtonCashOut: TButton;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCashInClick(Sender: TObject);
+    procedure ButtonCashOutClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FViewModel: IViewModelCashInOut;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetViewModel: IViewModelCashInOut;
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property ViewModel: IViewModelCashInOut read GetViewModel;
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewCashInOut;
+
+implementation
+
+uses
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.CashInOut;
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+procedure TViewCashInOut.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelCashInOut;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewCashInOut.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewCashInOut.ButtonCashInClick(Sender: TObject);
+begin
+  ViewModel.CashIn;
+end;
+
+procedure TViewCashInOut.ButtonCashOutClick(Sender: TObject);
+begin
+  ViewModel.CashOut;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewCashInOut.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewCashInOut.UpdateGUI;
+begin
+//  ViewModel.Logout;
+//  EditPassword.Text := '';
+//  ActiveControl := EditPassword;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewCashInOut.GetViewModel: IViewModelCashInOut;
+begin
+  if not Assigned(FViewModel) then begin
+    FViewModel := CreateViewModelCashInOut;
+  end;
+  Result := FViewModel;
+end;
+
+function TViewCashInOut.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewCashInOut.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewCashInOut;
+var
+  LViewCashInOut: TViewCashInOut;
+begin
+  LViewCashInOut := TViewCashInOut.Create(nil);
+  LViewCashInOut.ShowModal;
+end;
+
+end.

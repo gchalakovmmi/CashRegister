@@ -1,0 +1,1205 @@
+unit Model.Notification;
+
+interface
+
+uses
+  Interfaces.Model.Notification;
+
+  function CreateNotificationClass: IModelNotification;
+  function CreateNotificationGIDClass: IModelNotificationGID;
+  function CreateNotificationEditClass: IModelNotificationEdit;
+  function CreateNotificationClientClass: IModelNotificationClient;
+  function CreateNotificationBillClass: IModelNotificationBill;
+  function CreateNotificationRegionClass: IModelNotificationRegion;
+  function CreateNotificationSourceClass: IModelNotificationSource;
+  function CreateNotificationZoneClass: IModelNotificationZone;
+  function CreateNotificationDestinationClass: IModelNotificationDestination;
+  function CreateNotificationBillDetailClass: IModelNotificationBillDetail;
+  function CreateNotificationCategoryClass: IModelNotificationCategory;
+  function CreateNotificationArticleClass: IModelNotificationArticle;
+  function CreateNotificationModificatorClass: IModelNotificationModificator;
+  function CreateNotificationSectionClass: IModelNotificationSection;
+
+implementation
+
+uses
+  Interfaces.Enums,
+  Interfaces.Model.Classes.Client,
+  Interfaces.Model.Classes.Bill,
+  Interfaces.Model.Classes.Region,
+  Interfaces.Model.Classes.Source,
+  Interfaces.Model.Classes.Zone,
+  Interfaces.Model.Classes.Destination,
+  Interfaces.Model.Classes.Bill.Detail,
+  Interfaces.Model.Classes.Category,
+  Interfaces.Model.Classes.Article,
+  Interfaces.Model.Classes.Modificator,
+  Interfaces.Model.Classes.Section;
+
+type
+  TModelNotification = class(TInterfacedObject, IModelNotification)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FActions: TInterfaceActions;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetActions: TInterfaceActions;
+    procedure SetActions(const Value: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Actions: TInterfaceActions read GetActions write SetActions;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationGID = class(TModelNotification, IModelNotificationGID)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: Integer;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property GID: Integer read GetGID write SetGID;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationEdit = class(TModelNotification, IModelNotificationEdit)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FEdit: String;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetEdit: String;
+    procedure SetEdit(const Value: String);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Edit: String read GetEdit write SetEdit;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationClient = class(TModelNotification, IModelNotificationClient)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FClient: IModelClassClient;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetClient: IModelClassClient;
+    procedure SetClient(const Value: IModelClassClient);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Client: IModelClassClient read GetClient write SetClient;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationBill = class(TModelNotification, IModelNotificationBill)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FBill: IModelClassBill;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetBill: IModelClassBill;
+    procedure SetBill(const Value: IModelClassBill);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Bill: IModelClassBill read GetBill write SetBill;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationRegion = class(TModelNotification, IModelNotificationRegion)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FRegion: IModelClassRegion;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetRegion: IModelClassRegion;
+    procedure SetRegion(const Value: IModelClassRegion);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Region: IModelClassRegion read GetRegion write SetRegion;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationSource = class(TModelNotification, IModelNotificationSource)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FSource: IModelClassSource;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetSource: IModelClassSource;
+    procedure SetSource(const Value: IModelClassSource);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Source: IModelClassSource read GetSource write SetSource;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationZone = class(TModelNotification, IModelNotificationZone)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FZone: IModelClassZone;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetZone: IModelClassZone;
+    procedure SetZone(const Value: IModelClassZone);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Zone: IModelClassZone read GetZone write SetZone;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationDestination = class(TModelNotification, IModelNotificationDestination)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FDestination: IModelClassDestination;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetDestination: IModelClassDestination;
+    procedure SetDestination(const Value: IModelClassDestination);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Destination: IModelClassDestination read GetDestination write SetDestination;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationBillDetail = class(TModelNotification, IModelNotificationBillDetail)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FBillDetail: IModelClassBillDetail;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetBillDetail: IModelClassBillDetail;
+    procedure SetBillDetail(const Value: IModelClassBillDetail);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property BillDetail: IModelClassBillDetail read GetBillDetail write SetBillDetail;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationCategory = class(TModelNotification, IModelNotificationCategory)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FCategory: IModelClassCategory;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetCategory: IModelClassCategory;
+    procedure SetCategory(const Value: IModelClassCategory);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Category: IModelClassCategory read GetCategory write SetCategory;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationArticle = class(TModelNotification, IModelNotificationArticle)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FArticle: IModelClassArticle;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetArticle: IModelClassArticle;
+    procedure SetArticle(const Value: IModelClassArticle);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Article: IModelClassArticle read GetArticle write SetArticle;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationModificator = class(TModelNotification, IModelNotificationModificator)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModificator: IModelClassModificator;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetModificator: IModelClassModificator;
+    procedure SetModificator(const Value: IModelClassModificator);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Modificator: IModelClassModificator read GetModificator write SetModificator;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  TModelNotificationSection = class(TModelNotification, IModelNotificationSection)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FSection: IModelClassSection;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetSection: IModelClassSection;
+    procedure SetSection(const Value: IModelClassSection);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Section: IModelClassSection read GetSection write SetSection;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+
+function CreateNotificationClass: IModelNotification;
+begin
+  Result := TModelNotification.Create;
+end;
+
+function CreateNotificationGIDClass: IModelNotificationGID;
+begin
+  Result := TModelNotificationGID.Create;
+end;
+
+function CreateNotificationEditClass: IModelNotificationEdit;
+begin
+  Result := TModelNotificationEdit.Create;
+end;
+
+function CreateNotificationClientClass: IModelNotificationClient;
+begin
+  Result := TModelNotificationClient.Create;
+end;
+
+function CreateNotificationBillClass: IModelNotificationBill;
+begin
+  Result := TModelNotificationBill.Create;
+end;
+
+function CreateNotificationRegionClass: IModelNotificationRegion;
+begin
+  Result := TModelNotificationRegion.Create;
+end;
+
+function CreateNotificationSourceClass: IModelNotificationSource;
+begin
+  Result := TModelNotificationSource.Create;
+end;
+
+function CreateNotificationZoneClass: IModelNotificationZone;
+begin
+  Result := TModelNotificationZone.Create;
+end;
+
+function CreateNotificationDestinationClass: IModelNotificationDestination;
+begin
+  Result := TModelNotificationDestination.Create;
+end;
+
+function CreateNotificationBillDetailClass: IModelNotificationBillDetail;
+begin
+  Result := TModelNotificationBillDetail.Create;
+end;
+
+function CreateNotificationCategoryClass: IModelNotificationCategory;
+begin
+  Result := TModelNotificationCategory.Create;
+end;
+
+function CreateNotificationArticleClass: IModelNotificationArticle;
+begin
+  Result := TModelNotificationArticle.Create;
+end;
+
+function CreateNotificationModificatorClass: IModelNotificationModificator;
+begin
+  Result := TModelNotificationModificator.Create;
+end;
+
+function CreateNotificationSectionClass: IModelNotificationSection;
+begin
+  Result := TModelNotificationSection.Create;
+end;
+
+
+{$REGION 'TModelNotification'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotification.GetActions: TInterfaceActions;
+begin
+  Result := FActions;
+end;
+
+procedure TModelNotification.SetActions(const Value: TInterfaceActions);
+begin
+  FActions := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationGID'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationGID.GetGID: Integer;
+begin
+  Result := FGID;
+end;
+
+procedure TModelNotificationGID.SetGID(const Value: Integer);
+begin
+  FGID := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationEdit'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationEdit.GetEdit: String;
+begin
+  Result := FEdit;
+end;
+
+procedure TModelNotificationEdit.SetEdit(const Value: String);
+begin
+  FEdit := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationClient'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationClient.GetClient: IModelClassClient;
+begin
+  Result := FClient;
+end;
+
+procedure TModelNotificationClient.SetClient(const Value: IModelClassClient);
+begin
+  FClient := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationBill'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationBill.GetBill: IModelClassBill;
+begin
+  Result := FBill;
+end;
+
+procedure TModelNotificationBill.SetBill(const Value: IModelClassBill);
+begin
+  FBill := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationRegion'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationRegion.GetRegion: IModelClassRegion;
+begin
+  Result := FRegion;
+end;
+
+procedure TModelNotificationRegion.SetRegion(const Value: IModelClassRegion);
+begin
+  FRegion := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationSource'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationSource.GetSource: IModelClassSource;
+begin
+  Result := FSource;
+end;
+
+procedure TModelNotificationSource.SetSource(const Value: IModelClassSource);
+begin
+  FSource := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationZone'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationZone.GetZone: IModelClassZone;
+begin
+  Result := FZone;
+end;
+
+procedure TModelNotificationZone.SetZone(const Value: IModelClassZone);
+begin
+  FZone := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationDestination'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationDestination.GetDestination: IModelClassDestination;
+begin
+  Result := FDestination;
+end;
+
+procedure TModelNotificationDestination.SetDestination(const Value: IModelClassDestination);
+begin
+  FDestination := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationBillDetail'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationBillDetail.GetBillDetail: IModelClassBillDetail;
+begin
+  Result := FBillDetail;
+end;
+
+procedure TModelNotificationBillDetail.SetBillDetail(const Value: IModelClassBillDetail);
+begin
+  FBillDetail := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationCategory'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationCategory.GetCategory: IModelClassCategory;
+begin
+  Result := FCategory;
+end;
+
+procedure TModelNotificationCategory.SetCategory(const Value: IModelClassCategory);
+begin
+  FCategory := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationArticle'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationArticle.GetArticle: IModelClassArticle;
+begin
+  Result := FArticle;
+end;
+
+procedure TModelNotificationArticle.SetArticle(const Value: IModelClassArticle);
+begin
+  FArticle := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationModificator'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationModificator.GetModificator: IModelClassModificator;
+begin
+  Result := FModificator;
+end;
+
+procedure TModelNotificationModificator.SetModificator(const Value: IModelClassModificator);
+begin
+  FModificator := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+{$REGION 'TModelNotificationSection'}
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelNotificationSection.GetSection: IModelClassSection;
+begin
+  Result := FSection;
+end;
+
+procedure TModelNotificationSection.SetSection(const Value: IModelClassSection);
+begin
+  FSection := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+{$ENDREGION}
+
+end.
+

@@ -1,0 +1,38 @@
+unit Interfaces.ViewModel.SelectItem;
+
+interface
+
+uses
+  System.Classes,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.SelectItem;
+
+type
+  IViewModelSelectItem = interface
+  ['{ED9D064E-622E-4CAB-8530-E326B617065A}']
+    // Properties
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelSelectItem;
+    procedure SetModel(const Value: IModelSelectItem);
+    property Model: IModelSelectItem read GetModel write SetModel;
+
+
+//    function GetIsQuick: Boolean;
+//    procedure SetIsQuick(AValue: Boolean);
+//    property IsQuick: Boolean read GetIsQuick write SetIsQuick;
+//
+//    function GetIsChanged: Boolean;
+//    procedure SetIsChanged(AValue: Boolean);
+//    property IsChanged: Boolean read GetIsChanged write SetIsChanged;
+
+    // Methods
+    procedure SetupSelection(Key : Char);
+    procedure GridKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure GridKeyPressed(Key: Char);
+  end;
+
+implementation
+
+end.

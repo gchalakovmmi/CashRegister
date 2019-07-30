@@ -1,0 +1,188 @@
+unit Model.Classes.Sale.Cancellations;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Sale.Cancellations;
+
+  function CreateModelClassSaleCancellations: IModelClassSaleCancellations;
+  function CreateFromJSONModelClassSaleCancellations(const AJSONArray: TJSONArray): IModelClassSaleCancellations;
+  procedure AssignDataSetModelClassSaleCancellations(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.Generics.Collections,
+  Interfaces.Enums,
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Cancellation;
+
+type
+  TModelClassSaleCancellations = class(TInterfacedObject, IModelClassSaleCancellations)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    FList: TList<IModelClassSaleCancellation>;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassSaleCancellation>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassSaleCancellation> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet(const AParentGID: Integer);
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassSaleCancellations: IModelClassSaleCancellations;
+begin
+  Result := TModelClassSaleCancellations.Create;
+end;
+
+function CreateFromJSONModelClassSaleCancellations(const AJSONArray: TJSONArray): IModelClassSaleCancellations;
+begin
+  Result := TModelClassSaleCancellations.CreateFromJSON(AJSONArray);
+end;
+
+procedure AssignDataSetModelClassSaleCancellations(const ADataSet: TFDDataSet);
+begin
+  TModelClassSaleCancellations.DataSet := ADataSet;
+end;
+
+{ TModelClassSaleCancellations }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassSaleCancellations.GetList: TList<IModelClassSaleCancellation>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassSaleCancellations.UpdateFromDataSet(const AParentGID: Integer);
+var
+  LSaleCancellation: IModelClassSaleCancellation;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    if DataSet.FieldByName('parent_gid').Value = AParentGID then begin
+      LFound := False;
+      for LSaleCancellation in List do begin
+        if LSaleCancellation.GID = DataSet.FieldByName('gid').Value then begin
+          LSaleCancellation.UpdateFromDataSet;
+          LFound := True;
+          Break;
+        end;
+      end;
+      if not LFound then begin
+        LSaleCancellation := CreateFromDataSetModelClassSaleCancellation;
+        List.Add(LSaleCancellation);
+      end;
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassSaleCancellations.UpdateInDataSet;
+var
+  LSaleCancellation: IModelClassSaleCancellation;
+begin
+  for LSaleCancellation in List do begin
+    LSaleCancellation.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassSaleCancellations.ToJSON: TJSONArray;
+var
+  LSaleCancellation: IModelClassSaleCancellation;
+begin
+  Result := TJSONArray.Create;
+  for LSaleCancellation in List do begin
+    Result.Add(LSaleCancellation.ToJSON);
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassSaleCancellations.Create;
+begin
+  inherited;
+  FList := TList<IModelClassSaleCancellation>.Create;
+end;
+
+constructor TModelClassSaleCancellations.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassSaleCancellation>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    FList.Add(CreateFromJSONModelClassSaleCancellation(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassSaleCancellations.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.
+

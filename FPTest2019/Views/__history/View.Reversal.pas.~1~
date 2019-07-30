@@ -1,0 +1,24 @@
+unit View.Reversal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TViewReversal = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewReversal: TViewReversal;
+
+implementation
+
+{$R *.dfm}
+
+end.

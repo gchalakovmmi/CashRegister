@@ -1,0 +1,76 @@
+unit Interfaces.Enums;
+
+interface
+
+type
+  TInterfaceAction = (
+    actCloseApp,
+
+    actSetupGUI,
+    actUpdateGUI,
+    actResetGUI,
+    actCloseForm,
+
+    actSaleDisableActions,
+    actSaleEnableActions,
+    actSaleActiveControlGrid,
+    actSaleActiveControlEditCashPayment,
+    actSaleActiveControlEditVoucherPayment,
+    actSaleActiveControlEditCardPayment,
+    actSaleActiveControlEditReturned,
+    actSaleActiveControlToggleEditCashPayment,
+
+    actLoginSuccess,
+    actLoginFail,
+
+    actFiscalDeviceAfterStartCOMServer,
+    actFiscalDeviceErrorStartCOMServer,
+
+    actFiscalDeviceAfterSettingsChange,
+    actFiscalDeviceErrorSettingsChange,
+
+    actFiscalDeviceAfterOpenConnection,
+    actFiscalDeviceErrorOpenConnection,
+
+    actFiscalDeviceBeforeCashCheck,
+    actFiscalDeviceErrorCashCheck,
+    actFiscalDeviceAfterCashCheck,
+
+    actFiscalDeviceBeforeCashIn,
+    actFiscalDeviceErrorCashIn,
+    actFiscalDeviceAfterCashIn,
+
+    actFiscalDeviceBeforeCashOut,
+    actFiscalDeviceErrorCashOut,
+    actFiscalDeviceAfterCashOut,
+
+    actFiscalDeviceBeforeXReport,
+    actFiscalDeviceErrorXReport,
+    actFiscalDeviceAfterXReport,
+
+    actFiscalDeviceBeforeZReport,
+    actFiscalDeviceErrorZReport,
+    actFiscalDeviceAfterZReport,
+
+
+    actFiscalDeviceBeforeZSubTotal,
+    actFiscalDeviceErrorSubTotal,
+    actFiscalDeviceAfterSubTotal,
+
+
+    actFiscalDeviceBeforeDrawerKickOut,
+    actFiscalDeviceErrorDrawerKickOut,
+    actFiscalDeviceAfterDrawerKickOut,
+
+    actFiscalDeviceAfterCloseConnection,
+    actFiscalDeviceErrorCloseConnection,
+
+    actFiscalDeviceAfterStopCOMServer,
+    actFiscalDeviceErrorStopCOMServer
+  );
+
+  TInterfaceActions = set of TInterfaceAction;
+
+implementation
+
+end.

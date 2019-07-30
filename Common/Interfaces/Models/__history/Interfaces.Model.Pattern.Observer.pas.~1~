@@ -1,0 +1,7 @@
+unit Interfaces.Model.Pattern.Observer;
+
+interface
+
+implementation
+
+end.

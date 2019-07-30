@@ -1,0 +1,24 @@
+unit Interfaces.Model.Classes.Sale.Cancellations;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Sale.Cancellation;
+
+type
+  IModelClassSaleCancellations = interface
+  ['{F5B47966-CCB5-42FF-9B4F-CEE939A46A9B}']
+    function GetList: TList<IModelClassSaleCancellation>;
+
+    property List: TList<IModelClassSaleCancellation> read GetList;
+
+    procedure UpdateFromDataSet(const AParentGID: Integer);
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+  end;
+
+implementation
+
+end.

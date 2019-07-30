@@ -1,0 +1,7 @@
+unit Interfaces.Model.Notification;
+
+interface
+
+implementation
+
+end.

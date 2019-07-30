@@ -1,0 +1,679 @@
+unit Model.Classes.Sale.Cancellation;
+
+interface
+
+uses
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Sale.Cancellation;
+
+  function CreateModelClassSaleCancellation: IModelClassSaleCancellation;
+  function CreateFromDataSetModelClassSaleCancellation: IModelClassSaleCancellation;
+  procedure AssignDataSetModelClassSaleCancellation(const ADataSet: TFDDataSet);
+  procedure AssignDataSet2ModelClassSaleCancellation(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.JSON;
+
+type
+  TModelClassSaleCancellation = class(TInterfacedObject, IModelClassSaleCancellation)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+    FDataSet2: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+    class property DataSet2: TFDDataSet read FDataSet2 write FDataSet2;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FParentGID: String;
+    FSaleUniqueID: String;
+    FUserGID: String;
+    FCreatedDate: String;
+    FCreatedTime: String;
+    FCancellationDate: String;
+    FCancellationTime: String;
+    FItemGID: String;
+    FBarCode: String;
+    FBaseItemName: String;
+    FPackCoeff: String;
+    FItemName: String;
+    FMeasure: String;
+    FQuantity: String;
+    FVendorPrice: String;
+    FClientSurcharge: String;
+    FClientPrice: String;
+    FPackDiscount: String;
+    FClientPriceBase: String;
+    FPrice: String;
+    FDiscountValue: String;
+    FDiscountType: String;
+    FTotalBase: String;
+    FVATRate: String;
+    FTotalVAT: String;
+    FTotal: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetParentGID: String;
+    procedure SetParentGID(const AValue: String);
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    function GetUserGID: String;
+    procedure SetUserGID(const AValue: String);
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    function GetCancellationDate: String;
+    procedure SetCancellationDate(const AValue: String);
+    function GetCancellationTime: String;
+    procedure SetCancellationTime(const AValue: String);
+    function GetItemGID: String;
+    procedure SetItemGID(const AValue: String);
+    function GetBarCode: String;
+    procedure SetBarCode(const AValue: String);
+    function GetBaseItemName: String;
+    procedure SetBaseItemName(const AValue: String);
+    function GetPackCoeff: String;
+    procedure SetPackCoeff(const AValue: String);
+    function GetItemName: String;
+    procedure SetItemName(const AValue: String);
+    function GetMeasure: String;
+    procedure SetMeasure(const AValue: String);
+    function GetQuantity: String;
+    procedure SetQuantity(const AValue: String);
+    function GetVendorPrice: String;
+    procedure SetVendorPrice(const AValue: String);
+    function GetClientSurcharge: String;
+    procedure SetClientSurcharge(const AValue: String);
+    function GetClientPrice: String;
+    procedure SetClientPrice(const AValue: String);
+    function GetPackDiscount: String;
+    procedure SetPackDiscount(const AValue: String);
+    function GetClientPriceBase: String;
+    procedure SetClientPriceBase(const AValue: String);
+    function GetPrice: String;
+    procedure SetPrice(const AValue: String);
+    function GetDiscountValue: String;
+    procedure SetDiscountValue(const AValue: String);
+    function GetDiscountType: String;
+    procedure SetDiscountType(const AValue: String);
+    function GetTotalBase: String;
+    procedure SetTotalBase(const AValue: String);
+    function GetVATRate: String;
+    procedure SetVATRate(const AValue: String);
+    function GetTotalVAT: String;
+    procedure SetTotalVAT(const AValue: String);
+    function GetTotal: String;
+    procedure SetTotal(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property ParentGID: String read GetParentGID write SetParentGID;
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+    ///<sumarry>номер на оператор</summary>
+    property UserGID: String read GetUserGID write SetUserGID;
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    property CreatedTime: String read GetCreatedTime write SetCreatedTime;
+    ///<sumarry>дата на анулирането на продажбата на стоката/услугата</summary>
+    property CancellationDate: String read GetCancellationDate write SetCancellationDate;
+    ///<sumarry>време на анулирането на продажбата на стоката/услугата (час, минута, секунда)</summary>
+    property CancellationTime: String read GetCancellationTime write SetCancellationTime;
+    ///<sumarry>код на анулираната стока/услуга</summary>
+    property ItemGID: String read GetItemGID write SetItemGID;
+    ///<sumarry>баркод на анулираната стока/услуга</summary>
+    property BarCode: String read GetBarCode write SetBarCode;
+    ///<sumarry>основно наименование на анулираната стока/услуга</summary>
+    property BaseItemName: String read GetBaseItemName write SetBaseItemName;
+    ///<sumarry>коефициент количество за групажни стоки</summary>
+    property PackCoeff: String read GetPackCoeff write SetPackCoeff;
+    ///<sumarry>наименование на анулираната стока/услуга</summary>
+    property ItemName: String read GetItemName write SetItemName;
+    ///<sumarry>мярка</summary>
+    property Measure: String read GetMeasure write SetMeasure;
+    ///<sumarry>количество</summary>
+    property Quantity: String read GetQuantity write SetQuantity;
+    ///<sumarry>доставна цена - с ДДС в лв.</summary>
+    property VendorPrice: String read GetVendorPrice write SetVendorPrice;
+    ///<sumarry>процент надценка над доставната цена (за VIP клиенти)</summary>
+    property ClientSurcharge: String read GetClientSurcharge write SetClientSurcharge;
+    ///<sumarry>клиентска цена - с ДДС в лв.</summary>
+    property ClientPrice: String read GetClientPrice write SetClientPrice;
+    ///<sumarry>процент отстъпка за групажни стоки</summary>
+    property PackDiscount: String read GetPackDiscount write SetPackDiscount;
+    ///<sumarry>единична цена (без отстъпка) - без ДДС, в лв.</summary>
+    property ClientPriceBase: String read GetClientPriceBase write SetClientPriceBase;
+    ///<sumarry>продажна цена (с отстъпка) - с ДДС, в лв.</summary>
+    property Price: String read GetPrice write SetPrice;
+    ///<sumarry>отстъпка (сума) - в лв.</summary>
+    property DiscountValue: String read GetDiscountValue write SetDiscountValue;
+    ///<sumarry>вид изменение на основната цена (0 - няма, 4 - отстъпка сума)</summary>
+    property DiscountType: String read GetDiscountType write SetDiscountType;
+    ///<sumarry>обща сума - без ДДС, в лв.</summary>
+    property TotalBase: String read GetTotalBase write SetTotalBase;
+    ///<sumarry>ДДС ставка</summary>
+    property VATRate: String read GetVATRate write SetVATRate;
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    property TotalVAT: String read GetTotalVAT write SetTotalVAT;
+    ///<sumarry>обща сума - в лв.</summary>
+    property Total: String read GetTotal write SetTotal;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    procedure UpdateInDataSet2;
+
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelClassSaleCancellation: IModelClassSaleCancellation;
+begin
+  Result := TModelClassSaleCancellation.Create;
+end;
+
+function CreateFromDataSetModelClassSaleCancellation: IModelClassSaleCancellation;
+begin
+  Result := TModelClassSaleCancellation.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassSaleCancellation(const ADataSet: TFDDataSet);
+begin
+  TModelClassSaleCancellation.DataSet := ADataSet;
+end;
+
+procedure AssignDataSet2ModelClassSaleCancellation(const ADataSet: TFDDataSet);
+begin
+  TModelClassSaleCancellation.DataSet2 := ADataSet;
+end;
+
+{ TModelClassSaleCancellation }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassSaleCancellation.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassSaleCancellation.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassSaleCancellation.GetParentGID: String;
+begin
+  Result := FParentGID;
+end;
+
+procedure TModelClassSaleCancellation.SetParentGID(const AValue: String);
+begin
+  FParentGID := AValue;
+end;
+
+function TModelClassSaleCancellation.GetSaleUniqueID: String;
+begin
+  Result := FSaleUniqueID;
+end;
+
+procedure TModelClassSaleCancellation.SetSaleUniqueID(const AValue: String);
+begin
+  FSaleUniqueID := AValue;
+end;
+
+function TModelClassSaleCancellation.GetUserGID: String;
+begin
+  Result := FUserGID;
+end;
+
+procedure TModelClassSaleCancellation.SetUserGID(const AValue: String);
+begin
+  FUserGID := AValue;
+end;
+
+function TModelClassSaleCancellation.GetCreatedDate: String;
+begin
+  Result := FCreatedDate;
+end;
+
+procedure TModelClassSaleCancellation.SetCreatedDate(const AValue: String);
+begin
+  FCreatedDate := AValue;
+end;
+
+function TModelClassSaleCancellation.GetCreatedTime: String;
+begin
+  Result := FCreatedTime;
+end;
+
+procedure TModelClassSaleCancellation.SetCreatedTime(const AValue: String);
+begin
+  FCreatedTime := AValue;
+end;
+
+function TModelClassSaleCancellation.GetCancellationDate: String;
+begin
+  Result := FCancellationDate;
+end;
+
+procedure TModelClassSaleCancellation.SetCancellationDate(const AValue: String);
+begin
+  FCancellationDate := AValue;
+end;
+
+function TModelClassSaleCancellation.GetCancellationTime: String;
+begin
+  Result := FCancellationTime;
+end;
+
+procedure TModelClassSaleCancellation.SetCancellationTime(const AValue: String);
+begin
+  FCancellationTime := AValue;
+end;
+
+function TModelClassSaleCancellation.GetItemGID: String;
+begin
+  Result := FItemGID;
+end;
+
+procedure TModelClassSaleCancellation.SetItemGID(const AValue: String);
+begin
+  FItemGID := AValue;
+end;
+
+function TModelClassSaleCancellation.GetBarCode: String;
+begin
+  Result := FBarCode;
+end;
+
+procedure TModelClassSaleCancellation.SetBarCode(const AValue: String);
+begin
+  FBarCode := AValue;
+end;
+
+function TModelClassSaleCancellation.GetBaseItemName: String;
+begin
+  Result := FBaseItemName;
+end;
+
+procedure TModelClassSaleCancellation.SetBaseItemName(const AValue: String);
+begin
+  FBaseItemName := AValue;
+end;
+
+function TModelClassSaleCancellation.GetPackCoeff: String;
+begin
+  Result := FPackCoeff;
+end;
+
+procedure TModelClassSaleCancellation.SetPackCoeff(const AValue: String);
+begin
+  FPackCoeff := AValue;
+end;
+
+function TModelClassSaleCancellation.GetItemName: String;
+begin
+  Result := FItemName;
+end;
+
+procedure TModelClassSaleCancellation.SetItemName(const AValue: String);
+begin
+  FItemName := AValue;
+end;
+
+function TModelClassSaleCancellation.GetMeasure: String;
+begin
+  Result := FMeasure;
+end;
+
+procedure TModelClassSaleCancellation.SetMeasure(const AValue: String);
+begin
+  FMeasure := AValue;
+end;
+
+function TModelClassSaleCancellation.GetQuantity: String;
+begin
+  Result := FQuantity;
+end;
+
+procedure TModelClassSaleCancellation.SetQuantity(const AValue: String);
+begin
+  FQuantity := AValue;
+end;
+
+function TModelClassSaleCancellation.GetVendorPrice: String;
+begin
+  Result := FVendorPrice;
+end;
+
+procedure TModelClassSaleCancellation.SetVendorPrice(const AValue: String);
+begin
+  FVendorPrice := AValue;
+end;
+
+function TModelClassSaleCancellation.GetClientSurcharge: String;
+begin
+  Result := FClientSurcharge;
+end;
+
+procedure TModelClassSaleCancellation.SetClientSurcharge(const AValue: String);
+begin
+  FClientSurcharge := AValue;
+end;
+
+function TModelClassSaleCancellation.GetClientPrice: String;
+begin
+  Result := FClientPrice;
+end;
+
+procedure TModelClassSaleCancellation.SetClientPrice(const AValue: String);
+begin
+  FClientPrice := AValue;
+end;
+
+function TModelClassSaleCancellation.GetPackDiscount: String;
+begin
+  Result := FPackDiscount;
+end;
+
+procedure TModelClassSaleCancellation.SetPackDiscount(const AValue: String);
+begin
+  FPackDiscount := AValue;
+end;
+
+function TModelClassSaleCancellation.GetClientPriceBase: String;
+begin
+  Result := FClientPriceBase;
+end;
+
+procedure TModelClassSaleCancellation.SetClientPriceBase(const AValue: String);
+begin
+  FClientPriceBase := AValue;
+end;
+
+function TModelClassSaleCancellation.GetPrice: String;
+begin
+  Result := FPrice;
+end;
+
+procedure TModelClassSaleCancellation.SetPrice(const AValue: String);
+begin
+  FPrice := AValue;
+end;
+
+function TModelClassSaleCancellation.GetDiscountValue: String;
+begin
+  Result := FDiscountValue;
+end;
+
+procedure TModelClassSaleCancellation.SetDiscountValue(const AValue: String);
+begin
+  FDiscountValue := AValue;
+end;
+
+function TModelClassSaleCancellation.GetDiscountType: String;
+begin
+  Result := FDiscountType;
+end;
+
+procedure TModelClassSaleCancellation.SetDiscountType(const AValue: String);
+begin
+  FDiscountType := AValue;
+end;
+
+function TModelClassSaleCancellation.GetTotalBase: String;
+begin
+  Result := FTotalBase;
+end;
+
+procedure TModelClassSaleCancellation.SetTotalBase(const AValue: String);
+begin
+  FTotalBase := AValue;
+end;
+
+function TModelClassSaleCancellation.GetVATRate: String;
+begin
+  Result := FVATRate;
+end;
+
+procedure TModelClassSaleCancellation.SetVATRate(const AValue: String);
+begin
+  FVATRate := AValue;
+end;
+
+function TModelClassSaleCancellation.GetTotalVAT: String;
+begin
+  Result := FTotalVAT;
+end;
+
+procedure TModelClassSaleCancellation.SetTotalVAT(const AValue: String);
+begin
+  FTotalVAT := AValue;
+end;
+
+function TModelClassSaleCancellation.GetTotal: String;
+begin
+  Result := FTotal;
+end;
+
+procedure TModelClassSaleCancellation.SetTotal(const AValue: String);
+begin
+  FTotal := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassSaleCancellation.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').AsString;
+  ParentGID := DataSet.FieldByName('ParentGID').AsString;
+  SaleUniqueID := DataSet.FieldByName('SaleUniqueID').AsString;
+  UserGID := DataSet.FieldByName('UserGID').AsString;
+  CreatedDate := DataSet.FieldByName('CreatedDate').AsString;
+  CreatedTime := DataSet.FieldByName('CreatedTime').AsString;
+  CancellationDate := DataSet.FieldByName('CancellationDate').AsString;
+  CancellationTime := DataSet.FieldByName('CancellationTime').AsString;
+  ItemGID := DataSet.FieldByName('ItemGID').AsString;
+  BarCode := DataSet.FieldByName('BarCode').AsString;
+  BaseItemName := DataSet.FieldByName('BaseItemName').AsString;
+  PackCoeff := DataSet.FieldByName('PackCoeff').AsString;
+  ItemName := DataSet.FieldByName('ItemName').AsString;
+  Measure := DataSet.FieldByName('Measure').AsString;
+  Quantity := DataSet.FieldByName('Quantity').AsString;
+  VendorPrice := DataSet.FieldByName('VendorPrice').AsString;
+  ClientSurcharge := DataSet.FieldByName('ClientSurcharge').AsString;
+  ClientPrice := DataSet.FieldByName('ClientPrice').AsString;
+  PackDiscount := DataSet.FieldByName('PackDiscount').AsString;
+  ClientPriceBase := DataSet.FieldByName('ClientPriceBase').AsString;
+  Price := DataSet.FieldByName('Price').AsString;
+  DiscountValue := DataSet.FieldByName('DiscountValue').AsString;
+  DiscountType := DataSet.FieldByName('DiscountType').AsString;
+  TotalBase := DataSet.FieldByName('TotalBase').AsString;
+  VATRate := DataSet.FieldByName('VATRate').AsString;
+  TotalVAT := DataSet.FieldByName('TotalVAT').AsString;
+  Total := DataSet.FieldByName('Total').AsString;
+end;
+
+procedure TModelClassSaleCancellation.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').AsString := GID;
+  DataSet.FieldByName('ParentGID').AsString := ParentGID;
+  DataSet.FieldByName('SaleUniqueID').AsString := SaleUniqueID;
+  DataSet.FieldByName('UserGID').AsString := UserGID;
+  DataSet.FieldByName('CreatedDate').AsString := CreatedDate;
+  DataSet.FieldByName('CreatedTime').AsString := CreatedTime;
+  DataSet.FieldByName('CancellationDate').AsString := CancellationDate;
+  DataSet.FieldByName('CancellationTime').AsString := CancellationTime;
+  DataSet.FieldByName('ItemGID').AsString := ItemGID;
+  DataSet.FieldByName('BarCode').AsString := BarCode;
+  DataSet.FieldByName('BaseItemName').AsString := BaseItemName;
+  DataSet.FieldByName('PackCoeff').AsString := PackCoeff;
+  DataSet.FieldByName('ItemName').AsString := ItemName;
+  DataSet.FieldByName('Measure').AsString := Measure;
+  DataSet.FieldByName('Quantity').AsString := Quantity;
+  DataSet.FieldByName('VendorPrice').AsString := VendorPrice;
+  DataSet.FieldByName('ClientSurcharge').AsString := ClientSurcharge;
+  DataSet.FieldByName('ClientPrice').AsString := ClientPrice;
+  DataSet.FieldByName('PackDiscount').AsString := PackDiscount;
+  DataSet.FieldByName('ClientPriceBase').AsString := ClientPriceBase;
+  DataSet.FieldByName('Price').AsString := Price;
+  DataSet.FieldByName('DiscountValue').AsString := DiscountValue;
+  DataSet.FieldByName('DiscountType').AsString := DiscountType;
+  DataSet.FieldByName('TotalBase').AsString := TotalBase;
+  DataSet.FieldByName('VATRate').AsString := VATRate;
+  DataSet.FieldByName('TotalVAT').AsString := TotalVAT;
+  DataSet.FieldByName('Total').AsString := Total;
+
+  DataSet.Post;
+
+  UpdateInDataSet2;
+end;
+
+procedure TModelClassSaleCancellation.UpdateInDataSet2;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet2.FieldByName('GID').AsString := GID;
+  DataSet2.FieldByName('ParentGID').AsString := ParentGID;
+  DataSet2.FieldByName('SaleUniqueID').AsString := SaleUniqueID;
+  DataSet2.FieldByName('UserGID').AsString := UserGID;
+  DataSet2.FieldByName('CreatedDate').AsString := CreatedDate;
+  DataSet2.FieldByName('CreatedTime').AsString := CreatedTime;
+  DataSet2.FieldByName('SaleDate').AsString := CancellationDate;
+  DataSet2.FieldByName('SaleTime').AsString := CancellationTime;
+  DataSet2.FieldByName('Typed').AsString := '';
+  DataSet2.FieldByName('ItemGID').AsString := ItemGID;
+  DataSet2.FieldByName('BarCode').AsString := BarCode;
+  DataSet2.FieldByName('BaseItemName').AsString := BaseItemName;
+  DataSet2.FieldByName('PackCoeff').AsString := PackCoeff;
+  DataSet2.FieldByName('ItemName').AsString := ItemName;
+  DataSet2.FieldByName('Measure').AsString := Measure;
+  DataSet2.FieldByName('Quantity').AsString := Quantity;
+  DataSet2.FieldByName('VendorPrice').AsString := VendorPrice;
+  DataSet2.FieldByName('ClientSurcharge').AsString := ClientSurcharge;
+  DataSet2.FieldByName('ClientPrice').AsString := ClientPrice;
+  DataSet2.FieldByName('PackDiscount').AsString := PackDiscount;
+  DataSet2.FieldByName('ClientPriceBase').AsString := ClientPriceBase;
+  DataSet2.FieldByName('Price').AsString := Price;
+  DataSet2.FieldByName('DiscountValue').AsString := DiscountValue;
+  DataSet2.FieldByName('DiscountType').AsString := DiscountType;
+  DataSet2.FieldByName('TotalBase').AsString := TotalBase;
+  DataSet2.FieldByName('VATRate').AsString := VATRate;
+  DataSet2.FieldByName('TotalVAT').AsString := TotalVAT;
+  DataSet2.FieldByName('Total').AsString := Total;
+  DataSet2.FieldByName('IsCancelled').AsString := 'не';
+
+  DataSet.Post;
+end;
+
+function TModelClassSaleCancellation.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('ParentGID', ParentGID);
+  Result.AddPair('SaleUniqueID', SaleUniqueID);
+  Result.AddPair('UserGID', UserGID);
+  Result.AddPair('CreatedDate', CreatedDate);
+  Result.AddPair('CreatedTime', CreatedTime);
+  Result.AddPair('CancellationDate', CancellationDate);
+  Result.AddPair('CancellationTime', CancellationTime);
+  Result.AddPair('ItemGID', ItemGID);
+  Result.AddPair('BarCode', BarCode);
+  Result.AddPair('BaseItemName', BaseItemName);
+  Result.AddPair('PackCoeff', PackCoeff);
+  Result.AddPair('ItemName', ItemName);
+  Result.AddPair('Measure', Measure);
+  Result.AddPair('Quantity', Quantity);
+  Result.AddPair('VendorPrice', VendorPrice);
+  Result.AddPair('ClientSurcharge', ClientSurcharge);
+  Result.AddPair('ClientPrice', ClientPrice);
+  Result.AddPair('PackDiscount', PackDiscount);
+  Result.AddPair('ClientPriceBase', ClientPriceBase);
+  Result.AddPair('Price', Price);
+  Result.AddPair('DiscountValue', DiscountValue);
+  Result.AddPair('DiscountType', DiscountType);
+  Result.AddPair('TotalBase', TotalBase);
+  Result.AddPair('VATRate', VATRate);
+  Result.AddPair('TotalVAT', TotalVAT);
+  Result.AddPair('Total', Total);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.
+

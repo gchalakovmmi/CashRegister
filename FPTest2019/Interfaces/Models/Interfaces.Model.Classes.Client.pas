@@ -1,0 +1,69 @@
+unit Interfaces.Model.Classes.Client;
+
+interface
+
+type
+  IModelClassClient = interface
+  ['{57E6CAAF-EAB7-4450-A56A-9E7AE6A74334}']
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+    function GetTaxID: String;
+    procedure SetTaxID(const Value: String);
+    function GetName: String;
+    procedure SetName(const Value: String);
+    function GetRegionGID: Integer;
+    procedure SetRegionGID(const Value: Integer);
+    function GetRegionName: String;
+    procedure SetRegionName(const Value: String);
+    function GetTransport: Double;
+    procedure SetTransport(const Value: Double);
+    function GetAddress: String;
+    procedure SetAddress(const Value: String);
+    function GetFloor: String;
+    procedure SetFloor(const Value: String);
+    function GetAppartment: String;
+    procedure SetAppartment(const Value: String);
+    function GetBuzzer: String;
+    procedure SetBuzzer(const Value: String);
+    function GetDoorCode: String;
+    procedure SetDoorCode(const Value: String);
+    function GetRemarks: String;
+    procedure SetRemarks(const Value: String);
+    function GetLoyaltyCard: String;
+    procedure SetLoyaltyCard(const Value: String);
+    function GetMealsDiscountPercent: Double;
+    procedure SetMealsDiscountPercent(const Value: Double);
+    function GetDrinksDiscountPercent: Double;
+    procedure SetDrinksDiscountPercent(const Value: Double);
+    function GetPackageDiscountPercent: Double;
+    procedure SetPackageDiscountPercent(const Value: Double);
+    function GetTransportDiscountPercent: Double;
+    procedure SetTransportDiscountPercent(const Value: Double);
+
+
+    property GID: Integer read GetGID write SetGID;
+
+    property TaxID: String read GetTaxID write SetTaxID;
+    property Name: String read GetName write SetName;
+    property RegionGID: Integer read GetRegionGID write SetRegionGID;
+    property RegionName: String read GetRegionName write SetRegionName;
+    property Transport: Double read GetTransport write SetTransport;
+    property Address: String read GetAddress write SetAddress;
+    property Floor: String read GetFloor write SetFloor;
+    property Appartment: String read GetAppartment write SetAppartment;
+    property Buzzer: String read GetBuzzer write SetBuzzer;
+    property DoorCode: String read GetDoorCode write SetDoorCode;
+    property Remarks: String read GetRemarks write SetRemarks;
+    property LoyaltyCard: String read GetLoyaltyCard write SetLoyaltyCard;
+    property MealsDiscountPercent: Double read GetMealsDiscountPercent write SetMealsDiscountPercent;
+    property DrinksDiscountPercent: Double read GetDrinksDiscountPercent write SetDrinksDiscountPercent;
+    property PackageDiscountPercent: Double read GetPackageDiscountPercent write SetPackageDiscountPercent;
+    property TransportDiscountPercent: Double read GetTransportDiscountPercent write SetTransportDiscountPercent;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,25 @@
+unit DataModule.Sales;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleSales = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleSales: TDataModuleSales;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

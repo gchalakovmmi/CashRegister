@@ -1,0 +1,85 @@
+object ViewSelectClient: TViewSelectClient
+  Left = 908
+  Top = 241
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  Caption = #1048#1047#1041#1045#1056#1045#1058#1045' '#1050#1051#1048#1045#1053#1058
+  ClientHeight = 261
+  ClientWidth = 996
+  Color = 16764863
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -20
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 25
+  object Grid: TDBGrid
+    Left = 0
+    Top = 26
+    Width = 996
+    Height = 235
+    Selected.Strings = (
+      'LoyaltyCardNumber'#9'15'#9#1050#1040#1056#1058#1040#9'F'
+      'VIP'#9'1'#9'VIP'#9'F'
+      'MarkUp'#9'10'#9#1053#1040#1044#1062#1045#1053#1050#1040#9'F'
+      'TaxNumber'#9'10'#9#1044#1040#1053'.'#1053#1054#1052#1045#1056#9'F'
+      'Name'#9'26'#9#1053#1040#1048#1052#1045#1053#1054#1042#1040#1053#1048#1045#9'F')
+    IniAttributes.Delimiter = ';;'
+    TitleColor = 16764848
+    FixedCols = 0
+    ShowHorzScrollBar = True
+    Align = alBottom
+    Color = 16764848
+    DataSource = dsSelect
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clBlack
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = []
+    Options = [dgTitles, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgWordWrap]
+    ParentFont = False
+    TabOrder = 0
+    TitleAlignment = taCenter
+    TitleFont.Charset = RUSSIAN_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -13
+    TitleFont.Name = 'Verdana'
+    TitleFont.Style = [fsBold]
+    TitleLines = 1
+    TitleButtons = True
+    UseTFields = False
+    LineColors.HighlightColor = clBlack
+    OnCalcCellColors = grListCalcCellColors
+    OnKeyDown = grListKeyDown
+    OnKeyPress = grListKeyPress
+    IndicatorIconColor = clYellow
+    PaintOptions.ActiveRecordColor = clYellow
+  end
+  object Edit: TDBEdit
+    Left = 0
+    Top = 0
+    Width = 1033
+    Height = 31
+    BorderStyle = bsNone
+    Color = 16764848
+    DataField = 'Name'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = 9380864
+    Font.Height = -20
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    Frame.Enabled = True
+    Frame.NonFocusBorders = [efLeftBorder, efTopBorder, efRightBorder, efBottomBorder]
+    Frame.NonFocusStyle = efsFrameEtched
+    Frame.NonFocusFontColor = 9380864
+    ParentFont = False
+    TabOrder = 1
+    UnboundDataType = wwDefault
+    WantReturns = False
+    WordWrap = False
+    OnEnter = edSelectEnter
+  end
+end

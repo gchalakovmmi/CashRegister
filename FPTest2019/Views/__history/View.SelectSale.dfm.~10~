@@ -1,0 +1,105 @@
+object ViewSelectSale: TViewSelectSale
+  Left = 49
+  Top = 120
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  Caption = #1055#1054#1057#1051#1045#1044#1053#1048' '#1055#1056#1054#1044#1040#1046#1041#1048
+  ClientHeight = 444
+  ClientWidth = 958
+  Color = clBtnFace
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 16
+  object GridSales: TDBGrid
+    Left = 0
+    Top = 48
+    Width = 276
+    Height = 393
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    TitleFont.Charset = RUSSIAN_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -13
+    TitleFont.Name = 'Verdana'
+    TitleFont.Style = [fsBold]
+  end
+  object GridSaleDetails: TDBGrid
+    Left = 280
+    Top = 48
+    Width = 675
+    Height = 393
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = RUSSIAN_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -13
+    TitleFont.Name = 'Verdana'
+    TitleFont.Style = [fsBold]
+  end
+  object ButtonPrint: TButton
+    Left = 251
+    Top = 8
+    Width = 75
+    Height = 34
+    Caption = #1055#1045#1063#1040#1058
+    TabOrder = 2
+  end
+  object ButtonExit: TButton
+    Left = 8
+    Top = 8
+    Width = 75
+    Height = 34
+    Caption = #1048#1047#1061#1054#1044
+    TabOrder = 3
+    OnClick = ButtonExitClick
+  end
+  object ButtonInvoice: TButton
+    Left = 170
+    Top = 8
+    Width = 75
+    Height = 34
+    Caption = #1060#1040#1050#1058#1059#1056#1040
+    TabOrder = 4
+    OnClick = ButtonInvoiceClick
+  end
+  object DatePicker: TDatePicker
+    Left = 800
+    Top = 8
+    Height = 34
+    Date = 43673.000000000000000000
+    DateFormat = 'd/M/yyyy'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    TabOrder = 5
+  end
+  object ButtonReversal: TButton
+    Left = 89
+    Top = 8
+    Width = 75
+    Height = 34
+    Caption = #1057#1058#1054#1056#1053#1054
+    TabOrder = 6
+    OnClick = ButtonReversalClick
+  end
+end

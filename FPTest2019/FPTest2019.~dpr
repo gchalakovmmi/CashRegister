@@ -1,0 +1,13 @@
+program FPTest2019;
+
+uses
+  Forms,
+  View_Main in 'View_Main.pas' {ViewMain};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TViewMain, ViewMain);
+  Application.Run;
+end.

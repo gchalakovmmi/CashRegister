@@ -1,0 +1,737 @@
+unit ViewModel.Sale;
+
+interface
+
+uses
+  Interfaces.ViewModel.Sale;
+
+  function CreateViewModelSale: IViewModelSale;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.UITypes,
+  Vcl.Graphics,
+  Vcl.Dialogs,
+  Helper.MyFuncs,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+  Model.AppSettings,
+  View.Message,
+
+  Interfaces.Model.Sale,
+  Model.Sale,
+  View.SelectItem,
+  DataModule.Items, DataModule.Sale;
+
+const
+  cReturnsAllowedID = -1;
+
+type
+  TViewModelSale = class(TInterfacedObject, IViewModelSale, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FModel: IModelSale;
+
+    FInsale: Boolean;
+    FVIPSale: Boolean;
+    FReturnsAllowed: Boolean;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetModel: IModelSale;
+    procedure SetModel(const Value: IModelSale);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelSale read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    // Setup/Teardown
+    procedure SetupSale;
+    procedure TeardownSale;
+
+    // GUI Records
+    function GetGUISetupRecord(const AClientWidth, AClientHeight: Integer): TViewSaleGUISetupRecord;
+    function GetGUIActionsRecord: TViewSaleGUIActionsRecord;
+    function GetGUIRecord: TViewSaleGUIRecord;
+
+    // Actions
+    procedure ActionExitExecute;
+    procedure ActionVoucherPaymentExecute;
+    procedure ActionCardPaymentExecute;
+    procedure ActionPaymentExecute;
+    procedure ActionRemoveItemExecute;
+    procedure ActionCheckItemExecute;
+    procedure ActionSaveAndNewExecute;
+    procedure ActionDiscardExecute;
+    procedure ActionPrevOperationsExecute;
+
+    // Edit Actions
+    procedure EditShowEnter;
+    procedure GridEnter;
+    procedure GridKeyPress(var Key: Char);
+    procedure EditTotalEnter;
+    procedure EditCashPaymentEnter;
+    procedure EditCashPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditVoucherPaymentEnter;
+    procedure EditVoucherPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditCardPaymentEnter;
+    procedure EditCardPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditCardPaymentExit(const AText: String);
+    procedure EditReturnedEnter;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelSale }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelSale.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if (actUpdateGUI in AModelNotification.Actions) then begin
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+procedure TViewModelSale.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelSale.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelSale.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelSale.GetModel: IModelSale;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelSale.SetModel(const Value: IModelSale);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+// Setup/Teardown
+
+procedure TViewModelSale.SetupSale;
+begin
+  SendNotification([actSaleDisableActions]);
+  Model.SetupSale;
+  FInSale := False;
+  FVIPSale := False;
+  FReturnsAllowed := False;
+  SendNotification([actSaleEnableActions]);
+  SendNotification([actSetupGUI]);
+  SendNotification([actUpdateGUI]);
+  SendNotification([actSaleActiveControlGrid]);
+end;
+
+procedure TViewModelSale.TeardownSale;
+begin
+  Model.TeardownSale;
+  FInSale := False;
+  FVIPSale := False;
+  FReturnsAllowed := False;
+end;
+
+
+// GUI Records
+
+function TViewModelSale.GetGUISetupRecord(const AClientWidth, AClientHeight: Integer): TViewSaleGUISetupRecord;
+var
+  LWidth: Integer;
+  LButtonWidth: Integer;
+  LGapWidth: Integer;
+  LColumnWidthRatio: Integer;
+  LColumnWidthReminder: Integer;
+begin
+  Result.Color := $00BFFFBF;
+  Result.Top := 0;
+  Result.Left := 0;
+  Result.Width := AClientWidth + 16;
+  Result.Height := AClientHeight + 16;
+
+  // Panel Buttons
+  LWidth := AClientWidth - 16;
+  LGapWidth := 3;
+  repeat
+    LGapWidth := LGapWidth + 1;
+    LButtonWidth := (LWidth - 8 * LGapWidth) div 9;
+  until ((LButtonWidth * 9 + LGapWidth * 8) = LWidth);
+
+  Result.ButtonExitLeft := 8;
+  Result.ButtonExitWidth := LButtonWidth;
+
+  Result.ButtonVoucherPaymentLeft := Result.ButtonExitLeft + Result.ButtonExitWidth + LGapWidth;
+  Result.ButtonVoucherPaymentWidth := LButtonWidth;
+
+  Result.ButtonCardPaymentLeft := Result.ButtonVoucherPaymentLeft + Result.ButtonVoucherPaymentWidth + LGapWidth;
+  Result.ButtonCardPaymentWidth := LButtonWidth;
+
+  Result.ButtonPaymentLeft := Result.ButtonCardPaymentLeft + Result.ButtonCardPaymentWidth + LGapWidth;
+  Result.ButtonPaymentWidth := LButtonWidth;
+
+  Result.ButtonRemoveItemLeft := Result.ButtonPaymentLeft + Result.ButtonPaymentWidth + LGapWidth;
+  Result.ButtonRemoveItemWidth := LButtonWidth;
+
+  Result.ButtonCheckItemLeft := Result.ButtonRemoveItemLeft + Result.ButtonRemoveItemWidth + LGapWidth;
+  Result.ButtonCheckItemWidth := LButtonWidth;
+
+  Result.ButtonSaveAndNewLeft := Result.ButtonCheckItemLeft + Result.ButtonCheckItemWidth + LGapWidth;
+  Result.ButtonSaveAndNewWidth := LButtonWidth;
+
+  Result.ButtonDiscardLeft := Result.ButtonSaveAndNewLeft + Result.ButtonSaveAndNewWidth + LGapWidth;
+  Result.ButtonDiscardWidth := LButtonWidth;
+
+  Result.ButtonPrevSalesLeft := Result.ButtonDiscardLeft + Result.ButtonDiscardWidth + LGapWidth;
+  Result.ButtonPrevSalesWidth := LButtonWidth;
+
+  // Panel Show
+  Result.EditShowLeft := 8;
+  Result.EditShowWidth := AClientWidth - 16;
+
+  // Panel Grid
+  Result.PanelGridWidth := AClientWidth;
+  Result.PanelGridHeight := AClientHeight - 41 - 64 - 274;
+  Result.GridTop := 0;
+  Result.GridLeft := 8;
+  Result.GridHeight := Result.PanelGridHeight;
+  Result.GridWidth := Result.PanelGridWidth - 16;
+  LColumnWidthRatio := (Result.PanelGridWidth - 16 - 26) div 66;
+  LColumnWidthReminder := (Result.PanelGridWidth - 16 - 26) - LColumnWidthRatio * 66;
+  Result.GridColumns0Width := 13 * LColumnWidthRatio;
+  Result.GridColumns1Width := 25 * LColumnWidthRatio + LColumnWidthReminder;
+  Result.GridColumns2Width := 5 * LColumnWidthRatio;
+  Result.GridColumns3Width := 7 * LColumnWidthRatio;
+  Result.GridColumns4Width := 8 * LColumnWidthRatio;
+  Result.GridColumns5Width := 8 * LColumnWidthRatio;
+
+  // Panel Payment
+  Result.LabelTotalLeft := AClientWidth - 185 - 8;
+  Result.EditTotalLeft := Result.LabelTotalLeft;
+  Result.LabelCashPaymentLeft := Result.LabelTotalLeft;
+  Result.EditCashPaymentLeft := Result.LabelTotalLeft;
+  Result.LabelVoucherPaymentLeft := Result.LabelTotalLeft - 185 - 24;
+  Result.EditVoucherPaymentLeft := Result.LabelTotalLeft - 185 - 24;
+  Result.LabelCardPaymentLeft := Result.LabelTotalLeft;
+  Result.EditCardPaymentLeft := Result.LabelTotalLeft;
+  Result.LabelReturnedLeft := Result.LabelTotalLeft;
+  Result.EditReturnedLeft := Result.LabelTotalLeft;
+
+  Result.LabelMinVIPCaption := 'Минималната сума ' + Formatfloat('0.00', TAppSettings.GetFloatSetting('MinVIPSale', 10)) + 'лв.не е достигната!';
+end;
+
+function TViewModelSale.GetGUIActionsRecord: TViewSaleGUIActionsRecord;
+begin
+  Result.ActionExitEnabled := not FInSale;
+  Result.ActionVoucherPaymentEnabled := FInSale;
+  Result.ActionCardPaymentEnabled := FInSale;
+  Result.ActionPaymentEnabled := FInSale;
+  Result.ActionRemoveItemEnabled := FInSale;
+  Result.ActionCheckItemEnabled := True;
+  Result.ActionSaveAndNewEnabled := FInSale and ((not FVIPSale) or (FVIPSale and (Model.Sale.Due.ToDouble >= G.MinVIPSale)));
+  Result.ActionDiscardEnabled := FInSale;
+  Result.ActionPrevOperationsEnabled := not FInSale;
+  Result.GridEnabled := True;
+  Result.LabelMinVIPVisible := FVIPSale and (Model.Sale.Due.ToDouble < G.MinVIPSale);
+end;
+
+function TViewModelSale.GetGUIRecord: TViewSaleGUIRecord;
+begin
+  Result.Caption := 'ПРОДАЖБА - ' + Model.Sale.ClientName;
+
+  if FVIPSale then begin
+    Result.Color := $00CAF5FF;
+    Result.GridColor := $00CAF5FF;
+  end else begin
+    Result.Color := $00BFFFBF;
+    Result.GridColor := $00BFFFBF;
+  end;
+
+  if Model.Sale.Returned.ToDouble < -0.009 then begin
+    Result.EditReturnedFontColor := clRed;
+    Result.EditReturnedBrushColor := $00BFFFBF;
+  end else begin
+    if Model.Sale.Returned.ToDouble > 0.009 then begin
+      Result.EditReturnedFontColor := clGreen;
+      Result.EditReturnedBrushColor := clRed;
+    end else begin
+      Result.EditReturnedFontColor :=  clWindowText;
+      Result.EditReturnedBrushColor := $00BFFFBF;
+    end;
+  end;
+end;
+
+
+// Actions
+
+procedure TViewModelSale.ActionExitExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+  if not FInSale then begin
+    SendNotification([actCloseForm]);
+  end;
+end;
+
+procedure TViewModelSale.ActionVoucherPaymentExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  SendNotification([actSaleActiveControlEditVoucherPayment]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.ActionCardPaymentExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  SendNotification([actSaleActiveControlEditCardPayment]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.ActionPaymentExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  SendNotification([actSaleActiveControlToggleEditCashPayment]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.ActionRemoveItemExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  Model.RegistrationOfCancellation;
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+{TODO -oOwner -cGeneral : ActionItem}
+procedure TViewModelSale.ActionCheckItemExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+//  fmCheckItem.ShowModal;
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.ActionSaveAndNewExecute;
+begin
+  if not FInSale then Exit;
+
+  SendNotification([actSaleDisableActions]);
+
+  if FVIPSale and (Model.Sale.ClientVIPStatus = '*') and (Model.Sale.CardPayment.ToDouble > 0) then begin
+    ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ПЛАЩАНЕ С КАРТА ЗА КЛИЕНТ С ПРЕФЕРЕНЦИИ!');
+    SendNotification([actSaleActiveControlEditCardPayment]);
+  end else begin
+    if FVIPSale and (Model.Sale.ClientVIPStatus = '*') and (Model.Sale.VoucherPayment.ToDouble > 0) then begin
+      ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ПЛАЩАНЕ С ВАУЧЕР ЗА КЛИЕНТ С ПРЕФЕРЕНЦИИ!');
+      SendNotification([actSaleActiveControlEditVoucherPayment]);
+    end else begin
+      if FVIPSale and (Model.Sale.Returned.ToDouble < -0.009) and ((Model.Sale.CashPayment.ToDouble + Model.Sale.VoucherPayment.ToDouble + Model.Sale.CardPayment.ToDouble) > 0.001) then begin
+        ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ЧАСТИЧНО ПЛАЩАНЕ ЗА КЛИЕНТ С КАРТА!');
+        SendNotification([actSaleActiveControlEditCashPayment]);
+      end else begin
+        if not FVIPSale and (Model.Sale.Returned.ToDouble < -0.009) then begin
+          ViewMessage.ShowBadMessagePlus('НЕ Е ПЛАТЕНО!');
+          SendNotification([actSaleActiveControlEditCashPayment]);
+        end else begin
+          Model.Totals;
+          Model.CloseSale;
+          FInSale := False;
+          FVIPSale := False;
+          FReturnsAllowed := False;
+          SendNotification([actCloseForm]);
+        end;
+      end;
+    end;
+  end;
+
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.ActionDiscardExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  if MessageDlg('ЖЕЛАЕТЕ ЛИ АНУЛИРАНЕ НА ТЕКУЩИЯ БОН?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
+    Model.DiscardSale;
+    SendNotification([actSaleEnableActions]);
+    SendNotification([actCloseForm]);
+  end else begin
+    SendNotification([actSaleActiveControlGrid]);
+    SendNotification([actSaleEnableActions]);
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+{TODO -oOwner -cGeneral : ActionItem}
+procedure TViewModelSale.ActionPrevOperationsExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+//  fmRpLastSells.ShowModal;
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+
+// Edit Actions
+
+procedure TViewModelSale.EditShowEnter;
+begin
+  SendNotification([actSaleActiveControlGrid]);
+end;
+
+procedure TViewModelSale.GridEnter;
+begin
+// nop
+end;
+
+{TODO -oOwner -cGeneral : ActionItem}
+procedure TViewModelSale.GridKeyPress(var Key: Char);
+begin
+  SendNotification([actSaleDisableActions]);
+  if not FInSale and (Key = '!') then begin
+//  fmSelectClient.DoSelection(Key);
+    Model.SetupSale;
+  end else begin
+    if FInSale and (Key = '+') then begin
+      Model.RegistrationOfDuplication;
+    end else begin
+      if CharInSet(Key, [' '..'~', 'А'..'я']) then begin
+        SelectItem(Key);
+        // Check for Return Allowance
+        if (DataModuleItems.SelectedQUANTITY < 0) and (not FReturnsAllowed) then begin
+          ViewMessage.ShowBadMessage('Не е разрешено връщане в тази продажба!');
+        end else begin
+          // Check for Return Allowance Toggle
+          if DataModuleItems.SelectedID = cReturnsAllowedID then begin
+            FReturnsAllowed := True;
+          end else begin
+            if DataModuleItems.SelectedID > 0 then begin
+              if not FInSale then begin
+                Model.OpenSale;
+                FInSale := True;
+              end;
+              Model.RegistrationOfSale;
+            end;
+          end;
+        end;
+      end;
+    end;
+  end;
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditTotalEnter;
+begin
+  SendNotification([actSaleActiveControlGrid]);
+end;
+
+procedure TViewModelSale.EditCashPaymentEnter;
+begin
+  // nop
+end;
+
+procedure TViewModelSale.EditCashPaymentKeyPress(var Key: Char; const AText: String);
+var
+  LValue: Double;
+begin
+  SendNotification([actSaleDisableActions]);
+  if Key = #$0D then begin
+    if not TryStrToFloat(AText, LValue) then LValue := 0;
+
+    // Round CashPayment
+    Model.UpdateSaleCashPayment(FormatFloat('0.00', _Round(LValue, 0.01)));
+
+    // Validate CashPayment Max
+    if (Model.Sale.CashPayment.ToDouble > G.MaxPayment) then begin
+      ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане в брой!');
+      Model.UpdateSaleCashPayment('0.00');
+    end;
+
+    // Validate CashPayment Min
+    if (Model.Sale.CashPayment.ToDouble < 0) then begin
+      ViewMessage.ShowBadMessagePlus('Недопустимо отрицателно заплащане в брой!');
+      Model.UpdateSaleCashPayment('0.00');
+    end;
+
+    if (Model.Sale.Returned.ToDouble < -0.009) then begin
+      ViewMessage.ShowBadMessage('Недостатъчно плащане!');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditCashPayment]);
+    end else begin
+      SendNotification([actSaleActiveControlGrid]);
+    end;
+  end;
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditVoucherPaymentEnter;
+begin
+  SendNotification([actSaleDisableActions]);
+
+  // Setup CashPayment
+  Model.UpdateSaleCashPayment('0.00');
+
+  // Setup CardPayment
+  Model.UpdateSaleCardPayment('0.00');
+
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditVoucherPaymentKeyPress(var Key: Char; const AText: String);
+var
+  LValue: Double;
+begin
+  SendNotification([actSaleDisableActions]);
+  if Key = #$0D then begin
+    if not TryStrToFloat(AText, LValue) then LValue := 0;
+
+    // Round VoucherPayment
+    Model.UpdateSaleVoucherPayment(FormatFloat('0.00', _Round(LValue, 0.01)));
+
+    // Validate VoucherPayment Max
+    if (Model.Sale.VoucherPayment.ToDouble > G.MaxPayment) or (Model.Sale.VoucherPayment.ToDouble > Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане с ваучер!');
+      Model.UpdateSaleVoucherPayment('0.00');
+    end;
+
+    // Validate VoucherPayment Min
+    if (Model.Sale.VoucherPayment.ToDouble < 0) then begin
+      ViewMessage.ShowBadMessagePlus('Недопустимо отрицателно заплащане с ваучер!');
+      Model.UpdateSaleVoucherPayment('0.00');
+    end;
+
+    if (Model.Sale.Returned.ToDouble < -0.009) then begin
+      ViewMessage.ShowBadMessage('Недостатъчно плащане!');
+      SendNotification([actSaleActiveControlEditCashPayment]);
+    end else begin
+      SendNotification([actSaleActiveControlGrid]);
+    end;
+  end;
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditCardPaymentEnter;
+begin
+  SendNotification([actSaleDisableActions]);
+
+  // Setup CashPayment
+  Model.UpdateSaleCashPayment('0.00');
+
+  // Setup CardPayment
+  Model.UpdateSaleCardPayment((Model.Sale.Due.ToDouble - Model.Sale.VoucherPayment.ToDouble).ToString);
+
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditCardPaymentKeyPress(var Key: Char; const AText: String);
+var
+  LCardPaymentUpdated: Boolean;
+  LValue: Double;
+begin
+  SendNotification([actSaleDisableActions]);
+  if Key = #$0D then begin
+    LCardPaymentUpdated := False;
+
+    if not TryStrToFloat(AText, LValue) then LValue := 0;
+
+    // Round CardPayment
+    Model.UpdateSaleCardPayment(FormatFloat('0.00', _Round(LValue, 0.01)));
+
+    // Validate CardPayment Max
+    if (Model.Sale.CardPayment.ToDouble > G.MaxPayment) then begin
+      ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане с карта');
+      Model.UpdateSaleCardPayment('0.00');
+    end;
+
+    // Validate CardPayment Min
+    if (Model.Sale.CardPayment.ToDouble < 0) then begin
+      ViewMessage.ShowBadMessagePlus('Недопустимо отрицателно заплащане с карта!');
+      Model.UpdateSaleCardPayment('0.00');
+    end;
+
+    // Validate CardPayment Max
+    if (Model.Sale.CardPayment.ToDouble > (Model.Sale.Due.ToDouble - Model.Sale.CashPayment.ToDouble - Model.Sale.VoucherPayment.ToDouble)) then begin
+      ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане с карта');
+
+      // Setup CashPayment
+      Model.UpdateSaleCashPayment('0.00');
+
+      // Setup CardPayment
+      Model.UpdateSaleCardPayment((Model.Sale.Due.ToDouble - Model.Sale.VoucherPayment.ToDouble).ToString);
+
+      LCardPaymentUpdated := True;
+    end;
+
+    if LCardPaymentUpdated then begin
+      SendNotification([actSaleActiveControlEditCardPayment]);
+    end else begin
+      if (Model.Sale.Returned.ToDouble < -0.009) then begin
+        ViewMessage.ShowBadMessage('Недостатъчно плащане!');
+        SendNotification([actSaleActiveControlEditCashPayment]);
+      end else begin
+        SendNotification([actSaleActiveControlGrid]);
+      end;
+    end;
+  end;
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditCardPaymentExit(const AText: String);
+var
+  LCardPaymentUpdated: Boolean;
+  LValue: Double;
+begin
+  SendNotification([actSaleDisableActions]);
+
+  LCardPaymentUpdated := False;
+
+  if not TryStrToFloat(AText, LValue) then LValue := 0;
+
+  // Round CardPayment
+  Model.UpdateSaleCardPayment(FormatFloat('0.00', _Round(LValue, 0.01)));
+
+  // Validate CardPayment Max
+  if (Model.Sale.CardPayment.ToDouble > G.MaxPayment) then begin
+    ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане с карта');
+    Model.UpdateSaleCardPayment('0.00');
+  end;
+
+  // Validate CardPayment Min
+  if (Model.Sale.CardPayment.ToDouble < 0) then begin
+    ViewMessage.ShowBadMessagePlus('Недопустимо отрицателно заплащане с карта!');
+    Model.UpdateSaleCardPayment('0.00');
+  end;
+
+  // Validate CardPayment Max
+  if (Model.Sale.CardPayment.ToDouble > (Model.Sale.Due.ToDouble - Model.Sale.CashPayment.ToDouble - Model.Sale.VoucherPayment.ToDouble)) then begin
+    ViewMessage.ShowBadMessagePlus('Твърде голямо заплащане с карта');
+
+    // Setup CashPayment
+    Model.UpdateSaleCashPayment('0.00');
+
+    // Setup CardPayment
+    Model.UpdateSaleCardPayment((Model.Sale.Due.ToDouble - Model.Sale.VoucherPayment.ToDouble).ToString);
+
+    LCardPaymentUpdated := True;
+  end;
+
+  if LCardPaymentUpdated then begin
+    SendNotification([actSaleActiveControlEditCardPayment]);
+  end else begin
+    if (Model.Sale.Returned.ToDouble < -0.009) then begin
+      ViewMessage.ShowBadMessage('Недостатъчно плащане!');
+      SendNotification([actSaleActiveControlEditCashPayment]);
+    end else begin
+      SendNotification([actSaleActiveControlGrid]);
+    end;
+  end;
+  SendNotification([actSaleEnableActions]);
+end;
+
+procedure TViewModelSale.EditReturnedEnter;
+begin
+  SendNotification([actSaleActiveControlGrid]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelSale.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FModel := CreateModelSale;
+end;
+
+destructor TViewModelSale.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelSale: IViewModelSale;
+begin
+  Result := TViewModelSale.Create;
+end;
+
+end.

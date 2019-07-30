@@ -1,0 +1,421 @@
+unit Model.Classes.Client;
+
+interface
+
+uses
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Client;
+
+  function CreateModelClassClient: IModelClassClient;
+  function CreateFromDataSetModelClassClient: IModelClassClient;
+  procedure AssignDataSetModelClassClient(const ADataSet: TFDDataSet);
+
+implementation
+
+//CREATE TABLE `clients` (
+//  `gid` int(11) NOT NULL AUTO_INCREMENT,
+//  `TaxID` varchar(20) NOT NULL,
+//  `name` varchar(60) NOT NULL,
+//  `region_gid` int(11) NOT NULL,
+//  `region_name` varchar(60) NOT NULL,
+//  `transport` float NOT NULL,
+//  `address` varchar(100) NOT NULL,
+//  `floor` varchar(100) NOT NULL,
+//  `appartment` varchar(100) NOT NULL,
+//  `buzzer` varchar(100) NOT NULL,
+//  `door_code` varchar(100) NOT NULL,
+//  `remarks` varchar(100) NOT NULL,
+//  `loyalty_card` varchar(20) DEFAULT NULL,
+//  `meals_discount_percent` float NOT NULL,
+//  `drinks_discount_percent` float NOT NULL,
+//  `package_discount_percent` float NOT NULL,
+//  `transport_discount_percent` float NOT NULL,
+//  PRIMARY KEY (`gid`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+type
+  TModelClassClient = class(TInterfacedObject, IModelClassClient)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: Integer;
+    FTaxID: String;
+    FName: String;
+    FRegionGID: Integer;
+    FRegionName: String;
+    FTransport: Double;
+    FAddress: String;
+    FFloor: String;
+    FAppartment: String;
+    FBuzzer: String;
+    FDoorCode: String;
+    FRemarks: String;
+    FLoyaltyCard: String;
+    FMealsDiscountPercent: Double;
+    FDrinksDiscountPercent: Double;
+    FPackageDiscountPercent: Double;
+    FTransportDiscountPercent: Double;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+    function GetTaxID: String;
+    procedure SetTaxID(const Value: String);
+    function GetName: String;
+    procedure SetName(const Value: String);
+    function GetRegionGID: Integer;
+    procedure SetRegionGID(const Value: Integer);
+    function GetRegionName: String;
+    procedure SetRegionName(const Value: String);
+    function GetTransport: Double;
+    procedure SetTransport(const Value: Double);
+    function GetAddress: String;
+    procedure SetAddress(const Value: String);
+    function GetFloor: String;
+    procedure SetFloor(const Value: String);
+    function GetAppartment: String;
+    procedure SetAppartment(const Value: String);
+    function GetBuzzer: String;
+    procedure SetBuzzer(const Value: String);
+    function GetDoorCode: String;
+    procedure SetDoorCode(const Value: String);
+    function GetRemarks: String;
+    procedure SetRemarks(const Value: String);
+    function GetLoyaltyCard: String;
+    procedure SetLoyaltyCard(const Value: String);
+    function GetMealsDiscountPercent: Double;
+    procedure SetMealsDiscountPercent(const Value: Double);
+    function GetDrinksDiscountPercent: Double;
+    procedure SetDrinksDiscountPercent(const Value: Double);
+    function GetPackageDiscountPercent: Double;
+    procedure SetPackageDiscountPercent(const Value: Double);
+    function GetTransportDiscountPercent: Double;
+    procedure SetTransportDiscountPercent(const Value: Double);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property GID: Integer read GetGID write SetGID;
+    property TaxID: String read GetTaxID write SetTaxID;
+    property Name: String read GetName write SetName;
+    property RegionGID: Integer read GetRegionGID write SetRegionGID;
+    property RegionName: String read GetRegionName write SetRegionName;
+    property Transport: Double read GetTransport write SetTransport;
+    property Address: String read GetAddress write SetAddress;
+    property Floor: String read GetFloor write SetFloor;
+    property Appartment: String read GetAppartment write SetAppartment;
+    property Buzzer: String read GetBuzzer write SetBuzzer;
+    property DoorCode: String read GetDoorCode write SetDoorCode;
+    property Remarks: String read GetRemarks write SetRemarks;
+    property LoyaltyCard: String read GetLoyaltyCard write SetLoyaltyCard;
+    property MealsDiscountPercent: Double read GetMealsDiscountPercent write SetMealsDiscountPercent;
+    property DrinksDiscountPercent: Double read GetDrinksDiscountPercent write SetDrinksDiscountPercent;
+    property PackageDiscountPercent: Double read GetPackageDiscountPercent write SetPackageDiscountPercent;
+    property TransportDiscountPercent: Double read GetTransportDiscountPercent write SetTransportDiscountPercent;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelClassClient: IModelClassClient;
+begin
+  Result := TModelClassClient.Create;
+end;
+
+
+function CreateFromDataSetModelClassClient: IModelClassClient;
+begin
+  Result := CreateModelClassClient;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassClient(const ADataSet: TFDDataSet);
+begin
+  TModelClassClient.DataSet := ADataSet;
+end;
+
+{ TModelClassClient }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+
+function TModelClassClient.GetGID: Integer;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassClient.SetGID(const Value: Integer);
+begin
+  FGID := Value;
+end;
+
+function TModelClassClient.GetTaxID: String;
+begin
+  Result := FTaxID;
+end;
+
+procedure TModelClassClient.SetTaxID(const Value: String);
+begin
+  FTaxID := Value;
+end;
+
+function TModelClassClient.GetName: String;
+begin
+  Result := FName;
+end;
+
+procedure TModelClassClient.SetName(const Value: String);
+begin
+  FName := Value;
+end;
+
+function TModelClassClient.GetRegionGID: Integer;
+begin
+  Result := FRegionGID;
+end;
+
+procedure TModelClassClient.SetRegionGID(const Value: Integer);
+begin
+  FRegionGID := Value;
+end;
+
+function TModelClassClient.GetRegionName: String;
+begin
+  Result := FRegionName;
+end;
+
+procedure TModelClassClient.SetRegionName(const Value: String);
+begin
+  FRegionName := Value;
+end;
+
+function TModelClassClient.GetTransport: Double;
+begin
+  Result := FTransport;
+end;
+
+procedure TModelClassClient.SetTransport(const Value: Double);
+begin
+  FTransport := Value;
+end;
+
+function TModelClassClient.GetAddress: String;
+begin
+  Result := FAddress;
+end;
+
+procedure TModelClassClient.SetAddress(const Value: String);
+begin
+  FAddress := Value;
+end;
+
+
+function TModelClassClient.GetFloor: String;
+
+begin
+  Result := FFloor;
+end;
+
+procedure TModelClassClient.SetFloor(const Value: String);
+begin
+  FFloor := Value;
+end;
+
+function TModelClassClient.GetAppartment: String;
+begin
+  Result := FAppartment;
+end;
+
+procedure TModelClassClient.SetAppartment(const Value: String);
+begin
+  FAppartment := Value;
+end;
+
+function TModelClassClient.GetBuzzer: String;
+begin
+  Result := FBuzzer;
+end;
+
+procedure TModelClassClient.SetBuzzer(const Value: String);
+begin
+  FBuzzer := Value;
+end;
+
+function TModelClassClient.GetDoorCode: String;
+begin
+  Result := FDoorCode;
+end;
+
+procedure TModelClassClient.SetDoorCode(const Value: String);
+begin
+  FDoorCode := Value;
+end;
+
+function TModelClassClient.GetRemarks: String;
+begin
+  Result := FRemarks;
+end;
+
+procedure TModelClassClient.SetRemarks(const Value: String);
+begin
+  FRemarks := Value;
+end;
+
+function TModelClassClient.GetLoyaltyCard: String;
+begin
+  Result := FLoyaltyCard;
+end;
+
+procedure TModelClassClient.SetLoyaltyCard(const Value: String);
+begin
+  FLoyaltyCard := Value;
+end;
+
+function TModelClassClient.GetMealsDiscountPercent: Double;
+begin
+  Result := FMealsDiscountPercent;
+end;
+
+procedure TModelClassClient.SetMealsDiscountPercent(const Value: Double);
+begin
+  FMealsDiscountPercent := Value;
+end;
+
+function TModelClassClient.GetDrinksDiscountPercent: Double;
+begin
+  Result := FDrinksDiscountPercent;
+end;
+
+procedure TModelClassClient.SetDrinksDiscountPercent(const Value: Double);
+begin
+  FDrinksDiscountPercent := Value;
+end;
+
+function TModelClassClient.GetPackageDiscountPercent: Double;
+
+begin
+  Result := FPackageDiscountPercent;
+end;
+
+procedure TModelClassClient.SetPackageDiscountPercent(const Value: Double);
+begin
+  FPackageDiscountPercent := Value;
+end;
+
+function TModelClassClient.GetTransportDiscountPercent: Double;
+begin
+  Result := FTransportDiscountPercent;
+end;
+
+procedure TModelClassClient.SetTransportDiscountPercent(const Value: Double);
+begin
+  FTransportDiscountPercent := Value;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassClient.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('gid').Value;
+  TaxID := DataSet.FieldByName('tax_id').Value;
+  Name := DataSet.FieldByName('name').Value;
+
+  RegionGID := DataSet.FieldByName('region_gid').Value;
+  RegionName := DataSet.FieldByName('region_name').Value;
+  Transport := DataSet.FieldByName('transport').Value;
+  Address := DataSet.FieldByName('address').Value;
+  Floor := DataSet.FieldByName('floor').Value;
+  Appartment := DataSet.FieldByName('appartment').Value;
+  Buzzer := DataSet.FieldByName('buzzer').Value;
+  DoorCode := DataSet.FieldByName('door_code').Value;
+  Remarks := DataSet.FieldByName('remarks').Value;
+  LoyaltyCard := DataSet.FieldByName('loyalty_card').Value;
+  MealsDiscountPercent := DataSet.FieldByName('meals_discount_percent').Value;
+  DrinksDiscountPercent := DataSet.FieldByName('drinks_discount_percent').Value;
+  PackageDiscountPercent := DataSet.FieldByName('package_discount_percent').Value;
+  TransportDiscountPercent := DataSet.FieldByName('transport_discount_percent').Value;
+end;
+
+procedure TModelClassClient.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('gid').Value := GID;
+  DataSet.FieldByName('tax_id').Value := TaxID;
+  DataSet.FieldByName('name').Value := Name;
+
+  DataSet.FieldByName('region_gid').Value := RegionGID;
+  DataSet.FieldByName('region_name').Value := RegionName;
+  DataSet.FieldByName('transport').Value := Transport;
+  DataSet.FieldByName('address').Value := Address;
+  DataSet.FieldByName('floor').Value := Floor;
+  DataSet.FieldByName('appartment').Value := Appartment;
+  DataSet.FieldByName('buzzer').Value := Buzzer;
+  DataSet.FieldByName('door_code').Value := DoorCode;
+  DataSet.FieldByName('remarks').Value := Remarks;
+  DataSet.FieldByName('loyalty_card').Value := LoyaltyCard;
+  DataSet.FieldByName('meals_discount_percent').Value := MealsDiscountPercent;
+  DataSet.FieldByName('drinks_discount_percent').Value := DrinksDiscountPercent;
+  DataSet.FieldByName('package_discount_percent').Value := PackageDiscountPercent;
+  DataSet.FieldByName('transport_discount_percent').Value := TransportDiscountPercent;
+
+  DataSet.Post;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.
+
+

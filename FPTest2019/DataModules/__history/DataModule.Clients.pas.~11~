@@ -1,0 +1,321 @@
+unit DataModule.Clients;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Data.DB,
+  Datasnap.DBClient,
+  Bde.DBTables,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.StorageBin,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TDataModuleClients = class(TDataModule)
+    DataSource: TDataSource;
+      FDMemTable: TFDMemTable;
+        FDMemTableID: TIntegerField;
+        FDMemTableName: TStringField;
+        FDMemTableAddress: TStringField;
+        FDMemTableContact: TStringField;
+        FDMemTableVIP: TBooleanField;
+        FDMemTableSurcharge: TFloatField;
+        FDMemTableLoyaltyCardNumber: TStringField;
+
+
+  {$REGION 'Published Methods'}
+    procedure FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FKeyWord: String;
+
+    FSelectedID: integer;
+    FSelectedTAXNUMBER: string;
+    FSelectedNAME: string;
+    FSelectedVIP: Boolean;
+    FSelectedMARKUP: real;
+    FSelectedLOYALTYCARDNUMBER: string;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    procedure SetKeyWord(const AValue: String);
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property KeyWord: String read FKeyWord write SetKeyWord;
+
+    property SelectedID : integer read FSelectedID write FSelectedID;
+    property SelectedTAXNUMBER : string read FSelectedTAXNUMBER write FSelectedTAXNUMBER;
+    property SelectedNAME : string read FSelectedNAME write FSelectedNAME;
+    property SelectedVIP : Boolean read FSelectedVIP write FSelectedVIP;
+    property SelectedMARKUP : real read FSelectedMARKUP write FSelectedMARKUP;
+    property SelectedLOYALTYCARDNUMBER : string read FSelectedLOYALTYCARDNUMBER write FSelectedLOYALTYCARDNUMBER;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure RefreshData;
+    procedure Refilter;
+    procedure ClearSelected;
+    procedure SelectCommonClient;
+    procedure Select;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+
+  end;
+
+var
+  DataModuleClients: TDataModuleClients;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+uses
+  Winapi.Windows,
+  System.IOUtils,
+  System.Variants,
+  Globals,
+  Helper.MyFuncs,
+  View.Message;
+
+{ TDataModuleClients }
+
+{$REGION 'Published Methods'}
+
+procedure TDataModuleClients.FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+begin
+  if FKeyWord <> '' then begin
+      Accept := (FKeyWord = DataSet.FieldByName('TAXNUMBER').AsString) or
+                (FKeyWord = DataSet.FieldByName('LOYALTYCARDNUMBER').AsString) or
+                (Match(AnsiUpperCase(FKeyWord), AnsiUpperCase(DataSet.FieldByName('NAME').AsString)));
+  end else begin
+    Accept := True;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+procedure TDataModuleClients.SetKeyWord(const AValue: String);
+begin
+  FKeyWord := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TDataModuleClients.RefreshData;
+var
+  LQuery: TQuery;
+  LActive: Boolean;
+  LID: Integer;
+begin
+
+  if not TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then Exit;
+//  if not (FileExists(dmMain.folder[ftItems]+'\new.txt') or FileExists(dmMain.folder[ftItems]+'\start.txt')) then Exit;
+
+  ViewMessage.ShowBadMessage('Обновяване на клиенти ...');
+  LID := 0;
+  LActive := DataSource.DataSet.Active;
+  if LActive then LID := DataSource.DataSet.FieldByName('ID').AsInteger;
+
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+    FDMemTable.DisableControls;
+    FDMemTable.Close;
+    FDMemTable.CreateDataSet;
+    FDMemTable.Filtered := False;
+
+    LQuery := TQuery.Create(Self);
+    LQuery.DatabaseName := G.ContragentsFolder;
+    LQuery.SQL.Clear;
+    LQuery.SQL.Add('SELECT ID, TAXNUMBER, NAME, VIP, MARKUP, LOYALTYCARD FROM Companies');
+    LQuery.SQL.Add('WHERE (Companies.Act = ''*'')');
+    LQuery.SQL.Add('ORDER BY NAME');
+
+    LQuery.Open;
+    while not LQuery.Eof do begin
+      FDMemTable.Append;
+      FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
+      FDMemTable.FieldByName('TAXNUMBER').AsString := LQuery.FieldByName('TAXNUMBER').AsString;
+      FDMemTable.FieldByName('NAME').AsString := LQuery.FieldByName('NAME').AsString;
+      FDMemTable.FieldByName('VIP').AsBoolean := (LQuery.FieldByName('VIP').AsString = '*');
+      FDMemTable.FieldByName('SURCHARGE').AsFloat := LQuery.FieldByName('MARKUP').AsFloat;
+      FDMemTable.FieldByName('LOYALTYCARDNUMBER').AsString := LQuery.FieldByName('LOYALTYCARD').AsString;
+      FDMemTable.Post;
+      LQuery.Next;
+    end;
+    LQuery.Close;
+
+    FDMemTable.Filtered := True;
+    FDMemTable.First;
+
+    if LActive then FDMemTable.Locate('ID', LID, []);
+    FDMemTable.EnableControls;
+  end;
+
+  if TFile.Exists(TPath.Combine(G.ContragentsFolder, 'new.txt')) then begin
+    TFile.Delete(TPath.Combine(G.ContragentsFolder, 'new.txt'));
+  end;
+
+  if TFile.Exists(TPath.Combine(G.ContragentsFolder, 'start.txt')) then begin
+    TFile.Delete(TPath.Combine(G.ContragentsFolder, 'start.txt'));
+  end;
+
+  IsChanged := False;
+  ViewMessage.Hide;
+end;
+
+procedure TDataModuleClients.Refilter;
+var
+  LID: Integer;
+  LBarCode: String;
+begin
+  LID := DataSource.DataSet.FieldByName('ID').AsInteger;
+  LBARCODE := DataSource.DataSet.FieldByName('BARCODE').AsString;
+  DataSource.DataSet.DisableControls;
+  DataSource.DataSet.Filtered := False;
+  DataSource.DataSet.Filtered := True;
+  DataSource.DataSet.Locate('ID;BARCODE', VarArrayOf([LID, LBarCode]), []);
+  DataSource.DataSet.EnableControls;
+end;
+
+procedure TDataModuleClients.ClearSelected;
+begin
+  SelectedTYPED := '';
+  SelectedID := 0;
+  SelectedBARCODE := '';
+  SelectedNAME := '';
+  SelectedMEASURE := '';
+  SelectedQUANTITY := 0;
+  SelectedCOEFF := 0;
+  SelectedDISCOUNT := 0;
+  SelectedVENDORPRICE := 0;
+  SelectedCLIENTPRICE := 0;
+end;
+
+procedure TDataModuleClients.Select;
+var
+  LFactor: Double;
+  LFraction: Double;
+begin
+  if DataSource.DataSet.RecordCount = 0 then begin
+    Beep(440, 500);
+    ViewMessage.ShowBadMessagePlus('НЕ Е ИЗБРАН АРТИКУЛ!');
+    DataModuleItems.ClearSelected;
+    Exit;
+  end;
+  SelectedTYPED := KeyWord;
+  SelectedID := DataSource.DataSet.FieldByName('ID').AsInteger;
+  SelectedBARCODE := DataSource.DataSet.FieldByName('BARCODE').AsString;
+  SelectedNAME := DataSource.DataSet.FieldByName('ITEM').AsString;
+  SelectedMEASURE := DataSource.DataSet.FieldByName('orgMEASURE').AsString;
+  SelectedCOEFF := DataSource.DataSet.FieldByName('COEFF').AsFloat;
+  SelectedDISCOUNT := DataSource.DataSet.FieldByName('DISCOUNT').AsFloat;
+  SelectedVENDORPRICE := DataSource.DataSet.FieldByName('orgVENDORPRICE').AsCurrency;
+  SelectedCLIENTPRICE := DataSource.DataSet.FieldByName('orgCLIENTPRICE').AsCurrency;
+  if FQuantity = '' then begin
+    SelectedQUANTITY := 1.00;
+  end else begin
+    try
+      SelectedQUANTITY := StrToFloat(FQuantity);
+    except
+      on EConvertError do begin
+        ViewMessage.ShowBadMessagePlus(FQuantity+' не е число!');
+        Exit;
+      end;
+    end;
+  end;
+  if SelectedNAME = '' then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока без име!');
+  end;
+  if SelectedMEASURE = '' then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока без мярка!');
+  end;
+  if SelectedCLIENTPRICE <= 0 then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока с некоректна ед.цена!');
+  end;
+  if SelectedQUANTITY > 1000 then begin
+    ViewMessage.ShowBadMessagePlus('Твърде голямо количество!');
+    ClearSelected;
+    Exit;
+  end;
+  LFactor := DataSource.DataSet.FieldByName('FACTOR').AsFloat;
+  if (LFactor < 1) and (FQuantity = '') then begin
+    ViewMessage.ShowBadMessagePlus('Теглим артикул! Моля въведете количество.');
+    KeyWord := '';
+    ClearSelected;
+    Exit;
+  end;
+  LFraction := SelectedQUANTITY/LFactor;
+  if (Abs(LFraction - Int(LFraction))> 0.001) then begin
+    if (Abs(LFraction - Int(LFraction)-1)> 0.001) then begin
+      ViewMessage.ShowBadMessagePlus('Количеството ('+FQuantity+') трябва да е кратно на '+DataSource.DataSet.FieldByName('FACTOR').AsString);
+      ClearSelected;
+      Exit;
+    end;
+  end;
+  if (Abs(DataModuleItems.SelectedQUANTITY) < DataSource.DataSet.FieldByName('MINIMUM').AsFloat) then begin
+    ViewMessage.ShowBadMessagePlus('Количеството ('+FQuantity+') трябва да е по-голямо от '+DataSource.DataSet.FieldByName('MINIMUM').AsString);
+    ClearSelected;
+    Exit;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

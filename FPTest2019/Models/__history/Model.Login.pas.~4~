@@ -1,0 +1,122 @@
+unit Model.Login;
+
+interface
+
+uses
+  Interfaces.Model.Login;
+
+  function CreateModelLogin: IModelLogin;
+
+implementation
+
+type
+  TModelLogin = class(TInterfacedObject, IModelLogin)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FIsLoggedIn: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetIsLoggedIn: Boolean;
+    procedure SetIsLoggedIn(AValue: Boolean);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property IsLoggedIn: Boolean read GetIsLoggedIn write SetIsLoggedIn;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure Logout;
+    procedure TryLogin(APassword: String);
+    function IsLoggedIn: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelLogin: IModelLogin;
+begin
+  Result := TModelLogin.Create;
+end;
+
+{ TModelLogin }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelLogin.GetIsLoggedIn: Boolean;
+begin
+  Result := FIsLoggedIn;
+end;
+
+procedure TModelLogin.SetIsLoggedIn(AValue: Boolean);
+begin
+  FIsLoggedIn := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelLogin.Logout;
+begin
+//
+end;
+
+procedure TModelLogin.TryLogin(APassword: String);
+begin
+//
+end;
+
+function TModelLogin.IsLoggedIn: Boolean;
+begin
+  Result :=
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

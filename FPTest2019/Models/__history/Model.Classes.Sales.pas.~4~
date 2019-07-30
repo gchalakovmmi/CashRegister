@@ -1,0 +1,167 @@
+unit Model.Classes.Sales;
+
+interface
+
+uses
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Sales;
+
+  function CreateModelClassSales: IModelClassSales;
+  procedure AssignDataSetModelClassSales(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Enums,
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale;
+
+type
+  TModelClassSales = class(TInterfacedObject, IModelClassSales)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    FList: TList<IModelClassSale>;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassSale>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassSale> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassSales: IModelClassSales;
+begin
+  Result := TModelClassSales.Create;
+end;
+
+procedure AssignDataSetModelClassSales(const ADataSet: TFDDataSet);
+begin
+  TModelClassSales.DataSet := ADataSet;
+end;
+
+{ TModelClassSales }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassSales.GetList: TList<IModelClassSale>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassSales.UpdateFromDataSet;
+var
+  LSale: IModelClassSale;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LSale in List do begin
+      if LSale.GID = DataSet.FieldByName('gid').Value then begin
+        LSale.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LSale := CreateFromDataSetModelClassSale;
+      List.Add(LSale);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassSales.UpdateInDataSet;
+var
+  LSale: IModelClassSale;
+begin
+  for LSale in List do begin
+    LSale.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassSales.ToJSON: TJSONArray;
+var
+  LSale: IModelClassSale;
+begin
+  Result := TJSONArray.Create;
+  for LSale in List do begin
+    Result.Add(LSale.ToJSON);
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassSales.Create;
+begin
+  inherited;
+  FList := TList<IModelClassSale>.Create;
+end;
+
+destructor TModelClassSales.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.
+

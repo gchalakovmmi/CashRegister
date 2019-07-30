@@ -1,0 +1,55 @@
+unit Interfaces.ViewModel.Sale;
+
+interface
+
+uses
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Sale;
+
+type
+  IViewModelSale = interface
+  ['{26250A25-100F-4E15-9316-92CFEC85941E}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelSale;
+    procedure SetModel(const Value: IModelSale);
+    property Model: IModelSale read GetModel write SetModel;
+
+    procedure SetupSale;
+    procedure TeardownSale;
+
+    function GetGUISetupRecord(const AClientWidth, AClientHeight: Integer): TViewSaleGUISetupRecord;
+    function GetGUIActionsRecord: TViewSaleGUIActionsRecord;
+    function GetGUIRecord: TViewSaleGUIRecord;
+
+    procedure ActionExitExecute;
+    procedure ActionVoucherPaymentExecute;
+    procedure ActionCardPaymentExecute;
+    procedure ActionPaymentExecute;
+    procedure ActionRemoveItemExecute;
+    procedure ActionCheckItemExecute;
+    procedure ActionSaveAndNewExecute;
+    procedure ActionDiscardExecute;
+
+    procedure EditShowEnter;
+    procedure GridEnter;
+    procedure GridKeyPress(var Key: Char);
+    procedure EditTotalEnter;
+    procedure EditCashPaymentEnter;
+    procedure EditCashPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditVoucherPaymentEnter;
+    procedure EditVoucherPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditCardPaymentEnter;
+    procedure EditCardPaymentKeyPress(var Key: Char; const AText: String);
+    procedure EditCardPaymentExit(const AText: String);
+    procedure EditReturnedEnter;
+  end;
+
+implementation
+
+end.
