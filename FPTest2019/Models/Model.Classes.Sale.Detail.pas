@@ -41,7 +41,9 @@ uses
   Globals,
   Model.Generator.GIDs,
   Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversal,
   Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Reversal,
   View.Message;
 
 type
@@ -244,6 +246,7 @@ type
     function ToJSON: TJSONObject;
     function ToSaleDuplication: IModelClassSaleDetail;
     function ToSaleCancellation: IModelClassSaleCancellation;
+    function ToSaleReversal: IModelClassSaleReversal;
   {$ENDREGION}
 
 
@@ -893,6 +896,39 @@ begin
   Result.VATRate := VATRate;
   Result.TotalVAT := FormatFloat('0.00', -TotalVAT.ToDouble);
   Result.Total := FormatFloat('0.00', -Total.ToDouble);
+end;
+
+function TModelClassSaleDetail.ToSaleReversal: IModelClassSaleReversal;
+begin
+  Result := CreateModelClassSaleReversal;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SaleReversalGID').ToString;
+  Result.ParentGID := ParentGID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := '';
+  Result.UserGID := G.UserGID.ToString;
+  Result.CompletedDate := '';
+  Result.CompletedTime := '';
+  Result.ReversalDate := FormatDateTime('dd-mm-yy', Date);
+  Result.ReversalTime := FormatDateTime('hh:mm:ss', Time);
+  Result.ItemGID := ItemGID;
+  Result.BarCode := BarCode;
+  Result.BaseItemName := BaseItemName;
+  Result.PackCoeff := PackCoeff;
+  Result.ItemName := ItemName;
+  Result.Measure := Measure;
+  Result.Quantity := Quantity;
+  Result.VendorPrice := VendorPrice;
+  Result.ClientSurcharge := ClientSurcharge;
+  Result.PackDiscount := PackDiscount;
+  Result.ClientPrice := FormatFloat('0.00', +ClientPrice.ToDouble);
+  Result.ClientPriceBase := FormatFloat('0.00', +ClientPriceBase.ToDouble);
+  Result.Price := FormatFloat('0.00', +Price.ToDouble);
+  Result.DiscountValue := FormatFloat('0.00', +DiscountValue.ToDouble);
+  Result.DiscountType := DiscountType;
+  Result.TotalBase := FormatFloat('0.00', +TotalBase.ToDouble);
+  Result.VATRate := VATRate;
+  Result.TotalVAT := FormatFloat('0.00', +TotalVAT.ToDouble);
+  Result.Total := FormatFloat('0.00', +Total.ToDouble);
 end;
 
 {$ENDREGION}

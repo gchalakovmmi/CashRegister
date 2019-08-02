@@ -74,8 +74,6 @@ type
   public
     function GetGUIRecord: TViewReportsGUIRecord;
 
-    procedure XReport;
-    procedure ZReport;
     procedure PReport(const APeriodStart, APeriodFinish: TDate);
   {$ENDREGION}
 
@@ -147,16 +145,6 @@ function TViewModelReports.GetGUIRecord: TViewReportsGUIRecord;
 begin
   Result.DatePickerPeriodStartDate := DateOf(StartOfTheMonth(StartOfTheMonth(Date)-1));
   Result.DatePickerPeriodFinishDate := DateOf(StartOfTheMonth(Date)-1);
-end;
-
-procedure TViewModelReports.XReport;
-begin
-  Model.XReport;
-end;
-
-procedure TViewModelReports.ZReport;
-begin
-  Model.ZReport;
 end;
 
 procedure TViewModelReports.PReport(const APeriodStart, APeriodFinish: TDate);

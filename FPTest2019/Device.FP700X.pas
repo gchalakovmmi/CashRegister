@@ -19,7 +19,8 @@ uses
   FP3530_TLB,
   Interfaces.Model.Classes.Sale,
   Interfaces.Model.Classes.Sale.Detail,
-  Interfaces.Model.Classes.Sale.Cancellation;
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversal;
 
 type
   TDeviceFP700X = class(TForm, IObservable)
@@ -50,6 +51,9 @@ type
     procedure DrawerKickOut;
     procedure CloseFiscalReceipt;
     procedure CancelFiscalReceipt;
+
+    procedure OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
+
 
   {$ENDREGION}
 
@@ -110,6 +114,14 @@ type
     procedure Totals(const ASale: IModelClassSale);
     procedure CloseSale(const ASale: IModelClassSale);
     procedure DiscardSale(const ASale: IModelClassSale);
+    procedure DuplicateReceipt;
+
+    procedure OpenReversal(const ASale: IModelClassSale);
+    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+    procedure TotalsOnReversal(const ASaleReversal: IModelClassSaleReversal);
+    procedure CloseReversal(const ASale: IModelClassSale);
+    procedure DiscardReversal(const ASale: IModelClassSale);
+
   {$ENDREGION}
 
 
@@ -387,25 +399,6 @@ begin
     Discount_Value := ADiscountValue; //
     Department := '0';                //
     Measure := AMeasure;
-//    ShowMessage(
-//      ' | '+
-//      TextRow1
-//      +' | '+
-//      TaxGroup
-//      +' | '+
-//      SinglePrice
-//      +' | '+
-//      Quantity
-//      +' | '+
-//      Discount_Type
-//      +' | '+
-//      Discount_Value
-//      +' | '+
-//      Department
-//      +' | '+
-//      Measure
-//      +' | '
-//    );
     LResult := Model_FP700X.execute_049_receipt_Sale_Un(
       FP700X,                     //
       TextRow1,                   //
@@ -633,6 +626,89 @@ begin
     SendNotification([actFiscalDeviceAfterCancelFiscalCheck]);
 	end;
 end;
+
+procedure TDeviceFP700X.DuplicateReceipt;
+var
+  ErrorCode: WideString;      //
+
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  SendNotification([actFiscalDeviceBeforeDuplicateReceipt]);
+	try
+    if
+      Model_FP700X.execute_109_receipt_Print_Duplicate(
+        FP700X,           //
+        ErrorCode        //
+      ) <> 0
+    then begin
+      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+      SendNotification([actFiscalDeviceErrorDuplicateReceipt]);
+    end;
+	finally
+    SendNotification([actFiscalDeviceAfterDuplicateReceipt]);
+	end;
+end;
+
+
+procedure TDeviceFP700X.OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
+var
+  ErrorCode: WideString;         //
+  SlipNumber: WideString;        //
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  SendNotification([actFiscalDeviceBeforeOpenReversalCheck]);
+	try
+    ShowMessage(
+      ' | '+
+      AOperatorNumber
+      +' | '+
+      AOperatorPassword
+      +' | '+
+      ATillNumber
+      +' | '+
+      '1'
+      +' | '+
+      ADocNumber
+      +' | '+
+      ADocDateTime
+      +' | '+
+      AFiscalDeviceID
+      +' | '+
+      ''
+      +' | '+
+      ''
+      +' | '+
+      AUNP
+      +' | '
+    );
+    if
+      Model_FP700X.execute_043_receipt_StornoOpen_C01(
+        FP700X,           //
+        AOperatorNumber,  //
+        AOperatorPassword,//
+        ATillNumber,      //
+        '1',              //
+        ADocNumber,       //
+        ADocDateTime,     //
+        AFiscalDeviceID,  //
+        '',               //
+        '',               //
+        AUNP,             //
+        ErrorCode,        //
+        SlipNumber        //
+      ) <> 0
+    then begin
+      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+      SendNotification([actFiscalDeviceErrorOpenReversalCheck]);
+    end;
+	finally
+    SendNotification([actFiscalDeviceAfterOpenReversalCheck]);
+	end;
+end;
+
+
 
 {$ENDREGION}
 
@@ -925,12 +1001,6 @@ begin
 	finally
     SendNotification([actFiscalDeviceAfterPReport]);
 	end;
-//  OpenFiscalReceipt;
-//  PrintFiscalText('---');
-//  SellItem('œÓ·‡', '2.000', '0.01');
-//  Total('0', '0.02', '');
-//  DrawerKickOut;
-//  CloseFiscalReceipt;
 end;
 
 
@@ -1067,6 +1137,79 @@ procedure TDeviceFP700X.DiscardSale(const ASale: IModelClassSale);
 begin
   CancelFiscalReceipt;
 end;
+
+
+procedure TDeviceFP700X.OpenReversal(const ASale: IModelClassSale);
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  // Open Fiscal Check
+  OpenReversalReceipt(
+    ASale.UserGID,
+    '0000',
+    ASale.WorkstationID,
+    ASale.SaleID,
+    ASale.CreatedDate + ' ' + ASale.CreatedTime + ' DST',
+    ASale.FiscalDeviceID,
+    ASale.SaleUniqueID
+  );
+
+  // Print Cashier Info
+  PrintFiscalText(' ¿—»≈–: ' + G.UserName + '      ¿—¿: ' + ASale.WorkstationID);
+
+  // Print Separator
+  PrintSeparatingLine;
+end;
+
+procedure TDeviceFP700X.RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+var
+  LSubTotalBefore: WideString;
+  LSubTotalAfter: WideString;
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  SubTotal(LSubTotalBefore);
+
+  SellItem(
+    ASaleReversal.ItemName,
+    '2',
+    ASaleReversal.ClientPrice,
+    ASaleReversal.Quantity,
+    ASaleReversal.DiscountType,
+    ASaleReversal.DiscountValue,
+    ASaleReversal.Measure
+  );
+
+  SubTotal(LSubTotalAfter);
+
+  if LSubTotalAfter = LSubTotalBefore then begin
+    ViewMessage.ShowBadMessagePlus('—“Œ–Õ»–¿Õ≈“Œ Õ≈ ≈ ‘»— ¿À»«»–¿ÕŒ . . .');
+  end;
+end;
+
+procedure TDeviceFP700X.TotalsOnReversal(const ASaleReversal: IModelClassSaleReversal);
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  Total('0', ASaleReversal.Total, '');
+end;
+
+procedure TDeviceFP700X.CloseReversal(const ASale: IModelClassSale);
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  // Open Till
+  DrawerKickOut;
+
+  // Close Fiscal Check
+  CloseFiscalReceipt;
+end;
+
+procedure TDeviceFP700X.DiscardReversal(const ASale: IModelClassSale);
+begin
+  CancelFiscalReceipt;
+end;
+
 
 {$ENDREGION}
 

@@ -40,6 +40,7 @@ type
       ActionCheckItem: TAction;
       ActionSaveAndNew: TAction;
       ActionDiscard: TAction;
+      ActionDuplicateReceipt: TAction;
 
     TimerClose: TTimer;
 
@@ -52,6 +53,7 @@ type
       ButtonCheckItem: TButton;
       ButtonSaveAndNew: TButton;
       ButtonDiscard: TButton;
+      ButtonDuplicateReceipt: TButton;
 
     PanelShow: TPanel;
       EditShow: TDBEdit;
@@ -87,6 +89,7 @@ type
     procedure ActionCheckItemExecute(Sender: TObject);          // F9
     procedure ActionSaveAndNewExecute(Sender: TObject);         // F10
     procedure ActionDiscardExecute(Sender: TObject);            // Ctrl+F11
+    procedure ActionDuplicateReceiptExecute(Sender: TObject);   // Alt+F12
 
     procedure EditShowEnter(Sender: TObject);
     procedure GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -193,6 +196,7 @@ begin
   Action := caFree;
 end;
 
+
 // Actions
 
 procedure TViewSale.ActionExitExecute(Sender: TObject);
@@ -235,6 +239,11 @@ begin
   ViewModel.ActionDiscardExecute;
 end;
 
+procedure TViewSale.ActionDuplicateReceiptExecute(Sender: TObject);
+begin
+  ViewModel.ActionDuplicateReceiptExecute;
+end;
+
 
 // Edit Controls
 
@@ -247,6 +256,9 @@ procedure TViewSale.GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataC
 begin
   with (Sender as TDBGrid) do begin
     if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'ItemName') then begin
+      Canvas.Font.Style := [fsBold, fsStrikeOut];
+    end;
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'Total') then begin
       Canvas.Font.Style := [fsBold, fsStrikeOut];
     end;
     DefaultDrawColumnCell(Rect, DataCol, Column, State);
@@ -394,6 +406,9 @@ begin
   ButtonDiscard.Left := LViewSaleGUISetupRecord.ButtonDiscardLeft;
   ButtonDiscard.Width := LViewSaleGUISetupRecord.ButtonDiscardWidth;
 
+  ButtonDuplicateReceipt.Left := LViewSaleGUISetupRecord.ButtonDuplicateReceiptLeft;
+  ButtonDuplicateReceipt.Width := LViewSaleGUISetupRecord.ButtonDuplicateReceiptWidth;
+
   // Panel Show
   EditShow.Left := LViewSaleGUISetupRecord.EditShowLeft;
   EditShow.Width := LViewSaleGUISetupRecord.EditShowWidth;
@@ -452,6 +467,7 @@ begin
   ActionCheckItem.Enabled := False;
   ActionSaveAndNew.Enabled := False;
   ActionDiscard.Enabled := False;
+  ActionDuplicateReceipt.Enabled := False;
 
   LabelMinVIP.Visible := False;
 end;
@@ -470,6 +486,7 @@ begin
   ActionCheckItem.Enabled := LViewSaleGUIActionsRecord.ActionCheckItemEnabled;
   ActionSaveAndNew.Enabled := LViewSaleGUIActionsRecord.ActionSaveAndNewEnabled;
   ActionDiscard.Enabled := LViewSaleGUIActionsRecord.ActionDiscardEnabled;
+  ActionDuplicateReceipt.Enabled := LViewSaleGUIActionsRecord.ActionDuplicateReceiptEnabled;
   LabelMinVIP.Visible := LViewSaleGUIActionsRecord.LabelMinVIPVisible;
 
   UpdateGUI;

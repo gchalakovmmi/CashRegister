@@ -20,11 +20,6 @@ uses
 
 type
   TViewReports = class(TForm, IObserver, IObservable)
-    GroupBoxDailyReports: TGroupBox;
-      ButtonXReport: TButton;
-      ButtonZReport: TButton;
-
-    GroupBoxPeriodReport: TGroupBox;
       LabelPeriodStart: TLabel;
       DatePickerPeriodStart: TDatePicker;
       LabelPeriodFinish: TLabel;
@@ -34,8 +29,6 @@ type
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ButtonXReportClick(Sender: TObject);
-    procedure ButtonZReportClick(Sender: TObject);
     procedure ButtonPeriodReportClick(Sender: TObject);
   {$ENDREGION}
 
@@ -119,16 +112,6 @@ end;
 procedure TViewReports.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
-end;
-
-procedure TViewReports.ButtonXReportClick(Sender: TObject);
-begin
-  ViewModel.XReport;
-end;
-
-procedure TViewReports.ButtonZReportClick(Sender: TObject);
-begin
-  ViewModel.ZReport;
 end;
 
 procedure TViewReports.ButtonPeriodReportClick(Sender: TObject);

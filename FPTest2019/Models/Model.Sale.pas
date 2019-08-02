@@ -78,6 +78,7 @@ type
     procedure Totals;
     procedure DiscardSale;
     procedure CloseSale;
+    procedure DuplicateReceipt;
 
     // Sale's Payments Updates
     procedure UpdateSaleDue(const ADueDelta: String);
@@ -241,18 +242,6 @@ begin
 
       // Store in Model
       FSale.RegistrationOfSale(LSaleDetail);
-    end else begin
-      // Fiscalization
-//      DeviceFP700X.RegistrationOfDiscount(LSaleDetail);
-
-       // Update Due
-//      UpdateSaleDue(LSaleDetail.Total);
-
-      // Store in MemTable
-//      DataModuleSale.RegistrationOfDiscount(FSaleDetail);
-
-      // Store in Model
-//      FSale.RegistrationOfDiscount(FSaleDetail);
     end;
   end;
 end;
@@ -296,8 +285,6 @@ begin
   if not Assigned(LCurrentSaleDetail) then Exit;
   LSaleCancellation := LCurrentSaleDetail.ToSaleCancellation;
 
-//  GetCurrentItemForCancelation;
-
   if ItemIsValidForCancellation(LSaleCancellation) then begin
     // Fiscalization
     DeviceFP700X.RegistrationOfCancelation(LSaleCancellation);
@@ -312,6 +299,8 @@ begin
     LCurrentSaleDetail.IsCancelled := 'да';
     LCurrentSaleDetail.UpdateInDataSet;
     FSale.RegistrationOfCancelation(LSaleCancellation);
+
+    DataModuleSale.FDMemTableSaleDetails.Last;
   end;
 end;
 
@@ -349,6 +338,12 @@ begin
 
   // Discard in Model
   FSale.DiscardSale;
+end;
+
+procedure TModelSale.DuplicateReceipt;
+begin
+  // Duplicate in Fiscal Device
+  DeviceFP700X.DuplicateReceipt;
 end;
 
 

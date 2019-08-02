@@ -10,7 +10,8 @@ uses
   function CreateModelClassSale: IModelClassSale;
   function CreateFromDataSetModelClassSale: IModelClassSale;
   function CreateFromJSONModelClassSale(const AJSONObject: TJSONObject): IModelClassSale;
-  function CreateFromFileModelClassSale(const AFileName: String): IModelClassSale;
+  function CreateFromFileModelClassSale(const AFileName: String): IModelClassSale; overload;
+  function CreateFromFileModelClassSale(const AGID, ACreatedDate: String): IModelClassSale; overload;
   procedure AssignDataSetModelClassSale(const ADataSet: TFDDataSet);
 
 implementation
@@ -27,12 +28,16 @@ uses
   Interfaces.Model.Classes.Sale.Detail,
   Interfaces.Model.Classes.Sale.Cancellations,
   Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversals,
+  Interfaces.Model.Classes.Sale.Reversal,
   Interfaces.Model.Classes.Sale.Payments,
   Interfaces.Model.Classes.Sale.Payment,
   Model.Classes.Sale.Details,
   Model.Classes.Sale.Detail,
   Model.Classes.Sale.Cancellations,
   Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Reversals,
+  Model.Classes.Sale.Reversal,
   Model.Classes.Sale.Payments,
   Model.Classes.Sale.Payment,
   Bde.DBTables, View.Message;
@@ -51,11 +56,13 @@ type
   private
     procedure AddDetail(const ASaleDetail: IModelClassSaleDetail);
     procedure AddCancellation(const ASaleCancellation: IModelClassSaleCancellation);
+    procedure AddReversal(const ASaleReversal: IModelClassSaleReversal);
     procedure AddPayment(const ASalePayment: IModelClassSalePayment);
     function GenerateCashPayment: IModelClassSalePayment;
     function GenerateVoucherPayment: IModelClassSalePayment;
     function GenerateCardPayment: IModelClassSalePayment;
     function GenerateReturnedPayment: IModelClassSalePayment;
+    function GenerateReversalPayment(const ASaleReversal: IModelClassSaleReversal): IModelClassSalePayment;
     procedure SaveToFile;
     procedure ExecSQL(const ASQL: String);
   {$ENDREGION}
@@ -97,6 +104,7 @@ type
 
     FDetails: IModelClassSaleDetails;
     FCancellations: IModelClassSaleCancellations;
+    FReversals: IModelClassSaleReversals;
     FPayments: IModelClassSalePayments;
   {$ENDREGION}
 
@@ -181,6 +189,8 @@ type
     procedure SetDetails(const AValue: IModelClassSaleDetails);
     function GetCancellations: IModelClassSaleCancellations;
     procedure SetCancellations(const AValue: IModelClassSaleCancellations);
+    function GetReversals: IModelClassSaleReversals;
+    procedure SetReversals(const AValue: IModelClassSaleReversals);
     function GetPayments: IModelClassSalePayments;
     procedure SetPayments(const AValue: IModelClassSalePayments);
   {$ENDREGION}
@@ -256,6 +266,8 @@ type
     property Details: IModelClassSaleDetails read GetDetails write SetDetails;
     ///<sumarry>данни за анулиранията по продажбата</summary>
     property Cancellations: IModelClassSaleCancellations read GetCancellations write SetCancellations;
+    ///<sumarry>данни за сторниранията по продажбата</summary>
+    property Reversals: IModelClassSaleReversals read GetReversals write SetReversals;
     ///<sumarry>данни за плащанията по продажбата</summary>
     property Payments: IModelClassSalePayments read GetPayments write SetPayments;
   {$ENDREGION}
@@ -276,6 +288,8 @@ type
     procedure Totals;
     procedure CloseSale;
     procedure DiscardSale;
+
+    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
   {$ENDREGION}
 
   {$REGION 'Constructors/Destructors'}
@@ -310,6 +324,20 @@ begin
   Result := CreateFromJSONModelClassSale(TJSONObject.ParseJSONValue(LText) as TJSONObject);
 end;
 
+function CreateFromFileModelClassSale(const AGID, ACreatedDate: String): IModelClassSale; overload;
+var
+  LFolderName: String;
+  LFileName: String;
+begin
+  LFolderName := G.SalesFolder;
+  LFolderName := TPath.Combine(LFolderName, '20'+ACreatedDate.Substring(6,2));
+  LFolderName := TPath.Combine(LFolderName, ACreatedDate.Substring(3,2));
+  LFolderName := TPath.Combine(LFolderName, ACreatedDate.Substring(0,2));
+  LFileName := TPath.Combine(LFolderName, 'Sale'+AGID+'.json');
+  Result := CreateFromFileModelClassSale(LFileName);
+end;
+
+
 procedure AssignDataSetModelClassSale(const ADataSet: TFDDataSet);
 begin
   TModelClassSale.DataSet := ADataSet;
@@ -327,6 +355,12 @@ end;
 procedure TModelClassSale.AddCancellation(const ASaleCancellation: IModelClassSaleCancellation);
 begin
   Cancellations.List.Add(ASaleCancellation);
+  Stage := 'налични продажби';
+end;
+
+procedure TModelClassSale.AddReversal(const ASaleReversal: IModelClassSaleReversal);
+begin
+  Reversals.List.Add(ASaleReversal);
   Stage := 'налични продажби';
 end;
 
@@ -400,6 +434,23 @@ begin
   Result.PaymentDate := CreatedDate;
   Result.PaymentType := 'returned';
   Result.Payment := Returned;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+function TModelClassSale.GenerateReversalPayment(const ASaleReversal: IModelClassSaleReversal): IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'cash reversal';
+  Result.Payment := ASaleReversal.Total;
   Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
   Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
 end;
@@ -790,6 +841,16 @@ begin
   FCancellations := AValue;
 end;
 
+function TModelClassSale.GetReversals: IModelClassSaleReversals;
+begin
+  Result := FReversals;
+end;
+
+procedure TModelClassSale.SetReversals(const AValue: IModelClassSaleReversals);
+begin
+  FReversals := AValue;
+end;
+
 function TModelClassSale.GetPayments: IModelClassSalePayments;
 begin
   Result := FPayments;
@@ -922,6 +983,7 @@ begin
   Result.AddPair('Stage', Stage);
   Result.AddPair('Details', Details.ToJSON);
   Result.AddPair('Cancellations', Cancellations.ToJSON);
+  Result.AddPair('Reversals', Reversals.ToJSON);
   Result.AddPair('Payments', Payments.ToJSON);
 end;
 
@@ -1206,18 +1268,29 @@ begin
   CreatedDate := FormatDateTime('dd-mm-yy', Date);
   CreatedTime := FormatDateTime('hh:mm:ss', Time);
   Stage := 'отворена';
+  SaveToFile;
 end;
 
 procedure TModelClassSale.RegistrationOfSale(const ASaleDetail: IModelClassSaleDetail);
 begin
   AddDetail(ASaleDetail);
   Stage := 'налични продажби';
+  SaveToFile;
 end;
 
 procedure TModelClassSale.RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
 begin
   AddCancellation(ASaleCancellation);
   Stage := 'налични продажби';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+begin
+  AddReversal(ASaleReversal);
+  Stage := 'налични продажби';
+  AddPayment(GenerateReversalPayment(ASaleReversal));
+  SaveToFile;
 end;
 
 procedure TModelClassSale.Totals;
@@ -1273,6 +1346,7 @@ begin
   inherited;
   Details := CreateModelClassSaleDetails;
   Cancellations := CreateModelClassSaleCancellations;
+  Reversals := CreateModelClassSaleReversals;
   Payments := CreateModelClassSalePayments;
 end;
 
@@ -1313,6 +1387,7 @@ begin
 
   Details := CreateFromJSONModelClassSaleDetails(AJSONObject.GetValue('Details') as TJSONArray);
   Cancellations := CreateFromJSONModelClassSaleCancellations(AJSONObject.GetValue('Cancellations') as TJSONArray);
+  Reversals := CreateFromJSONModelClassSaleReversals(AJSONObject.GetValue('Reversals') as TJSONArray);
   Payments := CreateFromJSONModelClassSalePayments(AJSONObject.GetValue('Payments') as TJSONArray);
 end;
 

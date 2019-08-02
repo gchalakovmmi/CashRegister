@@ -10,7 +10,9 @@ uses
 implementation
 
 uses
+  System.UITypes,
   System.SysUtils,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Interfaces.Enums,
   Interfaces.GUIRecords,
@@ -30,7 +32,7 @@ uses
   View.CashIn,
   View.CashOut,
   View.SelectSale,
-  View.Reports;
+  View.Reports, Device.FP700X;
 
 type
   TViewModelMain = class(TInterfacedObject, IViewModelMain, IObserver, IObservable)
@@ -211,17 +213,21 @@ end;
 
 procedure TViewModelMain.XReport;
 begin
-
+  if  MessageDlg('ЖЕЛАЕТЕ ЛИ ПРИКЛЮЧВАНЕ БЕЗ НУЛИРАНЕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
+    DeviceFP700X.XReport;
+  end;
 end;
 
 procedure TViewModelMain.PReport;
 begin
-
+  ShowViewReports;
 end;
 
 procedure TViewModelMain.ZReport;
 begin
-
+  if  MessageDlg('ЖЕЛАЕТЕ ЛИ ПРИКЛЮЧВАНЕ С НУЛИРАНЕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
+    DeviceFP700X.ZReport;
+  end;
 end;
 
 procedure TViewModelMain.Audit;

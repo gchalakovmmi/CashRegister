@@ -8,6 +8,8 @@ uses
   Interfaces.Model.Classes.Sale.Detail,
   Interfaces.Model.Classes.Sale.Cancellations,
   Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversals,
+  Interfaces.Model.Classes.Sale.Reversal,
   Interfaces.Model.Classes.Sale.Payments,
   Interfaces.Model.Classes.Sale.Payment;
 
@@ -185,6 +187,11 @@ type
     ///<sumarry>данни за анулиранията по продажбата</summary>
     property Cancellations: IModelClassSaleCancellations read GetCancellations write SetCancellations;
 
+    function GetReversals: IModelClassSaleReversals;
+    procedure SetReversals(const AValue: IModelClassSaleReversals);
+    ///<sumarry>данни за сторниранията по продажбата</summary>
+    property Reversals: IModelClassSaleReversals read GetReversals write SetReversals;
+
     function GetPayments: IModelClassSalePayments;
     procedure SetPayments(const AValue: IModelClassSalePayments);
     ///<sumarry>данни за плащанията по продажбата</summary>
@@ -204,6 +211,8 @@ type
     procedure Totals;
     procedure CloseSale;
     procedure DiscardSale;
+
+    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
   end;
 
 implementation

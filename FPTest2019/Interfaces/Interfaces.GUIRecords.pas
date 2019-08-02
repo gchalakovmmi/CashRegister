@@ -39,6 +39,8 @@ type
     ButtonSaveAndNewWidth: Integer;
     ButtonDiscardLeft: Integer;
     ButtonDiscardWidth: Integer;
+    ButtonDuplicateReceiptLeft: Integer;
+    ButtonDuplicateReceiptWidth: Integer;
 
     // Panel Show
     EditShowLeft: Integer;
@@ -81,6 +83,7 @@ type
     ActionCheckItemEnabled: Boolean;
     ActionSaveAndNewEnabled: Boolean;
     ActionDiscardEnabled: Boolean;
+    ActionDuplicateReceiptEnabled: Boolean;
     LabelMinVIPVisible: Boolean;
   end;
 
@@ -90,6 +93,62 @@ type
     GridColor: TColor;
     EditReturnedFontColor: TColor;
     EditReturnedBrushColor: TColor;
+  end;
+
+  TViewReversalGUISetupRecord = record
+    // Form
+    Caption: String;
+    Color: TColor;
+    Top: Integer;
+    Left: Integer;
+    Width: Integer;
+    Height: Integer;
+
+    // Panel Buttons
+    ButtonExitLeft: Integer;
+    ButtonExitWidth: Integer;
+    ButtonRemoveItemLeft: Integer;
+    ButtonRemoveItemWidth: Integer;
+    ButtonCheckItemLeft: Integer;
+    ButtonCheckItemWidth: Integer;
+    ButtonSaveAndNewLeft: Integer;
+    ButtonSaveAndNewWidth: Integer;
+    ButtonDiscardLeft: Integer;
+    ButtonDiscardWidth: Integer;
+
+    // Panel Show
+    EditShowLeft: Integer;
+    EditShowWidth: Integer;
+
+    // Panel Grid
+    PanelGridWidth: Integer;
+    PanelGridHeight: Integer;
+    GridTop: Integer;
+    GridLeft: Integer;
+    GridHeight: Integer;
+    GridWidth: Integer;
+    GridColumns0Width: Integer;
+    GridColumns1Width: Integer;
+    GridColumns2Width: Integer;
+    GridColumns3Width: Integer;
+    GridColumns4Width: Integer;
+    GridColumns5Width: Integer;
+
+    // Panel Payment
+    LabelTotalLeft: Integer;
+    EditTotalLeft: Integer;
+  end;
+
+  TViewReversalGUIActionsRecord = record
+    ActionExitEnabled: Boolean;
+    ActionRemoveItemEnabled: Boolean;
+    ActionCheckItemEnabled: Boolean;
+    ActionSaveAndNewEnabled: Boolean;
+    ActionDiscardEnabled: Boolean;
+  end;
+
+  TViewReversalGUIRecord = record
+
   end;
 
   TViewSelectItemGUIRecord = record

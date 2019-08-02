@@ -35,6 +35,8 @@ type
     procedure ButtonExitClick(Sender: TObject);
     procedure ButtonReversalClick(Sender: TObject);
     procedure DatePickerChange(Sender: TObject);
+    procedure GridSaleDetailsDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -97,7 +99,8 @@ uses
   Model.Pattern.Observer.Observable,
   Interfaces.Enums,
   Interfaces.GUIRecords,
-  ViewModel.SelectSale, DataModule.Sale;
+  ViewModel.SelectSale,
+  DataModule.Sale;
 
 {$R *.dfm}
 
@@ -117,7 +120,7 @@ begin
 
   DatePicker.Date := Date;
 
-  ViewModel.RefreshData;
+  ViewModel.DatePickerChange(Date);
 
   UpdateGUI;
 end;
@@ -142,6 +145,19 @@ end;
 procedure TViewSelectSale.DatePickerChange(Sender: TObject);
 begin
   ViewModel.DatePickerChange(DatePicker.Date);
+end;
+
+procedure TViewSelectSale.GridSaleDetailsDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  with (Sender as TDBGrid) do begin
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'ItemName') then begin
+      Canvas.Font.Style := [fsStrikeOut];
+    end;
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'Total') then begin
+      Canvas.Font.Style := [fsStrikeOut];
+    end;
+    DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
 end;
 
 {$ENDREGION}

@@ -104,6 +104,7 @@ type
     procedure ActionCheckItemExecute;
     procedure ActionSaveAndNewExecute;
     procedure ActionDiscardExecute;
+    procedure ActionDuplicateReceiptExecute;
 
     // Edit Actions
     procedure EditShowEnter;
@@ -229,8 +230,8 @@ begin
   LGapWidth := 3;
   repeat
     LGapWidth := LGapWidth + 1;
-    LButtonWidth := (LWidth - 8 * LGapWidth) div 8;
-  until ((LButtonWidth * 8 + LGapWidth * 8) = LWidth);
+    LButtonWidth := (LWidth - 8 * LGapWidth) div 9;
+  until ((LButtonWidth * 9 + LGapWidth * 8) = LWidth);
 
   Result.ButtonExitLeft := 8;
   Result.ButtonExitWidth := LButtonWidth;
@@ -255,6 +256,9 @@ begin
 
   Result.ButtonDiscardLeft := Result.ButtonSaveAndNewLeft + Result.ButtonSaveAndNewWidth + LGapWidth;
   Result.ButtonDiscardWidth := LButtonWidth;
+
+  Result.ButtonDuplicateReceiptLeft := Result.ButtonDiscardLeft + Result.ButtonDiscardWidth + LGapWidth;
+  Result.ButtonDuplicateReceiptWidth := LButtonWidth;
 
   // Panel Show
   Result.EditShowLeft := 8;
@@ -301,6 +305,7 @@ begin
   Result.ActionCheckItemEnabled := True;
   Result.ActionSaveAndNewEnabled := FInSale and ((not FVIPSale) or (FVIPSale and (Model.Sale.Due.ToDouble >= G.MinVIPSale)));
   Result.ActionDiscardEnabled := FInSale;
+  Result.ActionDuplicateReceiptEnabled := not FInSale;
   Result.LabelMinVIPVisible := FVIPSale and (Model.Sale.Due.ToDouble < G.MinVIPSale);
 end;
 
@@ -370,6 +375,7 @@ begin
   Model.RegistrationOfCancellation;
   SendNotification([actSaleActiveControlGrid]);
   SendNotification([actSaleEnableActions]);
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelSale.ActionCheckItemExecute;
@@ -378,6 +384,7 @@ begin
   CheckItem;
   SendNotification([actSaleActiveControlGrid]);
   SendNotification([actSaleEnableActions]);
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelSale.ActionSaveAndNewExecute;
@@ -414,6 +421,7 @@ begin
   end;
 
   SendNotification([actSaleEnableActions]);
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelSale.ActionDiscardExecute;
@@ -430,6 +438,14 @@ begin
   end;
 end;
 
+
+procedure TViewModelSale.ActionDuplicateReceiptExecute;
+begin
+  SendNotification([actSaleDisableActions]);
+  Model.DuplicateReceipt;
+  SendNotification([actSaleActiveControlGrid]);
+  SendNotification([actSaleEnableActions]);
+end;
 
 // Edit Actions
 

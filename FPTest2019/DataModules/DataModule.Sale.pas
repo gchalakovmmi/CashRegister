@@ -20,9 +20,11 @@ uses
   Interfaces.Model.Classes.Sale,
   Interfaces.Model.Classes.Sale.Detail,
   Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversal,
   Interfaces.Model.Classes.Sale.Payment,
   Model.Classes.Sale.Detail,
   Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Reversal,
   Model.Classes.Sale.Payment;
 
 const
@@ -180,6 +182,7 @@ type
 
   {$REGION 'Interfaced Methods'}
   public
+    // Sale Actions
     procedure SetupSale(const ASale: IModelClassSale);
     procedure OpenSale(const ASale: IModelClassSale);
     procedure RegistrationOfSale(const ASaleDetail: IModelClassSaleDetail);
@@ -187,6 +190,13 @@ type
     procedure Totals(const ASale: IModelClassSale);
     procedure CloseSale(const ASale: IModelClassSale);
     procedure DiscardSale(const ASale: IModelClassSale);
+
+    // Reversal Actions
+    procedure SetupReversal(const ASale: IModelClassSale);
+//    procedure OpenReversal(const ASale: IModelClassSale);
+//    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+
+
 
     procedure UpdateSalePayments(const ASale: IModelClassSale);
 
@@ -282,7 +292,6 @@ end;
 
 procedure TDataModuleSale.OpenSale(const ASale: IModelClassSale);
 begin
-
   if FDMemTableSale.State in [dsEdit, dsInsert] then FDMemTableSale.Post;
   FDMemTableSale.Edit;
   FDMemTableSaleLastItemName.AsString := '';
@@ -303,9 +312,11 @@ end;
 
 procedure TDataModuleSale.RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
 begin
-  FDMemTableSaleCancellations.DisableControls;
-  ASaleCancellation.UpdateInDataSet;
-  FDMemTableSaleDetails.EnableControls;
+//  FDMemTableSaleCancellations.DisableControls;
+//  FDMemTableSaleDetails.DisableControls;
+//  ASaleCancellation.UpdateInDataSet;
+//  FDMemTableSaleCancellations.EnableControls;
+//  FDMemTableSaleDetails.EnableControls;
 
   if FDMemTableSale.State in [dsEdit, dsInsert] then FDMemTableSale.Post;
   FDMemTableSale.Edit;
@@ -369,6 +380,50 @@ begin
   FDMemTableSalePayments.EnableControls;
 end;
 
+
+
+procedure TDataModuleSale.SetupReversal(const ASale: IModelClassSale);
+begin
+  FDMemTableSale.DisableControls;
+  FDMemTableSale.Close;
+  FDMemTableSale.CreateDataSet;
+  ASale.UpdateInDataSet;
+  FDMemTableSale.EnableControls;
+  FDMemTableSale.First;
+
+  FDMemTableSaleDetails.DisableControls;
+  FDMemTableSaleDetails.Close;
+  FDMemTableSaleDetails.CreateDataSet;
+  FDMemTableSaleDetails.Filtered := False;
+  ASale.Details.UpdateInDataSet;
+  FDMemTableSaleDetails.EnableControls;
+  FDMemTableSaleDetails.First;
+end;
+
+//procedure TDataModuleSale.OpenReversal(const ASale: IModelClassSale);
+//begin
+//  if FDMemTableSale.State in [dsEdit, dsInsert] then FDMemTableSale.Post;
+//  FDMemTableSale.Edit;
+//  FDMemTableSaleLastItemName.AsString := '';
+//  FDMemTableSale.Post;
+//end;
+//
+//procedure TDataModuleSale.RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+//begin
+////  FDMemTableSaleDetails.DisableControls;
+////  ASaleReversal.UpdateInDataSet;
+////  FDMemTableSaleDetails.EnableControls;
+//
+//  if FDMemTableSale.State in [dsEdit, dsInsert] then FDMemTableSale.Post;
+//  FDMemTableSale.Edit;
+//  FDMemTableSaleLastItemName.AsString := ASaleReversal.ItemName;
+//  FDMemTableSale.Post;
+//end;
+//
+
+
+
+
 procedure TDataModuleSale.UpdateSalePayments(const ASale: IModelClassSale);
 begin
   if FDMemTableSale.State in [dsEdit, dsInsert] then FDMemTableSale.Post;
@@ -405,6 +460,8 @@ begin
   LList := TDirectory.GetFiles(LFolderName, 'Sale*.json', LSearchOption);
 
   { Populate the table with the results }
+  FDMemTableSaleDetails.Filtered := False;
+
   FDMemTableSale.DisableControls;
   FDMemTableSale.Close;
   FDMemTableSale.CreateDataSet;

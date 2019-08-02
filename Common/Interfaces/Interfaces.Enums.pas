@@ -20,6 +20,10 @@ type
     actSaleActiveControlEditReturned,
     actSaleActiveControlToggleEditCashPayment,
 
+    actReversalDisableActions,
+    actReversalEnableActions,
+    actReversalActiveControlGrid,
+
     actLoginSuccess,
     actLoginFail,
 
@@ -93,6 +97,16 @@ type
     actFiscalDeviceBeforeCancelFiscalCheck,
     actFiscalDeviceErrorCancelFiscalCheck,
     actFiscalDeviceAfterCancelFiscalCheck,
+
+    actFiscalDeviceBeforeDuplicateReceipt,
+    actFiscalDeviceErrorDuplicateReceipt,
+    actFiscalDeviceAfterDuplicateReceipt,
+
+
+    actFiscalDeviceBeforeOpenReversalCheck,
+    actFiscalDeviceErrorOpenReversalCheck,
+    actFiscalDeviceAfterOpenReversalCheck,
+
 
 
 

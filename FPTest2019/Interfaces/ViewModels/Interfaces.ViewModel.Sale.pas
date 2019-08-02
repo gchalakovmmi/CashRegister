@@ -35,6 +35,7 @@ type
     procedure ActionCheckItemExecute;
     procedure ActionSaveAndNewExecute;
     procedure ActionDiscardExecute;
+    procedure ActionDuplicateReceiptExecute;
 
     procedure EditShowEnter;
     procedure GridEnter;

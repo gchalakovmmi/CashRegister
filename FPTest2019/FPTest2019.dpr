@@ -105,7 +105,11 @@ uses
   Interfaces.ViewModel.CashOut in 'Interfaces\ViewModels\Interfaces.ViewModel.CashOut.pas',
   ViewModel.CashOut in 'ViewModels\ViewModel.CashOut.pas',
   Interfaces.Model.CashOut in 'Interfaces\Models\Interfaces.Model.CashOut.pas',
-  Model.CashOut in 'Models\Model.CashOut.pas';
+  Model.CashOut in 'Models\Model.CashOut.pas',
+  Model.Classes.Sale.Reversal in 'Models\Model.Classes.Sale.Reversal.pas',
+  Interfaces.Model.Classes.Sale.Reversal in 'Interfaces\Models\Interfaces.Model.Classes.Sale.Reversal.pas',
+  Model.Classes.Sale.Reversals in 'Models\Model.Classes.Sale.Reversals.pas',
+  Interfaces.Model.Classes.Sale.Reversals in 'Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas';
 
 {$R *.res}
 

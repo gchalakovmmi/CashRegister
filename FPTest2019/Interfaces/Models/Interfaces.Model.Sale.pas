@@ -27,6 +27,7 @@ type
     procedure Totals;
     procedure CloseSale;
     procedure DiscardSale;
+    procedure DuplicateReceipt;
 
     // Sale's Payments Updates
     procedure UpdateSaleDue(const ADueDelta: String);

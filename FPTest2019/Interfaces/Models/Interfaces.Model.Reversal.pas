@@ -2,10 +2,26 @@ unit Interfaces.Model.Reversal;
 
 interface
 
+uses
+  Interfaces.Model.Classes.Sale;
+
 type
   IModelReversal = interface
-  ['{D0B5D792-24A8-498B-89C2-3CBF942EE665}']
+  ['{4FFAE2F7-6FF3-4076-8B9A-F47331F3EBC5}']
+    function GetSale: IModelClassSale;
+    procedure SetSale(const AValue: IModelClassSale);
+    property Sale: IModelClassSale read GetSale write SetSale;
 
+    // Setup/Teardown
+    procedure SetupReversal;
+    procedure TeardownReversal;
+
+    // Reversal Actions
+    procedure OpenReversal;
+    procedure RegistrationOfReversal;
+    procedure Totals;
+    procedure DiscardReversal;
+    procedure CloseReversal;
   end;
 
 implementation

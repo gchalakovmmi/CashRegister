@@ -24,7 +24,9 @@ uses
   Model.Notification,
 
   Interfaces.Model.SelectSale,
-  Model.SelectSale, DataModule.Sale;
+  Model.SelectSale,
+  DataModule.Sale,
+  View.Reversal;
 
 type
   TViewModelSelectSale = class(TInterfacedObject, IViewModelSelectSale, IObservable)
@@ -147,10 +149,11 @@ begin
   SendNotification([actCloseForm]);
 end;
 
-{TODO -oOwner -cGeneral : ActionItem}
 procedure TViewModelSelectSale.ButtonReversalClick;
 begin
-//
+  ShowViewReversal;
+  DataModuleSale.RefreshData(FDate);
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelSelectSale.DatePickerChange(const ADate: TDate);

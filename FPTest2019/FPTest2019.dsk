@@ -1,47 +1,58 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\ViewModels\Interfaces.ViewModel.CashIn.pas',0,1,13,5,31,0,0,,
-File_1=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\ViewModels\Interfaces.ViewModel.CashOut.pas',0,1,1,42,5,0,0,,
-File_2=TSourceModule,'Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.CashIn.pas',0,1,146,1,160,0,0,,
-File_3=TSourceModule,'Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.CashOut.pas',0,1,174,1,175,0,0,{{33,2},{37,13},{'Private Methods'}}{{39,2},{44,13},{'Private Fields'}}{{46,2},{49,13},{'Private Properties Getters/Setters'}}{{51,2},{54,13},{'Private Properties'}}{{56,2},{63,13},{'Interfaced Properties Getters/Setters'}}{{65,2},{70,13},{'Interfaced Properties'}}{{72,2},{77,13},{'Interfaced Methods'}}{{88,0},{108,11},{'Private Methods'}}{{111,0},{113,11},{'Private Properties Getters/Setters'}}{{116,0},{138,11},{'Interfaced Properties Getters/Setters'}}{{180,0},{200,11},{'Constructors/Destructors'}},
-File_4=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.CashIn.pas',0,1,1,5,26,0,0,,
-File_5=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.CashOut.pas',0,1,1,30,1,0,0,,
-File_6=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.CashIn.pas',0,1,150,5,179,0,0,,
-File_7=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas',0,1,79,1,96,0,0,{{28,2},{31,13},{'Published Methods'}}{{33,2},{54,13},{'Private Methods'}}{{57,2},{63,13},{'Private Fields'}}{{66,2},{70,13},{'Private Properties Getters/Setters'}}{{73,2},{76,13},{'Private Properties'}}{{79,2},{83,13},{'Interfaced Properties Getters/Setters'}}{{86,2},{92,13},{'Interfaced Properties'}}{{116,2},{119,13},{'Constructors/Destructors'}}{{138,0},{154,11},{'Published Methods'}}{{157,0},{637,11},{'Private Methods'}}{{640,0},{652,11},{'Private Properties Getters/Setters'}}{{655,0},{667,11},{'Interfaced Properties Getters/Setters'}}{{1074,0},{1076,11},{'Constructors/Destructors'}},
-File_8=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.CashInOut.pas',0,1,84,1,152,0,0,{{24,2},{28,13},{'Private Methods'}}{{31,2},{36,13},{'Private Fields'}}{{39,2},{42,13},{'Private Properties Getters/Setters'}}{{45,2},{48,13},{'Private Properties'}}{{51,2},{57,13},{'Interfaced Properties Getters/Setters'}}{{60,2},{66,13},{'Interfaced Properties'}}{{69,2},{74,13},{'Interfaced Methods'}}{{77,2},{81,13},{'Constructors/Destructors'}}{{91,0},{116,11},{'Private Methods'}}{{119,0},{121,11},{'Private Properties Getters/Setters'}}{{124,0},{141,11},{'Interfaced Properties Getters/Setters'}}{{164,0},{183,11},{'Constructors/Destructors'}},
-File_9=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.CashOut.pas',0,1,169,19,1,0,0,,
-File_10=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.dfm',0,1,1,1,1,0,0,,
-File_11=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.dfm',0,1,1,1,1,0,0,,
-File_12=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.pas',0,1,1,1,1,0,0,,
-File_13=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.pas',0,1,1,1,1,0,0,,
-File_14=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.Sale.pas',0,1,210,30,220,0,0,,
+File_0=TSourceModule,'Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.SelectSale.pas',0,1,135,1,135,0,0,,
+File_1=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.pas',0,1,399,1,438,0,0,,
+File_2=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Reversal.pas',0,1,1,1,25,0,0,,
+File_3=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.pas',0,1,205,1,215,0,0,,
+File_4=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Sale.pas',0,1,181,1,181,0,0,{{29,2},{33,13},{'Private Methods'}}{{36,2},{39,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{48,2},{51,13},{'Private Properties'}}{{54,2},{57,13},{'Interfaced Properties Getters/Setters'}}{{60,2},{63,13},{'Interfaced Properties'}}{{66,2},{88,13},{'Interfaced Methods'}}{{91,2},{94,13},{'Constructors/Destructors'}}{{104,0},{136,11},{'Private Methods'}}{{139,0},{141,11},{'Private Properties Getters/Setters'}}{{144,0},{151,11},{'Interfaced Properties Getters/Setters'}}{{383,0},{385,11},{'Constructors/Destructors'}},
+File_5=TSourceModule,'Z:\!anet4\Sources\Common\Interfaces\Interfaces.Enums.pas',0,1,89,1,108,0,0,,
+File_6=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Detail.pas',0,1,150,14,163,0,0,,
+File_7=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Reversal.pas',0,1,192,1,209,0,0,{{31,2},{36,13},{'Class Properties'}}{{39,2},{42,13},{'Private Methods'}}{{45,2},{75,13},{'Private Fields'}}{{78,2},{81,13},{'Private Properties Getters/Setters'}}{{84,2},{87,13},{'Private Properties'}}{{90,2},{148,13},{'Interfaced Properties Getters/Setters'}}{{212,2},{218,13},{'Interfaced Methods'}}{{221,2},{224,13},{'Constructors/Destructors'}}{{251,0},{253,11},{'Private Methods'}}{{256,0},{258,11},{'Private Properties Getters/Setters'}}{{261,0},{543,11},{'Interfaced Properties Getters/Setters'}}{{546,0},{653,11},{'Interfaced Methods'}}{{656,0},{690,11},{'Constructors/Destructors'}},
+File_8=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Model_FP700X.pas',0,1,3929,1,3936,0,0,,
+File_9=TSourceModule,'Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Reversal.pas',0,1,263,1,284,0,0,,
+File_10=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Reversals.pas',0,1,162,6,179,0,0,{{25,2},{30,13},{'Class Properties'}}{{32,2},{35,13},{'Private Methods'}}{{37,2},{40,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{47,2},{50,13},{'Private Properties'}}{{52,2},{55,13},{'Interfaced Properties Getters/Setters'}}{{57,2},{60,13},{'Interfaced Properties'}}{{62,2},{67,13},{'Interfaced Methods'}}{{69,2},{74,13},{'Constructors/Destructors'}}{{94,0},{96,11},{'Private Methods'}}{{98,0},{100,11},{'Private Properties Getters/Setters'}}{{102,0},{109,11},{'Interfaced Properties Getters/Setters'}}{{111,0},{157,11},{'Interfaced Methods'}},
+File_11=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Reversal.pas',0,1,141,1,152,0,0,,
+File_12=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Cancellations.pas',0,1,4,17,6,0,0,{{25,2},{30,13},{'Class Properties'}}{{32,2},{35,13},{'Private Methods'}}{{37,2},{40,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{47,2},{50,13},{'Private Properties'}}{{52,2},{55,13},{'Interfaced Properties Getters/Setters'}}{{57,2},{60,13},{'Interfaced Properties'}}{{62,2},{67,13},{'Interfaced Methods'}}{{69,2},{74,13},{'Constructors/Destructors'}}{{94,0},{96,11},{'Private Methods'}}{{98,0},{100,11},{'Private Properties Getters/Setters'}}{{102,0},{109,11},{'Interfaced Properties Getters/Setters'}}{{111,0},{157,11},{'Interfaced Methods'}}{{159,0},{185,11},{'Constructors/Destructors'}},
+File_13=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Cancellations.pas',0,1,1,5,24,0,0,,
+File_14=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas',0,1,1,45,1,0,0,,
 
 [Modules]
-Module0=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Login.pas
-Module1=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Main.pas
-Module2=Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.pas
-Module3=Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.pas
-Count=4
+Module0=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
+Module1=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
+Module2=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
+Module3=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
+Module4=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
+Module5=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
+Count=6
 EditWindowCount=1
 
-[Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Login.pas]
+[Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Main.pas]
+[Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.pas]
+[Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.pas]
+[Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas]
+ModuleType=TSourceModule
+
+[Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas]
+ModuleType=TSourceModule
+
+[Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas]
 ModuleType=TSourceModule
 
 [EditWindow0]
-ViewCount=4
-CurrentEditView=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Login.pas
+ViewCount=7
+CurrentEditView=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
 View0=0
 View1=1
 View2=2
 View3=3
+View4=4
+View5=5
+View6=6
 PercentageSizes=1
 Create=1
 Visible=1
@@ -73,54 +84,88 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 
 [View0]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Main.pas
-CursorX=13
-CursorY=177
-TopLine=174
+Module=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
+CursorX=28
+CursorY=142
+TopLine=130
 LeftCol=1
-Elisions=
+Elisions={{32,2},{40,13},{'Published Methods'}}{{42,2},{47,13},{'Private Methods'}}{{49,2},{54,13},{'Private Fields'}}{{56,2},{59,13},{'Private Properties Getters/Setters'}}{{61,2},{64,13},{'Private Properties'}}{{66,2},{71,13},{'Interfaced Properties Getters/Setters'}}{{73,2},{78,13},{'Interfaced Properties'}}{{80,2},{83,13},{'Interfaced Methods'}}{{85,2},{88,13},{'Constructors/Destructors'}}{{166,0},{193,11},{'Private Methods'}}{{196,0},{198,11},{'Private Properties Getters/Setters'}}{{221,0},{223,11},{'Interfaced Methods'}}{{226,0},{228,11},{'Constructors/Destructors'}}
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Main.pas
+EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
 
 [View1]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Login.pas
+Module=Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Sale.pas
 CursorX=1
-CursorY=1
-TopLine=1
+CursorY=395
+TopLine=370
 LeftCol=1
-Elisions={{29,2},{32,13},{'Private Methods'}}{{34,2},{38,13},{'Private Fields'}}{{40,2},{43,13},{'Private Properties Getters/Setters'}}{{45,2},{48,13},{'Private Properties'}}{{50,2},{55,13},{'Interfaced Properties Getters/Setters'}}{{57,2},{61,13},{'Interfaced Properties'}}{{63,2},{67,13},{'Interfaced Methods'}}{{69,2},{73,13},{'Constructors/Destructors'}}{{83,0},{96,11},{'Private Methods'}}{{99,0},{101,11},{'Private Properties Getters/Setters'}}{{104,0},{121,11},{'Interfaced Properties Getters/Setters'}}{{124,0},{146,11},{'Interfaced Methods'}}{{149,0},{163,11},{'Constructors/Destructors'}}
+Elisions={{153,2},{156,13},{'Private Methods'}}{{158,2},{161,13},{'Private Fields'}}{{163,2},{166,13},{'Private Properties Getters/Setters'}}{{168,2},{171,13},{'Private Properties'}}{{173,2},{176,13},{'Interfaced Properties Getters/Setters'}}{{178,2},{181,13},{'Interfaced Properties'}}{{206,2},{209,13},{'Constructors/Destructors'}}{{237,0},{244,11},{'Published Methods'}}{{247,0},{249,11},{'Private Methods'}}{{252,0},{254,11},{'Private Properties Getters/Setters'}}{{257,0},{269,11},{'Interfaced Properties Getters/Setters'}}{{491,0},{493,11},{'Constructors/Destructors'}}
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Login.pas
+EditViewName=Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Sale.pas
 
 [View2]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.pas
+Module=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
 CursorX=1
-CursorY=143
-TopLine=127
+CursorY=30
+TopLine=18
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.CashIn.pas
+EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
 
 [View3]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.pas
+Module=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
 CursorX=1
-CursorY=143
-TopLine=103
+CursorY=287
+TopLine=273
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.CashOut.pas
+EditViewName=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
+
+[View4]
+CustomEditViewType=TEditView
+Module=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
+CursorX=28
+CursorY=180
+TopLine=161
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
+
+[View5]
+CustomEditViewType=TEditView
+Module=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
+CursorX=40
+CursorY=927
+TopLine=910
+LeftCol=1
+Elisions={{52,2},{59,13},{'Class Properties'}}{{62,2},{65,13},{'Private Methods'}}{{68,2},{99,13},{'Private Fields'}}{{102,2},{105,13},{'Private Properties Getters/Setters'}}{{108,2},{111,13},{'Private Properties'}}{{114,2},{174,13},{'Interfaced Properties Getters/Setters'}}{{177,2},{237,13},{'Interfaced Properties'}}{{253,2},{256,13},{'Constructors/Destructors'}}{{364,0},{366,11},{'Private Methods'}}{{369,0},{371,11},{'Private Properties Getters/Setters'}}{{374,0},{666,11},{'Interfaced Properties Getters/Setters'}}{{937,0},{972,11},{'Constructors/Destructors'}}
+Bookmarks=
+EditViewName=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
+
+[View6]
+CustomEditViewType=TEditView
+Module=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
+CursorX=1
+CursorY=1217
+TopLine=1192
+LeftCol=1
+Elisions={{29,2},{32,13},{'Published Methods'}}{{34,2},{58,13},{'Private Methods'}}{{61,2},{67,13},{'Private Fields'}}{{70,2},{74,13},{'Private Properties Getters/Setters'}}{{77,2},{80,13},{'Private Properties'}}{{83,2},{87,13},{'Interfaced Properties Getters/Setters'}}{{90,2},{96,13},{'Interfaced Properties'}}{{128,2},{131,13},{'Constructors/Destructors'}}{{150,0},{166,11},{'Published Methods'}}{{716,0},{728,11},{'Private Properties Getters/Setters'}}{{731,0},{743,11},{'Interfaced Properties Getters/Setters'}}{{1217,0},{1219,11},{'Constructors/Destructors'}}
+Bookmarks=
+EditViewName=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
 
 [UndockedDesigner]
 Count=0
 
 [Watches]
-Count=1
+Count=2
 Watch0='ASQL',256,0,18,1,0,'Watches',1
+Watch1='LSaleDetail.GID',256,0,18,1,0,'Watches',1
 
 [WatchWindow]
 WatchColumnWidth=120
@@ -308,8 +353,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-39
-Top=-173
+Left=-8
+Top=-116
 Width=1849
 Height=3144
 MaxLeft=-1
@@ -368,11 +413,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=6535
+Height=6289
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=6535
+ClientHeight=6289
 TBDockHeight=5957
 LRDockWidth=2510
 Dockable=1
@@ -384,8 +429,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=-1528
+Top=216
 Width=276
 Height=364
 MaxLeft=-1
@@ -441,6 +486,7 @@ Column0Width=145
 Column1Width=100
 Column2Width=115
 Column3Width=374
+Column4Width=10
 
 [LocalVarsWindow]
 PercentageSizes=1
@@ -508,11 +554,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1176
+Height=941
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1176
+ClientHeight=941
 TBDockHeight=2321
 LRDockWidth=2823
 Dockable=1
@@ -573,11 +619,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=6535
+Height=6289
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=6535
+ClientHeight=6289
 TBDockHeight=4888
 LRDockWidth=7151
 Dockable=1
@@ -589,8 +635,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=380
+Top=732
 Width=2854
 Height=3209
 MaxLeft=-1
@@ -656,11 +702,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=6535
+Height=6289
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=6535
+ClientHeight=6289
 TBDockHeight=4888
 LRDockWidth=5307
 Dockable=1
@@ -720,8 +766,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=8
+Left=0
+Top=24
 Width=3823
 Height=1422
 MaxLeft=-1

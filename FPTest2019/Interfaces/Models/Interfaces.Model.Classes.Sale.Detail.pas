@@ -4,7 +4,8 @@ interface
 
 uses
   System.JSON,
-  Interfaces.Model.Classes.Sale.Cancellation;
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversal;
 
 type
   IModelClassSaleDetail = interface
@@ -159,6 +160,7 @@ type
     function ToJSON: TJSONObject;
     function ToSaleDuplication: IModelClassSaleDetail;
     function ToSaleCancellation: IModelClassSaleCancellation;
+    function ToSaleReversal: IModelClassSaleReversal;
   end;
 
 implementation

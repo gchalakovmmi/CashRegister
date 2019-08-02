@@ -1,16 +1,320 @@
 object ViewReversal: TViewReversal
-  Left = 0
-  Top = 0
-  Caption = 'ViewReversal'
-  ClientHeight = 266
-  ClientWidth = 635
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Left = 476
+  Top = 95
+  BorderIcons = []
+  BorderStyle = bsSingle
+  BorderWidth = 1
+  Caption = #1055#1056#1054#1044#1040#1046#1041#1040
+  ClientHeight = 723
+  ClientWidth = 1205
+  Color = 12566527
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -19
+  Font.Name = 'Verdana'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDefault
+  StyleElements = []
+  OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 23
+  object StatusBar: TStatusBar
+    Left = 0
+    Top = 704
+    Width = 1205
+    Height = 19
+    Panels = <
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end>
+    ParentColor = True
+    ParentFont = True
+    UseSystemFont = False
+    StyleElements = []
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Top = 0
+    Width = 1205
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 1
+    object ButtonSaveAndNew: TButton
+      Left = 764
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionSaveAndNew
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+    end
+    object ButtonCheckItem: TButton
+      Left = 638
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionCheckItem
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+    end
+    object ButtonExit: TButton
+      Left = 8
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionExit
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 2
+    end
+    object ButtonRemoveItem: TButton
+      Left = 512
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionRemoveItem
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 3
+    end
+    object ButtonDiscard: TButton
+      Left = 890
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionDiscard
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 4
+    end
+  end
+  object PanelShow: TPanel
+    Left = 0
+    Top = 41
+    Width = 1205
+    Height = 64
+    Align = alTop
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 2
+    object EditShow: TDBEdit
+      Left = 8
+      Top = 6
+      Width = 971
+      Height = 56
+      DataField = 'LastItemName'
+      DataSource = DataModuleSale.DataSourceSale
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlack
+      Font.Height = -40
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = True
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+      StyleElements = []
+      OnEnter = EditShowEnter
+    end
+  end
+  object PanelPayment: TPanel
+    Left = 0
+    Top = 608
+    Width = 1205
+    Height = 96
+    Align = alBottom
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 3
+    object LabelTotal: TLabel
+      Left = 764
+      Top = 20
+      Width = 98
+      Height = 23
+      Caption = #1042#1057#1048#1063#1050#1054':'
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -19
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object EditTotal: TDBEdit
+      Left = 764
+      Top = 44
+      Width = 185
+      Height = 40
+      DataField = 'Due'
+      DataSource = DataModuleSale.DataSourceSale
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = True
+      ParentFont = False
+      TabOrder = 0
+      StyleElements = []
+      OnEnter = EditTotalEnter
+    end
+  end
+  object PanelGrid: TPanel
+    Left = 0
+    Top = 105
+    Width = 1205
+    Height = 503
+    Align = alClient
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 4
+    ExplicitHeight = 523
+    object Grid: TDBGrid
+      Left = 0
+      Top = 6
+      Width = 1200
+      Height = 499
+      Color = 12566527
+      DataSource = DataModuleSale.DataSourceSaleDetails
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlack
+      Font.Height = -19
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
+      TabOrder = 0
+      TitleFont.Charset = RUSSIAN_CHARSET
+      TitleFont.Color = 36608
+      TitleFont.Height = -15
+      TitleFont.Name = 'Verdana'
+      TitleFont.Style = [fsBold]
+      StyleElements = []
+      OnDrawColumnCell = GridDrawColumnCell
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'BarCode'
+          Title.Alignment = taCenter
+          Title.Caption = #1041#1040#1056#1050#1054#1044
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'ItemName'
+          Title.Alignment = taCenter
+          Title.Caption = #1040#1056#1058#1048#1050#1059#1051
+          Width = 300
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Measure'
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1071#1056#1050#1040
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Quantity'
+          Title.Alignment = taCenter
+          Title.Caption = #1050#1054#1051'.'
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Price'
+          Title.Alignment = taCenter
+          Title.Caption = #1045#1044'.'#1062#1045#1053#1040
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Title.Caption = #1057#1059#1052#1040
+          Visible = True
+        end>
+    end
+  end
+  object ActionManager: TActionManager
+    Left = 792
+    Top = 56
+    StyleName = 'Platform Default'
+    object ActionExit: TAction
+      Caption = 'ESC - '#1048#1047#1061#1054#1044
+      ShortCut = 27
+      OnExecute = ActionExitExecute
+    end
+    object ActionRemoveItem: TAction
+      Caption = 'F8 - '#1055#1056#1045#1052#1040#1061#1053#1048
+      ShortCut = 119
+      OnExecute = ActionRemoveItemExecute
+    end
+    object ActionCheckItem: TAction
+      Caption = 'F9 - '#1055#1056#1054#1042#1045#1056#1050#1040
+      ShortCut = 120
+      OnExecute = ActionCheckItemExecute
+    end
+    object ActionSaveAndNew: TAction
+      Caption = 'F10 - '#1047#1040#1055#1048#1057
+      ShortCut = 121
+      OnExecute = ActionSaveAndNewExecute
+    end
+    object ActionDiscard: TAction
+      Caption = 'CTRL+F11 - '#1054#1058#1050#1040#1047
+      ShortCut = 16506
+      OnExecute = ActionDiscardExecute
+    end
+  end
+  object TimerClose: TTimer
+    Enabled = False
+    Interval = 3600000
+    Left = 688
+    Top = 56
+  end
 end
