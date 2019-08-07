@@ -10,6 +10,7 @@ type
     actUpdateGUI,
     actResetGUI,
     actCloseForm,
+    actCloseFormAndRepeat,
 
     actSaleDisableActions,
     actSaleEnableActions,

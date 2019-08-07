@@ -1,0 +1,14 @@
+unit Interfaces.Model.Login;
+
+interface
+
+type
+  IModelLogin = interface
+  ['{33D32696-917C-4F89-9C93-DD73BE8D2824}']
+    procedure Logout;
+    procedure TryLogin(APassword: String);
+  end;
+
+implementation
+
+end.

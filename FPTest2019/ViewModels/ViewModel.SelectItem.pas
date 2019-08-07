@@ -11,6 +11,7 @@ implementation
 
 uses
   Winapi.Windows,
+  System.Character,
   System.SysUtils,
   System.Classes,
   Vcl.ExtCtrls,
@@ -178,7 +179,7 @@ end;
 
 procedure TViewModelSelectItem.GridKeyPressed(Key: Char);
 begin
-  if CharInSet(Key,[' '..'~', 'À'..'ÿ']) then begin
+  if Key.IsLetterOrDigit or Key.IsInArray([' ','*','+','-','.']) then begin
     DataModuleItems.KeyWord := DataModuleItems.KeyWord + Key;
     FIsChanged := True;
     SendNotification([actUpdateGUI]);

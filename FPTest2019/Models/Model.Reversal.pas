@@ -11,6 +11,8 @@ implementation
 
 uses
   System.SysUtils,
+  Vcl.Dialogs,
+  System.UITypes,
   Helper.MyFuncs,
   Device.FP700X,
   DataModule.Sale,
@@ -29,6 +31,7 @@ type
   {$REGION 'Private Methods'}
   private
     function ItemIsValidForReversal(const ASaleDetail: IModelClassSaleDetail): Boolean;
+    function SaleIsValidForReversal: Boolean;
   {$ENDREGION}
 
 
@@ -70,14 +73,8 @@ type
     procedure TeardownReversal;
 
     // Reversal Actions
-    procedure OpenReversal;
     procedure RegistrationOfReversal;
-    procedure Totals;
-    procedure DiscardReversal;
-    procedure CloseReversal;
-
-    // Reversal's Payments Updates
-    procedure UpdateReversalDue(const ADueDelta: String);
+    procedure RegistrationOfReversalAll;
   {$ENDREGION}
 
 
@@ -100,7 +97,55 @@ function TModelReversal.ItemIsValidForReversal(const ASaleDetail: IModelClassSal
 begin
   Result := False;
 
-  if ASaleDetail.IsCancelled = '‰‡' then Exit;
+  if ASaleDetail.IsCancelled = '‰‡' then begin
+    ViewMessage.ShowBadMessagePlus('“Œ«» ¿–“» ”À ≈ ¬≈◊≈ —“Œ–Õ»–¿Õ(¿Õ”À»–¿Õ)!');
+    Exit;
+  end;
+
+  DeviceFP700X.CashCheck;
+
+  if DeviceFP700X.Cash < ASaleDetail.Total.ToDouble then begin
+    ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
+    Exit;
+  end;
+
+  if not
+    MessageDlg(
+      Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ %s Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
+      mtConfirmation,
+      [mbYes, mbNo],
+      0,
+      mbYes
+    ) = mrYes
+  then begin
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+function TModelReversal.SaleIsValidForReversal: Boolean;
+begin
+  Result := False;
+
+  DeviceFP700X.CashCheck;
+
+  if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
+    ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
+    Exit;
+  end;
+
+  if not
+    MessageDlg(
+      Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ ÔÓ‰‡Ê·‡ Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [FSale.Due.ToDouble]),
+      mtConfirmation,
+      [mbYes, mbNo],
+      0,
+      mbYes
+    ) = mrYes
+  then begin
+    Exit;
+  end;
 
   Result := True;
 end;
@@ -146,18 +191,6 @@ end;
 
 // Reversal Actions
 
-procedure TModelReversal.OpenReversal;
-begin
-  // Open Fiscal Receipt
-//  DeviceFP700X.OpenReversal(FSale);
-
-  // Open in MemTable
-//  DataModuleSale.OpenReversal(FSale);
-
-  // Open in Model
-//  FSale.OpenReversal;
-end;
-
 procedure TModelReversal.RegistrationOfReversal;
 var
   LCurrentSaleDetailGID: String;
@@ -174,69 +207,61 @@ begin
   LSaleReversal.CompletedTime := FSale.CompletedTime;
 
   if ItemIsValidForReversal(LCurrentSaleDetail) then begin
-    // Fiscalization
+    // Open Reversal
     DeviceFP700X.OpenReversal(FSale);
+
+    // Fiscalization
     DeviceFP700X.RegistrationOfReversal(LSaleReversal);
-    DeviceFP700X.TotalsOnReversal(LSaleReversal);
-    DeviceFP700X.CloseReversal(FSale);
-
-    // Update Due
-//    UpdateSaleDue(LSaleReversal.Total);
-
-    // Store in MemTable
-//    DataModuleSale.OpenReversal(FSale);
-//    DataModuleSale.RegistrationOfReversal(LSaleReversal);
 
     // Store in Model
     LCurrentSaleDetail.IsCancelled := '‰‡';
-    LCurrentSaleDetail.UpdateInDataSet;
+    FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
     FSale.RegistrationOfReversal(LSaleReversal);
+
+    // Total on Reversal
+    DeviceFP700X.TotalsOnReversal(LSaleReversal);
+
+    // Close Reversal
+    DeviceFP700X.CloseReversal(FSale);
   end;
 end;
 
-procedure TModelReversal.Totals;
+procedure TModelReversal.RegistrationOfReversalAll;
+var
+  LCurrentSaleDetail: IModelClassSaleDetail;
+  LSaleReversal: IModelClassSaleReversal;
+  LDue: String;
 begin
-  // Fiscalization
-//  DeviceFP700X.TotalsOnReversal(FSale);
+  if SaleIsValidForReversal then begin
+    LDue := FSale.Due;
 
-  // Store in MemTable
-//  DataModuleSale.Totals(FSale);
+    // Open Reversal
+    DeviceFP700X.OpenReversal(FSale);
 
-  // Store in Model
-//  FSale.Totals;
-end;
+    for LCurrentSaleDetail in FSale.Details.List do begin
+      if LCurrentSaleDetail.IsCancelled <> '‰‡' then begin
+        LSaleReversal := LCurrentSaleDetail.ToSaleReversal;
+        LSaleReversal.FiscalDeviceID := FSale.FiscalDeviceID;
+        LSaleReversal.CompletedDate := FSale.CompletedDate;
+        LSaleReversal.CompletedTime := FSale.CompletedTime;
 
-procedure TModelReversal.CloseReversal;
-begin
-  // Fiscalization
-//  DeviceFP700X.CloseReversal(FSale);
+        // Fiscalization
+        DeviceFP700X.RegistrationOfReversal(LSaleReversal);
 
-  // Close in MemTable
-//  DataModuleSale.CloseReversal(FSale);
+        // Store in Model
+        LCurrentSaleDetail.IsCancelled := '‰‡';
+        FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
+        FSale.RegistrationOfReversal(LSaleReversal);
 
-  // Close in Model
-//  FSale.CloseReversal;
-end;
+      end;
+    end;
 
-procedure TModelReversal.DiscardReversal;
-begin
-  // Discard in Fiscal Device
-//  DeviceFP700X.DiscardReversal(FSale);
+    // Total on Reversal
+    DeviceFP700X.TotalsOnReversalAll(LDue);
 
-  // Discard in MemTable
-//  DataModuleSale.DiscardReversal(FSale);
-
-  // Discard in Model
-//  FSale.DiscardReversal;
-end;
-
-
-// Reversal's Payments Updates
-
-procedure TModelReversal.UpdateReversalDue(const ADueDelta: String);
-begin
-//  FReversal.Due := FormatFloat('0.00', _Round(FReversal.Due.ToDouble + ADueDelta.ToDouble, 0.01));
-//  DataModuleReversal.UpdateReversalPayments(FReversal);
+    // Close Reversal
+    DeviceFP700X.CloseReversal(FSale);
+  end;
 end;
 
 {$ENDREGION}

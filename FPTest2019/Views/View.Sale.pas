@@ -160,6 +160,9 @@ type
 
   procedure ShowViewSale;
 
+var
+  FExitToMainMenu: Boolean;
+
 implementation
 
 {$R *.dfm}
@@ -365,6 +368,11 @@ begin
     EnableActions;
   end;
   if actCloseForm in AModelNotification.Actions then begin
+    FExitToMainMenu := True;
+    Close;
+  end;
+  if actCloseFormAndRepeat in AModelNotification.Actions then begin
+    FExitToMainMenu := False;
     Close;
   end;
 end;
@@ -535,8 +543,11 @@ procedure ShowViewSale;
 var
   LViewSale: TViewSale;
 begin
-  LViewSale := TViewSale.Create(nil);
-  LViewSale.ShowModal;
+  FExitToMainMenu := False;
+  repeat
+    LViewSale := TViewSale.Create(nil);
+    LViewSale.ShowModal;
+  until FExitToMainMenu;
 end;
 
 end.

@@ -182,26 +182,31 @@ end;
 procedure TViewModelMain.Sale;
 begin
   ShowViewSale;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.Login;
 begin
   ShowViewLogin;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.CashIn;
 begin
   ShowViewCashIn;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.CashOut;
 begin
   ShowViewCashOut;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.Reversal;
 begin
   ShowViewSelectSale;
+  SendNotification([actUpdateGUI]);
 end;
 
 
@@ -209,6 +214,7 @@ end;
 procedure TViewModelMain.SelectPrinter;
 begin
 
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.XReport;
@@ -216,11 +222,13 @@ begin
   if  MessageDlg('ЖЕЛАЕТЕ ЛИ ПРИКЛЮЧВАНЕ БЕЗ НУЛИРАНЕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
     DeviceFP700X.XReport;
   end;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.PReport;
 begin
   ShowViewReports;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.ZReport;
@@ -228,11 +236,13 @@ begin
   if  MessageDlg('ЖЕЛАЕТЕ ЛИ ПРИКЛЮЧВАНЕ С НУЛИРАНЕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
     DeviceFP700X.ZReport;
   end;
+  SendNotification([actUpdateGUI]);
 end;
 
 procedure TViewModelMain.Audit;
 begin
 
+  SendNotification([actUpdateGUI]);
 end;
 
 {$ENDREGION}

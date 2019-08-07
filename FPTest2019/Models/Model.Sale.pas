@@ -11,6 +11,8 @@ implementation
 
 uses
   System.SysUtils,
+  System.IOUtils,
+  Globals,
   Helper.MyFuncs,
   Device.FP700X,
   DataModule.Sale,
@@ -157,9 +159,24 @@ end;
 
 procedure TModelSale.SetupSale;
 begin
-  DataModuleItems.RefreshData;
 
-  DataModuleClients.RefreshData;
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
+    DataModuleItems.RefreshData;
+
+    DataModuleClients.RefreshData;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
+    end;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
+    end;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
+    end;
+  end;
 
   DataModuleClients.SelectCommonClient;
 
@@ -230,19 +247,38 @@ begin
   );
 
   if ItemIsValidForSale(LSaleDetail) then begin
-    if LSaleDetail.Quantity.ToDouble > 0 then begin
+    if LSaleDetail.Quantity.ToDouble < 0 then begin
+      LSaleDetail.Quantity := FormatFloat('0.000', -LSaleDetail.Quantity.ToDouble);
+      LSaleDetail.ClientPrice := FormatFloat('0.00', -LSaleDetail.ClientPrice.ToDouble);
+      LSaleDetail.ClientPriceBase := FormatFloat('0.00', -LSaleDetail.ClientPriceBase.ToDouble);
+      LSaleDetail.Price := FormatFloat('0.00', -LSaleDetail.Price.ToDouble);
+      LSaleDetail.DiscountValue := FormatFloat('0.00', -LSaleDetail.DiscountValue.ToDouble);
+    end;
+
+    // Fiscalization
+    DeviceFP700X.RegistrationOfSale(LSaleDetail);
+
+     // Update Due
+    UpdateSaleDue(LSaleDetail.Total);
+
+    // Store in MemTable
+    DataModuleSale.RegistrationOfSale(LSaleDetail);
+
+    // Store in Model
+    FSale.RegistrationOfSale(LSaleDetail);
+
+//    end else begin
       // Fiscalization
-      DeviceFP700X.RegistrationOfSale(LSaleDetail);
+//      DeviceFP700X.RegistrationOfDiscount(LSaleDetail);
 
        // Update Due
-      UpdateSaleDue(LSaleDetail.Total);
+//      UpdateSaleDue(LSaleDetail.Total);
 
       // Store in MemTable
-      DataModuleSale.RegistrationOfSale(LSaleDetail);
+//      DataModuleSale.RegistrationOfDiscount(FSaleDetail);
 
       // Store in Model
-      FSale.RegistrationOfSale(LSaleDetail);
-    end;
+//      FSale.RegistrationOfDiscount(FSaleDetail);
   end;
 end;
 

@@ -109,7 +109,8 @@ uses
   Model.Classes.Sale.Reversal in 'Models\Model.Classes.Sale.Reversal.pas',
   Interfaces.Model.Classes.Sale.Reversal in 'Interfaces\Models\Interfaces.Model.Classes.Sale.Reversal.pas',
   Model.Classes.Sale.Reversals in 'Models\Model.Classes.Sale.Reversals.pas',
-  Interfaces.Model.Classes.Sale.Reversals in 'Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas';
+  Interfaces.Model.Classes.Sale.Reversals in 'Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas',
+  DataModule.Users in 'DataModules\DataModule.Users.pas' {DataModuleUsers: TDataModule};
 
 {$R *.res}
 
@@ -121,5 +122,6 @@ begin
   Application.CreateForm(TViewMain, ViewMain);
   Application.CreateForm(TViewMessage, ViewMessage);
   Application.CreateForm(TDeviceFP700X, DeviceFP700X);
+  Application.CreateForm(TDataModuleUsers, DataModuleUsers);
   Application.Run;
 end.

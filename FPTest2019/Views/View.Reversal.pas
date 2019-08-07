@@ -33,29 +33,19 @@ type
   TViewReversal = class(TForm, IObserver, IObservable)
     ActionManager: TActionManager;
       ActionExit: TAction;
-      ActionRemoveItem: TAction;
-      ActionCheckItem: TAction;
-      ActionSaveAndNew: TAction;
-      ActionDiscard: TAction;
-
-    TimerClose: TTimer;
+      ActionReversal: TAction;
+      ActionReversalAll: TAction;
 
     PanelButtons: TPanel;
       ButtonExit: TButton;
       ButtonRemoveItem: TButton;
       ButtonCheckItem: TButton;
-      ButtonSaveAndNew: TButton;
-      ButtonDiscard: TButton;
 
     PanelShow: TPanel;
       EditShow: TDBEdit;
 
     PanelGrid: TPanel;
       Grid: TDBGrid;
-
-    PanelPayment: TPanel;
-      LabelTotal: TLabel;
-      EditTotal: TDBEdit;
 
     StatusBar: TStatusBar;
 
@@ -64,14 +54,11 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
     procedure ActionExitExecute(Sender: TObject);               // ESC
-    procedure ActionRemoveItemExecute(Sender: TObject);         // F8
-    procedure ActionCheckItemExecute(Sender: TObject);          // F9
-    procedure ActionSaveAndNewExecute(Sender: TObject);         // F10
-    procedure ActionDiscardExecute(Sender: TObject);            // Ctrl+F11
+    procedure ActionReversalExecute(Sender: TObject);           // F8
+    procedure ActionReversalAllExecute(Sender: TObject);        // Alt+F8
 
     procedure EditShowEnter(Sender: TObject);
     procedure GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure EditTotalEnter(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -171,24 +158,14 @@ begin
   ViewModel.ActionExitExecute;
 end;
 
-procedure TViewReversal.ActionRemoveItemExecute(Sender: TObject);
+procedure TViewReversal.ActionReversalExecute(Sender: TObject);
 begin
-  ViewModel.ActionRemoveItemExecute;
+  ViewModel.ActionReversalExecute;
 end;
 
-procedure TViewReversal.ActionCheckItemExecute(Sender: TObject);
+procedure TViewReversal.ActionReversalAllExecute(Sender: TObject);
 begin
-  ViewModel.ActionCheckItemExecute;
-end;
-
-procedure TViewReversal.ActionSaveAndNewExecute(Sender: TObject);
-begin
-  ViewModel.ActionSaveAndNewExecute;
-end;
-
-procedure TViewReversal.ActionDiscardExecute(Sender: TObject);
-begin
-  ViewModel.ActionDiscardExecute;
+  ViewModel.ActionReversalAllExecute;
 end;
 
 
@@ -202,16 +179,11 @@ end;
 procedure TViewReversal.GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
   with (Sender as TDBGrid) do begin
-    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'ItemName') then begin
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and ((Column.FieldName = 'ItemName') or (Column.FieldName = 'Total')) then begin
       Canvas.Font.Style := [fsBold, fsStrikeOut];
     end;
     DefaultDrawColumnCell(Rect, DataCol, Column, State);
   end;
-end;
-
-procedure TViewReversal.EditTotalEnter(Sender: TObject);
-begin
-  ViewModel.EditTotalEnter;
 end;
 
 {$ENDREGION}
@@ -264,12 +236,6 @@ begin
   ButtonCheckItem.Left := LViewReversalGUISetupRecord.ButtonCheckItemLeft;
   ButtonCheckItem.Width := LViewReversalGUISetupRecord.ButtonCheckItemWidth;
 
-  ButtonSaveAndNew.Left := LViewReversalGUISetupRecord.ButtonSaveAndNewLeft;
-  ButtonSaveAndNew.Width := LViewReversalGUISetupRecord.ButtonSaveAndNewWidth;
-
-  ButtonDiscard.Left := LViewReversalGUISetupRecord.ButtonDiscardLeft;
-  ButtonDiscard.Width := LViewReversalGUISetupRecord.ButtonDiscardWidth;
-
   // Panel Show
   EditShow.Left := LViewReversalGUISetupRecord.EditShowLeft;
   EditShow.Width := LViewReversalGUISetupRecord.EditShowWidth;
@@ -288,10 +254,6 @@ begin
   Grid.Columns[4].Width := LViewReversalGUISetupRecord.GridColumns4Width;
   Grid.Columns[5].Width := LViewReversalGUISetupRecord.GridColumns5Width;
 
-  // Panel Payment
-  LabelTotal.Left := LViewReversalGUISetupRecord.LabelTotalLeft;
-  EditTotal.Left := LViewReversalGUISetupRecord.EditTotalLeft;
-
   Self.Update;
 end;
 
@@ -307,10 +269,8 @@ end;
 procedure TViewReversal.DisableActions;
 begin
   ActionExit.Enabled := False;
-  ActionRemoveItem.Enabled := False;
-  ActionCheckItem.Enabled := False;
-  ActionSaveAndNew.Enabled := False;
-  ActionDiscard.Enabled := False;
+  ActionReversal.Enabled := False;
+  ActionReversalAll.Enabled := False;
 end;
 
 procedure TViewReversal.EnableActions;
@@ -320,10 +280,8 @@ begin
   LViewReversalGUIActionsRecord := ViewModel.GetGUIActionsRecord;
 
   ActionExit.Enabled := LViewReversalGUIActionsRecord.ActionExitEnabled;
-  ActionRemoveItem.Enabled := LViewReversalGUIActionsRecord.ActionRemoveItemEnabled;
-  ActionCheckItem.Enabled := LViewReversalGUIActionsRecord.ActionCheckItemEnabled;
-  ActionSaveAndNew.Enabled := LViewReversalGUIActionsRecord.ActionSaveAndNewEnabled;
-  ActionDiscard.Enabled := LViewReversalGUIActionsRecord.ActionDiscardEnabled;
+  ActionReversal.Enabled := LViewReversalGUIActionsRecord.ActionReversalEnabled;
+  ActionReversalAll.Enabled := LViewReversalGUIActionsRecord.ActionReversalAllEnabled;
 
   UpdateGUI;
 

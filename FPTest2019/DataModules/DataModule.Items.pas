@@ -205,24 +205,6 @@ var
   LActive: Boolean;
   LID: Integer;
 begin
-
-//  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
-//    FDMemTable.LoadFromFile(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
-//    TFile.Delete(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
-//
-//    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
-//      TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
-//    end;
-//
-//    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
-//      TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
-//    end;
-//
-//    Exit;
-//  end;
-
-//  if not TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then Exit;
-
   ViewMessage.ShowBadMessage('Обновяване на артикули и цени ...');
   LID := 0;
   LActive := DataSource.DataSet.Active;
@@ -230,67 +212,57 @@ begin
     LID := DataSource.DataSet.FieldByName('ID').AsInteger;
   end;
 
-  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
-    FDMemTable.DisableControls;
-    FDMemTable.Close;
-    FDMemTable.CreateDataSet;
-    FDMemTable.Filtered := False;
+  FDMemTable.DisableControls;
+  FDMemTable.Close;
+  FDMemTable.CreateDataSet;
+  FDMemTable.Filtered := False;
 
-    LQuery := TQuery.Create(Self);
-    try
-      LQuery.DatabaseName := G.ItemsFolder;
-      LQuery.SQL.Clear;
-      LQuery.SQL.Add('SELECT Items.ID,ITEMS.GroupType,Items.Code,Items.Item,Measures.Coeff,Measures.Measure,Measures.BarCode, Measures.Factor, Measures.Minimum,Measures.Discount,Items.VendorPrice,Items.ClientPrice,Items.ShortName FROM Items');
-      LQuery.SQL.Add('LEFT JOIN Measures ON (Items.ID = Measures.ItemID)');
-      LQuery.SQL.Add('WHERE (Items.Act = ''*'')');
-      LQuery.SQL.Add('ORDER BY ITEM, BARCODE, COEFF');
+  LQuery := TQuery.Create(Self);
+  try
+    LQuery.DatabaseName := G.ItemsFolder;
+    LQuery.SQL.Clear;
+    LQuery.SQL.Add('SELECT Items.ID,ITEMS.GroupType,Items.Code,Items.Item,Measures.Coeff,Measures.Measure,Measures.BarCode, Measures.Factor, Measures.Minimum,Measures.Discount,Items.VendorPrice,Items.ClientPrice,Items.ShortName FROM Items');
+    LQuery.SQL.Add('LEFT JOIN Measures ON (Items.ID = Measures.ItemID)');
+    LQuery.SQL.Add('WHERE (Items.Act = ''*'')');
+    LQuery.SQL.Add('ORDER BY ITEM, BARCODE, COEFF');
 
-      LQuery.Open;
-      while not LQuery.Eof do begin
-        FDMemTable.Append;
-        FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
-        FDMemTable.FieldByName('CODE').AsString := LQuery.FieldByName('CODE').AsString;
-        FDMemTable.FieldByName('ITEM').AsString := LQuery.FieldByName('ITEM').AsString;
-        if LQuery.FieldByName('COEFF').AsFloat <> 1 then begin
-          FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('COEFF').AsString + LQuery.FieldByName('MEASURE').AsString;
-        end else begin
-          FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
-        end;
-        FDMemTable.FieldByName('BARCODE').AsString := LQuery.FieldByName('BARCODE').AsString;
-        FDMemTable.FieldByName('COEFF').AsFloat := LQuery.FieldByName('COEFF').AsFloat;
-        FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
-        FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
-        FDMemTable.FieldByName('VENDORPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('VendorPrice').AsFloat, 0.01);
-        FDMemTable.FieldByName('CLIENTPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('ClientPrice').AsFloat * (100-LQuery.FieldByName('DISCOUNT').AsFloat)/100, 0.01);
-        FDMemTable.FieldByName('FACTOR').AsFloat := LQuery.FieldByName('FACTOR').AsFloat;
-        FDMemTable.FieldByName('MINIMUM').AsFloat := LQuery.FieldByName('MINIMUM').AsFloat;
-        FDMemTable.FieldByName('orgMEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
-        FDMemTable.FieldByName('orgVENDORPRICE').AsFloat := LQuery.FieldByName('VendorPrice').AsFloat;
-        FDMemTable.FieldByName('orgCLIENTPRICE').AsFloat := LQuery.FieldByName('ClientPrice').AsFloat;
-
-        LQuery.Next;
+    LQuery.Open;
+    while not LQuery.Eof do begin
+      FDMemTable.Append;
+      FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
+      FDMemTable.FieldByName('CODE').AsString := LQuery.FieldByName('CODE').AsString;
+      FDMemTable.FieldByName('ITEM').AsString := LQuery.FieldByName('ITEM').AsString;
+      if LQuery.FieldByName('COEFF').AsFloat <> 1 then begin
+        FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('COEFF').AsString + LQuery.FieldByName('MEASURE').AsString;
+      end else begin
+        FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
       end;
-    finally
-      LQuery.Close;
-      LQuery.Free;
-    end;
+      FDMemTable.FieldByName('BARCODE').AsString := LQuery.FieldByName('BARCODE').AsString;
+      FDMemTable.FieldByName('COEFF').AsFloat := LQuery.FieldByName('COEFF').AsFloat;
+      FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
+      FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
+      FDMemTable.FieldByName('VENDORPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('VendorPrice').AsFloat, 0.01);
+      FDMemTable.FieldByName('CLIENTPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('ClientPrice').AsFloat * (100-LQuery.FieldByName('DISCOUNT').AsFloat)/100, 0.01);
+      FDMemTable.FieldByName('FACTOR').AsFloat := LQuery.FieldByName('FACTOR').AsFloat;
+      FDMemTable.FieldByName('MINIMUM').AsFloat := LQuery.FieldByName('MINIMUM').AsFloat;
+      FDMemTable.FieldByName('orgMEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
+      FDMemTable.FieldByName('orgVENDORPRICE').AsFloat := LQuery.FieldByName('VendorPrice').AsFloat;
+      FDMemTable.FieldByName('orgCLIENTPRICE').AsFloat := LQuery.FieldByName('ClientPrice').AsFloat;
 
-    FDMemTable.Filtered := True;
-    FDMemTable.First;
-
-    if LActive then begin
-      FDMemTable.Locate('ID', LID, []);
+      LQuery.Next;
     end;
-    FDMemTable.EnableControls;
+  finally
+    LQuery.Close;
+    LQuery.Free;
   end;
 
-//  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
-//    TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
-//  end;
-//
-//  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
-//    TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
-//  end;
+  FDMemTable.Filtered := True;
+  FDMemTable.First;
+
+  if LActive then begin
+    FDMemTable.Locate('ID', LID, []);
+  end;
+  FDMemTable.EnableControls;
 
   ViewMessage.Hide;
 end;

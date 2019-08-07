@@ -13,6 +13,7 @@ uses
   System.IOUtils,
   System.SysUtils,
   System.UITypes,
+  System.Character,
   Vcl.Graphics,
   Vcl.Dialogs,
   Helper.MyFuncs,
@@ -55,7 +56,6 @@ type
 
     FInsale: Boolean;
     FVIPSale: Boolean;
-    FReturnsAllowed: Boolean;
   {$ENDREGION}
 
   {$REGION 'Private Properties Getters/Setters'}
@@ -193,7 +193,6 @@ begin
   Model.SetupSale;
   FInSale := False;
   FVIPSale := False;
-  FReturnsAllowed := False;
   SendNotification([actSaleEnableActions]);
   SendNotification([actSetupGUI]);
   SendNotification([actUpdateGUI]);
@@ -205,7 +204,6 @@ begin
   Model.TeardownSale;
   FInSale := False;
   FVIPSale := False;
-  FReturnsAllowed := False;
 end;
 
 
@@ -413,8 +411,7 @@ begin
           Model.CloseSale;
           FInSale := False;
           FVIPSale := False;
-          FReturnsAllowed := False;
-          SendNotification([actCloseForm]);
+          SendNotification([actCloseFormAndRepeat]);
         end;
       end;
     end;
@@ -430,7 +427,7 @@ begin
   if MessageDlg('∆≈À¿≈“≈ À» ¿Õ”À»–¿Õ≈ Õ¿ “≈ ”Ÿ»ﬂ ¡ŒÕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
     Model.DiscardSale;
     SendNotification([actSaleEnableActions]);
-    SendNotification([actCloseForm]);
+    SendNotification([actCloseFormAndRepeat]);
   end else begin
     SendNotification([actSaleActiveControlGrid]);
     SendNotification([actSaleEnableActions]);
@@ -472,24 +469,14 @@ begin
     if FInSale and (Key = '+') then begin
       Model.RegistrationOfDuplication;
     end else begin
-      if CharInSet(Key, [' '..'~', '¿'..'ˇ']) then begin
+      if Key.IsLetterOrDigit or Key.IsInArray([' ','*','+','-','.']) then begin
         SelectItem(Key);
-        // Check for Return Allowance
-        if (DataModuleItems.SelectedQUANTITY < 0) and (not FReturnsAllowed) then begin
-          ViewMessage.ShowBadMessage('ÕÂ Â ‡ÁÂ¯ÂÌÓ ‚˙˘‡ÌÂ ‚ Ú‡ÁË ÔÓ‰‡Ê·‡!');
-        end else begin
-          // Check for Return Allowance Toggle
-          if DataModuleItems.SelectedID = cReturnsAllowedID then begin
-            FReturnsAllowed := True;
-          end else begin
-            if DataModuleItems.SelectedID > 0 then begin
-              if not FInSale then begin
-                Model.OpenSale;
-                FInSale := True;
-              end;
-              Model.RegistrationOfSale;
-            end;
+        if DataModuleItems.SelectedID > 0 then begin
+          if not FInSale then begin
+            Model.OpenSale;
+            FInSale := True;
           end;
+          Model.RegistrationOfSale;
         end;
       end;
     end;

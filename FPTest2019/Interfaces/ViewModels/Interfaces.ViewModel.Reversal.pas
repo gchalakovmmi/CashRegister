@@ -28,13 +28,10 @@ type
     function GetGUIRecord: TViewReversalGUIRecord;
 
     procedure ActionExitExecute;
-    procedure ActionRemoveItemExecute;
-    procedure ActionCheckItemExecute;
-    procedure ActionSaveAndNewExecute;
-    procedure ActionDiscardExecute;
+    procedure ActionReversalExecute;
+    procedure ActionReversalAllExecute;
 
     procedure EditShowEnter;
-    procedure EditTotalEnter;
   end;
 
 implementation

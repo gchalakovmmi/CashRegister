@@ -17,11 +17,8 @@ type
     procedure TeardownReversal;
 
     // Reversal Actions
-    procedure OpenReversal;
     procedure RegistrationOfReversal;
-    procedure Totals;
-    procedure DiscardReversal;
-    procedure CloseReversal;
+    procedure RegistrationOfReversalAll;
   end;
 
 implementation

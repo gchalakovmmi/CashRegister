@@ -131,6 +131,8 @@ begin
   FViewModel.Observable.Subscribe(FObserver);
 
   UpdateGUI;
+
+  ViewModel.Login;
 end;
 
 procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);

@@ -29,6 +29,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonCashInClick(Sender: TObject);
+    procedure EditCashKeyPress(Sender: TObject; var Key: Char);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -112,10 +113,16 @@ begin
   Action := caFree;
 end;
 
+procedure TViewCashIn.EditCashKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #$0D then begin
+    ViewModel.CashIn(EditCash.Text);
+  end;
+end;
+
 procedure TViewCashIn.ButtonCashInClick(Sender: TObject);
 begin
   ViewModel.CashIn(EditCash.Text);
-  UpdateGUI;
 end;
 
 {$ENDREGION}

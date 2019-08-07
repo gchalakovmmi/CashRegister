@@ -6,8 +6,7 @@ type
   IModelLogin = interface
   ['{33D32696-917C-4F89-9C93-DD73BE8D2824}']
     function GetIsLoggedIn: Boolean;
-    procedure SetIsLoggedIn(AValue: Boolean);
-    property IsLoggedIn: Boolean read GetIsLoggedIn write SetIsLoggedIn;
+    property IsLoggedIn: Boolean read GetIsLoggedIn;
 
     procedure Logout;
     procedure TryLogin(APassword: String);

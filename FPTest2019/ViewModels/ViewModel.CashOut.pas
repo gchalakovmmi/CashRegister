@@ -169,6 +169,7 @@ begin
         ) = mrYes
       then begin
         Model.CashOut(LAmount);
+        SendNotification([actCloseForm]);
       end;
     end;
   end;

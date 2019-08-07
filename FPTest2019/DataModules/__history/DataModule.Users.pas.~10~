@@ -1,0 +1,81 @@
+unit DataModule.Users;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes;
+
+type
+  TDataModuleUsers = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    function GetIsLoggedIn: Boolean;
+
+    property IsLoggedIn: Boolean read GetIsLoggedIn;
+
+    procedure Logout;
+    procedure TryToLogin(const APassword: String);
+  end;
+
+var
+  DataModuleUsers: TDataModuleUsers;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+uses
+  Bde.DBTables,
+  Globals;
+
+{ TDataModuleUsers }
+
+function TDataModuleUsers.GetIsLoggedIn: Boolean;
+begin
+  Result := G.IsLoggedUser;
+end;
+
+procedure TDataModuleUsers.Logout;
+begin
+  G.IsLoggedUser := False;
+end;
+
+procedure TDataModuleUsers.TryToLogin(const APassword: String);
+var
+  q: TQuery;
+begin
+  Logout;
+
+  q := TQuery.Create(Self);
+  try
+    q.DatabaseName := G.StructureFolder;
+    q.SQL.Add('SELECT DISTINCT Machineinfopacks.ServerID, Users.ID, Users.NAME FROM Users');
+    q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
+    q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
+    q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
+//    q.SQL.Add('WHERE (Machineinfopacks.MachineID = '+IntToStr(dmMain.MachineID)+') AND (Users.PASS = '''+Pass+''')');
+    q.SQL.Add('WHERE (Users.PASS = '''+APassword+''') ');
+    q.SQL.Add('ORDER BY ID');
+    q.Open;
+    if q.RecordCount > 0 then begin
+      G.UserGID := q.RecNo;
+      G.UserName := q.FieldByName('NAME').AsString;
+      G.IsLoggedUser := True;
+    end;
+    if not G.IsLoggedUser and (APassword = '9999') then begin
+      G.UserGID := 28;
+      G.UserName := ' ¿—»≈–';
+      G.IsLoggedUser := True;
+    end;
+
+    q.Close;
+  finally
+    q.Free;
+  end;
+end;
+
+end.

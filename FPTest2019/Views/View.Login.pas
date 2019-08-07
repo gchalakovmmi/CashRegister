@@ -131,6 +131,9 @@ begin
   if actCloseForm in AModelNotification.Actions then begin
     Close;
   end;
+  if actCloseApp in AModelNotification.Actions then begin
+    Halt;
+  end;
 end;
 
 procedure TViewLogin.ResetGUI;

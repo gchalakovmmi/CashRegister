@@ -141,10 +141,8 @@ type
 
   TViewReversalGUIActionsRecord = record
     ActionExitEnabled: Boolean;
-    ActionRemoveItemEnabled: Boolean;
-    ActionCheckItemEnabled: Boolean;
-    ActionSaveAndNewEnabled: Boolean;
-    ActionDiscardEnabled: Boolean;
+    ActionReversalEnabled: Boolean;
+    ActionReversalAllEnabled: Boolean;
   end;
 
   TViewReversalGUIRecord = record

@@ -161,55 +161,42 @@ var
   LActive: Boolean;
   LID: Integer;
 begin
-
-  if not (TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt'))) then Exit;
-
   ViewMessage.ShowBadMessage('Обновяване на клиенти ...');
   LID := 0;
   LActive := DataSource.DataSet.Active;
   if LActive then LID := DataSource.DataSet.FieldByName('ID').AsInteger;
 
-  if (TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt'))) then begin
-    FDMemTable.DisableControls;
-    FDMemTable.Close;
-    FDMemTable.CreateDataSet;
-    FDMemTable.Filtered := False;
+  FDMemTable.DisableControls;
+  FDMemTable.Close;
+  FDMemTable.CreateDataSet;
+  FDMemTable.Filtered := False;
 
-    LQuery := TQuery.Create(Self);
-    LQuery.DatabaseName := G.ContragentsFolder;
-    LQuery.SQL.Clear;
-    LQuery.SQL.Add('SELECT ID, TAXNUMBER, NAME, VIP, MARKUP, LOYALTYCARD FROM Companies');
-    LQuery.SQL.Add('WHERE (Companies.Act = ''*'')');
-    LQuery.SQL.Add('ORDER BY NAME');
+  LQuery := TQuery.Create(Self);
+  LQuery.DatabaseName := G.ContragentsFolder;
+  LQuery.SQL.Clear;
+  LQuery.SQL.Add('SELECT ID, TAXNUMBER, NAME, VIP, MARKUP, LOYALTYCARD FROM Companies');
+  LQuery.SQL.Add('WHERE (Companies.Act = ''*'')');
+  LQuery.SQL.Add('ORDER BY NAME');
 
-    LQuery.Open;
-    while not LQuery.Eof do begin
-      FDMemTable.Append;
-      FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
-      FDMemTable.FieldByName('TAXNUMBER').AsString := LQuery.FieldByName('TAXNUMBER').AsString;
-      FDMemTable.FieldByName('NAME').AsString := LQuery.FieldByName('NAME').AsString;
-      FDMemTable.FieldByName('VIP').AsBoolean := (LQuery.FieldByName('VIP').AsString = '*');
-      FDMemTable.FieldByName('SURCHARGE').AsFloat := LQuery.FieldByName('MARKUP').AsFloat;
-      FDMemTable.FieldByName('LOYALTYCARDNUMBER').AsString := LQuery.FieldByName('LOYALTYCARD').AsString;
-      FDMemTable.Post;
-      LQuery.Next;
-    end;
-    LQuery.Close;
-
-    FDMemTable.Filtered := True;
-    FDMemTable.First;
-
-    if LActive then FDMemTable.Locate('ID', LID, []);
-    FDMemTable.EnableControls;
+  LQuery.Open;
+  while not LQuery.Eof do begin
+    FDMemTable.Append;
+    FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
+    FDMemTable.FieldByName('TAXNUMBER').AsString := LQuery.FieldByName('TAXNUMBER').AsString;
+    FDMemTable.FieldByName('NAME').AsString := LQuery.FieldByName('NAME').AsString;
+    FDMemTable.FieldByName('VIP').AsBoolean := (LQuery.FieldByName('VIP').AsString = '*');
+    FDMemTable.FieldByName('SURCHARGE').AsFloat := LQuery.FieldByName('MARKUP').AsFloat;
+    FDMemTable.FieldByName('LOYALTYCARDNUMBER').AsString := LQuery.FieldByName('LOYALTYCARD').AsString;
+    FDMemTable.Post;
+    LQuery.Next;
   end;
+  LQuery.Close;
 
-  if TFile.Exists(TPath.Combine(G.ContragentsFolder, 'new.txt')) then begin
-    TFile.Delete(TPath.Combine(G.ContragentsFolder, 'new.txt'));
-  end;
+  FDMemTable.Filtered := True;
+  FDMemTable.First;
 
-  if TFile.Exists(TPath.Combine(G.ContragentsFolder, 'start.txt')) then begin
-    TFile.Delete(TPath.Combine(G.ContragentsFolder, 'start.txt'));
-  end;
+  if LActive then FDMemTable.Locate('ID', LID, []);
+  FDMemTable.EnableControls;
 
   ViewMessage.Hide;
 end;

@@ -9,6 +9,10 @@ uses
 
 implementation
 
+uses
+  Globals,
+  DataModule.Users;
+
 type
   TModelLogin = class(TInterfacedObject, IModelLogin)
 
@@ -20,7 +24,7 @@ type
 
   {$REGION 'Private Fields'}
   private
-    FIsLoggedIn: Boolean;
+
   {$ENDREGION}
 
 
@@ -39,13 +43,12 @@ type
   {$REGION 'Interfaced Properties Getters/Setters'}
   public
     function GetIsLoggedIn: Boolean;
-    procedure SetIsLoggedIn(AValue: Boolean);
   {$ENDREGION}
 
 
   {$REGION 'Interfaced Properties'}
   public
-    property IsLoggedIn: Boolean read GetIsLoggedIn write SetIsLoggedIn;
+    property IsLoggedIn: Boolean read GetIsLoggedIn;
   {$ENDREGION}
 
 
@@ -83,12 +86,7 @@ end;
 
 function TModelLogin.GetIsLoggedIn: Boolean;
 begin
-  Result := FIsLoggedIn;
-end;
-
-procedure TModelLogin.SetIsLoggedIn(AValue: Boolean);
-begin
-  FIsLoggedIn := AValue;
+  Result := DataModuleUsers.IsLoggedIn;
 end;
 
 {$ENDREGION}
@@ -98,12 +96,12 @@ end;
 
 procedure TModelLogin.Logout;
 begin
-  IsLoggedIn := False;
+  DataModuleUsers.Logout;
 end;
 
 procedure TModelLogin.TryLogin(APassword: String);
 begin
-  IsLoggedIn := APassword = '123';
+  DataModuleUsers.TryToLogin(APassword);
 end;
 
 {$ENDREGION}

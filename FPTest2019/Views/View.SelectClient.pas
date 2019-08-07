@@ -208,7 +208,7 @@ procedure SelectClient(const AKey: Char);
 var
   LViewSelectClient: TViewSelectClient;
 begin
-  DataModuleClients.KeyWord := AKey;
+  DataModuleClients.KeyWord := '';
 
   LViewSelectClient := TViewSelectClient.Create(nil);
   LViewSelectClient.ShowModal;

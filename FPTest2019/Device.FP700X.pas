@@ -119,6 +119,7 @@ type
     procedure OpenReversal(const ASale: IModelClassSale);
     procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
     procedure TotalsOnReversal(const ASaleReversal: IModelClassSaleReversal);
+    procedure TotalsOnReversalAll(const ADue: WideString);
     procedure CloseReversal(const ASale: IModelClassSale);
     procedure DiscardReversal(const ASale: IModelClassSale);
 
@@ -138,6 +139,7 @@ var
 implementation
 
 uses
+  System.DateUtils,
   Helper.MyFuncs,
   Model_FP700X,
   Model.Notification,
@@ -399,6 +401,25 @@ begin
     Discount_Value := ADiscountValue; //
     Department := '0';                //
     Measure := AMeasure;
+//    ShowMessage(
+//      ' | '+
+//      TextRow1
+//      +' | '+
+//      TaxGroup
+//      +' | '+
+//      SinglePrice
+//      +' | '+
+//      Quantity
+//      +' | '+
+//      Discount_Type
+//      +' | '+
+//      Discount_Value
+//      +' | '+
+//      Department
+//      +' | '+
+//      Measure
+//      +' | '
+//    );
     LResult := Model_FP700X.execute_049_receipt_Sale_Un(
       FP700X,                     //
       TextRow1,                   //
@@ -660,29 +681,29 @@ begin
 
   SendNotification([actFiscalDeviceBeforeOpenReversalCheck]);
 	try
-    ShowMessage(
-      ' | '+
-      AOperatorNumber
-      +' | '+
-      AOperatorPassword
-      +' | '+
-      ATillNumber
-      +' | '+
-      '1'
-      +' | '+
-      ADocNumber
-      +' | '+
-      ADocDateTime
-      +' | '+
-      AFiscalDeviceID
-      +' | '+
-      ''
-      +' | '+
-      ''
-      +' | '+
-      AUNP
-      +' | '
-    );
+//    ShowMessage(
+//      ' | '+
+//      AOperatorNumber
+//      +' | '+
+//      AOperatorPassword
+//      +' | '+
+//      ATillNumber
+//      +' | '+
+//      '1'
+//      +' | '+
+//      ADocNumber
+//      +' | '+
+//      ADocDateTime
+//      +' | '+
+//      AFiscalDeviceID
+//      +' | '+
+//      ''
+//      +' | '+
+//      ''
+//      +' | '+
+//      AUNP
+//      +' | '
+//    );
     if
       Model_FP700X.execute_043_receipt_StornoOpen_C01(
         FP700X,           //
@@ -974,18 +995,64 @@ end;
 
 procedure TDeviceFP700X.PReport(const APeriodStart, APeriodFinish: TDate);
 var
+  From_DateTime: WideString;
+  To_DateTime: WideString;
+  Input_DocType: WideString;
+  ErrorCode: WideString;
+  Start_DateTime: WideString;
+  End_DateTime: WideString;
+  First_DocumentNumber: WideString;
+  Last_DocumentNumber: WideString;
+
   ReportType: WideString;        //
   StartNumber: WideString;       //
   EndNumber: WideString;         //
-  ErrorCode: WideString;         //
 begin
   if not G.FiscalDevicePresent then Exit;
 
   SendNotification([actFiscalDeviceBeforePReport]);
+
+  try
+    From_DateTime :=
+      DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+' '+
+      HourOf(APeriodStart).ToString.PadLeft(2, '0')+':'+
+      MinuteOf(APeriodStart).ToString.PadLeft(2, '0')+':'+
+      SecondOf(APeriodStart).ToString.PadLeft(2, '0')+' DST';
+    To_DateTime :=
+      DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+' '+
+      HourOf(APeriodFinish).ToString.PadLeft(2, '0')+':'+
+      MinuteOf(APeriodFinish).ToString.PadLeft(2, '0')+':'+
+      SecondOf(APeriodFinish).ToString.PadLeft(2, '0')+' DST';
+    Input_DocType := '2';
+
+    if
+      Model_FP700X.execute_124_klen_Documents_InRange(
+        FP700X,                 //
+        From_DateTime,          //
+        To_DateTime,            //
+        Input_DocType,          //
+        ErrorCode,              //
+        Start_DateTime,         //
+        End_DateTime,           //
+        First_DocumentNumber,   //
+        Last_DocumentNumber     //
+      ) <> 0
+    then begin
+      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+      SendNotification([actFiscalDeviceErrorPReport]);
+    end;
+	finally
+    SendNotification([actFiscalDeviceAfterPReport]);
+  end;
+
 	try
-    ReportType := '0';          //
-    StartNumber := '';          //
-    EndNumber := '';            //
+    ReportType := '0';
+    StartNumber := First_DocumentNumber;
+    EndNumber := Last_DocumentNumber;
     if
       Model_FP700X.execute_095_report_FMByNumRange(
         FP700X,       //
@@ -1192,6 +1259,13 @@ begin
   if not G.FiscalDevicePresent then Exit;
 
   Total('0', ASaleReversal.Total, '');
+end;
+
+procedure TDeviceFP700X.TotalsOnReversalAll(const ADue: WideString);
+begin
+  if not G.FiscalDevicePresent then Exit;
+
+  Total('0', ADue, '');
 end;
 
 procedure TDeviceFP700X.CloseReversal(const ASale: IModelClassSale);

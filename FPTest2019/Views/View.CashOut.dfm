@@ -43,6 +43,7 @@ object ViewCashOut: TViewCashOut
     Color = 16764354
     TabOrder = 0
     Text = '0.00'
+    OnKeyPress = EditCashKeyPress
   end
   object ButtonCashOut: TBitBtnWithColor
     Left = 8

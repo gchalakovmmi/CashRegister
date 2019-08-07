@@ -4,6 +4,7 @@ object DataModuleClients: TDataModuleClients
   Width = 296
   object FDMemTable: TFDMemTable
     Active = True
+    OnFilterRecord = FDMemTableFilterRecord
     FieldDefs = <
       item
         Name = 'ID'

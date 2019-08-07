@@ -49,8 +49,6 @@ type
     FObserver: IObserver;
     FObservable: IObservable;
     FModel: IModelReversal;
-
-    FInReversal: Boolean;
   {$ENDREGION}
 
   {$REGION 'Private Properties Getters/Setters'}
@@ -92,14 +90,11 @@ type
 
     // Actions
     procedure ActionExitExecute;
-    procedure ActionRemoveItemExecute;
-    procedure ActionCheckItemExecute;
-    procedure ActionSaveAndNewExecute;
-    procedure ActionDiscardExecute;
+    procedure ActionReversalExecute;
+    procedure ActionReversalAllExecute;
 
     // Edit Actions
     procedure EditShowEnter;
-    procedure EditTotalEnter;
   {$ENDREGION}
 
   {$REGION 'Constructors/Destructors'}
@@ -172,7 +167,6 @@ procedure TViewModelReversal.SetupReversal;
 begin
   SendNotification([actReversalDisableActions]);
   Model.SetupReversal;
-  FInReversal := False;
   SendNotification([actReversalEnableActions]);
   SendNotification([actSetupGUI]);
   SendNotification([actUpdateGUI]);
@@ -182,7 +176,6 @@ end;
 procedure TViewModelReversal.TeardownReversal;
 begin
   Model.TeardownReversal;
-  FInReversal := False;
 end;
 
 
@@ -253,11 +246,9 @@ end;
 
 function TViewModelReversal.GetGUIActionsRecord: TViewReversalGUIActionsRecord;
 begin
-  Result.ActionExitEnabled := not FInReversal;
-  Result.ActionRemoveItemEnabled := True;
-  Result.ActionCheckItemEnabled := True;
-  Result.ActionSaveAndNewEnabled := FInReversal;
-  Result.ActionDiscardEnabled := FInReversal;
+  Result.ActionExitEnabled := True;
+  Result.ActionReversalEnabled := True;
+  Result.ActionReversalAllEnabled := True;
 end;
 
 function TViewModelReversal.GetGUIRecord: TViewReversalGUIRecord;
@@ -273,70 +264,30 @@ begin
   SendNotification([actReversalDisableActions]);
   SendNotification([actReversalActiveControlGrid]);
   SendNotification([actReversalEnableActions]);
-  if not FInReversal then begin
-    SendNotification([actCloseForm]);
-  end;
+  SendNotification([actCloseForm]);
 end;
 
-procedure TViewModelReversal.ActionRemoveItemExecute;
+procedure TViewModelReversal.ActionReversalExecute;
 begin
   SendNotification([actReversalDisableActions]);
-  if not FInReversal then begin
-    Model.OpenReversal;
-    FInReversal := True;
-  end;
   Model.RegistrationOfReversal;
   SendNotification([actReversalActiveControlGrid]);
   SendNotification([actReversalEnableActions]);
   SendNotification([actCloseForm]);
 end;
 
-procedure TViewModelReversal.ActionCheckItemExecute;
+procedure TViewModelReversal.ActionReversalAllExecute;
 begin
   SendNotification([actReversalDisableActions]);
-  CheckItem;
+  Model.RegistrationOfReversalAll;
   SendNotification([actReversalActiveControlGrid]);
   SendNotification([actReversalEnableActions]);
-end;
-
-procedure TViewModelReversal.ActionSaveAndNewExecute;
-begin
-  if not FInReversal then Exit;
-
-  SendNotification([actReversalDisableActions]);
-
-  Model.Totals;
-  Model.CloseReversal;
-  FInReversal := False;
-  SendNotification([actCloseForm]);
-
-  SendNotification([actReversalEnableActions]);
-end;
-
-procedure TViewModelReversal.ActionDiscardExecute;
-begin
-  SendNotification([actReversalDisableActions]);
-  if MessageDlg('∆≈À¿≈“≈ À» ¿Õ”À»–¿Õ≈ Õ¿ “≈ ”Ÿ»ﬂ ¡ŒÕ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
-    Model.DiscardReversal;
-    FInReversal := False;
-    SendNotification([actReversalEnableActions]);
-    SendNotification([actCloseForm]);
-  end else begin
-    SendNotification([actReversalActiveControlGrid]);
-    SendNotification([actReversalEnableActions]);
-    SendNotification([actUpdateGUI]);
-  end;
 end;
 
 
 // Edit Actions
 
 procedure TViewModelReversal.EditShowEnter;
-begin
-  SendNotification([actReversalActiveControlGrid]);
-end;
-
-procedure TViewModelReversal.EditTotalEnter;
 begin
   SendNotification([actReversalActiveControlGrid]);
 end;

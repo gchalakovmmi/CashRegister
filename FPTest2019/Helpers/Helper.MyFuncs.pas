@@ -24,6 +24,7 @@ interface
 implementation
 
 uses
+  System.Character,
   SysUtils,
   Tlhelp32,
   Windows;
@@ -35,7 +36,7 @@ uses
   begin
     R := True;
     for i := 1 to Length(S) do begin
-      if not CharInSet(S[i], ['0'..'9']) then begin
+      if not S[i].IsDigit then begin
         R := False;
       end;
     end;

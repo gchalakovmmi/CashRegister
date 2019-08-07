@@ -103,6 +103,7 @@ type
     property TempFolder: String read FFolder0;
     property ItemsFolder: String read FFolder3;
     property ContragentsFolder: String read FFolder2;
+    property StructureFolder: String read FFolder1;
     property SalesFolder: String read FFolder3002;
   {$ENDREGION}
 
