@@ -217,6 +217,7 @@ begin
     LCurrentSaleDetail.IsCancelled := 'да';
     FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
     FSale.RegistrationOfReversal(LSaleReversal);
+    FSale.ReversalToFile(LSaleReversal);
 
     // Total on Reversal
     DeviceFP700X.TotalsOnReversal(LSaleReversal);
@@ -252,7 +253,7 @@ begin
         LCurrentSaleDetail.IsCancelled := 'да';
         FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
         FSale.RegistrationOfReversal(LSaleReversal);
-
+        FSale.ReversalToFile(LSaleReversal);
       end;
     end;
 

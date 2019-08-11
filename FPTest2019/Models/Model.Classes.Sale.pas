@@ -278,6 +278,7 @@ type
     procedure UpdateInDataSet;
     function ToJSON: TJSONObject;
     procedure ToFile;
+    procedure ReversalToFile(const AReversal: IModelClassSaleReversal);
 
     function GetSaleDetailByGID(const AGID: String): IModelClassSaleDetail;
 
@@ -1211,6 +1212,113 @@ begin
   TFile.Move(LTempFileName, LResultFileName);
 end;
 
+procedure TModelClassSale.ReversalToFile(const AReversal: IModelClassSaleReversal);
+var
+  LTemplateFileName: String;
+  LTempFileName: String;
+  LResultFileName: String;
+
+  LSQL: String;
+  LCashPayment: String;
+begin
+  LTemplateFileName := TPath.Combine(G.TempFolder,'details.db');
+  LTempFileName := TPath.Combine(G.TempFolder, 't'+GID+AReversal.GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.tmp');
+  LResultFileName := TPath.Combine(G.TempFolder, 't'+GID+AReversal.GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.db');
+  // Copy template
+  TFile.Copy(LTemplateFileName, LTempFileName);
+
+// Store Details
+  LSQL :=
+    // OPERATIONID
+    GID+', '''+
+    // OPNUMBER
+    SaleID+''', '''+
+    // ONDATE
+    DateToStr(Date)+''', '''+
+    // ONTIME
+    TimeToStr(TimeOf(Now))+''', '+
+    // OPGROUP
+    '2001, '+
+    // OPTYPE
+    '3002, '+
+    // FROMCONTRAGENTID
+    StoreID+', '+
+    // TOCONTRAGENTID
+    ClientGID+', '''+
+    // VIP
+    ClientVIPStatus+''', '+
+    // MARKUP
+    ClientSurcharge+', '+
+    // ITEMID
+    AReversal.ItemGID+', '''+
+    // BARCODE
+    AReversal.BarCode+''', '''+
+    // DESCRIPTION
+    AReversal.ItemName+''', '''+
+    // MEASURE
+    AReversal.Measure+''', '+
+    // COEFF
+    AReversal.PackCoeff+', '+
+    // QUANTITY
+    AReversal.Quantity+', '+
+    // TOTALQUANTITY
+    FormatFloat('0.000', _Round(AReversal.Quantity.ToDouble * AReversal.PackCoeff.ToDouble, 0.001))+', '+
+    // PRICE
+    FormatFloat('0.00', _Round(AReversal.ClientPrice.ToDouble / AReversal.PackCoeff.ToDouble, 0.01))+', '+
+    // DISCOUNT
+    AReversal.PackDiscount+', '+
+    // VENDORPRICE
+    FormatFloat('0.0000', _Round(AReversal.VendorPrice.ToDouble / AReversal.PackCoeff.ToDouble, 0.0001))+', '+
+    // TOTAL
+    FormatFloat('0.00', _Round(AReversal.Total.ToDouble, 0.01))+', '+
+    // ACT
+    '''*'', '+
+    // USERID
+    AReversal.UserGID+', '+
+    // MACHINEID
+    WorkstationID+', '''+
+    // TYPED
+    ''+'''';
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+  // Store to Temp File
+  ExecSQL(LSQL);
+
+
+  // Store Payments
+  LCashPayment := FormatFloat('0.00', _Round(AReversal.Total.ToDouble, 0.01));
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3009, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'ПАРИ В БРОЙ'+''', '''+         // DESCRIPTION
+    'ЛЕВА'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    LCashPayment+', '+              // QUANTITY
+    LCashPayment+', '+              // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    LCashPayment+', '+              // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  // Rename template to result
+  TFile.Move(LTempFileName, LResultFileName);
+end;
+
 
 
 function TModelClassSale.GetSaleDetailByGID(const AGID: String): IModelClassSaleDetail;
@@ -1334,6 +1442,7 @@ begin
   CompletedTime := FormatDateTime('hh:mm:ss', Time);
   Stage := 'приключена';
   SaveToFile;
+  ToFile;
 end;
 
 {$ENDREGION}

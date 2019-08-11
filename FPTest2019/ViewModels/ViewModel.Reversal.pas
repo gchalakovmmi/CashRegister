@@ -282,6 +282,7 @@ begin
   Model.RegistrationOfReversalAll;
   SendNotification([actReversalActiveControlGrid]);
   SendNotification([actReversalEnableActions]);
+  SendNotification([actCloseForm]);
 end;
 
 

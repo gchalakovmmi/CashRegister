@@ -1,0 +1,498 @@
+unit Model.Reversal;
+
+interface
+
+uses
+  Interfaces.Model.Reversal;
+
+  function CreateModelReversal: IModelReversal;
+
+implementation
+
+uses
+  System.SysUtils,
+  Vcl.Dialogs,
+  System.UITypes,
+  Helper.MyFuncs,
+  Device.FP700X,
+  DataModule.Sale,
+  DataModule.Items,
+  DataModule.Clients,
+  View.Message,
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale,
+  Interfaces.Model.Classes.Sale.Detail,
+  Model.Classes.Sale.Detail,
+  Interfaces.Model.Classes.Sale.Reversal;
+
+type
+  TModelReversal = class(TInterfacedObject, IModelReversal)
+
+  {$REGION 'Private Methods'}
+  private
+    function ItemIsValidForReversal(const ASaleDetail: IModelClassSaleDetail): Boolean;
+    function SaleIsValidForReversal: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FSale: IModelClassSale;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetSale: IModelClassSale;
+    procedure SetSale(const AValue: IModelClassSale);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Sale: IModelClassSale read GetSale write SetSale;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    // Setup/Teardown
+    procedure SetupReversal;
+    procedure TeardownReversal;
+
+    // Reversal Actions
+    procedure RegistrationOfReversal;
+    procedure RegistrationOfReversalAll;
+    procedure ToFile;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelReversal: IModelReversal;
+begin
+  Result := TModelReversal.Create;
+end;
+
+{ TModelReversal }
+
+{$REGION 'Private Methods'}
+
+function TModelReversal.ItemIsValidForReversal(const ASaleDetail: IModelClassSaleDetail): Boolean;
+begin
+  Result := False;
+
+  if ASaleDetail.IsCancelled = '‰‡' then begin
+    ViewMessage.ShowBadMessagePlus('“Œ«» ¿–“» ”À ≈ ¬≈◊≈ —“Œ–Õ»–¿Õ(¿Õ”À»–¿Õ)!');
+    Exit;
+  end;
+
+  DeviceFP700X.CashCheck;
+
+  if DeviceFP700X.Cash < ASaleDetail.Total.ToDouble then begin
+    ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
+    Exit;
+  end;
+
+  if not
+    MessageDlg(
+      Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ %s Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
+      mtConfirmation,
+      [mbYes, mbNo],
+      0,
+      mbYes
+    ) = mrYes
+  then begin
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+function TModelReversal.SaleIsValidForReversal: Boolean;
+begin
+  Result := False;
+
+  DeviceFP700X.CashCheck;
+
+  if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
+    ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
+    Exit;
+  end;
+
+  if not
+    MessageDlg(
+      Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ ÔÓ‰‡Ê·‡ Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [FSale.Due.ToDouble]),
+      mtConfirmation,
+      [mbYes, mbNo],
+      0,
+      mbYes
+    ) = mrYes
+  then begin
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelReversal.GetSale: IModelClassSale;
+begin
+  Result := FSale;
+end;
+
+procedure TModelReversal.SetSale(const AValue: IModelClassSale);
+begin
+  FSale := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+// Setup/Teardown
+
+procedure TModelReversal.SetupReversal;
+begin
+  FSale := CreateFromFileModelClassSale(DataModuleSale.FDMemTableSaleGID.AsString, DataModuleSale.FDMemTableSaleCreatedDate.AsString);
+  DataModuleSale.SetupReversal(FSale);
+end;
+
+procedure TModelReversal.TeardownReversal;
+begin
+// nop
+end;
+
+
+// Reversal Actions
+
+procedure TModelReversal.RegistrationOfReversal;
+var
+  LCurrentSaleDetailGID: String;
+  LCurrentSaleDetail: IModelClassSaleDetail;
+  LSaleReversal: IModelClassSaleReversal;
+begin
+  LCurrentSaleDetailGID := DataModuleSale.CurrentSaleDetailGID;
+  LCurrentSaleDetail := FSale.GetSaleDetailByGID(LCurrentSaleDetailGID);
+  if not Assigned(LCurrentSaleDetail) then Exit;
+
+  LSaleReversal := LCurrentSaleDetail.ToSaleReversal;
+  LSaleReversal.FiscalDeviceID := FSale.FiscalDeviceID;
+  LSaleReversal.CompletedDate := FSale.CompletedDate;
+  LSaleReversal.CompletedTime := FSale.CompletedTime;
+
+  if ItemIsValidForReversal(LCurrentSaleDetail) then begin
+    // Open Reversal
+    DeviceFP700X.OpenReversal(FSale);
+
+    // Fiscalization
+    DeviceFP700X.RegistrationOfReversal(LSaleReversal);
+
+    // Store in Model
+    LCurrentSaleDetail.IsCancelled := '‰‡';
+    FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
+    FSale.RegistrationOfReversal(LSaleReversal);
+
+    // Total on Reversal
+    DeviceFP700X.TotalsOnReversal(LSaleReversal);
+
+    // Close Reversal
+    DeviceFP700X.CloseReversal(FSale);
+  end;
+end;
+
+procedure TModelReversal.RegistrationOfReversalAll;
+var
+  LCurrentSaleDetail: IModelClassSaleDetail;
+  LSaleReversal: IModelClassSaleReversal;
+  LDue: String;
+begin
+  if SaleIsValidForReversal then begin
+    LDue := FSale.Due;
+
+    // Open Reversal
+    DeviceFP700X.OpenReversal(FSale);
+
+    for LCurrentSaleDetail in FSale.Details.List do begin
+      if LCurrentSaleDetail.IsCancelled <> '‰‡' then begin
+        LSaleReversal := LCurrentSaleDetail.ToSaleReversal;
+        LSaleReversal.FiscalDeviceID := FSale.FiscalDeviceID;
+        LSaleReversal.CompletedDate := FSale.CompletedDate;
+        LSaleReversal.CompletedTime := FSale.CompletedTime;
+
+        // Fiscalization
+        DeviceFP700X.RegistrationOfReversal(LSaleReversal);
+
+        // Store in Model
+        LCurrentSaleDetail.IsCancelled := '‰‡';
+        FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
+        FSale.RegistrationOfReversal(LSaleReversal);
+      end;
+    end;
+
+    // Total on Reversal
+    DeviceFP700X.TotalsOnReversalAll(LDue);
+
+    // Close Reversal
+    DeviceFP700X.CloseReversal(FSale);
+  end;
+end;
+
+procedure TModelReversal.ToFile;
+var
+  LTemplateFileName: String;
+  LTempFileName: String;
+  LResultFileName: String;
+
+  LSaleDetail: IModelClassSaleDetail;
+  LSaleCancellation: IModelClassSaleCancellation;
+  LSQL: String;
+  LCashPayment: String;
+begin
+  LTemplateFileName := TPath.Combine(G.TempFolder,'details.db');
+  LTempFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.tmp');
+  LResultFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.db');
+  // Copy template
+  TFile.Copy(LTemplateFileName, LTempFileName);
+
+  // Store Details
+  for LSaleDetail in Details.List do begin
+    LSQL :=
+      // OPERATIONID
+      GID+', '''+
+      // OPNUMBER
+      SaleID+''', '''+
+      // ONDATE
+      DateToStr(Date)+''', '''+
+      // ONTIME
+      TimeToStr(TimeOf(Now))+''', '+
+      // OPGROUP
+      '2001, '+
+      // OPTYPE
+      '3002, '+
+      // FROMCONTRAGENTID
+      StoreID+', '+
+      // TOCONTRAGENTID
+      ClientGID+', '''+
+      // VIP
+      ClientVIPStatus+''', '+
+      // MARKUP
+      ClientSurcharge+', '+
+      // ITEMID
+      LSaleDetail.ItemGID+', '''+
+      // BARCODE
+      LSaleDetail.BarCode+''', '''+
+      // DESCRIPTION
+      LSaleDetail.ItemName+''', '''+
+      // MEASURE
+      LSaleDetail.Measure+''', '+
+      // COEFF
+      LSaleDetail.PackCoeff+', '+
+      // QUANTITY
+      LSaleDetail.Quantity+', '+
+      // TOTALQUANTITY
+      FormatFloat('0.000', _Round(LSaleDetail.Quantity.ToDouble * LSaleDetail.PackCoeff.ToDouble, 0.001))+', '+
+      // PRICE
+      FormatFloat('0.00', _Round(LSaleDetail.ClientPrice.ToDouble / LSaleDetail.PackCoeff.ToDouble, 0.01))+', '+
+      // DISCOUNT
+      LSaleDetail.PackDiscount+', '+
+      // VENDORPRICE
+      FormatFloat('0.0000', _Round(LSaleDetail.VendorPrice.ToDouble / LSaleDetail.PackCoeff.ToDouble, 0.0001))+', '+
+      // TOTAL
+      FormatFloat('0.00', _Round(LSaleDetail.Total.ToDouble, 0.01))+', '+
+      // ACT
+      '''*'', '+
+      // USERID
+      UserGID+', '+
+      // MACHINEID
+      WorkstationID+', '''+
+      // TYPED
+      LSaleDetail.Typed+'''';
+
+    LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+    // Store to Temp File
+    ExecSQL(LSQL);
+  end;
+
+  // Store Cancelations
+  for LSaleCancellation in Cancellations.List do begin
+    LSQL :=
+      // OPERATIONID
+      GID+', '''+
+      // OPNUMBER
+      SaleID+''', '''+
+      // ONDATE
+      DateToStr(Date)+''', '''+
+      // ONTIME
+      TimeToStr(TimeOf(Now))+''', '+
+      // OPGROUP
+      '2001, '+
+      // OPTYPE
+      '3002, '+
+      // FROMCONTRAGENTID
+      StoreID+', '+
+      // TOCONTRAGENTID
+      ClientGID+', '''+
+      // VIP
+      ClientVIPStatus+''', '+
+      // MARKUP
+      ClientSurcharge+', '+
+      // ITEMID
+      LSaleCancellation.ItemGID+', '''+
+      // BARCODE
+      LSaleCancellation.BarCode+''', '''+
+      // DESCRIPTION
+      LSaleCancellation.ItemName+''', '''+
+      // MEASURE
+      LSaleCancellation.Measure+''', '+
+      // COEFF
+      LSaleCancellation.PackCoeff+', '+
+      // QUANTITY
+      LSaleCancellation.Quantity+', '+
+      // TOTALQUANTITY
+      FormatFloat('0.000', _Round(LSaleCancellation.Quantity.ToDouble * LSaleCancellation.PackCoeff.ToDouble, 0.001))+', '+
+      // PRICE
+      FormatFloat('0.00', _Round(LSaleCancellation.ClientPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.01))+', '+
+      // DISCOUNT
+      LSaleCancellation.PackDiscount+', '+
+      // VENDORPRICE
+      FormatFloat('0.0000', _Round(LSaleCancellation.VendorPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.0001))+', '+
+      // TOTAL
+      FormatFloat('0.00', _Round(LSaleCancellation.Total.ToDouble, 0.01))+', '+
+      // ACT
+      '''*'', '+
+      // USERID
+      UserGID+', '+
+      // MACHINEID
+      WorkstationID+', '''+
+      // TYPED
+      LSaleDetail.Typed+'''';
+
+    LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+    // Store to Temp File
+    ExecSQL(LSQL);
+  end;
+
+  // Store Payments
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3098, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    '¬¿”◊≈–'+''', '''+              // DESCRIPTION
+    'À≈¬¿'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    VoucherPayment+', '+            // QUANTITY
+    VoucherPayment+', '+            // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    VoucherPayment+', '+            // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3099, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'œ¿–» œŒ —Ã≈“ ¿'+''', '''+      // DESCRIPTION
+    'À≈¬¿'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    CardPayment+', '+               // QUANTITY
+    CardPayment+', '+               // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    CardPayment+', '+               // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  LCashPayment := FormatFloat('0.00', _Round(CashPayment.ToDouble - Returned.ToDouble, 0.01));
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3009, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'œ¿–» ¬ ¡–Œ…'+''', '''+         // DESCRIPTION
+    'À≈¬¿'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    LCashPayment+', '+              // QUANTITY
+    LCashPayment+', '+              // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    LCashPayment+', '+              // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  // Rename template to result
+  TFile.Move(LTempFileName, LResultFileName);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

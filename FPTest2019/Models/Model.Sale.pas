@@ -293,8 +293,6 @@ begin
   if not Assigned(LCurrentSaleDetail) then Exit;
   LSaleDetail := LCurrentSaleDetail.ToSaleDuplication;
 
-//  GetCurrentItemForDuplication;
-
   if ItemIsValidForSale(LSaleDetail) then begin
     // Fiscalization
     DeviceFP700X.RegistrationOfSale(LSaleDetail);

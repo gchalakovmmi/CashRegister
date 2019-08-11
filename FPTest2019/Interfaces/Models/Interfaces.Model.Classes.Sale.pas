@@ -201,6 +201,7 @@ type
     procedure UpdateInDataSet;
     function ToJSON: TJSONObject;
     procedure ToFile;
+    procedure ReversalToFile(const AReversal: IModelClassSaleReversal);
 
     function GetSaleDetailByGID(const AGID: String): IModelClassSaleDetail;
 

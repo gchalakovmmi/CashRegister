@@ -29,6 +29,8 @@ type
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FP700XError(ASender: TObject; error_Code: Integer;
+      var error_Message: WideString);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -165,6 +167,11 @@ begin
   StopCOMServer;
 end;
 
+procedure TDeviceFP700X.FP700XError(ASender: TObject; error_Code: Integer; var error_Message: WideString);
+begin
+//
+end;
+
 {$ENDREGION}
 
 
@@ -278,7 +285,20 @@ end;
 {TODO -oOwner -cGeneral : ActionItem}
 procedure TDeviceFP700X.CheckAndResolve;
 begin
-//  Model.CheckAndResolve;
+  // Check connectivity
+
+  // Check if Fiscal Device ID is same
+
+  // Check if there is time difference
+
+  // Check Status
+
+  // Check Transaction status
+
+  // Resolve Device issues
+
+  // Resolve transaction issues
+
 end;
 
 procedure TDeviceFP700X.OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
@@ -1029,6 +1049,15 @@ begin
       SecondOf(APeriodFinish).ToString.PadLeft(2, '0')+' DST';
     Input_DocType := '2';
 
+    ShowMessage(
+      ' | '+
+      From_DateTime
+      +' | '+
+      To_DateTime
+      +' | '+
+      Input_DocType
+      +' | '
+    );
     if
       Model_FP700X.execute_124_klen_Documents_InRange(
         FP700X,                 //
@@ -1053,6 +1082,17 @@ begin
     ReportType := '0';
     StartNumber := First_DocumentNumber;
     EndNumber := Last_DocumentNumber;
+    StartNumber := '1';
+    EndNumber := '1';
+    ShowMessage(
+      ' | '+
+      ReportType
+      +' | '+
+      StartNumber
+      +' | '+
+      EndNumber
+      +' | '
+    );
     if
       Model_FP700X.execute_095_report_FMByNumRange(
         FP700X,       //

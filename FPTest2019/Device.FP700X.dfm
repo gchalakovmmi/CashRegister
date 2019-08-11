@@ -18,6 +18,7 @@ object DeviceFP700X: TDeviceFP700X
   object FP700X: TCFD_BGR
     AutoConnect = False
     ConnectKind = ckRunningOrNew
+    OnError = FP700XError
     Left = 96
     Top = 32
   end
