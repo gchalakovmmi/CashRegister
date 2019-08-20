@@ -196,7 +196,11 @@ var
   LViewCashOut: TViewCashOut;
 begin
   LViewCashOut := TViewCashOut.Create(nil);
-  LViewCashOut.ShowModal;
+  try
+    LViewCashOut.ShowModal;
+  finally
+    LViewCashOut.Free;
+  end;
 end;
 
 end.

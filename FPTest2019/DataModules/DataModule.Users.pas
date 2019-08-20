@@ -53,16 +53,15 @@ begin
   q := TQuery.Create(Self);
   try
     q.DatabaseName := G.StructureFolder;
-    q.SQL.Add('SELECT DISTINCT Machineinfopacks.ServerID, Users.ID, Users.NAME FROM Users');
+    q.SQL.Add('SELECT DISTINCT Machineinfopacks.ServerID, Users.ID, Users.GID, Users.NAME FROM Users');
     q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
     q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
     q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
-//    q.SQL.Add('WHERE (Machineinfopacks.MachineID = '+IntToStr(dmMain.MachineID)+') AND (Users.PASS = '''+Pass+''')');
     q.SQL.Add('WHERE (Users.PASS = '''+APassword+''') ');
     q.SQL.Add('ORDER BY ID');
     q.Open;
     if q.RecordCount > 0 then begin
-      G.UserGID := q.RecNo;
+      G.UserGID := q.FieldByName('GID').AsInteger;
       G.UserName := q.FieldByName('NAME').AsString;
       G.IsLoggedUser := True;
     end;

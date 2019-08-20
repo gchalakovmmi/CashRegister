@@ -15,7 +15,7 @@ uses
   Vcl.StdCtrls,
   Interfaces.Model.Pattern.Observer,
   Interfaces.Model.Notification,
-  Interfaces.ViewModel.CheckItem;
+  Interfaces.ViewModel.CheckItem, Vcl.ExtCtrls;
 
 type
   TViewCheckItem = class(TForm, IObserver, IObservable)
@@ -23,6 +23,8 @@ type
     LabelItem: TLabel;
     LabelMeasure: TLabel;
     LabelPrice: TLabel;
+    LabelInfo: TLabel;
+    Panel1: TPanel;
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -78,7 +80,7 @@ type
   {$ENDREGION}
   end;
 
-  procedure CheckItem;
+  procedure ShowCheckItem;
 
 implementation
 
@@ -107,6 +109,11 @@ begin
 
   FViewModel := CreateViewModelCheckItem;
   FViewModel.Observable.Subscribe(FObserver);
+
+  Top := 0;
+  Left := 0;
+  Width := Screen.Width;
+  Height := Screen.Height;
 
   UpdateGUI;
 end;
@@ -189,12 +196,16 @@ end;
 
 {$ENDREGION}
 
-procedure CheckItem;
+procedure ShowCheckItem;
 var
   LViewCheckItem: TViewCheckItem;
 begin
   LViewCheckItem := TViewCheckItem.Create(nil);
-  LViewCheckItem.ShowModal;
+  try
+    LViewCheckItem.ShowModal;
+  finally
+    LViewCheckItem.Free;
+  end;
 end;
 
 end.

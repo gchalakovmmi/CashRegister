@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFP_2000_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>45h (69)	ДНЕВЕН ФИНАНСОВ ОТЧЕТ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_69_0_0.html" name="CMD_69_0_0">CMD_69_0_0</a></li></td>
+					<td><pre>
+45h (69)	ДНЕВЕН ФИНАНСОВ ОТЧЕТ
+
+	Област за данни:
+		Option
+		N
+	Response:
+		Closure
+		FM_Total
+		TotA
+		TotB
+		TotC
+		TotD
+		TotE
+		TotF
+		TotG
+		TotH
+
+	Option	Параметър, управляващ вида на генерирания отчет:
+		'0'	Отпечатва се Z-отчет. Разпечатката завършва с надпис "ФИСКАЛЕН БОН". 
+		 '2'	Прави се дневен финансов отчет без нулиране (т. е. не се извършва запис във фискалната памет и 
+			нулиране на регистрите). Разпечатката завършва с лого "СЛУЖЕБЕН БОН". 
+
+	N		Наличието на този символ забранява изчистването на натрупаните данни по оператори при отчет с нулиране.
+	
+	Closure		Номер на фискалния запис - 4 байта.
+	FM_Total		Сумата от всички продажби без ДДС - 12 байта със знак
+	TotX		Сумите по всяка от данъчните групи 'А', 'Б', 'В', : - 12 байта със знак.
+
+Дневен отчет без нулиране може да се предизвика и чрез задържането на бутон <FEED> при включване на принтера до третия звуков сигнал.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

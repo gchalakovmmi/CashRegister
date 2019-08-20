@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFP_SK131_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>2Ch (44)	ПРИДВИЖВАНЕ НА ХАРТИЯТА</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_44_0_0.html" name="CMD_44_0_0">CMD_44_0_0</a></li></td>
+					<td><pre>
+2Ch (44)	ПРИДВИЖВАНЕ НА ХАРТИЯТА.
+
+	Област за данни:	
+		Lines
+	Отговор:	
+		Няма данни
+
+TRGT_LINES	Броят на редовете, с които да бъде придвижена хартията. 
+		Трябва да бъде положително число не по-голямо от 99 /1 или 2 байта/. 
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>2Dh (45)	ОТРЯЗВАНЕ НА ХАРТИЯТА</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_45_0_0.html" name="CMD_45_0_0">CMD_45_0_0</a></li></td>
+					<td><pre>
+2Dh (45)	ОТРЯЗВАНЕ НА ХАРТИЯТА
+
+	Област за данни:	Няма данни
+	Отговор:		Няма данни
+
+1. Предизвиква отрязването на хартията. 
+2. Трябва да се има предвид, че програмата трябва да се погрижи за придвижването на хартията поне с два реда, иначе е възможно отрязване на края на бона. 
+3. Ако принтерът е в режим "автоматично рязане", той сам позиционира коректно хартията преди рязането, а командата е излишна.
+
+ВНИМАНИЕ!!!
+При блокиране на режещия механизъм трябва да се извади хартията (ако има такава) от резачката и да се изключи и включи принтера 
+- резачката ще се позиционира в изходно положение.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,290 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_53_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>35h (53)	ИЗЧИСЛЯВАНЕ НА СБОР (ТОТАЛ)
+
+	Област за данни:	
+		Line1
+		Line2
+		PaidMode
+		AmountIn
+	Отговор:	
+		PaidCode
+		AmountOut
+
+
+	Line1		Текст до 36 байта съдържащ първия ред
+	Line2		Текст до 36 байта съдържащ втория ред
+
+	PaidMode		Незадължителен код, указващ начина на плащане. Може да има следните стойности:
+		'P'	- Плащане в брой (по подразбиране);
+		'N'	- Плащане с кредит;
+		'C'	- Плащане с чек;
+		'D'	- Плащане с дебитна карта
+		'I'	- Програмируем тип плащане 1
+		'J'	- Програмируем тип плащане 2
+		'K'	- Програмируем тип плащане 3
+		'L'	- Програмируем тип плащане 4
+	В зависимост от кода сумите се натрупват в различни регистри и могат да бъдат получени в дневния отчет.
+
+	Amount_In	Сумата, която се плаща /до 10 значещи цифри/.
+
+
+	PaidCode		Един байт - резултат от изпълнението на командата.
+		'F'	Грешка.
+		'E'	Изчислената под сума е отрицателна. Плащане не се извършва и Amount ще съдържа отрицателната под сума.
+		'D'	Ако платената сума е по-малка от сумата на бона. Остатъкът за доплащане се връща в Amount.
+		'R'	Ако платената сума е по-голяма от сбора на бележката. Ще се отпечата съобщение "РЕСТО" и рестото се 
+			връща в Amount.
+		'I'	Сумата по някоя данъчна група е бил отрицателен и затова се е получила грешка. В Amount се връща 
+			текущата под сума.
+
+	Amount_Out	До 9 цифри със знак. Зависи от PaidCode.
+
+
+Тази команда предизвиква изчисляването на сумите от фискалния бон, отпечатването на сумата със специален шрифт и показването й на 
+дисплей. Възможно е отпечатването на допълнителен текст. 
+При успешно изпълнение на командата се генерира импулс за отваряне на чекмедже, ако това е разрешено с подкоманда 'X' на команда 43. 
+
+Командата няма да бъде изпълнена успешно, ако:
+	•	Не е отворен фискален бон.
+	•	Натрупаната сума е отрицателна.
+	•	Ако някоя от натрупаните суми по данъчни групи е отрицателна.
+След успешното изпълнение на командата, фискалният принтер няма да изпълнява командите 49 и 51 в рамките на отворения бон, обаче 
+може да изпълнява команда 53.
+
+Забележка: 
+Кодове на грешка 'E' и 'I' никога няма да се получат в българската версия на принтера, защото команди 49 и 52 
+(Регистриране на продажба) няма да допуснат отрицателни суми.
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Line1</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Line1		Текст до 36 байта съдържащ първия ред</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Line2</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Line2		Текст до 36 байта съдържащ втория ред</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">PaidMode</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>PaidMode	A non-mandatory code indicating the terms of payment. It may have the following values:
+	'P' 	Payment in cash
+	'N' 	Payment via credit
+	'C' 	Payment in cheques
+	'D' 	Payment with a debit card
+	'I'	Programmable payment 1
+	'J'	Programmable payment 2
+	'K'	Programmable payment 3
+	'L'	Programmable payment 4</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10504</td>
+				<td class="VerificationType">Проверка дали входния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Amount_In</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Amount_In	The sum tendered (up to 9 meaningful symbols)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10506</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип реално число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10505</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">PaidCode</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>PaidCode	One byte - resulting from the execution of the command
+	'F'	Error
+	'E'	The calculated sub-total sum is negative. Payment is withheld and Amount will contain a negative sub-total.
+	'D'	If the paid sum is less than the sum on the receipt. The residual sum due for payment is returned to Amount
+	'R'	When the paid sum is greater than the sum on the receipt. A message "CHANGE" will be printed out and the change 
+		will be returned to Amount.
+	'I'	An error has occurred because the sum under one of the tax groups is negative. The current subtotal is returned to 
+		Amount.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10515</td>
+				<td class="VerificationType">Проверка дали изходния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Amount_Out</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Amount_Out	The sum tendered (up to 9 meaningful symbols)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

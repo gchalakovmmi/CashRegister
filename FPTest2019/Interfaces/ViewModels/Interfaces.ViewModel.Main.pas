@@ -36,6 +36,8 @@ type
     procedure XReport;
     procedure PReport;
     procedure ZReport;
+    procedure CheckItem;
+
     procedure Audit;
   end;
 

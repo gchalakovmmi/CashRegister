@@ -51,6 +51,8 @@ type
 
     FMinVIPSale: Double;
     FMaxPayment: Double;
+
+    FShowCheckItem: Boolean;
   {$ENDREGION}
 
 
@@ -82,6 +84,7 @@ type
   public
     property MinVIPSale: Double read FMinVIPSale;
     property MaxPayment: Double read FMaxPayment;
+    property ShowCheckItem: Boolean read FShowCheckItem write FShowCheckItem;
 
     property StoreID: String read FStoreID write FStoreID;
     property StoreName: String read FStoreName write FStoreName;
@@ -587,6 +590,8 @@ begin
 
   FMinVIPSale := TAppSettings.GetFloatSetting('MinVIPSale');
   FMaxPayment := TAppSettings.GetFloatSetting('MaxPayment', 1000.00);
+
+  FShowCheckItem := False;
 
   TFile.WriteAllText(TPath.Combine(ItemsFolder, 'start.txt'),'');
   TFile.WriteAllText(TPath.Combine(ContragentsFolder, 'start.txt'),'');

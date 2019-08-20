@@ -189,7 +189,11 @@ var
   LViewReports: TViewReports;
 begin
   LViewReports := TViewReports.Create(nil);
-  LViewReports.ShowModal;
+  try
+    LViewReports.ShowModal;
+  finally
+    LViewReports.Free;
+  end;
 end;
 
 end.

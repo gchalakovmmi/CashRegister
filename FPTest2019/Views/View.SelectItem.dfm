@@ -28,7 +28,7 @@ object ViewSelectItem: TViewSelectItem
     DataSource = DataModuleItems.DataSource
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
-    Font.Height = -24
+    Font.Height = -19
     Font.Name = 'Verdana'
     Font.Style = []
     Options = [dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -41,6 +41,40 @@ object ViewSelectItem: TViewSelectItem
     TitleFont.Style = [fsBold]
     OnKeyDown = GridKeyDown
     OnKeyPress = GridKeyPress
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Code'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Item'
+        Width = 450
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BarCode'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Coeff'
+        Width = 50
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Measure'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ClientPrice'
+        Visible = True
+      end>
   end
   object Edit: TDBEdit
     Left = 0

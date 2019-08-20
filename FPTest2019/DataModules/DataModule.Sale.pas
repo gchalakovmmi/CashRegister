@@ -460,14 +460,15 @@ begin
   LList := TDirectory.GetFiles(LFolderName, 'Sale*.json', LSearchOption);
 
   { Populate the table with the results }
-  FDMemTableSaleDetails.Filtered := False;
-
   FDMemTableSale.DisableControls;
   FDMemTableSale.Close;
+  FDMemTableSale.IndexesActive := False;
+  FDMemTableSale.IndexFieldNames := '';
   FDMemTableSale.CreateDataSet;
 
   FDMemTableSaleDetails.DisableControls;
   FDMemTableSaleDetails.Close;
+  FDMemTableSaleDetails.Filtered := False;
   FDMemTableSaleDetails.CreateDataSet;
 
   for I := 0 to Length(LList) - 1 do begin
@@ -479,6 +480,8 @@ begin
   end;
 
   FDMemTableSaleDetails.Filtered := True;
+  FDMemTableSale.IndexFieldNames := 'CreatedTime:D';
+  FDMemTableSale.IndexesActive := True;
 
   FDMemTableSaleDetails.EnableControls;
   FDMemTableSale.EnableControls;

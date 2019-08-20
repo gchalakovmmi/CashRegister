@@ -14,6 +14,7 @@ uses
   System.SysUtils,
   Vcl.Dialogs,
   Vcl.ExtCtrls,
+  Globals,
   Interfaces.Enums,
   Interfaces.GUIRecords,
   Interfaces.Model.Notification,
@@ -32,7 +33,9 @@ uses
   View.CashIn,
   View.CashOut,
   View.SelectSale,
-  View.Reports, Device.FP700X;
+  View.Reports,
+  View.CheckItem,
+  Device.FP700X;
 
 type
   TViewModelMain = class(TInterfacedObject, IViewModelMain, IObserver, IObservable)
@@ -93,6 +96,7 @@ type
     procedure XReport;
     procedure PReport;
     procedure ZReport;
+    procedure CheckItem;
     procedure Audit;
   {$ENDREGION}
 
@@ -183,6 +187,10 @@ procedure TViewModelMain.Sale;
 begin
   ShowViewSale;
   SendNotification([actUpdateGUI]);
+  if G.ShowCheckItem then begin
+    CheckItem;
+  end;
+
 end;
 
 procedure TViewModelMain.Login;
@@ -238,6 +246,15 @@ begin
   end;
   SendNotification([actUpdateGUI]);
 end;
+
+procedure TViewModelMain.CheckItem;
+begin
+  ShowCheckItem;
+  SendNotification([actUpdateGUI]);
+  Sale;
+end;
+
+
 
 procedure TViewModelMain.Audit;
 begin

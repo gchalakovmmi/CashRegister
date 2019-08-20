@@ -38,6 +38,7 @@ type
     ButtonAudit: TBitBtnWithColor;
 
     StatusBar: TStatusBar;
+    ButtonItemCheck: TBitBtnWithColor;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -54,6 +55,7 @@ type
     procedure ButtonPReportClick(Sender: TObject);
     procedure ButtonZReportClick(Sender: TObject);
     procedure ButtonAuditClick(Sender: TObject);
+    procedure ButtonItemCheckClick(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -166,6 +168,11 @@ begin
   ViewModel.Reversal;
 end;
 
+procedure TViewMain.ButtonItemCheckClick(Sender: TObject);
+begin
+  ViewModel.CheckItem;
+end;
+
 
 procedure TViewMain.ButtonSelectPrinterClick(Sender: TObject);
 begin
@@ -199,6 +206,10 @@ end;
 
 procedure TViewMain.ProcessNotification(const AModelNotification: IModelNotification);
 begin
+  if actCheckItem in AModelNotification.Actions then begin
+    ViewModel.CheckItem;
+    ViewModel.Sale;
+  end;
   if actUpdateGUI in AModelNotification.Actions then begin
     UpdateGUI;
   end;

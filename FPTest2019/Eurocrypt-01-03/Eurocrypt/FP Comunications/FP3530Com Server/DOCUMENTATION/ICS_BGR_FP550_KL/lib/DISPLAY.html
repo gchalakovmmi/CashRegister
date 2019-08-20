@@ -1,0 +1,163 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFP_550_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>21h (33)	ИЗЧИСТВАНЕ НА ДИСПЛЕЯ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_33_0_0.html" name="CMD_33_0_0">CMD_33_0_0</a></li></td>
+					<td><pre>
+21h (33) 	ИЗЧИСТВАНЕ НА ДИСПЛЕЯ
+
+	Област за данни:	Няма данни
+	Отговор:		Няма данни
+
+Изпраща се команда за изчистване на дисплея. 
+Ако е отворен фискален бон и Sw4 e OFF, изчиства се само долния ред.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>23h (35)	ПОКАЗВАНЕ НА ТЕКСТ НА ДОЛНИЯ РЕД НА ДИСПЛЕЯ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_35_0_0.html" name="CMD_35_0_0">CMD_35_0_0</a></li></td>
+					<td><pre>
+23h (35) 	ПОКАЗВАНЕ НА ТЕКСТ НА ДОЛНИЯ РЕД НА ДИСПЛЕЯ
+
+	Област за данни:	
+		TheТext
+	Отговор:	
+		Няма данни
+	TheТext	
+		Текст до 20 символа, който се изпраща директно към дисплея. 
+		Преди него се изпраща команда за позициониране и изчистване на долния ред.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>2F (47)	ПОКАЗВАНЕ НА ТЕКСТ НА ГОРНИЯ РЕД НА ДИСПЛЕЯ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_47_0_0.html" name="CMD_47_0_0">CMD_47_0_0</a></li></td>
+					<td><pre>
+2F (47)	ПОКАЗВАНЕ НА ТЕКСТ НА ГОРНИЯ РЕД НА ДИСПЛЕЯ
+
+	Област за данни:	TheText
+	Отговор:		Няма данни
+
+	TRGT_TEXT	Текст до 20 символа, който се изпраща директно към дисплея. 
+			Преди него се изпраща команда за позициониране и изчистване на горния ред. 
+			
+Командата се отхвърля, ако е отворен фискален бон и Sw4 е OFF.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>3Fh (63)	ПОКАЗВАНЕ НА ДАТАТА И ЧАСА</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_63_0_0.html" name="CMD_63_0_0">CMD_63_0_0</a></li></td>
+					<td><pre>
+3Fh (63)	ПОКАЗВАНЕ НА ДАТАТА И ЧАСА
+
+Област за данни:		Няма данни
+Отговор:			Няма данни
+
+На долния ред на дисплея се показват текущите дата и час на принтера във формат 
+DD-MM-YY HH:MM:SS.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>64h (100)	ПОКАЗВАНЕ НА ТЕКСТ НА ДИСПЛЕЯ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_100_0_0.html" name="CMD_100_0_0">CMD_100_0_0</a></li></td>
+					<td><pre>
+64h (100)	ПОКАЗВАНЕ НА ТЕКСТ НА ДИСПЛЕЯ
+
+	Област за данни:
+			INPUT_TEXT
+	Отговор:	
+			Няма данни
+
+	INPUT_TEXT	Текст до 40 символа, който се изпраща към дисплея. 
+			Ако е необходимо да се предадат ASCII символи по-малки от 20h (управляващи поредици) те 
+			се увеличават с 40h и се предхождат от 10h.
+			Пример: за да се предаде 1Bh,4Bh,00h в полето за данни се записва 10h,5Bh,4Bh,10h,40h.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

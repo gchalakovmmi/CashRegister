@@ -34,7 +34,7 @@ uses
   View.SelectClient,
   DataModule.Items,
   DataModule.Clients,
-  DataModule.Sale, View.CheckItem;
+  DataModule.Sale;
 
 const
   cReturnsAllowedID = -1;
@@ -267,7 +267,7 @@ begin
   Result.PanelGridHeight := AClientHeight - 41 - 64 - 274;
   Result.GridTop := 0;
   Result.GridLeft := 8;
-  Result.GridHeight := Result.PanelGridHeight;
+  Result.GridHeight := Result.PanelGridHeight - 16;
   Result.GridWidth := Result.PanelGridWidth - 16;
   LColumnWidthRatio := (Result.PanelGridWidth - 16 - 26) div 66;
   LColumnWidthReminder := (Result.PanelGridWidth - 16 - 26) - LColumnWidthRatio * 66;
@@ -300,7 +300,7 @@ begin
   Result.ActionCardPaymentEnabled := FInSale;
   Result.ActionPaymentEnabled := FInSale;
   Result.ActionRemoveItemEnabled := FInSale;
-  Result.ActionCheckItemEnabled := True;
+  Result.ActionCheckItemEnabled := not FInSale;
   Result.ActionSaveAndNewEnabled := FInSale and ((not FVIPSale) or (FVIPSale and (Model.Sale.Due.ToDouble >= G.MinVIPSale)));
   Result.ActionDiscardEnabled := FInSale;
   Result.ActionDuplicateReceiptEnabled := not FInSale;
@@ -379,10 +379,11 @@ end;
 procedure TViewModelSale.ActionCheckItemExecute;
 begin
   SendNotification([actSaleDisableActions]);
-  CheckItem;
   SendNotification([actSaleActiveControlGrid]);
   SendNotification([actSaleEnableActions]);
-  SendNotification([actUpdateGUI]);
+  if not FInSale then begin
+    SendNotification([actCheckItem, actCloseForm]);
+  end;
 end;
 
 procedure TViewModelSale.ActionSaveAndNewExecute;

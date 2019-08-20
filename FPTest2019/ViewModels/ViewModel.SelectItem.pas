@@ -147,6 +147,7 @@ function TViewModelSelectItem.GetGUIRecord(const AWidth, AHeight: Integer): TVie
 begin
   Result.Top := AHeight - 300;
   Result.Left := 8;
+  Result.Width := AWidth - 350;
   Result.EditText := DataModuleItems.KeyWord;
 end;
 

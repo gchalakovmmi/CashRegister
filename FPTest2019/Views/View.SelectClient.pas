@@ -211,7 +211,11 @@ begin
   DataModuleClients.KeyWord := '';
 
   LViewSelectClient := TViewSelectClient.Create(nil);
-  LViewSelectClient.ShowModal;
+  try
+    LViewSelectClient.ShowModal;
+  finally
+    LViewSelectClient.Free;
+  end;
 end;
 
 

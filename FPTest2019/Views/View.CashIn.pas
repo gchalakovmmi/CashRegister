@@ -196,7 +196,11 @@ var
   LViewCashIn: TViewCashIn;
 begin
   LViewCashIn := TViewCashIn.Create(nil);
-  LViewCashIn.ShowModal;
+  try
+    LViewCashIn.ShowModal;
+  finally
+    LViewCashIn.Free;
+  end;
 end;
 
 end.

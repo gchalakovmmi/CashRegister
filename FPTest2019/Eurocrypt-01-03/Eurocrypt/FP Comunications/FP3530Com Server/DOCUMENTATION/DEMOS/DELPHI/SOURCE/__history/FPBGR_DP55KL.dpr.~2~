@@ -1,0 +1,13 @@
+program FPBGR_DP55KL;
+
+uses
+  Forms,
+  uMainForm in 'uMainForm.pas' {fmMainForm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfmMainForm, fmMainForm);
+  Application.Run;
+end.

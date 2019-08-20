@@ -43,6 +43,8 @@ type
     procedure StopCOMServer;
 
     procedure CheckAndResolve;
+    procedure CheckTimeDifference;
+
     procedure OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
     procedure PrintFiscalText(const AText: WideString);
     procedure PrintSeparatingLine;
@@ -289,7 +291,9 @@ begin
 
   // Check if Fiscal Device ID is same
 
+
   // Check if there is time difference
+//  CheckTimeDifference;
 
   // Check Status
 
@@ -300,6 +304,126 @@ begin
   // Resolve transaction issues
 
 end;
+
+procedure TDeviceFP700X.CheckTimeDifference;
+var
+  LDeviceDateTime: TDateTime;                  //
+
+  function GetDeviceDateTime(var ADeviceDateTime: TDateTime): Integer;
+  var
+    LResult: Integer;                 //
+    LErrorCode: WideString;           //
+    LDay: WideString;                 //
+    LMonth: WideString;               //
+    LYear: WideString;                //
+    LHour: WideString;                //
+    LMinute: WideString;              //
+    LSecond: WideString;              //
+    LDST: WideString;
+  begin
+    if not G.FiscalDevicePresent then Exit(-1);
+
+    Result := -1;
+
+    SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
+    try
+      LResult := Model_FP700X.execute_062_info_Get_DateTime_01(
+        FP700X,         //
+        LErrorCode,     //
+        LDay,           //
+        LMonth,         //
+        LYear,          //
+        LHour,          //
+        LMinute,        //
+        LSecond,        //
+        LDST            //
+      );
+      if LResult <> 0 then begin
+        ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
+      end;
+    finally
+      ADeviceDateTime := EncodeDateTime(
+        StrToInt(LYear),
+        StrToInt(LMonth),
+        StrToInt(LDay),
+        StrToInt(LHour),
+        StrToInt(LMinute),
+        StrToInt(LSecond),
+        0
+      );
+      Result := 0;
+      SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
+    end;
+  end;
+
+  function SetDeviceDateTime(const ADateTime: TDateTime): Integer;
+  var
+    LResult: Integer;                 //
+    LDateTime: WideString;            //
+    LErrorCode: WideString;           //
+    LYear: Word;                      //
+    LMonth: Word;                     //
+    LDay: Word;                       //
+    LHour: Word;                      //
+    LMinute: Word;                    //
+    LSecond: Word;                    //
+    LMilliSecond: Word;               //
+  begin
+    if not G.FiscalDevicePresent then Exit(-1);
+
+    Result := -1;
+
+    SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
+    try
+      DecodeDateTime(ADateTime, LYear, LMonth, LDay, LHour, LMinute, LSecond, LMilliSecond);
+      if LYear > 2000 then Dec(LYear, 2000);
+      LDateTime := '';
+      LDateTime := LDateTime + LDay.ToString.PadLeft(2, '0') + '-';
+      LDateTime := LDateTime + LMonth.ToString.PadLeft(2, '0') + '-';
+      LDateTime := LDateTime + LYear.ToString.PadLeft(2, '0') + ' ';
+      LDateTime := LDateTime + LHour.ToString.PadLeft(2, '0') + ':';
+      LDateTime := LDateTime + LMinute.ToString.PadLeft(2, '0') + ':';
+      LDateTime := LDateTime + LSecond.ToString.PadLeft(2, '0');
+
+      LResult := Model_FP700X.execute_061_config_Set_DateTime(
+        FP700X,         //
+        LDateTime,      //
+        LErrorCode      //
+      );
+
+      if LResult <> 0 then begin
+        ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
+      end;
+    finally
+      Result := 0;
+      SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
+    end;
+  end;
+
+begin
+  SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
+	try
+    if GetDeviceDateTime(LDeviceDateTime) <> 0 then begin
+      SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
+    end else begin
+      if SetDeviceDateTime(Now) <> 0 then begin
+        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
+      end;
+    end;
+
+      if SecondsBetween(Now, LDeviceDateTime) > 10 then begin
+
+      end;
+	finally
+    SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
+	end;
+end;
+
+
+
+
 
 procedure TDeviceFP700X.OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
 var

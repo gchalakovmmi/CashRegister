@@ -167,6 +167,7 @@ begin
 
   Top := LViewSelectItemGUIRecord.Top;
   Left := LViewSelectItemGUIRecord.Left;
+  Width := LViewSelectItemGUIRecord.Width;
   Edit.Text := LViewSelectItemGUIRecord.EditText;
 
   ActiveControl := Grid;
@@ -216,29 +217,12 @@ var
   LViewSelectItem: TViewSelectItem;
 begin
   DataModuleItems.KeyWord := AKey;
-
-//  if AKey = '1' then begin
-//    DataModuleItems.Select1;
-//  end;
-//  if AKey = '2' then begin
-//    DataModuleItems.Select2;
-//  end;
-//
-//  if AKey = '3' then begin
-//    DataModuleItems.Select3;
-//  end;
-//
-//  if AKey = '4' then begin
-//    DataModuleItems.Select4;
-//  end;
-//
-//  if AKey = '5' then begin
-//    DataModuleItems.Select5;
-//  end;
-//  Exit;
-//
   LViewSelectItem := TViewSelectItem.Create(nil);
-  LViewSelectItem.ShowModal;
+  try
+    LViewSelectItem.ShowModal;
+  finally
+    LViewSelectItem.Free;
+  end;
 end;
 
 end.

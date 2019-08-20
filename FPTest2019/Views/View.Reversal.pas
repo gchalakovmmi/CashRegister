@@ -330,7 +330,11 @@ var
   LViewReversal: TViewReversal;
 begin
   LViewReversal := TViewReversal.Create(nil);
-  LViewReversal.ShowModal;
+  try
+    LViewReversal.ShowModal;
+  finally
+    LViewReversal.Free;
+  end;
 end;
 
 end.

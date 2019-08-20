@@ -1,0 +1,14 @@
+program FPBGR_DP55KL;
+
+uses
+  Forms,
+  uMainForm in 'uMainForm.pas' {fmMainForm},
+  FP3530_TLB in 'J:\Program Files\Borland\Delphi7\Imports\FP3530_TLB.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfmMainForm, fmMainForm);
+  Application.Run;
+end.

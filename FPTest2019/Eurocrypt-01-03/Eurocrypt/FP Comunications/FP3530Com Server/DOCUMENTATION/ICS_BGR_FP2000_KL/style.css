@@ -1,0 +1,123 @@
+/*#param table tr td div{ display:none;}*/
+html, body {
+	font-family: Times New Roman;
+	font-size: 12px;
+	background-color: #eee;
+}
+h1 {
+	color: #036;
+	font-size: 22px;
+	margin: 0px;
+}
+h2 {
+	font-size: 14px;
+	border: 1px solid #999;
+	margin: 0px;
+	padding: 20px;
+}
+label {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	display: table;
+}
+label span {
+	margin-right: 10px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #036;
+	padding: 0 6 2 6;
+	cursor: pointer;
+	border: 1px solid #036;
+}
+label span:hover {
+	color: #036;
+	background-color: #fff;
+	border: 1px solid #036;
+}
+a {
+	color: #036;
+	text-decoration: none;
+	font-weight: bold;
+}
+#foot {
+	margin: 0px;
+}
+#foot #nav a {
+	color: #036;
+	font-weight: bold;
+	text-decoration: none;
+	border: 1px solid #eee;
+}
+#foot #nav #prev a, #foot #nav #next a {
+ 	font-size: 18px;
+	padding: 0 20 4 20;
+	margin: 20px;
+}
+#foot #nav #prev a:hover, #foot #nav #next a:hover {
+	border: 1px solid #036;
+}
+#foot #nav #top a {
+	border: 1px solid #eee;
+	padding: 5 20 5 20;
+}
+#foot #nav #top a:hover {
+	border: 1px solid #036;
+}
+#param table tr th {
+	background-color: #ccc;
+}
+#param table tr td, #param table tr th {
+	padding: 10px;
+}
+#param table tr td pre {
+	overflow: auto;
+	white-space: pre-wrap;
+}
+table tr td iframe {
+	width: 100%;
+	border: 1px solid #999;
+	margin-bottom: 10px;
+	clear: both;
+	float: left;
+	font-family: Georgia;
+}
+center {
+	margin: 10px;
+	font-size: 10px;
+}
+#index li {
+	font-size: 13px;
+	margin: 10px;
+}
+.col1 {
+	width: 10%;
+}
+.col2 {
+	width: 10%;
+	text-align: center;
+}
+.col3 {
+	width: 10%;
+	text-align: center;
+}
+.VerificationType {
+	width: 30%;
+	text-align: center;
+}
+.ErrDescription {
+	width: 70%;
+	text-align: center;
+}
+.def {
+	width: 70%;
+}
+/*table div table tr td li a {text-decoration:underline;}
+a {text-decoration:underline;}*/
+a {
+	border-bottom: 2px solid #036;
+}
+ul {
+	line-height: 22px;
+	margin:0px;
+	padding:0px;
+}

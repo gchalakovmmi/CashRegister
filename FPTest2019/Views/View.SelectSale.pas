@@ -232,7 +232,11 @@ var
   LViewSelectSale: TViewSelectSale;
 begin
   LViewSelectSale := TViewSelectSale.Create(nil);
-  LViewSelectSale.ShowModal;
+  try
+    LViewSelectSale.ShowModal;
+  finally
+    LViewSelectSale.Free;
+  end;
 end;
 
 end.

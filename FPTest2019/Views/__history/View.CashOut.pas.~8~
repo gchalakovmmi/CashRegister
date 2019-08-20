@@ -1,0 +1,202 @@
+unit View.CashOut;
+
+interface
+
+uses
+  System.Classes,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  ButtonWithColor,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.ViewModel.CashOut;
+
+type
+  TViewCashOut = class(TForm, IObserver, IObservable)
+    LabelCash: TLabel;
+    EditCash: TEdit;
+    ButtonCashOut: TBitBtnWithColor;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCashOutClick(Sender: TObject);
+    procedure EditCashKeyPress(Sender: TObject; var Key: Char);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FViewModel: IViewModelCashOut;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetViewModel: IViewModelCashOut;
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property ViewModel: IViewModelCashOut read GetViewModel;
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewCashOut;
+
+implementation
+
+uses
+  Interfaces.GUIRecords,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.CashOut;
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+procedure TViewCashOut.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelCashOut;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  ViewModel.CashCheck;
+end;
+
+procedure TViewCashOut.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewCashOut.EditCashKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #$0D then begin
+    ViewModel.CashOut(EditCash.Text);
+  end;
+end;
+
+procedure TViewCashOut.ButtonCashOutClick(Sender: TObject);
+begin
+  ViewModel.CashOut(EditCash.Text);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewCashOut.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Self.Close;
+  end;
+end;
+
+procedure TViewCashOut.UpdateGUI;
+var
+  LViewCashOutGUIRecord: TViewCashOutGUIRecord;
+begin
+  LViewCashOutGUIRecord := ViewModel.GetGUIRecord;
+  LabelCash.Caption := LViewCashOutGUIRecord.Cash;
+  EditCash.SelectAll;
+  ActiveControl := EditCash;
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewCashOut.GetViewModel: IViewModelCashOut;
+begin
+  if not Assigned(FViewModel) then begin
+    FViewModel := CreateViewModelCashOut;
+  end;
+  Result := FViewModel;
+end;
+
+function TViewCashOut.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewCashOut.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewCashOut;
+var
+  LViewCashOut: TViewCashOut;
+begin
+  LViewCashOut := TViewCashOut.Create(nil);
+  LViewCashOut.ShowModal;
+end;
+
+end.

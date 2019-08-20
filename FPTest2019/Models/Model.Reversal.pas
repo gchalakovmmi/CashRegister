@@ -99,26 +99,26 @@ begin
 
   if ASaleDetail.IsCancelled = 'да' then begin
     ViewMessage.ShowBadMessagePlus('ТОЗИ АРТИКУЛ Е ВЕЧЕ СТОРНИРАН(АНУЛИРАН)!');
-    Exit;
+    Exit(False);
   end;
 
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < ASaleDetail.Total.ToDouble then begin
     ViewMessage.ShowBadMessagePlus('НЯМА ДОСТАТЪЧНО НАЛИЧНИ СРЕДСТВА ЗА СТОРНИРАНЕ!');
-    Exit;
+    Exit(False);
   end;
 
   if not
-    MessageDlg(
+    (MessageDlg(
       Format('Потвърдете сторниране на %s на стойност %.2fлв.', [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
-    Exit;
+    Exit(False);
   end;
 
   Result := True;
@@ -132,19 +132,19 @@ begin
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
     ViewMessage.ShowBadMessagePlus('НЯМА ДОСТАТЪЧНО НАЛИЧНИ СРЕДСТВА ЗА СТОРНИРАНЕ!');
-    Exit;
+    Exit(False);
   end;
 
   if not
-    MessageDlg(
+    (MessageDlg(
       Format('Потвърдете сторниране на продажба на стойност %.2fлв.', [FSale.Due.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
-    Exit;
+    Exit(False);
   end;
 
   Result := True;

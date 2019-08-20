@@ -11,6 +11,7 @@ type
     actResetGUI,
     actCloseForm,
     actCloseFormAndRepeat,
+    actCheckItem,
 
     actSaleDisableActions,
     actSaleEnableActions,
@@ -36,6 +37,14 @@ type
 
     actFiscalDeviceAfterOpenConnection,
     actFiscalDeviceErrorOpenConnection,
+
+    actFiscalDeviceBeforeCheckTimeDifference,
+    actFiscalDeviceErrorCheckTimeDifference,
+    actFiscalDeviceAfterCheckTimeDifference,
+
+
+
+
 
     actFiscalDeviceBeforeCashCheck,
     actFiscalDeviceErrorCashCheck,

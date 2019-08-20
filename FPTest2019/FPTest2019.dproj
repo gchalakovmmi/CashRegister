@@ -112,8 +112,8 @@
         <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_DebugInformation>2</DCC_DebugInformation>
-        <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <DCC_Define>madExcept;LeakChecking;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -123,15 +123,6 @@
         <DCCReference Include="Interfaces\Interfaces.GUIRecords.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Interfaces.Model.Pattern.Observer.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Interfaces.Model.Notification.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sales.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Details.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Detail.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Cancellations.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Cancellation.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Payments.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Payment.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Client.pas"/>
         <DCCReference Include="Interfaces\Models\Interfaces.Model.Main.pas"/>
         <DCCReference Include="Interfaces\Models\Interfaces.Model.Sale.pas"/>
         <DCCReference Include="Interfaces\Models\Interfaces.Model.Reversal.pas"/>
@@ -174,17 +165,6 @@
         <DCCReference Include="..\Common\Models\Model.Pattern.Observer.Observer.pas"/>
         <DCCReference Include="..\Common\Models\Model.Pattern.Observer.Observable.pas"/>
         <DCCReference Include="..\Common\Models\Model.Notification.pas"/>
-        <DCCReference Include="Models\Model.AppSettings.pas"/>
-        <DCCReference Include="Models\Model.Generator.GIDs.pas"/>
-        <DCCReference Include="Models\Model.Classes.Client.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sales.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Details.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Detail.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Cancellations.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Cancellation.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Payments.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Payment.pas"/>
         <DCCReference Include="Models\Model.Main.pas"/>
         <DCCReference Include="Models\Model.Sale.pas"/>
         <DCCReference Include="Models\Model.Reversal.pas"/>
@@ -255,15 +235,35 @@
         <DCCReference Include="ViewModels\ViewModel.CashOut.pas"/>
         <DCCReference Include="Interfaces\Models\Interfaces.Model.CashOut.pas"/>
         <DCCReference Include="Models\Model.CashOut.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Reversal.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Reversal.pas"/>
-        <DCCReference Include="Models\Model.Classes.Sale.Reversals.pas"/>
-        <DCCReference Include="Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas"/>
         <DCCReference Include="DataModules\DataModule.Users.pas">
             <Form>DataModuleUsers</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellations.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Detail.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Details.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Payment.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Payments.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversal.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversals.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sales.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payment.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payments.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversal.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas"/>
+        <DCCReference Include="..\Common\Models\Model.AppSettings.pas"/>
+        <DCCReference Include="..\Common\Models\Model.Generator.GIDs.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

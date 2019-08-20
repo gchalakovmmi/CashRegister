@@ -11,6 +11,7 @@ implementation
 
 uses
   Winapi.Windows,
+  System.IOUtils,
   System.SysUtils,
   System.Classes,
   Vcl.ExtCtrls,
@@ -25,6 +26,7 @@ uses
 
   Interfaces.Model.CheckItem,
   DataModule.Items,
+  DataModule.Clients,
   Model.CheckItem,
   View.SelectItem;
 
@@ -156,6 +158,26 @@ begin
   inherited;
   FObservable := CreateObservableClass;
   FModel := CreateModelCheckItem;
+
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
+    DataModuleItems.RefreshData;
+
+    DataModuleClients.RefreshData;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
+    end;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
+    end;
+
+    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
+      TFile.Delete(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
+    end;
+  end;
+
+  DataModuleItems.ClearSelected;
 end;
 
 destructor TViewModelCheckItem.Destroy;

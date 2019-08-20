@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFP_2000_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>24H (36)	ЗАДАВАНЕ НАСТРОЙКИ НА LAN</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_36_0_1.html" name="CMD_36_0_1">CMD_36_0_1</a></li></td>
+					<td><pre>
+24H (36)	ЗАДАВАНЕ НАСТРОЙКИ НА LAN
+
+	Област за данни:
+			IPAddr
+			SubnetMask
+			TCPPort
+			DefGateway
+			MACAddr
+
+	Отговор:		Няма
+
+	IPAddr		4 числа от 0 до 255 разделени със точка, представляващи IP адреса на устройството.
+	SubnetMask	4 числа от 0 до 255 разделени със точка, представляващи Subnet маската на устройството.
+	TCPPort		4 числа от 0 до 255 разделени със точка, представляващи IP порта на устройството.
+	DefGateway	4 числа от 0 до 255 разделени със точка, представляващи Default Gateway адреса на устройството.
+	MACAddr	До 12 шестнайсетични символа представляващи MAC адреса на устройството. 
+
+Забележки:
+1. Записват се само в RAM - команда 41 ги записва и във флаш паметта;
+2. Работи САМО при наличие на сервизен джъмпер!!!
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

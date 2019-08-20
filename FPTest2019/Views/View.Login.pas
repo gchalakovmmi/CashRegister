@@ -175,7 +175,11 @@ var
   LViewLogin: TViewLogin;
 begin
   LViewLogin := TViewLogin.Create(nil);
-  LViewLogin.ShowModal;
+  try
+    LViewLogin.ShowModal;
+  finally
+    LViewLogin.Free;
+  end;
 end;
 
 end.

@@ -152,6 +152,7 @@ type
   TViewSelectItemGUIRecord = record
     Top: Integer;
     Left: Integer;
+    Width: Integer;
     EditText: String;
   end;
 

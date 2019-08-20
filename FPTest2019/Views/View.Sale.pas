@@ -169,6 +169,7 @@ implementation
 
 uses
   System.UITypes,
+  Globals,
   Interfaces.Enums,
   Interfaces.GUIRecords,
   Model.Pattern.Observer.Observer,
@@ -368,10 +369,16 @@ begin
     EnableActions;
   end;
   if actCloseForm in AModelNotification.Actions then begin
+    if actCheckItem in AModelNotification.Actions then begin
+      G.ShowCheckItem := True;
+    end else begin
+      G.ShowCheckItem := False;
+    end;
     FExitToMainMenu := True;
     Close;
   end;
   if actCloseFormAndRepeat in AModelNotification.Actions then begin
+    G.ShowCheckItem := False;
     FExitToMainMenu := False;
     Close;
   end;
@@ -546,7 +553,11 @@ begin
   FExitToMainMenu := False;
   repeat
     LViewSale := TViewSale.Create(nil);
-    LViewSale.ShowModal;
+    try
+      LViewSale.ShowModal;
+    finally
+      LViewSale.Free;
+    end;
   until FExitToMainMenu;
 end;
 
