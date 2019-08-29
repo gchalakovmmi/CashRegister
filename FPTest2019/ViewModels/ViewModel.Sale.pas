@@ -467,18 +467,14 @@ begin
       Model.UpdateSaleClient;
     end;
   end else begin
-    if FInSale and (Key = '+') then begin
-      Model.RegistrationOfDuplication;
-    end else begin
-      if Key.IsLetterOrDigit or Key.IsInArray([' ','*','+','-','.']) then begin
-        SelectItem(Key);
-        if DataModuleItems.SelectedID > 0 then begin
-          if not FInSale then begin
-            Model.OpenSale;
-            FInSale := True;
-          end;
-          Model.RegistrationOfSale;
+    if Key.IsLetterOrDigit or Key.IsInArray([' ','*','+','-','.']) then begin
+      SelectItem(Key);
+      if DataModuleItems.SelectedID > 0 then begin
+        if not FInSale then begin
+          Model.OpenSale;
+          FInSale := True;
         end;
+        Model.RegistrationOfSale;
       end;
     end;
   end;

@@ -22,7 +22,6 @@ type
     // Sale Actions
     procedure OpenSale;
     procedure RegistrationOfSale;
-    procedure RegistrationOfDuplication;
     procedure RegistrationOfCancellation;
     procedure Totals;
     procedure CloseSale;

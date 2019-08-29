@@ -459,14 +459,19 @@ end;
 procedure TModelClassSale.SaveToFile;
 var
   LFolderName: String;
+  LFileName: String;
 begin
   LFolderName := G.SalesFolder;
   LFolderName := TPath.Combine(LFolderName, '20' + CreatedDate.Substring(6, 2));
   LFolderName := TPath.Combine(LFolderName, CreatedDate.Substring(3, 2));
   LFolderName := TPath.Combine(LFolderName, CreatedDate.Substring(0, 2));
+  LFileName := TPath.Combine(LFolderName, 'Sale'+GID+'.json');
+
   TDirectory.CreateDirectory(LFolderName);
 
-  TFile.WriteAllText(TPath.Combine(LFolderName, 'Sale'+GID+'.json'), ToJSON.ToString, TEncoding.UTF8);
+  TFile.WriteAllText(LFileName, ToJSON.ToString, TEncoding.UTF8);
+
+  TAppSettings.SetSetting('LastSaleFileName', LFileName);
 end;
 
 procedure TModelClassSale.ExecSQL(const ASQL: String);
@@ -1099,11 +1104,11 @@ begin
       // COEFF
       LSaleCancellation.PackCoeff+', '+
       // QUANTITY
-      LSaleCancellation.Quantity+', '+
+      FormatFloat('0.000', _Round(-LSaleCancellation.Quantity.ToDouble, 0.001))+', '+
       // TOTALQUANTITY
-      FormatFloat('0.000', _Round(LSaleCancellation.Quantity.ToDouble * LSaleCancellation.PackCoeff.ToDouble, 0.001))+', '+
+      FormatFloat('0.000', _Round(-LSaleCancellation.Quantity.ToDouble * LSaleCancellation.PackCoeff.ToDouble, 0.001))+', '+
       // PRICE
-      FormatFloat('0.00', _Round(LSaleCancellation.ClientPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.01))+', '+
+      FormatFloat('0.00', _Round(-LSaleCancellation.ClientPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.01))+', '+
       // DISCOUNT
       LSaleCancellation.PackDiscount+', '+
       // VENDORPRICE
@@ -1419,6 +1424,7 @@ begin
   Stage := 'приключена';
   SaveToFile;
   ToFile;
+  TAppSettings.SetSetting('LastSaleFileName', '');
 end;
 
 procedure TModelClassSale.DiscardSale;
@@ -1444,6 +1450,7 @@ begin
   Stage := 'приключена';
   SaveToFile;
   ToFile;
+  TAppSettings.SetSetting('LastSaleFileName', '');
 end;
 
 {$ENDREGION}

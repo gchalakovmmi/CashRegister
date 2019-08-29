@@ -1,0 +1,216 @@
+unit Model.Classes.Stores;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Stores;
+
+  function CreateModelClassStores: IModelClassStores;
+  function CreateFromJSONModelClassStores(const AJSONArray: TJSONArray): IModelClassStores;
+  function CreateFromFileModelClassStores(const AFileName: String): IModelClassStores; overload;
+  procedure AssignDataSetModelClassStores(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.Generics.Collections,
+  Interfaces.Model.Classes.Store,
+  Model.Classes.Store;
+
+type
+  TModelClassStores = class(TInterfacedObject, IModelClassStores)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassStore>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassStore>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassStore> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure AddStore(const AStore: IModelClassStore);
+    function GetStoreByGID(const AGID: String): IModelClassStore;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassStores: IModelClassStores;
+begin
+  Result := TModelClassStores.Create;
+end;
+
+function CreateFromJSONModelClassStores(const AJSONArray: TJSONArray): IModelClassStores;
+begin
+  Result := TModelClassStores.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassStores(const AFileName: String): IModelClassStores; overload;
+begin
+//
+end;
+
+procedure AssignDataSetModelClassStores(const ADataSet: TFDDataSet);
+begin
+  TModelClassStores.DataSet := ADataSet;
+end;
+
+{ TModelClassStores }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassStores.GetList: TList<IModelClassStore>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassStores.UpdateFromDataSet;
+var
+  LStore: IModelClassStore;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LStore in List do begin
+      if LStore.GID = DataSet.FieldByName('gid').Value then begin
+        LStore.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LStore := CreateFromDataSetModelClassStore;
+      List.Add(LStore);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassStores.UpdateInDataSet;
+var
+  LStore: IModelClassStore;
+begin
+  for LStore in List do begin
+    LStore.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassStores.ToJSON: TJSONArray;
+var
+  LStore: IModelClassStore;
+begin
+  Result := TJSONArray.Create;
+  for LStore in List do begin
+    Result.Add(LStore.ToJSON);
+  end;
+end;
+
+procedure TModelClassStores.AddStore(const AStore: IModelClassStore);
+begin
+  FList.Add(AStore);
+  SaveToFile;
+end;
+
+function TModelClassStores.GetStoreByGID(const AGID: String): IModelClassStore;
+var
+  LStore: IModelClassStore;
+begin
+  Result := nil;
+  for LStore in FList do begin
+    if LStore.GID = AGID then begin
+      Result := LStore;
+    end;
+  end;
+end;
+
+procedure TModelClassStores.SaveToFile;
+begin
+
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassStores.Create;
+begin
+  inherited;
+  FList := TList<IModelClassStore>.Create;
+end;
+
+constructor TModelClassStores.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassStore>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    AddStore(CreateFromJSONModelClassStore(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassStores.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

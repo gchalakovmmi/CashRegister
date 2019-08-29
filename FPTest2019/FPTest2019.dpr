@@ -110,7 +110,11 @@ uses
   Interfaces.Model.Classes.Sale.Reversals in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas',
   Interfaces.Model.Classes.Sales in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas',
   Model.AppSettings in '..\Common\Models\Model.AppSettings.pas',
-  Model.Generator.GIDs in '..\Common\Models\Model.Generator.GIDs.pas';
+  Model.Generator.GIDs in '..\Common\Models\Model.Generator.GIDs.pas',
+  Model.Classes.Stores in '..\Common\Models\Classes\Model.Classes.Stores.pas',
+  Model.Classes.Store in '..\Common\Models\Classes\Model.Classes.Store.pas',
+  Interfaces.Model.Classes.Store in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas',
+  Interfaces.Model.Classes.Stores in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Stores.pas';
 
 {$R *.res}
 

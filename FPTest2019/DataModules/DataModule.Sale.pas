@@ -145,6 +145,9 @@ type
         FDMemTableSalePaymentsPaymentVAT: TStringField;
         FDMemTableSalePaymentsPayment: TStringField;
     procedure FDMemTableSaleAfterScroll(DataSet: TDataSet);
+    procedure FDMemTableSaleCashPaymentValidate(Sender: TField);
+    procedure FDMemTableSaleCashPaymentSetText(Sender: TField;
+      const Text: string);
 
   {$REGION 'Published Methods'}
 
@@ -239,6 +242,23 @@ uses
 procedure TDataModuleSale.FDMemTableSaleAfterScroll(DataSet: TDataSet);
 begin
   FDMemTableSaleDetails.Filter := 'ParentGID = '+QuotedStr(DataSet.FieldByName('GID').AsString);
+end;
+
+procedure TDataModuleSale.FDMemTableSaleCashPaymentSetText(Sender: TField; const Text: string);
+var
+  LValue: Double;
+begin
+  if TryStrToFloat(Text, LValue) then begin
+    Sender.AsString := Text;
+  end else begin
+    ViewMessage.ShowBadMessagePlus(Text + ' не е число!');
+    Sender.AsString := '0.00';
+  end;
+end;
+
+procedure TDataModuleSale.FDMemTableSaleCashPaymentValidate(Sender: TField);
+begin
+
 end;
 
 {$ENDREGION}

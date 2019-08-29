@@ -382,23 +382,36 @@ object DataModuleSale: TDataModuleSale
     end
     object FDMemTableSaleDue: TFloatField
       FieldName = 'Due'
+      OnSetText = FDMemTableSaleCashPaymentSetText
       DisplayFormat = '0.00'
+      EditFormat = '0.00'
     end
     object FDMemTableSaleCashPayment: TFloatField
       FieldName = 'CashPayment'
+      OnSetText = FDMemTableSaleCashPaymentSetText
+      OnValidate = FDMemTableSaleCashPaymentValidate
       DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      currency = True
+      Precision = 2
     end
     object FDMemTableSaleVoucherPayment: TFloatField
       FieldName = 'VoucherPayment'
+      OnSetText = FDMemTableSaleCashPaymentSetText
       DisplayFormat = '0.00'
+      EditFormat = '0.00'
     end
     object FDMemTableSaleCardPayment: TFloatField
       FieldName = 'CardPayment'
+      OnSetText = FDMemTableSaleCashPaymentSetText
       DisplayFormat = '0.00'
+      EditFormat = '0.00'
     end
     object FDMemTableSaleReturned: TFloatField
       FieldName = 'Returned'
+      OnSetText = FDMemTableSaleCashPaymentSetText
       DisplayFormat = '0.00'
+      EditFormat = '0.00'
     end
     object FDMemTableSaleStage: TStringField
       FieldName = 'Stage'
@@ -579,7 +592,7 @@ object DataModuleSale: TDataModuleSale
     Left = 80
     Top = 160
     Content = {
-      414442530F00E8309B0D0000FF00010001FF02FF0304002E000000460044004D
+      414442530F00F9309B0D0000FF00010001FF02FF0304002E000000460044004D
       0065006D005400610062006C006500430061006E00630065006C006C00610074
       0069006F006E00730005000A0000005400610062006C00650006000000000007
       0000080032000000090000FF0AFF0B0400060000004700490044000500060000

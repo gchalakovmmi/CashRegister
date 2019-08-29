@@ -1,0 +1,179 @@
+unit Interfaces.Model.Classes.Store;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassStore = interface
+  ['{F317D450-D9AA-4E5E-B34E-E836A0257E17}']
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<sumarry>код на търговски обект</summary>
+    property Name: String read GetName write SetName;
+
+    function GetStoreName: String;
+    procedure SetStoreName(const AValue: String);
+    ///<sumarry>наименование на търговски обект</summary>
+    property StoreName: String read GetStoreName write SetStoreName;
+
+    function GetWorkstationID: String;
+    procedure SetWorkstationID(const AValue: String);
+    ///<sumarry>код на работно място</summary>
+    property WorkstationID: String read GetWorkstationID write SetWorkstationID;
+
+    function GetFiscalDeviceID: String;
+    procedure SetFiscalDeviceID(const AValue: String);
+    ///<sumarry>номер на фискалното устройство</summary>
+    property FiscalDeviceID: String read GetFiscalDeviceID write SetFiscalDeviceID;
+
+    function GetUserGID: String;
+    procedure SetUserGID(const AValue: String);
+    ///<sumarry>номер на оператор</summary>
+    property UserGID: String read GetUserGID write SetUserGID;
+
+    function GetSaleID: String;
+    procedure SetSaleID(const AValue: String);
+    ///<sumarry>пореден номер на продажбата</summary>
+    property SaleID: String read GetSaleID write SetSaleID;
+
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+
+    function GetClientGID: String;
+    procedure SetClientGID(const AValue: String);
+    ///<sumarry>клиент код (при наличие на въведена информация)</summary>
+    property ClientGID: String read GetClientGID write SetClientGID;
+
+    function GetClientName: String;
+    procedure SetClientName(const AValue: String);
+    ///<sumarry>клиент име (при наличие на въведена информация)</summary>
+    property ClientName: String read GetClientName write SetClientName;
+
+    function GetClientTaxNumberType: String;
+    procedure SetClientTaxNumberType(const AValue: String);
+    ///<sumarry>ЕИК/ЕГН/ЛНЧ/СН</summary>
+    property ClientTaxNumberType: String read GetClientTaxNumberType write SetClientTaxNumberType;
+
+    function GetClientTaxNumber: String;
+    procedure SetClientTaxNumber(const AValue: String);
+    ///<sumarry>ЕИК/ЕГН/ЛНЧ/СН</summary>
+    property ClientTaxNumber: String read GetClientTaxNumber write SetClientTaxNumber;
+
+    function GetClientAddress: String;
+    procedure SetClientAddress(const AValue: String);
+    ///<sumarry>адрес на клиента</summary>
+    property ClientAddress: String read GetClientAddress write SetClientAddress;
+
+    function GetClientReceiver: String;
+    procedure SetClientReceiver(const AValue: String);
+    ///<sumarry>МОЛ на клиента</summary>
+    property ClientReceiver: String read GetClientReceiver write SetClientReceiver;
+
+    function GetClientBuyer: String;
+    procedure SetClientBuyer(const AValue: String);
+    ///<sumarry>получател на клиента</summary>
+    property ClientBuyer: String read GetClientBuyer write SetClientBuyer;
+
+    function GetClientVIPStatus: String;
+    procedure SetClientVIPStatus(const AValue: String);
+    ///<sumarry>клиент VIP статус (при наличие на въведена информация)</summary>
+    property ClientVIPStatus: String read GetClientVIPStatus write SetClientVIPStatus;
+
+    function GetClientSurcharge: String;
+    procedure SetClientSurcharge(const AValue: String);
+    ///<sumarry>клиент надценка над доставни цени</summary>
+    property ClientSurcharge: String read GetClientSurcharge write SetClientSurcharge;
+
+    function GetInvoiceID: String;
+    procedure SetInvoiceID(const AValue: String);
+    ///<sumarry>фактура за продажбата - номер (ако е издадена фактура и в софтуера е налична информация)</summary>
+    property InvoiceID: String read GetInvoiceID write SetInvoiceID;
+
+    function GetInvoiceDate: String;
+    procedure SetInvoiceDate(const AValue: String);
+    ///<sumarry>фактура за продажбата - дата (ако е издадена фактура и в софтуера е налична информация)</summary>
+    property InvoiceDate: String read GetInvoiceDate write SetInvoiceDate;
+
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    property CreatedTime: String read GetCreatedTime write SetCreatedTime;
+
+    function GetCompletedDate: String;
+    procedure SetCompletedDate(const AValue: String);
+    ///<sumarry>дата на приключване на продажбата</summary>
+    property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+
+    function GetCompletedTime: String;
+    procedure SetCompletedTime(const AValue: String);
+    ///<sumarry>време на приключване на продажбата (час, минута, секунда)</summary>
+    property CompletedTime: String read GetCompletedTime write SetCompletedTime;
+
+    function GetTotalBase: String;
+    procedure SetTotalBase(const AValue: String);
+    ///<sumarry>обща сума на продажбата - без ДДС, в лв.</summary>
+    property TotalBase: String read GetTotalBase write SetTotalBase;
+
+    function GetDiscount: String;
+    procedure SetDiscount(const AValue: String);
+    ///<summary>отстъпка - в лв.</summary>
+    property Discount: String read GetDiscount write SetDiscount;
+
+    function GetTotalVAT: String;
+    procedure SetTotalVAT(const AValue: String);
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    property TotalVAT: String read GetTotalVAT write SetTotalVAT;
+
+    function GetDue: String;
+    procedure SetDue(const AValue: String);
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    property Due: String read GetDue write SetDue;
+
+    function GetCashPayment: String;
+    procedure SetCashPayment(const AValue: String);
+    ///<sumarry>сума платена в брой в лв.</summary>
+    property CashPayment: String read GetCashPayment write SetCashPayment;
+
+    function GetVoucherPayment: String;
+    procedure SetVoucherPayment(const AValue: String);
+    ///<sumarry>сума платена с ваучер в лв.</summary>
+    property VoucherPayment: String read GetVoucherPayment write SetVoucherPayment;
+
+    function GetCardPayment: String;
+    procedure SetCardPayment(const AValue: String);
+    ///<sumarry>сума платена с карта в лв.</summary>
+    property CardPayment: String read GetCardPayment write SetCardPayment;
+
+    function GetReturned: String;
+    procedure SetReturned(const AValue: String);
+    ///<sumarry>върнато ресто в лв.</summary>
+    property Returned: String read GetReturned write SetReturned;
+
+    function GetStage: String;
+    procedure SetStage(const AValue: String);
+    ///<sumarry>етап на обработка на продажбата</summary>
+    property Stage: String read GetStage write SetStage;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.
+

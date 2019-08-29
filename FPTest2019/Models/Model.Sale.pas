@@ -23,7 +23,7 @@ uses
   Model.Classes.Sale,
   Interfaces.Model.Classes.Sale.Detail,
   Model.Classes.Sale.Detail,
-  Interfaces.Model.Classes.Sale.Cancellation;
+  Interfaces.Model.Classes.Sale.Cancellation, Model.AppSettings;
 
 type
   TModelSale = class(TInterfacedObject, IModelSale)
@@ -75,7 +75,6 @@ type
     // Sale Actions
     procedure OpenSale;
     procedure RegistrationOfSale;
-    procedure RegistrationOfDuplication;
     procedure RegistrationOfCancellation;
     procedure Totals;
     procedure DiscardSale;
@@ -158,6 +157,8 @@ end;
 // Setup/Teardown
 
 procedure TModelSale.SetupSale;
+var
+  LLastSaleFileName: String;
 begin
 
   if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
@@ -179,6 +180,16 @@ begin
   end;
 
   DataModuleClients.SelectCommonClient;
+
+  LLastSaleFileName := TAppSettings.GetSetting('LastSaleFileName');
+  if LLastSaleFileName = '' then begin
+    // No open sale in database
+
+  end else begin
+    // Open sale in database
+
+  end;
+
 
   FSale := CreateModelClassSale;
 
@@ -259,45 +270,6 @@ begin
     DeviceFP700X.RegistrationOfSale(LSaleDetail);
 
      // Update Due
-    UpdateSaleDue(LSaleDetail.Total);
-
-    // Store in MemTable
-    DataModuleSale.RegistrationOfSale(LSaleDetail);
-
-    // Store in Model
-    FSale.RegistrationOfSale(LSaleDetail);
-
-//    end else begin
-      // Fiscalization
-//      DeviceFP700X.RegistrationOfDiscount(LSaleDetail);
-
-       // Update Due
-//      UpdateSaleDue(LSaleDetail.Total);
-
-      // Store in MemTable
-//      DataModuleSale.RegistrationOfDiscount(FSaleDetail);
-
-      // Store in Model
-//      FSale.RegistrationOfDiscount(FSaleDetail);
-  end;
-end;
-
-procedure TModelSale.RegistrationOfDuplication;
-var
-  LCurrentSaleDetailGID: String;
-  LCurrentSaleDetail: IModelClassSaleDetail;
-  LSaleDetail: IModelClassSaleDetail;
-begin
-  LCurrentSaleDetailGID := DataModuleSale.CurrentSaleDetailGID;
-  LCurrentSaleDetail := FSale.GetSaleDetailByGID(LCurrentSaleDetailGID);
-  if not Assigned(LCurrentSaleDetail) then Exit;
-  LSaleDetail := LCurrentSaleDetail.ToSaleDuplication;
-
-  if ItemIsValidForSale(LSaleDetail) then begin
-    // Fiscalization
-    DeviceFP700X.RegistrationOfSale(LSaleDetail);
-
-    // Update Due
     UpdateSaleDue(LSaleDetail.Total);
 
     // Store in MemTable

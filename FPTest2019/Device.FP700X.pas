@@ -1,4 +1,4 @@
-unit Device.FP700X;
+Ôªøunit Device.FP700X;
 
 interface
 
@@ -44,6 +44,25 @@ type
 
     procedure CheckAndResolve;
     procedure CheckTimeDifference;
+
+//    procedure CheckTheStatusOfTheFiscalTransaction(var
+
+//IsOpen
+//ÔÇ∑ 0 - Receipt is closed;
+//ÔÇ∑ 1 - Normal receipt is open;
+//ÔÇ∑ 2 - Storno receipt is open. Reason "mistake by operator";
+//ÔÇ∑ 3 - Storno receipt is open. Reason "refund";
+//ÔÇ∑ 4 - Storno receipt is open. Reason "tax base reduction";
+//ÔÇ∑ 5 - standard non-fiscal receipt is open;
+//ÔÇ∑ Number - The number of the current or the last receipt (1...9999999);
+//ÔÇ∑ Items - number of sales registered on the current or the last fiscal receipt (0...9999999);
+//ÔÇ∑ Amount - The sum from the current or the last fiscal receipt ( 0.00...9999999.99 or 0...999999999
+//depending dec point position );
+//ÔÇ∑ Payed - The sum payed for the current or the last receipt ( 0.00...9999999.99 or 0...999999999
+//depending dec point position );
+
+
+
 
     procedure OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
     procedure PrintFiscalText(const AText: WideString);
@@ -420,6 +439,7 @@ begin
     SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
 	end;
 end;
+
 
 
 
@@ -1255,7 +1275,7 @@ begin
   );
 
   // Print Cashier Info
-  PrintFiscalText(' ¿—»≈–: ' + G.UserName + '      ¿—¿: ' + ASale.WorkstationID);
+  PrintFiscalText('–ö–ê–°–ò–ï–†: ' + G.UserName + '     –ö–ê–°–ê: ' + ASale.WorkstationID);
 
   // Print Separator
   PrintSeparatingLine;
@@ -1283,7 +1303,7 @@ begin
   SubTotal(LSubTotalAfter);
 
   if LSubTotalAfter = LSubTotalBefore then begin
-    ViewMessage.ShowBadMessagePlus('œ–Œƒ¿∆¡¿“¿ Õ≈ ≈ ‘»— ¿À»«»–¿Õ¿ . . .');
+    ViewMessage.ShowBadMessagePlus('–ü–†–û–î–ê–ñ–ë–ê–¢–ê –ù–ï –ï –§–ò–°–ö–ê–õ–ò–ó–ò–†–ê–ù–ê . . .');
   end;
 end;
 
@@ -1303,7 +1323,7 @@ begin
   SubTotal(LSubTotalAfter);
 
   if LSubTotalAfter = LSubTotalBefore then begin
-    ViewMessage.ShowBadMessagePlus('œ–Œƒ¿∆¡¿“¿ Õ≈ ≈ ‘»— ¿À»«»–¿Õ¿ . . .');
+    ViewMessage.ShowBadMessagePlus('–ü–†–û–î–ê–ñ–ë–ê–¢–ê –ù–ï –ï –§–ò–°–ö–ê–õ–ò–ó–ò–†–ê–ù–ê . . .');
   end;
 end;
 
@@ -1329,7 +1349,7 @@ begin
   SubTotal(LSubTotalAfter);
 
   if LSubTotalAfter = LSubTotalBefore then begin
-    ViewMessage.ShowBadMessagePlus('œ–≈Ã¿’¬¿Õ≈“Œ Õ≈ ≈ ‘»— ¿À»«»–¿ÕŒ . . .');
+    ViewMessage.ShowBadMessagePlus('–ü–†–ï–ú–ê–•–í–ê–ù–ï–¢–û –ù–ï –ï –§–ò–°–ö–ê–õ–ò–ó–ò–†–ê–ù–û . . .');
   end;
 end;
 
@@ -1386,7 +1406,7 @@ begin
   );
 
   // Print Cashier Info
-  PrintFiscalText(' ¿—»≈–: ' + G.UserName + '      ¿—¿: ' + ASale.WorkstationID);
+  PrintFiscalText('–ö–ê–°–ò–ï–†: ' + G.UserName + '     –ö–ê–°–ê: ' + ASale.WorkstationID);
 
   // Print Separator
   PrintSeparatingLine;
@@ -1414,7 +1434,7 @@ begin
   SubTotal(LSubTotalAfter);
 
   if LSubTotalAfter = LSubTotalBefore then begin
-    ViewMessage.ShowBadMessagePlus('—“Œ–Õ»–¿Õ≈“Œ Õ≈ ≈ ‘»— ¿À»«»–¿ÕŒ . . .');
+    ViewMessage.ShowBadMessagePlus('–°–¢–û–†–ù–ò–†–ê–ù–ï–¢–û –ù–ï –ï –§–ò–°–ö–ê–õ–ò–ó–ò–†–ê–ù–û . . .');
   end;
 end;
 
