@@ -1,0 +1,186 @@
+﻿unit Model.Classes.Store;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Store;
+
+  function CreateModelClassStore: IModelClassStore;
+  function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
+  function CreateFromDataSetModelClassStore: IModelClassStore;
+  procedure AssignDataSetModelClassStore(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs,
+  Model.Classes.BaseObject;
+
+type
+  ///<summary>Таблица - търговски обекти</summary>
+  TModelClassStore = class(TModelClassBaseObject, IModelClassStore)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FAddress: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetAddress: String;
+    procedure SetAddress(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на търговския обект<summary>
+//    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на търговския обект<summary>
+//    property Name: String read GetName write SetName;
+    ///<summary>местонахождение на търговския обект<summary>
+    property Address: String read GetAddress write SetAddress;
+    ///<summary>дата и час на първоначално конфигуриране на търговския обект в системата<summary>
+//    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на търговския обект<summary>
+//    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на търговския обект от употреба<summary>
+//    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet; override;
+    procedure UpdateInDataSet; override;
+    function ToJSON: TJSONObject;
+
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassStore: IModelClassStore;
+begin
+  Result := TModelClassStore.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('StoreGID').ToString;
+end;
+
+function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
+begin
+  Result := TModelClassStore.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassStore: IModelClassStore;
+begin
+  Result := TModelClassStore.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassStore(const ADataSet: TFDDataSet);
+begin
+  TModelClassStore.DataSet := ADataSet;
+end;
+
+{ TModelClassStore }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassStore.GetAddress: String;
+begin
+  Result := FAddress;
+end;
+
+procedure TModelClassStore.SetAddress(const AValue: String);
+begin
+  FAddress := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassStore.UpdateFromDataSet;
+begin
+  inherited;
+  Address := DataSet.FieldByName('Address').Value;
+end;
+
+procedure TModelClassStore.UpdateInDataSet;
+begin
+  inherited;
+
+  DataSet.Edit;
+  DataSet.FieldByName('Address').Value := Address;
+  DataSet.Post;
+end;
+
+function TModelClassStore.ToJSON: TJSONObject;
+begin
+  Result := inherited ToJSON;
+  Result.AddPair('Address', Address);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassStore.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID := (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name := (AJSONObject.GetValue('Name') as TJSONString).Value;
+  Address := (AJSONObject.GetValue('Address') as TJSONString).Value;
+  AttachedAt := (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt := (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt := (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,24 @@
+unit View.Nomenclature.Measures;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TViewNomenclatureMeasures = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureMeasures: TViewNomenclatureMeasures;
+
+implementation
+
+{$R *.dfm}
+
+end.

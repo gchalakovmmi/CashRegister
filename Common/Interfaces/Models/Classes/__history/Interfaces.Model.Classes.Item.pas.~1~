@@ -1,0 +1,66 @@
+﻿unit Interfaces.Model.Classes.Item;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassItem = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на стоката/услугата<summary>
+    property GID: String read GetGID write SetGID;
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование на вида стоката/услугата<summary>
+    property Name: String read GetName write SetName;
+    function GetShortName: String;
+    procedure SetShortName(const AValue: String);
+    ///<summary>кратко наименование на стоката/услугата<summary>
+    property ShortName: String read GetShortName write SetShortName;
+    function GetCode: String;
+    procedure SetCode(const AValue: String);
+    ///<summary>вътрешен код на стоката/услугата<summary>
+    property Code: String read GetCode write SetCode;
+    function GetVendorPrice: String;
+    procedure SetVendorPrice(const AValue: String);
+    ///<summary>ед.цена (доставна) на стоката/услугата<summary>
+    property VendorPrice: String read GetVendorPrice write SetVendorPrice;
+    function GetClientPrice: String;
+    procedure SetClientPrice(const AValue: String);
+    ///<summary>ед.цена (продажна) на стоката/услугата<summary>
+    property ClientPrice: String read GetClientPrice write SetClientPrice;
+    function GetBaseMeasure: String;
+    procedure SetBaseMeasure(const AValue: String);
+    ///<summary>базова мярка на стоката/услугата<summary>
+    property BaseMeasure: String read GetBaseMeasure write SetBaseMeasure;
+    function GetBaseCoeff: String;
+    procedure SetBaseCoeff(const AValue: String);
+    ///<summary>базов коефициент на стоката/услугата<summary>
+    property BaseCoeff: String read GetBaseCoeff write SetBaseCoeff;
+    function GetBasePrice: String;
+    procedure SetBasePrice(const AValue: String);
+    ///<summary>базова цена на стоката/услугата<summary>
+    property BasePrice: String read GetBasePrice write SetBasePrice;
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на стоката/услугата в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна промяна на стоката/услугата<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на стоката/услугата от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

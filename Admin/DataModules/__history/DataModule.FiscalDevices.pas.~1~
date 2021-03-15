@@ -1,0 +1,25 @@
+unit DataModule.FiscalDevices;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleFiscalDevices = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleFiscalDevices: TDataModuleFiscalDevices;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,33 @@
+program SaleJSON2DB;
+
+uses
+  Vcl.Forms,
+  View.Main in 'Views\View.Main.pas' {ViewMain},
+  Interfaces.Model.Classes.Sale in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas',
+  Interfaces.Model.Classes.Sale.Payment in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payment.pas',
+  Interfaces.Model.Classes.Sale.Payments in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payments.pas',
+  Interfaces.Model.Classes.Sale.Reversal in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversal.pas',
+  Interfaces.Model.Classes.Sale.Reversals in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas',
+  Interfaces.Model.Classes.Sale.Cancellation in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas',
+  Interfaces.Model.Classes.Sale.Cancellations in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas',
+  Interfaces.Model.Classes.Sale.Detail in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas',
+  Interfaces.Model.Classes.Sale.Details in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas',
+  Model.Classes.Sale.Cancellation in '..\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas',
+  Model.Classes.Sale.Cancellations in '..\Common\Models\Classes\Model.Classes.Sale.Cancellations.pas',
+  Model.Classes.Sale.Detail in '..\Common\Models\Classes\Model.Classes.Sale.Detail.pas',
+  Model.Classes.Sale.Details in '..\Common\Models\Classes\Model.Classes.Sale.Details.pas',
+  Model.Classes.Sale in '..\Common\Models\Classes\Model.Classes.Sale.pas',
+  Model.Classes.Sale.Payment in '..\Common\Models\Classes\Model.Classes.Sale.Payment.pas',
+  Model.Classes.Sale.Payments in '..\Common\Models\Classes\Model.Classes.Sale.Payments.pas',
+  Model.Classes.Sale.Reversal in '..\Common\Models\Classes\Model.Classes.Sale.Reversal.pas',
+  Model.Classes.Sale.Reversals in '..\Common\Models\Classes\Model.Classes.Sale.Reversals.pas',
+  Interfaces.Enums in '..\Common\Interfaces\Interfaces.Enums.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TViewMain, ViewMain);
+  Application.Run;
+end.

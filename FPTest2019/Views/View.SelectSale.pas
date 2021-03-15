@@ -28,6 +28,7 @@ type
     DatePicker: TDatePicker;
     GridSales: TDBGrid;
     GridSaleDetails: TDBGrid;
+    ButtonAssignNewClient: TButton;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -37,6 +38,7 @@ type
     procedure DatePickerChange(Sender: TObject);
     procedure GridSaleDetailsDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure ButtonAssignNewClientClick(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -142,6 +144,11 @@ begin
   ViewModel.ButtonReversalClick;
 end;
 
+procedure TViewSelectSale.ButtonAssignNewClientClick(Sender: TObject);
+begin
+  ViewModel.ButtonAssignNewClientClick;
+end;
+
 procedure TViewSelectSale.DatePickerChange(Sender: TObject);
 begin
   ViewModel.DatePickerChange(DatePicker.Date);
@@ -178,14 +185,33 @@ end;
 procedure TViewSelectSale.UpdateGUI;
 var
   LViewSelectSaleGUIRecord: TViewSelectSaleGUIRecord;
+  LSpace: Integer;
 begin
   LViewSelectSaleGUIRecord := ViewModel.GetGUIRecord;
 
-//  Top := LViewSelectSaleGUIRecord.Top;
-//  Left := LViewSelectSaleGUIRecord.Left;
-//  Edit.Text := LViewSelectSaleGUIRecord.EditText;
-//
-//  ActiveControl := Grid;
+  Left := 8;
+  Width := Screen.Width - 16;
+  GridSales.Left := 8;
+  GridSales.Width := (Width - 32) * 30 div 100;
+  GridSaleDetails.Left := 8 + GridSales.Width + 8;
+  GridSaleDetails.Width := (Width - 32) * 70 div 100;
+
+  LSpace := 24;
+  GridSales.Columns[0].Width := (GridSales.Width - LSpace) * 33 div 100;
+  GridSales.Columns[1].Width := (GridSales.Width - LSpace) * 33 div 100;
+  GridSales.Columns[2].Width := (GridSales.Width - LSpace) * 33 div 100;
+//  GridSales.Columns[3].Width := (GridSales.Width - LSpace) * 10 div 100;
+//  GridSales.Columns[4].Width := (GridSales.Width - LSpace) * 10 div 100;
+
+  LSpace := 24;
+  GridSaleDetails.Columns[0].Width := (GridSaleDetails.Width - LSpace) * 60 div 100;
+  GridSaleDetails.Columns[1].Width := (GridSaleDetails.Width - LSpace) * 10 div 100;
+  GridSaleDetails.Columns[2].Width := (GridSaleDetails.Width - LSpace) * 10 div 100;
+  GridSaleDetails.Columns[3].Width := (GridSaleDetails.Width - LSpace) * 10 div 100;
+  GridSaleDetails.Columns[4].Width := (GridSaleDetails.Width - LSpace) * 10 div 100;
+
+
+  ActiveControl := GridSales;
 
   Self.Update;
 end;

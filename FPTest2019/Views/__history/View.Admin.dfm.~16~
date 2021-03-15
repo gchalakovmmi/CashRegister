@@ -1,0 +1,132 @@
+object ViewAdmin: TViewAdmin
+  Left = 618
+  Top = 292
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  BorderWidth = 1
+  Caption = #1040#1044#1052#1048#1053#1048#1057#1058#1056#1048#1056#1040#1053#1045
+  ClientHeight = 446
+  ClientWidth = 929
+  Color = 16764354
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  Scaled = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 25
+  object ButtonFiscalDevices: TBitBtnWithColor
+    Left = 620
+    Top = 8
+    Width = 300
+    Height = 81
+    Caption = #1060#1048#1057#1050#1040#1051#1053#1048' '#1059#1057#1058#1056#1054#1049#1057#1058#1042#1040
+    TabOrder = 1
+    OnClick = ButtonFiscalDevicesClick
+    Color = 16751493
+  end
+  object ButtonStores: TBitBtnWithColor
+    Left = 8
+    Top = 8
+    Width = 300
+    Height = 81
+    Caption = #1058#1066#1056#1043#1054#1042#1057#1050#1048' '#1054#1041#1045#1050#1058#1048
+    TabOrder = 2
+    OnClick = ButtonStoresClick
+    Color = 16751493
+  end
+  object ButtonWorkstations: TBitBtnWithColor
+    Left = 314
+    Top = 8
+    Width = 300
+    Height = 81
+    Caption = #1056#1040#1041#1054#1058#1053#1048' '#1052#1045#1057#1058#1040
+    TabOrder = 0
+    OnClick = ButtonWorkstationsClick
+    Color = 16751493
+  end
+  object ButtonRoles: TBitBtnWithColor
+    Left = 314
+    Top = 95
+    Width = 300
+    Height = 81
+    Caption = #1056#1054#1051#1048
+    TabOrder = 3
+    OnClick = ButtonRolesClick
+    Color = 16751493
+  end
+  object ButtonPermissions: TBitBtnWithColor
+    Left = 8
+    Top = 95
+    Width = 300
+    Height = 81
+    Caption = #1055#1056#1040#1042#1040' / '#1056#1040#1047#1056#1045#1064#1045#1053#1048#1071
+    TabOrder = 4
+    OnClick = ButtonPermissionsClick
+    Color = 16751493
+  end
+  object ButtonUsers: TBitBtnWithColor
+    Left = 620
+    Top = 95
+    Width = 300
+    Height = 81
+    Caption = #1055#1054#1058#1056#1045#1041#1048#1058#1045#1051#1048
+    TabOrder = 5
+    OnClick = ButtonUsersClick
+    Color = 16751493
+  end
+  object ButtonPermissionsRoles: TBitBtnWithColor
+    Left = 8
+    Top = 182
+    Width = 450
+    Height = 81
+    Caption = #1055#1056#1040#1042#1040' '#1053#1040' '#1056#1054#1051#1048
+    TabOrder = 6
+    OnClick = ButtonPermissionsRolesClick
+    Color = 16751493
+  end
+  object ButtonRolesUsers: TBitBtnWithColor
+    Left = 470
+    Top = 182
+    Width = 450
+    Height = 81
+    Caption = #1056#1054#1051#1048' '#1053#1040' '#1055#1054#1058#1056#1045#1041#1048#1058#1045#1051#1048
+    TabOrder = 7
+    OnClick = ButtonRolesUsersClick
+    Color = 16751493
+  end
+  object ButtonPaymenTypes: TBitBtnWithColor
+    Left = 470
+    Top = 269
+    Width = 450
+    Height = 81
+    Caption = #1042#1048#1044#1054#1042#1045' '#1055#1051#1040#1065#1040#1053#1048#1071
+    TabOrder = 8
+    OnClick = ButtonPaymenTypesClick
+    Color = 16751493
+  end
+  object ButtonsActions: TBitBtnWithColor
+    Left = 8
+    Top = 269
+    Width = 450
+    Height = 81
+    Caption = #1042#1048#1044#1054#1042#1045' '#1054#1055#1045#1056#1040#1062#1048#1048
+    TabOrder = 9
+    OnClick = ButtonsActionsClick
+    Color = 16751493
+  end
+  object ButtonSettings: TBitBtnWithColor
+    Left = 8
+    Top = 356
+    Width = 912
+    Height = 81
+    Caption = #1053#1040#1057#1058#1056#1054#1049#1050#1048
+    TabOrder = 10
+    Color = 16751493
+  end
+end

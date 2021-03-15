@@ -5,7 +5,7 @@ object ViewSelectSale: TViewSelectSale
   BorderStyle = bsToolWindow
   Caption = #1057#1055#1048#1057#1066#1050' '#1055#1056#1054#1044#1040#1046#1041#1048
   ClientHeight = 444
-  ClientWidth = 1261
+  ClientWidth = 1273
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object ViewSelectSale: TViewSelectSale
   PixelsPerInch = 96
   TextHeight = 16
   object GridSales: TDBGrid
-    Left = -2
+    Left = 8
     Top = 48
     Width = 435
     Height = 393
@@ -64,7 +64,7 @@ object ViewSelectSale: TViewSelectSale
       end>
   end
   object GridSaleDetails: TDBGrid
-    Left = 439
+    Left = 449
     Top = 48
     Width = 818
     Height = 393
@@ -135,7 +135,7 @@ object ViewSelectSale: TViewSelectSale
     OnClick = ButtonExitClick
   end
   object DatePicker: TDatePicker
-    Left = 1103
+    Left = 359
     Top = 8
     Height = 34
     Date = 43673.000000000000000000
@@ -157,5 +157,14 @@ object ViewSelectSale: TViewSelectSale
     Caption = #1057#1058#1054#1056#1053#1054
     TabOrder = 4
     OnClick = ButtonReversalClick
+  end
+  object ButtonAssignNewClient: TButton
+    Left = 170
+    Top = 8
+    Width = 183
+    Height = 34
+    Caption = #1057#1058#1054#1056#1053#1054' + '#1053#1054#1042' '#1050#1051#1048#1045#1053#1058
+    TabOrder = 5
+    OnClick = ButtonAssignNewClientClick
   end
 end

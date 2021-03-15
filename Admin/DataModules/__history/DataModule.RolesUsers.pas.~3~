@@ -1,0 +1,68 @@
+unit DataModule.RolesUsers;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin,
+  Data.DB,
+  Interfaces.Model.Classes.RolesUsers,
+  Model.Classes.RolesUsers,
+  Model.Classes.RoleUser;
+
+type
+  TDataModuleRolesUsers = class(TDataModule)
+    FDMemTable: TFDMemTable;
+      FDMemTableGID: TStringField;
+      FDMemTableName: TStringField;
+      FDMemTableAddress: TStringField;
+      FDMemTableAttachedAt: TStringField;
+      FDMemTableModifiedAt: TStringField;
+      FDMemTableDetachedAt: TStringField;
+    DataSource: TDataSource;
+  private
+    FRolesUsers: IModelClassRolesUsers;
+  public
+    procedure LoadFromFile;
+    procedure SaveToFile;
+  end;
+
+var
+  DataModuleRolesUsers: TDataModuleRolesUsers;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModuleRolesUsers }
+
+procedure TDataModuleRolesUsers.LoadFromFile;
+begin
+  FRolesUsers := CreateFromFileModelClassRolesUsers;
+  AssignDataSetModelClassRolesUsers(FDMemTable);
+  AssignDataSetModelClassRoleUser(FDMemTable);
+  FRolesUsers.UpdateInDataSet;
+end;
+
+procedure TDataModuleRolesUsers.SaveToFile;
+begin
+  AssignDataSetModelClassRolesUsers(FDMemTable);
+  AssignDataSetModelClassRoleUser(FDMemTable);
+  FRolesUsers.UpdateFromDataSet;
+  FRolesUsers.SaveToFile;
+end;
+
+end.
+

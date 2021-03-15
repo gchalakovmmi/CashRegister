@@ -1,0 +1,88 @@
+unit DataModule.FiscalDevices;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin,
+  Data.DB,
+  Interfaces.Model.Classes.FiscalDevices,
+  Model.Classes.FiscalDevices,
+  Model.Classes.FiscalDevice;
+
+type
+  TDataModuleFiscalDevices = class(TDataModule)
+    FDMemTable: TFDMemTable;
+      FDMemTableGID: TStringField;
+      FDMemTableName: TStringField;
+      FDMemTableBrand: TStringField;
+      FDMemTableModel: TStringField;
+      FDMemTableSerialNumber: TStringField;
+      FDMemTableAttachedAt: TStringField;
+      FDMemTableModifiedAt: TStringField;
+      FDMemTableDetachedAt: TStringField;
+    DataSource: TDataSource;
+    procedure FDMemTableBrandChange(Sender: TField);
+    procedure FDMemTableModelChange(Sender: TField);
+    procedure FDMemTableSerialNumberChange(Sender: TField);
+  private
+    FFiscalDevices: IModelClassFiscalDevices;
+  public
+    procedure LoadFromFile;
+    procedure SaveToFile;
+  end;
+
+var
+  DataModuleFiscalDevices: TDataModuleFiscalDevices;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModuleFiscalDevices }
+
+procedure TDataModuleFiscalDevices.LoadFromFile;
+begin
+  FFiscalDevices := CreateFromFileModelClassFiscalDevices;
+  AssignDataSetModelClassFiscalDevices(FDMemTable);
+  AssignDataSetModelClassFiscalDevice(FDMemTable);
+  FFiscalDevices.UpdateInDataSet;
+end;
+
+procedure TDataModuleFiscalDevices.SaveToFile;
+begin
+  AssignDataSetModelClassFiscalDevices(FDMemTable);
+  AssignDataSetModelClassFiscalDevice(FDMemTable);
+  FFiscalDevices.UpdateFromDataSet;
+  FFiscalDevices.SaveToFile;
+end;
+
+procedure TDataModuleFiscalDevices.FDMemTableBrandChange(Sender: TField);
+begin
+  FDMemTableName.AsString := FDMemTableBrand.AsString + ' ' + FDMemTableModel.AsString + ' (' + FDMemTableSerialNumber.AsString + ')';
+end;
+
+procedure TDataModuleFiscalDevices.FDMemTableModelChange(Sender: TField);
+begin
+  FDMemTableName.AsString := FDMemTableBrand.AsString + ' ' + FDMemTableModel.AsString + ' (' + FDMemTableSerialNumber.AsString + ')';
+end;
+
+procedure TDataModuleFiscalDevices.FDMemTableSerialNumberChange(Sender: TField);
+begin
+  FDMemTableName.AsString := FDMemTableBrand.AsString + ' ' + FDMemTableModel.AsString + ' (' + FDMemTableSerialNumber.AsString + ')';
+end;
+
+end.
+

@@ -1,0 +1,533 @@
+﻿unit Device.FP700X;
+
+interface
+
+uses
+  FP3530_TLB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer;
+
+type
+  TFP700X = class
+
+  {$REGION 'Class Properties'}
+  private class var
+    FP700X: TCFD_BGR;
+    FConnected: Boolean;
+    FCOMPort: Integer;
+    FBaudRate: Integer;
+
+    FObservable: IObservable;
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Class Methods'}
+  private
+    class procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+
+    class function StartCOMServer: Integer;
+    class function DiscoverDevices: Integer;
+    class function OpenConnection: Integer;
+    class function CloseConnection: Integer;
+    class function StopCOMServer: Integer;
+
+    class procedure CheckAndResolve;
+    class procedure CheckTimeDifference;
+
+    class procedure CheckTheStatusOfTheFiscalTransaction(var AIsOpen, ANumber, AItems, AAmount, APayed: WideString);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Class Properties Getters/Setters'}
+  public
+    class function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Class Properties'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Class Methods'}
+   public
+     class function Connected: String;
+
+  {$ENDREGION}
+  //  {$REGION 'Published Methods'}
+//    procedure FP700XError(ASender: TObject; error_Code: Integer; var error_Message: WideString);
+//  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+//IsOpen
+// 0 - Receipt is closed;
+// 1 - Normal receipt is open;
+// 2 - Storno receipt is open. Reason "mistake by operator";
+// 3 - Storno receipt is open. Reason "refund";
+// 4 - Storno receipt is open. Reason "tax base reduction";
+// 5 - standard non-fiscal receipt is open;
+// Number - The number of the current or the last receipt (1...9999999);
+// Items - number of sales registered on the current or the last fiscal receipt (0...9999999);
+// Amount - The sum from the current or the last fiscal receipt ( 0.00...9999999.99 or 0...999999999
+//depending dec point position );
+// Payed - The sum payed for the current or the last receipt ( 0.00...9999999.99 or 0...999999999
+//depending dec point position );
+{
+    procedure OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
+    procedure PrintFiscalText(const AText: WideString);
+    procedure PrintSeparatingLine;
+    procedure SellItem(const AItem, ATaxCode, APrice, AQuantity, ADiscountType, ADiscountValue, AMeasure: WideString);
+    procedure SubTotal(var ASubTotal: WideString);
+    procedure Discount(var ASubTotal: WideString);
+    procedure Total(const APaidMode, AAmountIn, APinPadPaidMode: WideString);
+    procedure DrawerKickOut;
+    procedure CloseFiscalReceipt;
+    procedure CancelFiscalReceipt;
+
+    procedure OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
+
+}
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+
+    FErrorCode: WideString;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+//    function GetErrorCodeI: Integer;
+//    procedure SetErrorCodeI(AValue: Integer);
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+//    procedure FP700XError(ASender: TObject; error_Code: Integer; var error_Message: WideString);
+//		property ErrorCodeI: Integer read GetErrorCodeI write SetErrorCodeI;
+  {$ENDREGION}
+
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observable: IObservable read GetObservable;
+
+		property ErrorCode: WideString read FErrorCode write FErrorCode;
+//		property Cash: Double read GetCash;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+{    procedure CashCheck;
+    procedure CashIn(const AAmount: WideString);
+    procedure CashOut(const AAmount: WideString);
+
+    procedure XReport;
+    procedure ZReport;
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
+
+//    procedure SetupSale(const ASale: IModelClassSale);
+//    procedure OpenSale(const ASale: IModelClassSale);
+//    procedure RegistrationOfSale(const ASaleDetails: IModelClassSaleDetail);
+//    procedure RegistrationOfDiscount(const ASaleDetails: IModelClassSaleDetail);
+//    procedure RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
+//    procedure Totals(const ASale: IModelClassSale);
+//    procedure CloseSale(const ASale: IModelClassSale);
+//    procedure DiscardSale(const ASale: IModelClassSale);
+//    procedure DuplicateReceipt;
+//
+//    procedure OpenReversal(const ASale: IModelClassSale);
+//    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+//    procedure TotalsOnReversal(const ASaleReversal: IModelClassSaleReversal);
+//    procedure TotalsOnReversalAll(const ADue: WideString);
+//    procedure CloseReversal(const ASale: IModelClassSale);
+//    procedure DiscardReversal(const ASale: IModelClassSale);
+
+    procedure CloseNonFiscalReceipt;
+
+    function ReceiptIsClosed: Boolean;
+    function FiscalReceiptIsOpen: Boolean;
+    function StornoReceiptIsOpen: Boolean;
+    function NonFiscalReceiptIsOpen: Boolean;
+    function OpenReceiptNumber: String;
+    function OpenReceiptItems: String;
+    function OpenReceiptWithoutItems: Boolean;
+    function OpenReceiptAmount: String;
+    function OpenReceiptWithoutDue: Boolean;
+    function OpenReceiptPayed: String;
+    function OpenReceiptWithNoPayment: Boolean;
+    function OpenReceiptWithPartialPayment: Boolean;
+    function OpenReceiptWithFullPayment: Boolean;
+}
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    class constructor Create;
+    class destructor Destroy;
+  {$ENDREGION}
+  end;
+
+implementation
+
+
+uses
+  System.SysUtils,
+  Interfaces.Model.Notification,
+  Model.Notification;
+
+{ TFP700X }
+
+{$REGION 'Private Class Methods'}
+
+class procedure TFP700X.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+class function TFP700X.StartCOMServer: Integer;
+begin
+  try
+    try
+      FP700X.RemoteMachineName := '';
+      FP700X.Connect;
+      SendNotification([actFiscalDeviceAfterStartCOMServer]);
+    except
+//      ShowMessage('The program can not detect the driver. ' + sLineBreak + 'Please install "FP3530 - COMServer" or call the support team! ');
+      SendNotification([actFiscalDeviceErrorStartCOMServer]);
+      Exit;
+    end;
+  finally
+    if FP700X.connected_ToDevice then begin
+      SendNotification([actFiscalDeviceAfterOpenConnection]);
+    end;
+  end;
+end;
+
+class function TFP700X.DiscoverDevices: Integer;
+var
+  LFound: Boolean;
+  LErrorCode: Integer;
+begin
+  Writeln('Start Discovering Devices . . .');
+  FCOMPort := 1;
+  LFound := False;
+  repeat
+    Writeln('Discovering COM'+FCOMPOrt.ToString+'. . .');
+    LErrorCode := OpenConnection;
+    if LErrorCode <> 0 then begin
+      FCOMPort := FCOMPort + 1;
+    end else begin
+      Writeln('Found Device on COM'+FCOMPOrt.ToString+'. . .');
+      LFound := True;
+    end;
+  until LFound or (FCOMPort = 16);
+  if not LFound then begin
+    Writeln('Devices Not Found');
+    FCOMPort := -1;
+    Exit(-1);
+  end else begin
+    Exit(0);
+  end;
+end;
+
+class function TFP700X.OpenConnection: Integer;
+var
+  LErrorCode: Integer;
+begin
+  try
+    FConnected := FP700X.connected_ToDevice;
+    LErrorCode := 0;
+
+    if not FConnected then begin
+      LErrorCode := FP700X.set_TransportType(ctc_RS232);
+      if LErrorCode <> 0 then Exit(LErrorCode);
+
+      LErrorCode := FP700X.set_RS232(FCOMPort, FBaudRate);
+      if LErrorCode <> 0 then Exit(LErrorCode);
+
+      LErrorCode := FP700X.open_Connection;
+      if LErrorCode <> 0 then Exit(LErrorCode);
+    end;
+  finally
+    FConnected := FP700X.connected_ToDevice;
+  end;
+  Exit(LErrorCode);
+end;
+
+class function TFP700X.CloseConnection: Integer;
+var
+  LErrorCode: Integer;
+begin
+	LErrorCode := FP700X.close_Connection;
+  Exit(LErrorCode);
+end;
+
+class function TFP700X.StopCOMServer: Integer;
+begin
+	try
+		try
+			FP700X.Disconnect;
+		except
+      SendNotification([actFiscalDeviceErrorStopCOMServer]);
+      Exit(-1);
+		end;
+	finally
+    SendNotification([actFiscalDeviceAfterStopCOMServer]);
+	end;
+  Exit(0);
+end;
+
+class procedure TFP700X.CheckAndResolve;
+begin
+
+end;
+
+class procedure TFP700X.CheckTimeDifference;
+begin
+
+end;
+
+class procedure TFP700X.CheckTheStatusOfTheFiscalTransaction(var AIsOpen, ANumber, AItems, AAmount, APayed: WideString);
+begin
+
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Class Properties Getters/Setters'}
+
+class function TFP700X.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Class Methods'}
+
+class function TFP700X.Connected: String;
+begin
+  if FCOMPort = -1 then begin
+    Result := 'Not connected';
+  end else begin
+    Result := 'Connected to COM'+FCOMPort.ToString;
+  end;
+end;
+
+{$ENDREGION}
+
+
+
+{$REGION 'Constructors/Destructors'}
+
+class constructor TFP700X.Create;
+begin
+  FConnected := False;
+  FCOMPort := -1;
+  FBaudRate := 111500;
+  FP700X := TCFD_BGR.Create(nil);
+  try
+    StartCOMServer;
+    DiscoverDevices;
+    OpenConnection;
+  except
+
+  end;
+end;
+
+class destructor TFP700X.Destroy;
+begin
+  CloseConnection;
+  StopCOMServer;
+  FP700X.Free;
+end;
+
+{$ENDREGION}
+
+{
+procedure TFP700X.CancelFiscalReceipt;
+begin
+
+end;
+
+procedure TFP700X.CashCheck;
+begin
+
+end;
+
+procedure TFP700X.CashIn(const AAmount: WideString);
+begin
+
+end;
+
+procedure TFP700X.CashOut(const AAmount: WideString);
+begin
+
+end;
+
+procedure TFP700X.CloseFiscalReceipt;
+begin
+
+end;
+
+procedure TFP700X.CloseNonFiscalReceipt;
+begin
+
+end;
+
+procedure TFP700X.Discount(var ASubTotal: WideString);
+begin
+
+end;
+
+procedure TFP700X.DrawerKickOut;
+begin
+
+end;
+
+function TFP700X.FiscalReceiptIsOpen: Boolean;
+begin
+
+end;
+
+procedure TFP700X.FP700XError(ASender: TObject; error_Code: Integer;
+  var error_Message: WideString);
+begin
+
+end;
+
+function TFP700X.NonFiscalReceiptIsOpen: Boolean;
+begin
+
+end;
+
+procedure TFP700X.OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword,
+  AUNP, ATillNumber: WideString);
+begin
+
+end;
+
+function TFP700X.OpenReceiptAmount: String;
+begin
+
+end;
+
+function TFP700X.OpenReceiptItems: String;
+begin
+
+end;
+
+function TFP700X.OpenReceiptNumber: String;
+begin
+
+end;
+
+function TFP700X.OpenReceiptPayed: String;
+begin
+
+end;
+
+function TFP700X.OpenReceiptWithFullPayment: Boolean;
+begin
+
+end;
+
+function TFP700X.OpenReceiptWithNoPayment: Boolean;
+begin
+
+end;
+
+function TFP700X.OpenReceiptWithoutDue: Boolean;
+begin
+
+end;
+
+function TFP700X.OpenReceiptWithoutItems: Boolean;
+begin
+
+end;
+
+function TFP700X.OpenReceiptWithPartialPayment: Boolean;
+begin
+
+end;
+
+procedure TFP700X.OpenReversalReceipt(const AOperatorNumber, AOperatorPassword,
+  ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
+begin
+
+end;
+
+procedure TFP700X.PReport(const APeriodStart, APeriodFinish: TDate;
+  const AShort: Boolean);
+begin
+
+end;
+
+procedure TFP700X.PrintFiscalText(const AText: WideString);
+begin
+
+end;
+
+procedure TFP700X.PrintSeparatingLine;
+begin
+
+end;
+
+function TFP700X.ReceiptIsClosed: Boolean;
+begin
+
+end;
+
+procedure TFP700X.SellItem(const AItem, ATaxCode, APrice, AQuantity,
+  ADiscountType, ADiscountValue, AMeasure: WideString);
+begin
+
+end;
+
+function TFP700X.StornoReceiptIsOpen: Boolean;
+begin
+
+end;
+
+procedure TFP700X.SubTotal(var ASubTotal: WideString);
+begin
+
+end;
+
+procedure TFP700X.Total(const APaidMode, AAmountIn,
+  APinPadPaidMode: WideString);
+begin
+
+end;
+
+procedure TFP700X.XReport;
+begin
+
+end;
+
+procedure TFP700X.ZReport;
+begin
+
+end;
+}
+end.

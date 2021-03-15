@@ -65,7 +65,7 @@ type
   public
     procedure XReport;
     procedure ZReport;
-    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
   {$ENDREGION}
 
 
@@ -145,9 +145,9 @@ begin
   SendNotification([actCloseForm]);
 end;
 
-procedure TModelReports.PReport(const APeriodStart, APeriodFinish: TDate);
+procedure TModelReports.PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
 begin
-  DeviceFP700X.PReport(APeriodStart, APeriodFinish);
+  DeviceFP700X.PReport(APeriodStart, APeriodFinish, AShort);
   SendNotification([actCloseForm]);
 end;
 

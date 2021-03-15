@@ -191,8 +191,8 @@ procedure TViewModelSale.SetupSale;
 begin
   SendNotification([actSaleDisableActions]);
   Model.SetupSale;
-  FInSale := False;
-  FVIPSale := False;
+  FInSale := (Model.Sale.Stage <> 'подготвена') and (Model.Sale.Stage <> 'приключена');
+  FVIPSale := FInSale and (Model.Sale.ClientVIPStatus <> '');
   SendNotification([actSaleEnableActions]);
   SendNotification([actSetupGUI]);
   SendNotification([actUpdateGUI]);
@@ -221,7 +221,7 @@ begin
   Result.Top := 0;
   Result.Left := 0;
   Result.Width := AClientWidth + 16;
-  Result.Height := AClientHeight + 16;
+  Result.Height := AClientHeight - 2;
 
   // Panel Buttons
   LWidth := AClientWidth - 16;
@@ -309,7 +309,11 @@ end;
 
 function TViewModelSale.GetGUIRecord: TViewSaleGUIRecord;
 begin
-  Result.Caption := 'ПРОДАЖБА - ' + Model.Sale.ClientName;
+  Result.Caption := 'АНЕТ 4 - ПРОДАЖБИ v ' + G.GetAppVersion + ' - [ПРОДАЖБА ' + Model.Sale.ClientName + ']';
+  if FInSale then begin
+    Result.Caption := Result.Caption + ' [УНП: ' + Model.Sale.SaleUniqueID + ']';
+  end;
+
 
   if FVIPSale then begin
     Result.Color := $00CAF5FF;
@@ -392,10 +396,10 @@ begin
 
   SendNotification([actSaleDisableActions]);
 
-  if FVIPSale and (Model.Sale.ClientVIPStatus = '*') and (Model.Sale.CardPayment.ToDouble > 0) then begin
-    ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ПЛАЩАНЕ С КАРТА ЗА КЛИЕНТ С ПРЕФЕРЕНЦИИ!');
-    SendNotification([actSaleActiveControlEditCardPayment]);
-  end else begin
+//  if FVIPSale and (Model.Sale.ClientVIPStatus = '*') and (Model.Sale.CardPayment.ToDouble > 0) then begin
+//    ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ПЛАЩАНЕ С КАРТА ЗА КЛИЕНТ С ПРЕФЕРЕНЦИИ!');
+//    SendNotification([actSaleActiveControlEditCardPayment]);
+//  end else begin
     if FVIPSale and (Model.Sale.ClientVIPStatus = '*') and (Model.Sale.VoucherPayment.ToDouble > 0) then begin
       ViewMessage.ShowBadMessagePlus('НЕ Е РАЗРЕШЕНО ПЛАЩАНЕ С ВАУЧЕР ЗА КЛИЕНТ С ПРЕФЕРЕНЦИИ!');
       SendNotification([actSaleActiveControlEditVoucherPayment]);
@@ -416,7 +420,7 @@ begin
         end;
       end;
     end;
-  end;
+//  end;
 
   SendNotification([actSaleEnableActions]);
   SendNotification([actUpdateGUI]);
@@ -513,6 +517,14 @@ begin
     if (Model.Sale.CashPayment.ToDouble < 0) then begin
       ViewMessage.ShowBadMessagePlus('Недопустимо отрицателно заплащане в брой!');
       Model.UpdateSaleCashPayment('0.00');
+    end;
+
+    // Validate CashPayment Min
+    if (Model.Sale.VoucherPayment.ToDouble + Model.Sale.CardPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер и карта!');
+      Model.UpdateSaleCashPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditCardPayment]);
     end;
 
     if (Model.Sale.Returned.ToDouble < -0.009) then begin
@@ -624,6 +636,16 @@ begin
       LCardPaymentUpdated := True;
     end;
 
+    // Validate Complete Payment
+    if (Model.Sale.VoucherPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер!');
+      Model.UpdateSaleCardPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditVoucherPayment]);
+
+      LCardPaymentUpdated := True;
+    end;
+
     if LCardPaymentUpdated then begin
       SendNotification([actSaleActiveControlEditCardPayment]);
     end else begin
@@ -676,6 +698,16 @@ begin
 
     LCardPaymentUpdated := True;
   end;
+
+    // Validate Complete Payment
+    if (Model.Sale.VoucherPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер!');
+      Model.UpdateSaleCardPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditVoucherPayment]);
+
+      LCardPaymentUpdated := True;
+    end;
 
   if LCardPaymentUpdated then begin
     SendNotification([actSaleActiveControlEditCardPayment]);

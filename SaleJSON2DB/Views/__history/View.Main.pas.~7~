@@ -1,0 +1,79 @@
+unit View.Main;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls;
+
+type
+  TViewMain = class(TForm)
+    OpenDialog: TOpenDialog;
+    ButtonSelectSale: TButton;
+    procedure ButtonSelectSaleClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewMain: TViewMain;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Globals,
+  System.IOUtils,
+  System.JSON,
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale;
+
+procedure TViewMain.FormCreate(Sender: TObject);
+begin
+  G := TGlobal.Create;
+  Initialize;
+end;
+
+procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  G.Free;
+  Action := caFree;
+end;
+
+procedure TViewMain.ButtonSelectSaleClick(Sender: TObject);
+var
+  LFileName: String;
+  LSaleText: String;
+  LSale: IModelClassSale;
+begin
+  if OpenDialog.Execute then begin
+    LFileName := OpenDialog.FileName;
+    LSaleText := TFile.ReadAllText(LFileName);
+    LSale := CreateFromFileModelClassSale(LFileName);
+
+    LTemplateFileName := TPath.Combine(G.TempFolder,'details.db');
+    LTempFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.tmp');
+    LResultFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.db');
+    // Copy template
+    TFile.Copy(LTemplateFileName, LTempFileName);
+
+
+
+    LSale.ToFile;
+  end;
+end;
+
+end.

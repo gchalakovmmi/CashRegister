@@ -10,6 +10,7 @@ uses
 implementation
 
 uses
+  System.Classes,
   Globals,
   DataModule.Users;
 
@@ -54,8 +55,9 @@ type
 
   {$REGION 'Interfaced Methods'}
   public
+    function GetUsers: TStrings;
     procedure Logout;
-    procedure TryLogin(APassword: String);
+    procedure TryLogin(const AUserName, APassword: String);
   {$ENDREGION}
 
 
@@ -94,14 +96,19 @@ end;
 
 {$REGION 'Interfaced Methods'}
 
+function TModelLogin.GetUsers: TStrings;
+begin
+  Result := DataModuleUsers.GetUsers;
+end;
+
 procedure TModelLogin.Logout;
 begin
   DataModuleUsers.Logout;
 end;
 
-procedure TModelLogin.TryLogin(APassword: String);
+procedure TModelLogin.TryLogin(const AUserName, APassword: String);
 begin
-  DataModuleUsers.TryToLogin(APassword);
+  DataModuleUsers.TryToLogin(AUserName, APassword);
 end;
 
 {$ENDREGION}

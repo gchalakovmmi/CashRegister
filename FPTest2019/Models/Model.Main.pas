@@ -11,7 +11,6 @@ implementation
 
 uses
   System.SysUtils,
-  Winapi.Windows,
   Globals;
 
 type
@@ -25,7 +24,7 @@ type
 
   {$REGION 'Private Fields'}
   private
-    FAppVersion: String;
+
   {$ENDREGION}
 
 
@@ -93,31 +92,8 @@ end;
 {$REGION 'Interfaced Methods'}
 
 function TModelMain.GetAppVersion: string;
-var
-  Exe: string;
-  Size, Handle: DWORD;
-  Buffer: TBytes;
-  FixedPtr: PVSFixedFileInfo;
 begin
-  if FAppVersion = '' then begin
-    Exe := ParamStr(0);
-    Size := GetFileVersionInfoSize(PChar(Exe), Handle);
-    if Size = 0 then
-      RaiseLastOSError;
-    SetLength(Buffer, Size);
-    if not GetFileVersionInfo(PChar(Exe), Handle, Size, Buffer) then
-      RaiseLastOSError;
-    if not VerQueryValue(Buffer, '\', Pointer(FixedPtr), Size) then
-      RaiseLastOSError;
-
-    FAppVersion := Format('%d.%d.%d.%d',
-      [LongRec(FixedPtr.dwFileVersionMS).Hi,  //major
-       LongRec(FixedPtr.dwFileVersionMS).Lo,  //minor
-       LongRec(FixedPtr.dwFileVersionLS).Hi,  //release
-       LongRec(FixedPtr.dwFileVersionLS).Lo]) //build
-  end;
-
-  Result := FAppVersion;
+  Result := G.GetAppVersion;
 end;
 
 function TModelMain.GetStoreName: String;

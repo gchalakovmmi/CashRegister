@@ -1,0 +1,48 @@
+﻿unit Interfaces.Model.Classes.PermissionRole;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassPermissionRole = interface
+  ['{0077BE73-B298-46B9-B567-E8B6EEE3ED59}']
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на връзката между разрешението и ролята<summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetPermissionGID: String;
+    procedure SetPermissionGID(const AValue: String);
+    ///<summary>код в системата на разрешението<summary>
+    property PermissionGID: String read GetPermissionGID write SetPermissionGID;
+
+    function GetRoleGID: String;
+    procedure SetRoleGID(const AValue: String);
+    ///<summary>код в системата на ролята<summary>
+    property RoleGID: String read GetRoleGID write SetRoleGID;
+
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на присвоеното право на ролята в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на на последна промяна на присвоеното право на ролята<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на присвоеното право на ролята от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

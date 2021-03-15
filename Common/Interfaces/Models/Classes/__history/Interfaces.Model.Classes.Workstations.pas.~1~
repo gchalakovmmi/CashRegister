@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.Workstations;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Workstation;
+
+type
+  IModelClassWorkstations = interface
+    function GetList: TList<IModelClassWorkstation>;
+
+    property List: TList<IModelClassWorkstation> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AWorkstation: IModelClassWorkstation);
+    function GetByGID(const AGID: String): IModelClassWorkstation;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,326 @@
+unit Model.Classes.BaseCollection;
+
+interface
+
+uses
+  System.SysUtils,
+  System.JSON,
+  System.Generics.Collections,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes;
+
+type
+  TModelClassBaseCollection<IBaseObject: IModelClassBaseObject> = class(TInterfacedObject, IModelClassBaseCollection<IBaseObject>)
+
+  type
+    TF = function(const AJSONObject: TJSONObject): IBaseObject;
+
+  {$REGION 'Class Properties'}
+  private class var
+    L: TFunc<integer>;
+    FFileName: TDictionary<String, String>;
+    FDataSet: TDictionary<String, TFDDataSet>;
+    FCreateBaseObject: TDictionary<String, TFunc<IBaseObject>>;
+    FCreateFromDataSetBaseObject: TDictionary<String, TFunc<IBaseObject>>;
+    FCreateFromJSONBaseObject: TDictionary<String, TF>;
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IBaseObject>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IBaseObject>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IBaseObject> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    class procedure AssignDataSet(const ADataSet: TFDDataSet);
+    class procedure AssignCreateFromJSON(const ACreateFromJSONBaseObject: TF);
+    class procedure AssignClassData(
+      const AFileName: String;
+      const ADataSet: TFDDataSet;
+      const ACreateBaseObject: TFunc<IBaseObject>;
+      const ACreateFromDataSetBaseObject: TFunc<IBaseObject>;
+      const ACreateFromJSONBaseObject: TF
+    );
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Attach(const ABaseObject: IBaseObject);
+    procedure Detach(const ABaseObject: IBaseObject);
+    function GetByGID(const AGID: String): IBaseObject;
+    function GetByName(const AName: String): IBaseObject;
+
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    class constructor Create;
+    class destructor Destroy;
+
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    constructor CreateFromFile; overload;
+    constructor CreateFromFile(const AFileName: String); overload;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+implementation
+
+uses
+  System.TypInfo,
+  System.IOUtils,
+  Model.Classes.BaseObject;
+
+{ TModelClassStores }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassBaseCollection<IBaseObject>.GetList: TList<IBaseObject>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+class procedure TModelClassBaseCollection<IBaseObject>.AssignClassData(
+  const AFileName: String;
+  const ADataSet: TFDDataSet;
+  const ACreateBaseObject: TFunc<IBaseObject>;
+  const ACreateFromDataSetBaseObject: TFunc<IBaseObject>;
+  const ACreateFromJSONBaseObject: TF
+);
+var
+  LBaseObjectName: String;
+begin
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  FFileName.AddOrSetValue(LBaseObjectName, AFileName);
+  FDataSet.AddOrSetValue(LBaseObjectName, ADataSet);
+  FCreateBaseObject.AddOrSetValue(LBaseObjectName, ACreateBaseObject);
+  FCreateFromDataSetBaseObject.AddOrSetValue(LBaseObjectName, ACreateFromDataSetBaseObject);
+  FCreateFromJSONBaseObject.AddOrSetValue(LBaseObjectName, ACreateFromJSONBaseObject);
+end;
+
+class procedure TModelClassBaseCollection<IBaseObject>.AssignCreateFromJSON(const ACreateFromJSONBaseObject: TF);
+var
+  LBaseObjectName: String;
+begin
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  FCreateFromJSONBaseObject.AddOrSetValue(LBaseObjectName, ACreateFromJSONBaseObject);
+end;
+
+class procedure TModelClassBaseCollection<IBaseObject>.AssignDataSet(const ADataSet: TFDDataSet);
+var
+  LBaseObjectName: String;
+begin
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  FDataSet.AddOrSetValue(LBaseObjectName, ADataSet);
+end;
+
+procedure TModelClassBaseCollection<IBaseObject>.UpdateFromDataSet;
+var
+  LBaseObjectName: String;
+  LDataSet: TFDDataSet;
+  LBaseObject: IBaseObject;
+  LFound: Boolean;
+begin
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  LDataSet := FDataSet.Items[LBaseObjectName];
+  LDataSet.First;
+  while not LDataSet.Eof do begin
+    LFound := False;
+    for LBaseObject in List do begin
+      if LBaseObject.GID = LDataSet.FieldByName('gid').Value then begin
+        LBaseObject.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LBaseObject := FCreateFromDataSetBaseObject.Items[LBaseObjectName]();
+      List.Add(LBaseObject);
+    end;
+    LDataSet.Next;
+  end;
+end;
+
+procedure TModelClassBaseCollection<IBaseObject>.UpdateInDataSet;
+var
+  LBaseObject: IBaseObject;
+begin
+  for LBaseObject in List do begin
+    LBaseObject.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassBaseCollection<IBaseObject>.ToJSON: TJSONArray;
+var
+  LBaseObject: IBaseObject;
+begin
+  Result := TJSONArray.Create;
+  for LBaseObject in List do begin
+    Result.Add(LBaseObject.ToJSON);
+  end;
+end;
+
+procedure TModelClassBaseCollection<IBaseObject>.Attach(const ABaseObject: IBaseObject);
+begin
+  ABaseObject.AttachedAt := DateTimeToStr(Now);
+  List.Add(ABaseObject);
+end;
+
+procedure TModelClassBaseCollection<IBaseObject>.Detach(const ABaseObject: IBaseObject);
+begin
+  ABaseObject.DetachedAt := DateTimeToStr(Now);
+end;
+
+function TModelClassBaseCollection<IBaseObject>.GetByGID(const AGID: String): IBaseObject;
+var
+  LBaseObject: IBaseObject;
+begin
+  Result := nil;
+  for LBaseObject in List do begin
+    if LBaseObject.GID = AGID then begin
+      Result := LBaseObject;
+    end;
+  end;
+end;
+
+function TModelClassBaseCollection<IBaseObject>.GetByName(const AName: String): IBaseObject;
+var
+  LBaseObject: IBaseObject;
+begin
+  Result := nil;
+  for LBaseObject in List do begin
+    if LBaseObject.Name = AName then begin
+      Result := LBaseObject;
+    end;
+  end;
+end;
+
+procedure TModelClassBaseCollection<IBaseObject>.SaveToFile;
+var
+  LBaseObjectName: String;
+begin
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  TFile.WriteAllText(FFileName.Items[LBaseObjectName], ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+class constructor TModelClassBaseCollection<IBaseObject>.Create;
+begin
+  FFileName := TDictionary<String, String>.Create;
+  FDataSet := TDictionary<String, TFDDataSet>.Create;
+  FCreateBaseObject := TDictionary<String, TFunc<IBaseObject>>.Create;
+  FCreateFromDataSetBaseObject := TDictionary<String, TFunc<IBaseObject>>.Create;
+  FCreateFromJSONBaseObject := TDictionary<String, TF>.Create;
+end;
+
+class destructor TModelClassBaseCollection<IBaseObject>.Destroy;
+begin
+  FFileName.DisposeOf;
+  FDataSet.DisposeOf;
+  FCreateBaseObject.DisposeOf;
+  FCreateFromDataSetBaseObject.DisposeOf;
+  FCreateFromJSONBaseObject.DisposeOf;
+end;
+
+constructor TModelClassBaseCollection<IBaseObject>.Create;
+begin
+  inherited;
+  FList := TList<IBaseObject>.Create;
+end;
+
+constructor TModelClassBaseCollection<IBaseObject>.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LBaseObjectName: String;
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+  FList := TList<IBaseObject>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    List.Add(FCreateFromJSONBaseObject.Items[LBaseObjectName](LJSONValue as TJSONObject));
+  end;
+end;
+
+constructor TModelClassBaseCollection<IBaseObject>.CreateFromFile;
+var
+  LBaseObjectName: String;
+  LText: String;
+begin
+  inherited;
+  LBaseObjectName := GetTypeName(TypeInfo(IBaseObject));
+
+  if not TFile.Exists(FFileName[LBaseObjectName]) then begin
+    Create;
+  end else begin
+    LText := TFile.ReadAllText(FFileName[LBaseObjectName], TEncoding.UTF8);
+    CreateFromJSON(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+  end;
+end;
+
+constructor TModelClassBaseCollection<IBaseObject>.CreateFromFile(const AFileName: String);
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then begin
+    Create;
+  end else begin
+    LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+    CreateFromJSON(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+  end;
+end;
+
+destructor TModelClassBaseCollection<IBaseObject>.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,222 @@
+﻿unit Model.Classes.FiscalDevice;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.FiscalDevice;
+
+  procedure AssignDataSetModelClassFiscalDevice(const ADataSet: TFDDataSet);
+  function CreateModelClassFiscalDevice: IModelClassFiscalDevice;
+  function CreateFromJSONModelClassFiscalDevice(const AJSONObject: TJSONObject): IModelClassFiscalDevice;
+  function CreateFromDataSetModelClassFiscalDevice: IModelClassFiscalDevice;
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Classes.BaseObject,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - фискални устройства</summary>
+  TModelClassFiscalDevice = class(TModelClassBaseObject, IModelClassFiscalDevice)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FBrand: String;
+    FModel: String;
+    FSerialNumber: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetBrand: String;
+    procedure SetBrand(const AValue: String);
+    function GetModel: String;
+    procedure SetModel(const AValue: String);
+    function GetSerialNumber: String;
+    procedure SetSerialNumber(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на фискалното устройство<summary>
+//    property GID: String read GetGID write SetGID;
+    ///<summary>марка на фискалното устройство<summary>
+    property Brand: String read GetBrand write SetBrand;
+    ///<summary>модел на фискалното устройство<summary>
+    property Model: String read GetModel write SetModel;
+    ///<summary>сериен номер на фискалното устройство<summary>
+    property SerialNumber: String read GetSerialNumber write SetSerialNumber;
+    ///<summary>дата и час на първоначално конфигуриране на фискалното устройство в системата<summary>
+//    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на фискалното устройство<summary>
+//    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на фискалното устройство от употреба<summary>
+//    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet; override;
+    procedure UpdateInDataSet; override;
+    function ToJSON: TJSONObject; override;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+{ TModelClassFiscalDevice }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassFiscalDevice.GetBrand: String;
+begin
+  Result := FBrand;
+end;
+
+procedure TModelClassFiscalDevice.SetBrand(const AValue: String);
+begin
+  FBrand := AValue;
+end;
+
+function TModelClassFiscalDevice.GetModel: String;
+begin
+  Result := FModel;
+end;
+
+procedure TModelClassFiscalDevice.SetModel(const AValue: String);
+begin
+  FModel := AValue;
+end;
+
+function TModelClassFiscalDevice.GetSerialNumber: String;
+begin
+  Result := FSerialNumber;
+end;
+
+procedure TModelClassFiscalDevice.SetSerialNumber(const AValue: String);
+begin
+  FSerialNumber := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassFiscalDevice.UpdateFromDataSet;
+begin
+  inherited UpdateFromDataSet;
+  Brand := DataSet.FieldByName('Brand').Value;
+  Model := DataSet.FieldByName('Model').Value;
+  SerialNumber := DataSet.FieldByName('SerialNumber').Value;
+end;
+
+procedure TModelClassFiscalDevice.UpdateInDataSet;
+begin
+  inherited UpdateInDataSet;
+
+  DataSet.Edit;
+  DataSet.FieldByName('Brand').Value := Brand;
+  DataSet.FieldByName('Model').Value := Model;
+  DataSet.FieldByName('SerialNumber').Value := SerialNumber;
+  DataSet.Post;
+end;
+
+function TModelClassFiscalDevice.ToJSON: TJSONObject;
+begin
+  Result := inherited ToJSON;
+  Result.AddPair('Brand', Brand);
+  Result.AddPair('Model', Model);
+  Result.AddPair('SerialNumber', SerialNumber);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassFiscalDevice.Create;
+begin
+  inherited Create;
+  GID := TGeneratorGIDs.NewGIDByName('FiscalDeviceGID').ToString;
+end;
+
+constructor TModelClassFiscalDevice.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  inherited CreateFromJSON(AJSONObject);
+  Brand := (AJSONObject.GetValue('Brand') as TJSONString).Value;
+  Model := (AJSONObject.GetValue('Model') as TJSONString).Value;
+  SerialNumber := (AJSONObject.GetValue('SerialNumber') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassFiscalDevice(const ADataSet: TFDDataSet);
+begin
+  TModelClassFiscalDevice.AssignDataSet(ADataSet);
+end;
+
+function CreateModelClassFiscalDevice: IModelClassFiscalDevice;
+begin
+  Result := TModelClassFiscalDevice.Create;
+end;
+
+function CreateFromJSONModelClassFiscalDevice(const AJSONObject: TJSONObject): IModelClassFiscalDevice;
+begin
+  Result := TModelClassFiscalDevice.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassFiscalDevice: IModelClassFiscalDevice;
+begin
+  Result := TModelClassFiscalDevice.CreateFromDataSet;
+end;
+
+end.

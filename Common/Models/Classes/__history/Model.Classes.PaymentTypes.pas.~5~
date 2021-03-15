@@ -1,0 +1,225 @@
+﻿unit Model.Classes.PaymentTypes;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.PaymentTypes;
+
+  function CreateModelClassPaymentTypes: IModelClassPaymentTypes;
+  function CreateFromJSONModelClassPaymentTypes(const AJSONArray: TJSONArray): IModelClassPaymentTypes;
+  function CreateFromFileModelClassPaymentTypes(const AFileName: String): IModelClassPaymentTypes;
+  procedure AssignDataSetModelClassPaymentTypes(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  Globals,
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections,
+  Interfaces.Model.Classes.PaymentType,
+  Model.Classes.PaymentType;
+
+type
+  ///<summary>Таблица - видове плащания</summary>
+  TModelClassPaymentTypes = class(TInterfacedObject, IModelClassPaymentTypes)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassPaymentType>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassPaymentType>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassPaymentType> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const APaymentType: IModelClassPaymentType);
+    function GetByGID(const AGID: String): IModelClassPaymentType;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassPaymentTypes: IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.Create;
+end;
+
+function CreateFromJSONModelClassPaymentTypes(const AJSONArray: TJSONArray): IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassPaymentTypes(const AFileName: String): IModelClassPaymentTypes;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassPaymentTypes(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+procedure AssignDataSetModelClassPaymentTypes(const ADataSet: TFDDataSet);
+begin
+  TModelClassPaymentTypes.DataSet := ADataSet;
+end;
+
+{ TModelClassPaymentTypes }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassPaymentTypes.GetList: TList<IModelClassPaymentType>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassPaymentTypes.UpdateFromDataSet;
+var
+  LPaymentType: IModelClassPaymentType;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LPaymentType in List do begin
+      if LPaymentType.GID = DataSet.FieldByName('gid').Value then begin
+        LPaymentType.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LPaymentType := CreateFromDataSetModelClassPaymentType;
+      List.Add(LPaymentType);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassPaymentTypes.UpdateInDataSet;
+var
+  LPaymentType: IModelClassPaymentType;
+begin
+  for LPaymentType in List do begin
+    LPaymentType.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassPaymentTypes.ToJSON: TJSONArray;
+var
+  LPaymentType: IModelClassPaymentType;
+begin
+  Result := TJSONArray.Create;
+  for LPaymentType in List do begin
+    Result.Add(LPaymentType.ToJSON);
+  end;
+end;
+
+procedure TModelClassPaymentTypes.Add(const APaymentType: IModelClassPaymentType);
+begin
+  List.Add(APaymentType);
+  SaveToFile;
+end;
+
+function TModelClassPaymentTypes.GetByGID(const AGID: String): IModelClassPaymentType;
+var
+  LPaymentType: IModelClassPaymentType;
+begin
+  Result := nil;
+  for LPaymentType in List do begin
+    if LPaymentType.GID = AGID then begin
+      Result := LPaymentType;
+    end;
+  end;
+end;
+
+procedure TModelClassPaymentTypes.SaveToFile;
+begin
+  TFile.WriteAllText(G.PaymentTypesFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassPaymentTypes.Create;
+begin
+  inherited;
+  FList := TList<IModelClassPaymentType>.Create;
+end;
+
+constructor TModelClassPaymentTypes.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassPaymentType>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassPaymentType(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassPaymentTypes.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

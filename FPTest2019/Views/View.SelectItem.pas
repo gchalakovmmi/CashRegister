@@ -162,6 +162,7 @@ end;
 procedure TViewSelectItem.UpdateGUI;
 var
   LViewSelectItemGUIRecord: TViewSelectItemGUIRecord;
+  LSpace: Integer;
 begin
   LViewSelectItemGUIRecord := ViewModel.GetGUIRecord(Screen.Width, Screen.Height);
 
@@ -169,6 +170,25 @@ begin
   Left := LViewSelectItemGUIRecord.Left;
   Width := LViewSelectItemGUIRecord.Width;
   Edit.Text := LViewSelectItemGUIRecord.EditText;
+
+  LSpace := 30;
+  Grid.Columns[0].Width := (Grid.Width - LSpace) * 10 div 100;
+  Grid.Columns[1].Width := (Grid.Width - LSpace) * 45 div 100;
+  Grid.Columns[2].Width := (Grid.Width - LSpace) * 15 div 100;
+  Grid.Columns[3].Width := (Grid.Width - LSpace) * 10 div 100;
+  Grid.Columns[4].Width := (Grid.Width - LSpace) * 10 div 100;
+  Grid.Columns[5].Width := (Grid.Width - LSpace) * 10 div 100;
+
+  Grid.Columns[0].Width :=
+    Grid.Columns[0].Width +
+    (Grid.Width - LSpace) -
+    Grid.Columns[0].Width -
+    Grid.Columns[1].Width -
+    Grid.Columns[2].Width -
+    Grid.Columns[3].Width -
+    Grid.Columns[4].Width -
+    Grid.Columns[5].Width;
+
 
   ActiveControl := Grid;
 

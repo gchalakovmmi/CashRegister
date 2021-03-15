@@ -64,6 +64,8 @@ type
     procedure UpdateFromDataSet(const AParentGID: Integer);
     procedure UpdateInDataSet;
     function ToJSON: TJSONArray;
+
+    function Include(const AType, AAmount: String): Boolean;
   {$ENDREGION}
 
   {$REGION 'Constructors/Destructors'}
@@ -153,6 +155,19 @@ begin
     Result.Add(LSalePayment.ToJSON);
   end;
 end;
+
+function TModelClassSalePayments.Include(const AType, AAmount: String): Boolean;
+var
+  LSalePayment: IModelClassSalePayment;
+begin
+  for LSalePayment in List do begin
+    if (LSalePayment.PaymentType = AType) and (LSalePayment.Payment = AAmount) then begin
+      Exit(True);
+    end;
+  end;
+  Exit(False);
+end;
+
 
 {$ENDREGION}
 

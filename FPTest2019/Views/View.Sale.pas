@@ -75,8 +75,6 @@ type
 
     LabelMinVIP: TLabel;
 
-    StatusBar: TStatusBar;
-
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

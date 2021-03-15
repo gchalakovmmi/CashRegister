@@ -1,0 +1,145 @@
+unit ViewModel.Audit;
+
+interface
+
+uses
+  Interfaces.ViewModel.Audit;
+
+  function CreateViewModelAudit: IViewModelAudit;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Pattern.Observer.Observer,
+  Model.Notification,
+
+  Interfaces.ViewModel.Login
+//  ,
+//
+//  View.Audit.Sales,
+//  View.Audit.Logs,
+//  View.Audit.Reversals,
+//  View.Audit.Nomenclatures
+  ;
+
+type
+  TViewModelAudit = class(TInterfacedObject, IViewModelAudit)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure Nomenclatures;
+    procedure Reversals;
+    procedure Sales;
+    procedure Logs;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelAudit }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewModelAudit.Nomenclatures;
+begin
+//  ShowViewAuditNomenclatures;
+end;
+
+procedure TViewModelAudit.Logs;
+begin
+//  ShowViewAuditLogs;
+end;
+
+procedure TViewModelAudit.Sales;
+begin
+//  ShowViewAuditSales;
+end;
+
+procedure TViewModelAudit.Reversals;
+begin
+//  ShowViewAuditReversals;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelAudit.Create;
+begin
+  //
+end;
+
+destructor TViewModelAudit.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelAudit: IViewModelAudit;
+begin
+  Result := TViewModelAudit.Create;
+end;
+
+end.

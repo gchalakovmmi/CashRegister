@@ -1,0 +1,233 @@
+unit ViewModel.Nomenclature.Permission;
+
+interface
+
+uses
+  Interfaces.ViewModel.Nomenclature.Permission;
+
+  function CreateViewModelNomenclaturePermission: IViewModelNomenclaturePermission;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Pattern.Observer.Observer,
+  Model.Notification,
+  Model.Generator.GIDs,
+
+  DataModule.Permissions;
+
+type
+  TViewModelNomenclaturePermission = class(TInterfacedObject, IViewModelNomenclaturePermission)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FAction: TAMDAction;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver;
+    property Observable: IObservable read GetObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewNomenclaturePermissionGUIRecord;
+
+    procedure SetAction(const AAction: TAMDAction);
+
+    function Can(const AAction: TAMDAction): Boolean;
+
+    procedure Confirm;
+    procedure Cancel;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelNomenclaturePermissions }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelNomenclaturePermission.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//
+end;
+
+procedure TViewModelNomenclaturePermission.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelNomenclaturePermission.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelNomenclaturePermission.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelNomenclaturePermission.GetGUIRecord: TViewNomenclaturePermissionGUIRecord;
+begin
+  case FAction of
+    amdAttach: Result.Caption := 'ÐÀÇÐÅØÅÍÈÅ - ÊÎÍÔÈÃÓÐÈÐÀÍÅ';
+    amdModify: Result.Caption := 'ÐÀÇÐÅØÅÍÈÅ - ÏÐÎÌßÍÀ';
+    amdDetach: Result.Caption := 'ÐÀÇÐÅØÅÍÈÅ - ÈÇÂÅÆÄÀÍÅ';
+  end;
+end;
+
+procedure TViewModelNomenclaturePermission.SetAction(const AAction: TAMDAction);
+begin
+  FAction := AAction;
+  case AAction of
+    amdAttach: DataModulePermissions.FDMemTable.Append;
+    amdModify: DataModulePermissions.FDMemTable.Edit;
+    amdDetach: ;
+  end;
+end;
+
+function TViewModelNomenclaturePermission.Can(const AAction: TAMDAction): Boolean;
+begin
+  case AAction of
+    amdAttach: begin
+      Result := True;
+    end;
+    amdModify: begin
+      Result := False;
+      if DataModulePermissions.FDMemTable.Active and (DataModulePermissions.FDMemTable.RecordCount > 0) then begin
+        if DataModulePermissions.FDMemTableDetachedAt.AsString = '' then begin
+          Result := True;
+        end;
+      end;
+    end;
+    amdDetach: begin
+      Result := False;
+      if DataModulePermissions.FDMemTable.Active and (DataModulePermissions.FDMemTable.RecordCount > 0) then begin
+        if DataModulePermissions.FDMemTableDetachedAt.AsString = '' then begin
+          Result := True;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TViewModelNomenclaturePermission.Confirm;
+begin
+  DataModulePermissions.FDMemTable.Edit;
+
+  case FAction of
+    amdAttach: begin
+      DataModulePermissions.FDMemTableGID.AsString := TGeneratorGIDs.NewGIDByName('PermissionGID').ToString;
+      DataModulePermissions.FDMemTableAttachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+      DataModulePermissions.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdModify: begin
+      DataModulePermissions.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdDetach: begin
+      DataModulePermissions.FDMemTableDetachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+  end;
+
+  DataModulePermissions.FDMemTable.Post;
+
+  DataModulePermissions.SaveToFile;
+
+  SendNotification([actCloseForm]);
+end;
+
+procedure TViewModelNomenclaturePermission.Cancel;
+begin
+  DataModulePermissions.FDMemTable.Cancel;
+
+  SendNotification([actCloseForm]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelNomenclaturePermission.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+end;
+
+destructor TViewModelNomenclaturePermission.Destroy;
+begin
+//
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelNomenclaturePermission: IViewModelNomenclaturePermission;
+begin
+  Result := TViewModelNomenclaturePermission.Create;
+end;
+
+end.

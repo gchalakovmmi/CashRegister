@@ -1,0 +1,86 @@
+unit DataModule.Users;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin,
+  Data.DB,
+  Interfaces.Model.Classes.Users,
+  Interfaces.Model.Classes.User,
+  Model.Classes.Users,
+  Model.Classes.User;
+
+type
+  TDataModuleUsers = class(TDataModule)
+    FDMemTable: TFDMemTable;
+      FDMemTableGID: TStringField;
+      FDMemTableName: TStringField;
+      FDMemTableAttachedAt: TStringField;
+      FDMemTableModifiedAt: TStringField;
+      FDMemTableDetachedAt: TStringField;
+    DataSource: TDataSource;
+    FDMemTablePassword: TStringField;
+    FDMemTableRawPassword: TStringField;
+    procedure FDMemTableRawPasswordChange(Sender: TField);
+  private
+    FUsers: IModelClassUsers;
+  public
+    procedure LoadFromFile;
+    procedure SaveToFile;
+    function GetByRoleAndPassword(const ARole, APassword: String): IModelClassUser;
+  end;
+
+var
+  DataModuleUsers: TDataModuleUsers;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+uses
+  System.Hash;
+
+{ TDataModuleUsers }
+
+procedure TDataModuleUsers.FDMemTableRawPasswordChange(Sender: TField);
+begin
+  FDMemTablePassword.AsString := THashSHA2.GetHashString(FDMemTableRawPassword.AsString);
+end;
+
+function TDataModuleUsers.GetByRoleAndPassword(const ARole, APassword: String): IModelClassUser;
+begin
+  LoadFromFile;
+  Result := FUsers.GetByRoleAndPassword(ARole, APassword);
+end;
+
+procedure TDataModuleUsers.LoadFromFile;
+begin
+  FUsers := CreateFromFileModelClassUsers;
+  AssignDataSetModelClassUsers(FDMemTable);
+  AssignDataSetModelClassUser(FDMemTable);
+  FUsers.UpdateInDataSet;
+end;
+
+procedure TDataModuleUsers.SaveToFile;
+begin
+  AssignDataSetModelClassUsers(FDMemTable);
+  AssignDataSetModelClassUser(FDMemTable);
+  FUsers.UpdateFromDataSet;
+  FUsers.SaveToFile;
+end;
+
+end.
+

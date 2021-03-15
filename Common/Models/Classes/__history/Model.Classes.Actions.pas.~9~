@@ -1,0 +1,132 @@
+﻿unit Model.Classes.Actions;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Actions;
+
+  procedure AssignDataSetModelClassActions(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassActions(const AFileName: String);
+  function CreateModelClassActions: IModelClassActions;
+  function CreateFromJSONModelClassActions(const AJSONArray: TJSONArray): IModelClassActions;
+  function CreateFromFileModelClassActions: IModelClassActions; overload;
+  function CreateFromFileModelClassActions(const AFileName: String): IModelClassActions; overload;
+
+implementation
+
+uses
+  Model.Classes.BaseCollection;
+
+type
+  ///<summary>Таблица - видове действия/операции</summary>
+  TModelClassActions = class(TModelClassBaseCollection, IModelClassActions)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+
+{ TModelClassActions }
+
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassActions(const ADataSet: TFDDataSet);
+begin
+  TModelClassActions.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassActions(const AFileName: String);
+begin
+  TModelClassActions.FileName := AFileName;
+end;
+
+function CreateModelClassActions: IModelClassActions;
+begin
+  Result := TModelClassActions.Create;
+end;
+
+function CreateFromJSONModelClassActions(const AJSONArray: TJSONArray): IModelClassActions;
+begin
+  Result := TModelClassActions.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassActions: IModelClassActions;
+begin
+  Result := TModelClassActions.CreateFromFile(TModelClassActions.FileName);
+end;
+
+function CreateFromFileModelClassActions(const AFileName: String): IModelClassActions;
+begin
+  Result := TModelClassActions.CreateFromFile(AFileName);
+end;
+
+end.

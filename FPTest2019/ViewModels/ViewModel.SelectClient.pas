@@ -147,6 +147,7 @@ function TViewModelSelectClient.GetGUIRecord(const AWidth, AHeight: Integer): TV
 begin
   Result.Top := AHeight - 300;
   Result.Left := 8;
+  Result.Width := AWidth - 16;
   Result.EditText := DataModuleClients.KeyWord;
 end;
 

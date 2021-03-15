@@ -1,0 +1,429 @@
+unit Globals;
+
+interface
+
+uses
+  Interfaces.Model.Classes.Stores,
+  Interfaces.Model.Classes.Workstations,
+  Interfaces.Model.Classes.FiscalDevices,
+  Interfaces.Model.Classes.Items,
+  Interfaces.Model.Classes.Measures,
+  Interfaces.Model.Classes.Clients,
+  Interfaces.Model.Classes.Actions,
+  Interfaces.Model.Classes.PaymentTypes,
+  Interfaces.Model.Classes.Permissions,
+  Interfaces.Model.Classes.Roles,
+  Interfaces.Model.Classes.Users,
+  Interfaces.Model.Classes.PermissionsRoles,
+  Interfaces.Model.Classes.RolesUsers;
+
+type
+  TGlobal = class
+
+  {$REGION 'Private Fields'}
+  private
+//    FAppFolder: String;
+//    FGlobalNomenclaturesFolder: String;
+//    FStoreFolder: String;
+//    FLocalNomenclaturesFolder: String;
+//    FWorkstationFolderName: String;
+//    FLocalSalesFolderName: String;
+//    FLocalReversalsFolderName: String;
+//    FLocalLogsFolderName: String;
+//    FLocalTempFolderName: String;
+//
+//    FStoresFileName: String;
+//    FWorkstationsFileName: String;
+//    FFiscalDevicesFileName: String;
+//    FItemsFileName: String;
+//    FMeasuresFileName: String;
+//    FClientsFileName: String;
+//    FActionsFileName: String;
+//    FPaymentTypesFileName: String;
+//    FPermissionsFileName: String;
+//    FRolesFileName: String;
+//    FUsersFileName: String;
+//    FPermissionsRolesFileName: String;
+//    FRolesUsersFileName: String;
+
+//    FStores: IModelClassStores;
+//    FWorkstations: IModelClassWorkstations;
+//    FFiscalDevices: IModelClassFiscalDevices;
+//    FItems: IModelClassItems;
+//    FMeasures: IModelClassMeasures;
+//    FClients: IModelClassClients;
+//    FActions: IModelClassActions;
+//    FPaymentTypes: IModelClassPaymentTypes;
+//    FPermissions: IModelClassPermissions;
+//    FRoles: IModelClassRoles;
+//    FUsers: IModelClassUsers;
+//    FPermissionsRoles: IModelClassPermissionsRoles;
+//    FRolesUsers: IModelClassRolesUsers;
+
+    FStoreID: String;
+    FStoreName: String;
+
+    FWorkstationID: String;
+    FWorkstationName: String;
+
+    FFiscalDevicePresent: Boolean;
+    FFiscalDeviceID: String;
+    FFiscalDeviceCOMPort: Integer;
+    FFiscalDeviceBaudRate: Integer;
+    FFiscalDeviceLineWidth: Integer;
+
+    FIsLoggedUser: Boolean;
+    FUserGID: Integer;
+    FUserName: String;
+    FUserPassword: String;
+
+    FMinVIPSale: Double;
+    FMaxPayment: Double;
+
+    FShowCheckItem: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SetFormatSettings;
+
+//    procedure CreateDataBase;
+
+    procedure ProcessParameters;
+    procedure InitializeConstants;
+
+//    procedure InitializeGlobalFolderNames;
+//    procedure InitializeGlobalFileNames;
+    procedure InitializeGlobalGlobals;
+
+    procedure InitializeGlobalORM;
+    procedure CreateViewModels;
+    procedure BindObservers;
+    procedure InitializeDataClasses;
+
+    procedure InitializeLocalFolderNames;
+    procedure InitializeLocalFileNames;
+    procedure InitializeLocalGlobals;
+
+    procedure InitializeStartCondition;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+//    property AppFolder: String read FAppFolder;
+//    property GlobalNomenclaturesFolder: string read FGlobalNomenclaturesFolder;
+//    property StoreFolder: String read FStoreFolder;
+//    property LocalNomenclaturesFolder: string read FLocalNomenclaturesFolder;
+//    property WorkstationFolderName: String read FWorkstationFolderName;
+//    property LocalSalesFolderName: String read FLocalSalesFolderName;
+//    property LocalReversalsFolderName: String read FLocalReversalsFolderName;
+//    property LocalLogsFolderName: String read FLocalLogsFolderName;
+//    property LocalTempFolderName: String read FLocalTempFolderName;
+
+//    property Stores: IModelClassStores read FStores;
+//    property Workstations: IModelClassWorkstations read FWorkstations;
+//    property FiscalDevices: IModelClassFiscalDevices read FFiscalDevices;
+//    property Items: IModelClassItems read FItems;
+//    property Measures: IModelClassMeasures read FMeasures;
+//    property Clients: IModelClassClients read FClients;
+//    property Actions: IModelClassActions read FActions;
+//    property PaymentTypes: IModelClassPaymentTypes read FPaymentTypes;
+//    property Permissions: IModelClassPermissions read FPermissions;
+//    property Roles: IModelClassRoles read FRoles;
+//    property Users: IModelClassUsers read FUsers;
+//    property PermissionsRoles: IModelClassPermissionsRoles read FPermissionsRoles;
+//    property RolesUsers: IModelClassRolesUsers read FRolesUsers;
+
+    property MinVIPSale: Double read FMinVIPSale;
+    property MaxPayment: Double read FMaxPayment;
+    property ShowCheckItem: Boolean read FShowCheckItem write FShowCheckItem;
+
+    property StoreID: String read FStoreID write FStoreID;
+    property StoreName: String read FStoreName write FStoreName;
+
+    property WorkstationID: String read FWorkstationID write FWorkstationID;
+    property WorkstationName: String read FWorkstationName write FWorkstationName;
+
+    property FiscalDeviceID: String read FFiscalDeviceID write FFiscalDeviceID;
+    property FiscalDevicePresent: Boolean read FFiscalDevicePresent write FFiscalDevicePresent;
+    property FiscalDeviceCOMPort: Integer read FFiscalDeviceCOMPort write FFiscalDeviceCOMPort;
+    property FiscalDeviceBaudRate: Integer read FFiscalDeviceBaudRate write FFiscalDeviceBaudRate;
+    property FiscalDeviceLineWidth: Integer read FFiscalDeviceLineWidth write FFiscalDeviceLineWidth;
+
+    property IsLoggedUser: Boolean read FIsLoggedUser write FIsLoggedUser;
+    property UserGID: Integer read FUserGID write FUserGID;
+    property UserName: String read FUserName write FUserName;
+    property UserPassword: String read FUserPassword write FUserPassword;
+
+//    property StoresFileName: String read FStoresFileName write FStoresFileName;
+//    property WorkstationsFileName: String read FWorkstationsFileName write FWorkstationsFileName;
+//    property FiscalDevicesFileName: String read FFiscalDevicesFileName write FFiscalDevicesFileName;
+//    property ItemsFileName: String read FItemsFileName write FItemsFileName;
+//    property MeasuresFileName: String read FMeasuresFileName write FMeasuresFileName;
+//    property ClientsFileName: String read FClientsFileName write FClientsFileName;
+//    property ActionsFileName: String read FActionsFileName write FActionsFileName;
+//    property PaymentTypesFileName: String read FPaymentTypesFileName write FPaymentTypesFileName;
+//    property PermissionsFileName: String read FPermissionsFileName write FPermissionsFileName;
+//    property RolesFileName: String read FRolesFileName write FRolesFileName;
+//    property UsersFileName: String read FUsersFileName write FUsersFileName;
+//    property PermissionsRolesFileName: String read FPermissionsRolesFileName write FPermissionsRolesFileName;
+//    property RolesUsersFileName: String read FRolesUsersFileName write FRolesUsersFileName;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+
+  end;
+
+  function G: TGlobal;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils;
+
+var
+  _G_: TGlobal;
+
+function G: TGlobal;
+begin
+  if not Assigned(_G_) then begin
+    _G_ := TGlobal.Create;
+  end;
+  Result := _G_;
+end;
+
+{ TGlobal }
+
+{$REGION 'Private Methods'}
+
+procedure TGlobal.SetFormatSettings;
+begin
+	FormatSettings.DateSeparator := '.';
+	FormatSettings.TimeSeparator := ':';
+	FormatSettings.DecimalSeparator := '.';
+	FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
+	FormatSettings.ShortTimeFormat := 'hh:mm:ss:zzz';
+	FormatSettings.LongDateFormat := 'dd.mm.yyyy';
+	FormatSettings.LongTimeFormat := 'hh:mm:ss:zzz';
+end;
+
+procedure TGlobal.ProcessParameters;
+begin
+  FStoreName := TPath.GetDirectoryName(ParamStr(1));
+  FWorkstationName := TPath.GetDirectoryName(ParamStr(2));
+
+  // DT652267
+  FFiscalDeviceID := TPath.GetDirectoryName(ParamStr(3));
+  // 3
+  FFiscalDeviceCOMPort := ParamStr(4).ToInteger;
+  FFiscalDeviceBaudRate := 115000;
+  FFiscalDeviceLineWidth := 70;
+
+  FFiscalDevicePresent := (ParamStr(5) = '1');
+end;
+
+procedure TGlobal.InitializeConstants;
+begin
+  FMinVIPSale := 20;
+  FMaxPayment := 2000;
+
+  FShowCheckItem := False;
+end;
+
+//procedure TGlobal.InitializeGlobalFolderNames;
+//begin
+//  FGlobalNomenclaturesFolder := TPath.Combine(AppFolder, 'номенклатури');
+//  ForceDirectories(FGlobalNomenclaturesFolder);
+//end;
+
+//procedure TGlobal.InitializeGlobalFileNames;
+//begin
+//  FStoresFileName := TPath.Combine(GlobalNomenclaturesFolder, 'търговски обекти.json');
+//  FWorkstationsFileName := TPath.Combine(GlobalNomenclaturesFolder, 'работни места.json');
+//  FFiscalDevicesFileName := TPath.Combine(GlobalNomenclaturesFolder, 'фискални устройства.json');
+//  FActionsFileName := TPath.Combine(GlobalNomenclaturesFolder, 'операции.json');
+//  FPaymentTypesFileName := TPath.Combine(GlobalNomenclaturesFolder, 'видове плащания.json');
+//  FPermissionsFileName := TPath.Combine(GlobalNomenclaturesFolder, 'разрешения.json');
+//  FRolesFileName := TPath.Combine(GlobalNomenclaturesFolder, 'роли.json');
+//  FPermissionsRolesFileName := TPath.Combine(GlobalNomenclaturesFolder, 'разрешения на роли.json');
+//  FUsersFileName := TPath.Combine(GlobalNomenclaturesFolder, 'потребители.json');
+//  FRolesUsersFileName := TPath.Combine(GlobalNomenclaturesFolder, 'роли на потребители.json');
+//  FClientsFileName := TPath.Combine(GlobalNomenclaturesFolder, 'клиенти.json');
+//  FItemsFileName := TPath.Combine(GlobalNomenclaturesFolder, 'стоки.json');
+//  FMeasuresFileName := TPath.Combine(GlobalNomenclaturesFolder, 'мерки.json');
+//end;
+
+procedure TGlobal.InitializeGlobalGlobals;
+begin
+//  FStores := CreateFromFileModelClassStores(StoresFileName);
+//  FWorkstations := CreateFromFileModelClassWorkstations(WorkstationsFileName);
+//  FFiscalDevices := CreateFromFileModelClassFiscalDevices(FiscalDevicesFileName);
+//  FActions := CreateFromFileModelClassActions(ActionsFileName);
+//  FPaymentTypes := CreateFromFileModelClassPaymentTypes(PaymentTypesFileName);
+//  FPermissions := CreateFromFileModelClassPermissions(PermissionsFileName);
+//  FRoles := CreateFromFileModelClassRoles(RolesFileName);
+//  FPermissionsRoles := CreateFromFileModelClassPermissionsRoles(PermissionsRolesFileName);
+//  FUsers := CreateFromFileModelClassUsers(UsersFileName);
+//  FRolesUsers := CreateFromFileModelClassRolesUsers(RolesUsersFileName);
+//  FClients := CreateFromFileModelClassClients(ClientsFileName);
+//  FItems := CreateFromFileModelClassItems(ItemsFileName);
+//  FMeasures := CreateFromFileModelClassMeasures(MeasuresFileName);
+end;
+
+//procedure TGlobal.InitializeLocalFolderNames;
+//begin
+//  FStoreFolder := TPath.Combine(AppFolder, StoreName);
+//  FLocalNomenclaturesFolder := TPath.Combine(StoreFolder, 'номенклатури');
+//  ForceDirectories(LocalNomenclaturesFolder);
+//
+//  FWorkstationFolderName := TPath.Combine(StoreFolder, WorkstationName);
+//  FLocalSalesFolderName := TPath.Combine(FWorkstationFolderName, 'продажби');
+//  FLocalReversalsFolderName := TPath.Combine(FWorkstationFolderName, 'сторно');
+//  FLocalLogsFolderName := TPath.Combine(FWorkstationFolderName, 'дневници');
+//  FLocalTempFolderName := TPath.Combine(FWorkstationFolderName, 'временни');
+//end;
+
+procedure TGlobal.InitializeLocalFileNames;
+begin
+//
+end;
+
+procedure TGlobal.InitializeLocalGlobals;
+begin
+//
+end;
+
+
+procedure TGlobal.CreateViewModels;
+begin
+  // Main
+//  ViewMain.ViewModel := CreateViewModelMain;
+
+  // BillsListOverview
+//  ViewDeskMain.ViewDeskBillsListOverview.ViewModel := CreateViewModelDeskBillsListOverview;
+
+  // ViewModelMain to ViewModels
+//  ViewDeskMain.ViewModel.ViewModelDeskBillsListOverview := ViewDeskMain.ViewDeskBillsListOverview.ViewModel;
+end;
+
+procedure TGlobal.BindObservers;
+begin
+//  // Main
+//  ViewDeskMain.ViewModel.Observable := CreateObservableClass;
+//  ViewDeskMain.ViewModel.Observable.Subscribe(ViewDeskMain.Observer);
+//
+end;
+
+procedure TGlobal.InitializeDataClasses;
+begin
+//  ModelDataUsers.UpdateFromServer;
+//  ModelDataUsers.UpdateFromDataSet;
+end;
+
+procedure TGlobal.InitializeStartCondition;
+begin
+  FIsLoggedUser := False;
+  FUserGID := 1;
+  FUserName := 'КАСИЕР 1';
+  FUserPassword := '0000';
+
+
+//  TFile.WriteAllText(G.ItemsFileName.Combine(ItemsFolder, 'start.txt'),'');
+//  TFile.WriteAllText(TPath.Combine(ContragentsFolder, 'start.txt'),'');
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TGlobal.Create;
+begin
+  SetFormatSettings;
+
+  ProcessParameters;
+  InitializeConstants;
+
+//  CreateDataBase;
+
+//  InitializeGlobalFolderNames;
+//  InitializeGlobalFileNames;
+
+  InitializeLocalFolderNames;
+  InitializeLocalFileNames;
+
+  InitializeGlobalORM;
+
+  InitializeGlobalGlobals;
+  InitializeLocalGlobals;
+
+//  InitializeORM;
+  InitializeDataClasses;
+  CreateViewModels;
+  BindObservers;
+
+  InitializeStartCondition;
+end;
+
+destructor TGlobal.Destroy;
+begin
+
+  inherited;
+end;
+
+{$ENDREGION}
+
+initialization
+  _G_ := TGlobal.Create;
+
+finalization
+  _G_.Free;
+
+end.

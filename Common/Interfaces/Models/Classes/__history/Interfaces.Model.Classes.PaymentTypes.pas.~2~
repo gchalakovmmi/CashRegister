@@ -1,0 +1,27 @@
+﻿unit Interfaces.Model.Classes.PaymentTypes;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.PaymentType;
+
+type
+  IModelClassPaymentTypes = interface
+  ['{D5ACC3AF-F399-4A85-B616-DB115F0FC0D9}']
+    function GetList: TList<IModelClassPaymentType>;
+
+    property List: TList<IModelClassPaymentType> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const APaymentType: IModelClassPaymentType);
+    function GetByGID(const AGID: String): IModelClassPaymentType;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,226 @@
+unit Model.Classes.Bases;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections;
+
+type
+  ///<summary>Таблица - търговски обекти</summary>
+  TModelClassBases<Ts, T> = class(TInterfacedObject)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+    FFileName: String;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<T>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<T>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<T> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    class procedure AssignFileName(const AFileName: String);
+    class procedure AssignDataSet(const ADataSet: TFDDataSet);
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Attach(const AObject: T);
+    procedure Detach(const AObject: T);
+    function GetByGID(const AGID: String): T;
+
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    class function CreateFromFile(const AFileName: String): Ts;
+
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TModelClassStores }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassBases<Ts,T>.GetList: TList<T>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+class procedure TModelClassBases<Ts,T>.AssignDataSet(const ADataSet: TFDDataSet);
+begin
+  DataSet := ADataSet;
+end;
+
+class procedure TModelClassBases<Ts,T>.AssignFileName(const AFileName: String);
+begin
+  FileName := AFileName;
+end;
+
+procedure TModelClassBases<Ts,T>.UpdateFromDataSet;
+var
+  LObject: T;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LObject in List do begin
+      if LObject.GID = DataSet.FieldByName('gid').Value then begin
+        LObject.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LObject := CreateFromDataSet;
+      List.Add(LObject);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassBases<Ts,T>.UpdateInDataSet;
+var
+  LObject: T;
+begin
+  for LObject in List do begin
+    LObject.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassBases<Ts,T>.ToJSON: TJSONArray;
+var
+  LObject: T;
+begin
+  Result := TJSONArray.Create;
+  for LObject in List do begin
+    Result.Add(LObject.ToJSON);
+  end;
+end;
+
+procedure TModelClassBases<Ts,T>.Attach(const AObject: T);
+begin
+  AObject.AttachedAt := DateTimeToStr(Now);
+  List.Add(AStore);
+end;
+
+procedure TModelClassBases<Ts,T>.Detach(const AObject: T);
+begin
+  AObject.DetachedAt := DateTimeToStr(Now);
+end;
+
+function TModelClassBases<Ts,T>.GetByGID(const AGID: String): T;
+var
+  LStore: IModelClassStore;
+begin
+  Result := nil;
+  for LStore in List do begin
+    if LStore.GID = AGID then begin
+      Result := LStore;
+    end;
+  end;
+end;
+
+procedure TModelClassBases<Ts,T>.SaveToFile(const AFileName: String);
+begin
+  TFile.WriteAllText(AFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassBases<Ts,T>.Create;
+begin
+  inherited;
+  FList := TList<T>.Create;
+end;
+
+constructor TModelClassBases<Ts,T>.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassStore>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassStore(LJSONValue as TJSONObject));
+  end;
+end;
+
+class function TModelClassBases<Ts,T>.CreateFromFile(const AFileName: String): Ts;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSON(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+destructor TModelClassBases<Ts,T>.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

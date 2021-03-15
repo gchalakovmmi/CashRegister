@@ -1,0 +1,46 @@
+﻿unit Interfaces.Model.Classes.FiscalDevice;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassFiscalDevice = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на фискалното устройство<summary>
+    property GID: String read GetGID write SetGID;
+    function GetBrand: String;
+    procedure SetBrand(const AValue: String);
+    ///<summary>марка на фискалното устройство<summary>
+    property Brand: String read GetBrand write SetBrand;
+    function GetModel: String;
+    procedure SetModel(const AValue: String);
+    ///<summary>модел на фискалното устройство<summary>
+    property Model: String read GetModel write SetModel;
+    function GetSerialNumber: String;
+    procedure SetSerialNumber(const AValue: String);
+    ///<summary>сериен номер на фискалното устройство<summary>
+    property SerialNumber: String read GetSerialNumber write SetSerialNumber;
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на фискалното устройство в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на на последна промяна на фискалното устройство<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на фискалното устройство от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

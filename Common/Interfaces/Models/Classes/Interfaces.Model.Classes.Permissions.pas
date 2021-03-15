@@ -1,0 +1,17 @@
+﻿unit Interfaces.Model.Classes.Permissions;
+
+interface
+
+uses
+  Interfaces.Model.Classes,
+  Interfaces.Model.Classes.Permission;
+
+type
+  IModelClassPermissions = interface(IModelClassBaseCollection<IModelClassPermission>)
+  ['{96630C20-398C-4052-93B0-F108E298E0D5}']
+
+  end;
+
+implementation
+
+end.

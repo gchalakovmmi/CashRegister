@@ -1,0 +1,27 @@
+﻿unit Interfaces.Model.Classes.Actions;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Action;
+
+type
+  IModelClassActions = interface
+  ['{06879D1C-438B-40CD-9531-1BB35DD15AA2}']
+    function GetList: TList<IModelClassAction>;
+
+    property List: TList<IModelClassAction> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AAction: IModelClassAction);
+    function GetByGID(const AGID: String): IModelClassAction;
+  end;
+
+implementation
+
+end.

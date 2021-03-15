@@ -1,0 +1,16 @@
+﻿unit Interfaces.Model.Classes.Workstations;
+
+interface
+
+uses
+  Interfaces.Model.Classes;
+
+type
+  IModelClassWorkstations = interface(IModelClassBaseCollection)
+  ['{901BE67A-880E-4A22-B276-265E181E4BDF}']
+
+  end;
+
+implementation
+
+end.

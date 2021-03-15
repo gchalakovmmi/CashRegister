@@ -1,0 +1,138 @@
+﻿unit Model.Classes.PermissionsRoles;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.PermissionsRoles;
+
+  procedure AssignDataSetModelClassPermissionsRoles(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassPermissionsRoles(const AFileName: String);
+  function CreateModelClassPermissionsRoles: IModelClassPermissionsRoles;
+  function CreateFromJSONModelClassPermissionsRoles(const AJSONArray: TJSONArray): IModelClassPermissionsRoles;
+  function CreateFromFileModelClassPermissionsRoles: IModelClassPermissionsRoles; overload;
+  function CreateFromFileModelClassPermissionsRoles(const AFileName: String): IModelClassPermissionsRoles; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.PermissionRole;
+
+type
+  ///<summary>Таблица - присвоени права на роля</summary>
+  TModelClassPermissionsRoles = class(TModelClassBaseCollection<IModelClassPermissionRole>, IModelClassPermissionsRoles)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+//    procedure SaveToFile; override;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassPermissionsRoles }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+//procedure TModelClassPermissionsRoles.SaveToFile;
+//begin
+//  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+//end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassPermissionsRoles(const ADataSet: TFDDataSet);
+begin
+  TModelClassPermissionsRoles.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassPermissionsRoles(const AFileName: String);
+begin
+  TModelClassPermissionsRoles.FileName := AFileName;
+end;
+
+function CreateModelClassPermissionsRoles: IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.Create;
+end;
+
+function CreateFromJSONModelClassPermissionsRoles(const AJSONArray: TJSONArray): IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassPermissionsRoles: IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.CreateFromFile;
+end;
+
+function CreateFromFileModelClassPermissionsRoles(const AFileName: String): IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.CreateFromFile(AFileName);
+end;
+
+end.

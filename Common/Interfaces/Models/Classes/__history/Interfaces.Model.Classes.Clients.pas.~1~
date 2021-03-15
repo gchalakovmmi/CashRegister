@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.Clients;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Client;
+
+type
+  IModelClassClients = interface
+    function GetList: TList<IModelClassClient>;
+
+    property List: TList<IModelClassClient> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AClient: IModelClassClient);
+    function GetByGID(const AGID: String): IModelClassClient;
+  end;
+
+implementation
+
+end.

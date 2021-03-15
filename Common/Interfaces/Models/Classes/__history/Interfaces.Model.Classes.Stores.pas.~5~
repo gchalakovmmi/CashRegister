@@ -1,0 +1,16 @@
+﻿unit Interfaces.Model.Classes.Stores;
+
+interface
+
+uses
+  Interfaces.Model.Classes;
+
+type
+  IModelClassStores = interface(IModelClassBaseCollection)
+  ['{7A0BE637-1500-41B5-8E9B-F8779522F6B9}']
+
+  end;
+
+implementation
+
+end.

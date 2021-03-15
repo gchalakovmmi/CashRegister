@@ -1,0 +1,68 @@
+unit DataModule.PermissionRoles;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin,
+  Data.DB,
+  Interfaces.Model.Classes.PermissionsRoles,
+  Model.Classes.PermissionsRoles,
+  Model.Classes.PermissionRole;
+
+type
+  TDataModulePermissionsRoles = class(TDataModule)
+    FDMemTable: TFDMemTable;
+      FDMemTableGID: TStringField;
+      FDMemTableName: TStringField;
+      FDMemTableAddress: TStringField;
+      FDMemTableAttachedAt: TStringField;
+      FDMemTableModifiedAt: TStringField;
+      FDMemTableDetachedAt: TStringField;
+    DataSource: TDataSource;
+  private
+    FPermissionRoles: IModelClassPermissionsRoles;
+  public
+    procedure LoadFromFile;
+    procedure SaveToFile;
+  end;
+
+var
+  DataModulePermissionsRoles: TDataModulePermissionsRoles;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModulePermissionRoles }
+
+procedure TDataModulePermissionsRoles.LoadFromFile;
+begin
+  FPermissionRoles := CreateFromFileModelClassPermissionsRoles;
+  AssignDataSetModelClassPermissionsRoles(FDMemTable);
+  AssignDataSetModelClassPermissionRole(FDMemTable);
+  FPermissionRoles.UpdateInDataSet;
+end;
+
+procedure TDataModulePermissionsRoles.SaveToFile;
+begin
+  AssignDataSetModelClassPermissionsRoles(FDMemTable);
+  AssignDataSetModelClassPermissionRole(FDMemTable);
+  FPermissionRoles.UpdateFromDataSet;
+  FPermissionRoles.SaveToFile;
+end;
+
+end.
+

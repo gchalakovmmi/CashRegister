@@ -1,0 +1,323 @@
+unit View.Operation.Payments;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.WinXPickers,
+  Data.DB,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+//  Interfaces.ViewModel.Operation.Payments,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin;
+
+type
+  TViewOperationPayments = class(TForm)
+
+    DBGrid: TDBGrid;
+    Panel: TPanel;
+    SpeedButtonExit: TSpeedButton;
+    SpeedButtonFilter: TSpeedButton;
+    SpeedButtonExport: TSpeedButton;
+    PanelFilter: TPanel;
+    LabelDateFrom: TLabel;
+    DatePickerFrom: TDatePicker;
+    LabelPeriodTo: TLabel;
+    DatePickerTo: TDatePicker;
+    LabelStore: TLabel;
+    ComboBoxStore: TComboBox;
+    LabelWorkstation: TLabel;
+    ComboBoxWorkstation: TComboBox;
+    LabelUser: TLabel;
+    ComboBoxUser: TComboBox;
+    LabelFiscalDevice: TLabel;
+    ComboBoxFiscalDevice: TComboBox;
+    FDMemTable: TFDMemTable;
+    DataSource: TDataSource;
+    FDMemTableSaleUniqueID: TStringField;
+    FDMemTableSaleGID: TStringField;
+    FDMemTableCreatedDate: TStringField;
+    FDMemTableUserGID: TStringField;
+    FDMemTableUserName: TStringField;
+    FDMemTableCompletedDate: TStringField;
+    FDMemTableDue: TStringField;
+    FDMemTablePaymentDate: TStringField;
+    FDMemTablePaymentBase: TStringField;
+    FDMemTablePaymentVAT: TStringField;
+    FDMemTablePaymentType: TStringField;
+    FDMemTableFiscalDeviceID: TStringField;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
+    procedure SpeedButtonExitClick(Sender: TObject);
+    procedure SpeedButtonFilterClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+
+    procedure RefreshData;
+    procedure ApplyFilter;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+//    FViewModel: IViewModelOperationPayments;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+//    property ViewModel: IViewModelOperationPayments read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewOperationPayments;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  System.Math,
+  System.Types,
+  System.IOUtils,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale,
+  Interfaces.Model.Classes.Sale.Payment,
+  Model.Classes.Sale.Payment,
+
+  Model.Pattern.Observer.Observer,
+//  ViewModel.Operation.Payments,
+  DataModule.Actions;
+
+{$REGION 'Published Methods'}
+
+procedure TViewOperationPayments.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+//  FViewModel := CreateViewModelOperationPayments;
+//  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewOperationPayments.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewOperationPayments.FormResize(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewOperationPayments.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewOperationPayments.UpdateGUI;
+//var
+//  LGUIRecord: TViewOperationPaymentsGUIRecord;
+begin
+//  LGUIRecord := ViewModel.GetGUIRecord(ClientWidth);
+//
+//  DBGrid.Columns[0].Width := LGUIRecord.DBGridColumns0Width;
+//  DBGrid.Columns[1].Width := LGUIRecord.DBGridColumns1Width;
+//  DBGrid.Columns[2].Width := LGUIRecord.DBGridColumns2Width;
+//  DBGrid.Columns[3].Width := LGUIRecord.DBGridColumns3Width;
+//  DBGrid.Columns[4].Width := LGUIRecord.DBGridColumns4Width;
+
+//  FDMemTable.CreateDataSet;
+
+  ActiveControl := DBGrid;
+end;
+
+procedure TViewOperationPayments.RefreshData;
+var
+  LList: TStringDynArray;
+  I: Integer;
+  LSale: IModelClassSale;
+  LPayment: IModelClassSalePayment;
+
+  procedure AppendFromModel;
+  begin
+    if LPayment.PaymentVAT = '0.00' then exit;
+    FDMemTable.Append;
+    FDMemTableSaleUniqueID.AsString := LPayment.SaleUniqueID;
+    FDMemTableSaleGID.AsString := LPayment.ParentGID;
+    FDMemTableCreatedDate.AsString := LPayment.CreatedDate;
+    FDMemTableUserGID.AsString := LPayment.UserID;
+    if LPayment.UserID = '6' then begin
+      FDMemTableUserName.AsString := 'ÊÐÀÑÈÌÈÐÀ ßÍ×ÅÂÀ';
+    end else begin
+      if LPayment.UserID = '8' then begin
+        FDMemTableUserName.AsString := 'ÏÅÍÊÀ ÆÅÊÎÂÀ';
+      end else begin
+        FDMemTableUserName.AsString := 'ÈÂÀÍÊÀ ÌÈÍÊÎÂÀ';
+      end;
+    end;
+    FDMemTableCompletedDate.AsString := LPayment.CompletedDate;
+    FDMemTableDue.AsString := LSale.Due;
+    FDMemTablePaymentDate.AsString := LPayment.PaymentDate;
+    FDMemTablePaymentBase.AsString := LPayment.PaymentBase;
+    FDMemTablePaymentVAT.AsString := LPayment.PaymentVAT;
+    FDMemTablePaymentType.AsString := LPayment.PaymentType;
+    if LPayment.PaymentType = 'cash' then FDMemTablePaymentType.AsString := 'Â ÁÐÎÉ';
+    if LPayment.PaymentType = 'voucher' then FDMemTablePaymentType.AsString := 'ÂÀÓ×ÅÐ';
+    if LPayment.PaymentType = 'card' then FDMemTablePaymentType.AsString := 'ÊÀÐÒÀ';
+    if LPayment.PaymentType = 'returned' then FDMemTablePaymentType.AsString := 'ÐÅÑÒÎ';
+    FDMemTableFiscalDeviceID.AsString := LPayment.FiscalDeviceID;
+    FDMemTable.Post;
+  end;
+
+begin
+  { Populate the memo with the results }
+  FDMemTable.Close;
+  FDMemTable.IndexFieldNames := '';
+  FDMemTable.CreateDataSet;
+
+  LList := TDirectory.GetFiles('.\ïðîäàæáè\2019\12\18\1', 'Sale*.json', TSearchOption.soTopDirectoryOnly);
+
+  for I := 0 to Length(LList) - 1 do begin
+    LSale := CreateFromFileModelClassSale(LList[i]);
+    for LPayment in LSale.Payments.List do begin
+      AppendFromModel;
+    end;
+  end;
+
+  LList := TDirectory.GetFiles('.\ïðîäàæáè\2019\12\18\2', 'Sale*.json', TSearchOption.soTopDirectoryOnly);
+
+  for I := 0 to Length(LList) - 1 do begin
+    LSale := CreateFromFileModelClassSale(LList[i]);
+    for LPayment in LSale.Payments.List do begin
+      AppendFromModel;
+    end;
+  end;
+end;
+
+procedure TViewOperationPayments.ApplyFilter;
+begin
+//  FDMemTable.First;
+//  while not FDMemTable.Eof do begin
+//    if
+////      ((DatePickerFrom.Date > FDMemTableCreatedDate.AsDateTime) or (DatePickerTo.Date < FDMemTableCreatedDate.AsDateTime)) or
+//      ((ComboBoxStore.ItemIndex > 0) and (ComboBoxStore.Items[ComboBoxStore.ItemIndex] <> FDMemTableStoreName.AsString)) or
+//      ((ComboBoxWorkstation.ItemIndex > 0) and (ComboBoxWorkstation.Items[ComboBoxWorkstation.ItemIndex] <> FDMemTableWorkstationName.AsString)) or
+//      ((ComboBoxUser.ItemIndex > 0) and (ComboBoxUser.Items[ComboBoxUser.ItemIndex] <> FDMemTableUserName.AsString)) or
+//      ((ComboBoxFiscalDevice.ItemIndex > 0) and (ComboBoxFiscalDevice.Items[ComboBoxFiscalDevice.ItemIndex] <> FDMemTableFiscalDeviceName.AsString))
+//    then begin
+//      FDMemTable.Delete;
+//    end else begin
+//      FDMemTable.Next;
+//    end;
+//  end;
+  FDMemTable.First;
+//  FDMemTable.IndexFieldNames := 'CreatedTime';
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewOperationPayments.SpeedButtonExitClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TViewOperationPayments.SpeedButtonFilterClick(Sender: TObject);
+begin
+  RefreshData;
+  ApplyFilter;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewOperationPayments;
+var
+  LViewOperationPayments: TViewOperationPayments;
+begin
+  LViewOperationPayments := TViewOperationPayments.Create(Application.MainForm);
+  LViewOperationPayments.Show;
+end;
+
+end.

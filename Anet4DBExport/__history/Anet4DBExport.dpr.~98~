@@ -1,0 +1,1762 @@
+program Anet4DBExport;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.DateUtils,
+  System.Types,
+  System.JSON,
+  System.IOUtils,
+  System.SysUtils,
+  Model.AppSettings in '..\Common\Models\Model.AppSettings.pas';
+
+var
+  GBaseFolder: String;
+  GExportFolder: String;
+  GPeriodStart: String;
+  GStartDate: TDate;
+  GPeriodEnd: String;
+  GEndDate: TDate;
+  GStore: String;
+  GWorkstation: String;
+  GFiscalDevice: String;
+  GUser: String;
+  GV0: Boolean;
+  GV1: Boolean;
+  GV2: Boolean;
+  GV3: Boolean;
+  GV4: Boolean;
+  GV5: Boolean;
+  GV6: Boolean;
+  GV7: Boolean;
+  GV8: Boolean;
+  GV9: Boolean;
+  GV10: Boolean;
+  GV11: Boolean;
+  GV12: Boolean;
+  GV13: Boolean;
+  GV14: Boolean;
+  GV15: Boolean;
+  GV16: Boolean;
+  GV17: Boolean;
+  GE0: Boolean;
+  GE1: Boolean;
+  GE2: Boolean;
+  GE3: Boolean;
+  GE4: Boolean;
+  GE5: Boolean;
+  GE6: Boolean;
+  GE7: Boolean;
+  GE8: Boolean;
+  GE9: Boolean;
+  GE10: Boolean;
+  GE11: Boolean;
+  GE12: Boolean;
+  GE13: Boolean;
+  GE14: Boolean;
+  GE15: Boolean;
+  GE16: Boolean;
+  GE17: Boolean;
+  GE18: Boolean;
+  GE19: Boolean;
+
+
+procedure ShowHeader;
+begin
+  Writeln('Експорт на данни от базата на Анет 4');
+end;
+
+procedure ShowUsage;
+begin
+  Writeln('anet4dbexport [-psDD-MM-YYYY] [-peDD-MM-YYYY] [-sNNN] [-wNNN] [-fdNNN] [-uNNN] [-vN] [-eN]');
+  Writeln('');
+  Writeln('[-psDD-MM-YYYY] - посочва се начало на период (от дата ден-месец-година)');
+  Writeln('[-peDD-MM-YYYY] - посочва се край на период (до дата ден-месец-година)');
+  Writeln('[-sNNN] - посочва се код (NNN) на търговски обект');
+  Writeln('[-wNNN] - посочва се код (NNN) на работно място');
+  Writeln('[-fdCCNNNNNN] - посочва се номер (CCNNNNNN) на фискално устройство');
+  Writeln('[-uNNN] - посочва се код (NNN) на потребител');
+  Writeln('[-vN] - избира се визуализация на данни от конкретен вид (може да се повтаря)');
+  Writeln('  N=0 - избира се визуализация на всички данни');
+  Writeln('  N=1 - избира се визуализация на обобщени данни за продажбите');
+  Writeln('  N=2 - избира се визуализация на данни за плащанията по продажбите');
+  Writeln('  N=3 - избира се визуализация на детайлни данни за продажбите');
+  Writeln('  N=4 - избира се визуализация на сторнирани продажби');
+  Writeln('  N=5 - избира се визуализация на анулирани продажби');
+  Writeln('  N=6 - избира се визуализация на номенклатура стоки/услуги');
+  Writeln('  N=7 - избира се визуализация на номенклатура клиенти');
+  Writeln('  N=8 - избира се визуализация на номенклатура видове операции (действия)');
+  Writeln('  N=9 - избира се визуализация на номенклатура видове плащания');
+  Writeln('  N=10 - избира се визуализация на номенклатура търговски обекти');
+  Writeln('  N=11 - избира се визуализация на номенклатура работни места');
+  Writeln('  N=12 - избира се визуализация на номенклатура фискални устройства');
+  Writeln('  N=13 - избира се визуализация на номенклатура права');
+  Writeln('  N=14 - избира се визуализация на номенклатура роли');
+  Writeln('  N=15 - избира се визуализация на номенклатура права, присвоявани на ролите');
+  Writeln('  N=16 - избира се визуализация на номенклатура потребители (оператори)');
+  Writeln('  N=17 - избира се визуализация на номенклатура роли на потребителите (операторите)');
+  Writeln('[-eN] - избира се експорт на данни от конкретен вид (може да се повтаря)');
+  Writeln('  N=0 - избира се експорт на всички данни');
+  Writeln('  N=1 - избира се експорт на обобщени данни за продажбите');
+  Writeln('  N=2 - избира се експорт на данни за плащанията по продажбите');
+  Writeln('  N=3 - избира се експорт на детайлни данни за продажбите');
+  Writeln('  N=4 - избира се експорт на сторнирани продажби');
+  Writeln('  N=5 - избира се експорт на анулирани продажби');
+  Writeln('  N=6 - избира се експорт на номенклатура стоки/услуги');
+  Writeln('  N=7 - избира се експорт на номенклатура клиенти');
+  Writeln('  N=8 - избира се експорт на номенклатура видове операции (действия)');
+  Writeln('  N=9 - избира се експорт на номенклатура видове плащания');
+  Writeln('  N=10 - избира се експорт на номенклатура търговски обекти');
+  Writeln('  N=11 - избира се експорт на номенклатура работни места');
+  Writeln('  N=12 - избира се експорт на номенклатура фискални устройства');
+  Writeln('  N=13 - избира се експорт на номенклатура права');
+  Writeln('  N=14 - избира се експорт на номенклатура роли');
+  Writeln('  N=15 - избира се експорт на номенклатура права, присвоявани на ролите');
+  Writeln('  N=16 - избира се експорт на номенклатура потребители (оператори)');
+  Writeln('  N=17 - избира се експорт на номенклатура роли на потребителите (операторите)');
+  Writeln('');
+  Writeln('Пример: за визуализация на търговските обекти');
+  Writeln('        anet4dbexport -v10');
+  Writeln('Пример: за експорт на обобщени данни за продажбите за периода 01-01-2019 31-12-2019');
+  Writeln('        anet4dbexport -ps01-01-2019 -pe31-12-2019 -e1');
+  ReadLn;
+end;
+
+procedure ProcessParameters;
+var
+  i: Integer;
+  LParamStr: String;
+  LDay: Integer;
+  LMonth: Integer;
+  LYear: Integer;
+  LDate: TDateTime;
+begin
+  GBaseFolder := TAppSettings.GetSetting('BaseFolder');
+  GExportFolder := FormatDateTime('dd-mm-yyyy hh_nn_ss', Now);
+  // Initialize Parameters
+  GPeriodStart := '';
+  GPeriodEnd := '';
+  GStore := '';
+  GWorkstation := '';
+  GFiscalDevice := '';
+  GUser := '';
+  GV0 := False;
+  GV1 := False;
+  GV2 := False;
+  GV3 := False;
+  GV4 := False;
+  GV5 := False;
+  GV6 := False;
+  GV7 := False;
+  GV8 := False;
+  GV9 := False;
+  GV10 := False;
+  GV11 := False;
+  GV12 := False;
+  GV13 := False;
+  GV14 := False;
+  GV15 := False;
+  GV16 := False;
+  GV17 := False;
+  GE0 := False;
+  GE1 := False;
+  GE2 := False;
+  GE3 := False;
+  GE4 := False;
+  GE5 := False;
+  GE6 := False;
+  GE7 := False;
+  GE8 := False;
+  GE9 := False;
+  GE10 := False;
+  GE11 := False;
+  GE12 := False;
+  GE13 := False;
+  GE14 := False;
+  GE15 := False;
+  GE16 := False;
+  GE17 := False;
+  GE18 := False;
+  GE19 := False;
+  // Process each parameter
+  for i := 1 to ParamCount do begin
+    LParamStr := ParamStr(i);
+    if LParamStr.StartsWith('-ps') then begin
+      GPeriodStart := ParamStr(i).Substring(3);
+    end;
+    if ParamStr(i).StartsWith('-pe') then begin
+      GPeriodEnd := ParamStr(i).Substring(3);
+    end;
+    if ParamStr(i).StartsWith('-s') then begin
+      GStore := ParamStr(i).Substring(2);
+    end;
+    if ParamStr(i).StartsWith('-w') then begin
+      GWorkstation := ParamStr(i).Substring(2);
+    end;
+    if ParamStr(i).StartsWith('-fd') then begin
+      GFiscalDevice := ParamStr(i).Substring(3);
+    end;
+    if ParamStr(i).StartsWith('-u') then begin
+      GUser := ParamStr(i).Substring(2);
+    end;
+    GV0 := GV0 or (LParamStr = '-v0');
+    GV1 := GV1 or (LParamStr = '-v1');
+    GV2 := GV2 or (LParamStr = '-v2');
+    GV3 := GV3 or (LParamStr = '-v3');
+    GV4 := GV4 or (LParamStr = '-v4');
+    GV5 := GV5 or (LParamStr = '-v5');
+    GV6 := GV6 or (LParamStr = '-v6');
+    GV7 := GV7 or (LParamStr = '-v7');
+    GV8 := GV8 or (LParamStr = '-v8');
+    GV9 := GV9 or (LParamStr = '-v9');
+    GV10 := GV10 or (LParamStr = '-v10');
+    GV11 := GV11 or (LParamStr = '-v11');
+    GV12 := GV12 or (LParamStr = '-v12');
+    GV13 := GV13 or (LParamStr = '-v13');
+    GV14 := GV14 or (LParamStr = '-v14');
+    GV15 := GV15 or (LParamStr = '-v15');
+    GV16 := GV16 or (LParamStr = '-v16');
+    GV17 := GV17 or (LParamStr = '-v17');
+    GE0 := GE0 or (LParamStr = '-e0');
+    GE1 := GE1 or (LParamStr = '-e1');
+    GE2 := GE2 or (LParamStr = '-e2');
+    GE3 := GE3 or (LParamStr = '-e3');
+    GE4 := GE4 or (LParamStr = '-e4');
+    GE5 := GE5 or (LParamStr = '-e5');
+    GE6 := GE6 or (LParamStr = '-e6');
+    GE7 := GE7 or (LParamStr = '-e7');
+    GE8 := GE8 or (LParamStr = '-e8');
+    GE9 := GE9 or (LParamStr = '-e9');
+    GE10 := GE10 or (LParamStr = '-e10');
+    GE11 := GE11 or (LParamStr = '-e11');
+    GE12 := GE12 or (LParamStr = '-e12');
+    GE13 := GE13 or (LParamStr = '-e13');
+    GE14 := GE14 or (LParamStr = '-e14');
+    GE15 := GE15 or (LParamStr = '-e15');
+    GE16 := GE16 or (LParamStr = '-e16');
+    GE17 := GE17 or (LParamStr = '-e17');
+  end;
+
+  if GPeriodStart = '' then begin
+    GStartDate := EncodeDate(2019, 1, 1);
+  end else begin
+    if (
+      (GPeriodStart.Length <> 10) or
+      (GPeriodStart.Substring(2,1) <> '-') or
+      (GPeriodStart.Substring(5,1) <> '-') or
+      (not TryStrToInt(GPeriodStart.Substring(0,2), LDay)) or
+      (not TryStrToInt(GPeriodStart.Substring(3,2), LMonth)) or
+      (not TryStrToInt(GPeriodStart.Substring(6,4), LYear)) or
+      (not TryEncodeDate(Word(LYear), Word(LMonth), Word(LDay), Extended(LDate)))
+    ) then begin
+      GStartDate := EncodeDate(3000, 1, 1);
+    end else begin
+      GStartDate := LDate;
+    end;
+  end;
+  if GPeriodEnd = '' then begin
+    GEndDate := EncodeDate(3000, 1, 1);
+  end else begin
+    if (
+      (GPeriodEnd.Length <> 10) or
+      (GPeriodEnd.Substring(2,1) <> '-') or
+      (GPeriodEnd.Substring(5,1) <> '-') or
+      (not TryStrToInt(GPeriodEnd.Substring(0,2), LDay)) or
+      (not TryStrToInt(GPeriodEnd.Substring(3,2), LMonth)) or
+      (not TryStrToInt(GPeriodEnd.Substring(6,4), LYear)) or
+      (not TryEncodeDate(LYear, LMonth, LDay, LDate))
+    ) then begin
+      GEndDate := EncodeDate(2019, 1, 1);
+    end else begin
+      GStartDate := LDate;
+    end;
+  end;
+end;
+
+procedure ProcessData1;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+  LFolderName: String;
+  LDate: TDateTime;
+  LSearchOption: TSearchOption;
+  LList: TStringDynArray;
+  i: Integer;
+begin
+  // Import
+  LImportFolder := TPath.Combine(GBaseFolder, 'продажби');
+  if not TDirectory.Exists(LImportFolder) then Exit;
+
+  // Process
+  WriteLn('Начало на обработка на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+  LVizualizationText := '';
+  LExportText := '';
+  LDate := GStartDate;
+  while LDate <= GEndDate do begin
+    Write('.');
+    LFolderName := LImportFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'продажба#*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((GStore = '') or (GStore = (LJSONObject.GetValue('StoreID') as TJSONString).Value)) and
+          ((GWorkstation = '') or (GWorkstation = (LJSONObject.GetValue('WorkstationID') as TJSONString).Value)) and
+          ((GFiscalDevice = '') or (GFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value)) and
+          ((GUser = '') or (GUser = (LJSONObject.GetValue('UserGID') as TJSONString).Value))
+        ) then begin
+          LVizualizationText := LVizualizationText + ' | ' +
+            (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value.PadRight(40) + ' | ' +
+            (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('StoreID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('StoreName') as TJSONString).Value.PadRight(40) + ' | ' +
+            (LJSONObject.GetValue('CreatedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('CreatedTime') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('WorkstationID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('UserGID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('TotalBase') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('Discount') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('TotalVAT') as TJSONString).Value.PadRight(15) + ' | ' +
+            '' + ' | ' +
+            '' + ' | ' +
+            (LJSONObject.GetValue('CompletedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('CompletedTime') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ClientGID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ClientName') as TJSONString).Value.PadRight(40) + ' | ' + #$0D#$0A;;
+          LExportText := LExportText +
+            '"' + (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('StoreID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('StoreName') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('CreatedDate') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('CreatedTime') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('WorkstationID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('UserGID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('TotalBase') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('Discount') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('TotalVAT') as TJSONString).Value + '",' +
+            '"' + '' + '",' +
+            '"' + '' + '",' +
+            '"' + (LJSONObject.GetValue('CompletedDate') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('CompletedTime') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ClientGID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ClientName') as TJSONString).Value + '"' + #$0D#$0A;;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  WriteLn('');
+  WriteLn('Край на обработка на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+
+  // Visualize
+  if GV0 or GV1 then begin
+    WriteLn('Начало на визуализация на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+  end;
+
+  // Export
+  if GE0 or GE1 then begin
+    WriteLn('Начало на експорт на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'продажби.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ОБОБЩЕНИ ДАННИ ЗА ПРОДАЖБИ');
+  end;
+end;
+
+procedure ProcessData2;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+  LFolderName: String;
+  LDate: TDateTime;
+  LSearchOption: TSearchOption;
+  LList: TStringDynArray;
+  i: Integer;
+begin
+  // Import
+  LImportFolder := TPath.Combine(GBaseFolder, 'продажби');
+  if not TDirectory.Exists(LImportFolder) then Exit;
+
+  // Process
+  WriteLn('Начало на обработка на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+  LVizualizationText := '';
+  LExportText := '';
+  LDate := GStartDate;
+  while LDate <= GEndDate do begin
+    Write('.');
+    LFolderName := LImportFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'продажба#*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((GStore = '') or (GStore = (LJSONObject.GetValue('StoreID') as TJSONString).Value)) and
+          ((GWorkstation = '') or (GWorkstation = (LJSONObject.GetValue('WorkstationID') as TJSONString).Value)) and
+          ((GFiscalDevice = '') or (GFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value)) and
+          ((GUser = '') or (GUser = (LJSONObject.GetValue('UserGID') as TJSONString).Value))
+        ) then begin
+          LJSONArray := LJSONObject.GetValue('Payments') as TJSONArray;
+
+          for LJSONValue in LJSONArray do begin
+            LJSONObject := LJSONValue as TJSONObject;
+            LVizualizationText := LVizualizationText + ' | ' +
+              (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value.PadRight(40) + ' | ' +
+              (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CreatedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CompletedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('Due') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('PaymentDate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('UserGID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('PaymentBase') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('PaymentVAT') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('PaymentType') as TJSONString).Value.PadRight(20) + ' | ' +
+              (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value.PadRight(40) + ' | ' + #$0D#$0A;;
+            LExportText := LExportText +
+              '"' + (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CreatedDate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CompletedDate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('Due') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('PaymentDate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('UserGID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('PaymentBase') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('PaymentVAT') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('PaymentType') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value + '"' + #$0D#$0A;;
+          end;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  WriteLn('');
+  WriteLn('Край на обработка на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+
+  // Visualize
+  if GV0 or GV2 then begin
+    WriteLn('Начало на визуализация на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+  end;
+
+  // Export
+  if GE0 or GE2 then begin
+    WriteLn('Начало на експорт на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'плащания.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ДАННИ ЗА ПЛАЩАНИЯ ПО ПРОДАЖБИ');
+  end;
+end;
+
+procedure ProcessData3;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+  LFolderName: String;
+  LDate: TDateTime;
+  LSearchOption: TSearchOption;
+  LList: TStringDynArray;
+  i: Integer;
+begin
+  // Import
+  LImportFolder := TPath.Combine(GBaseFolder, 'продажби');
+  if not TDirectory.Exists(LImportFolder) then Exit;
+
+  // Process
+  WriteLn('Начало на обработка на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+  LVizualizationText := '';
+  LExportText := '';
+  LDate := GStartDate;
+  while LDate <= GEndDate do begin
+    Write('.');
+    LFolderName := LImportFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'продажба#*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((GStore = '') or (GStore = (LJSONObject.GetValue('StoreID') as TJSONString).Value)) and
+          ((GWorkstation = '') or (GWorkstation = (LJSONObject.GetValue('WorkstationID') as TJSONString).Value)) and
+          ((GFiscalDevice = '') or (GFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value)) and
+          ((GUser = '') or (GUser = (LJSONObject.GetValue('UserGID') as TJSONString).Value))
+        ) then begin
+
+          LJSONArray := LJSONObject.GetValue('Details') as TJSONArray;
+
+          for LJSONValue in LJSONArray do begin
+            LJSONObject := LJSONValue as TJSONObject;
+            LVizualizationText := LVizualizationText + ' | ' +
+              (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value.PadRight(40) + ' | ' +
+              (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ItemGID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ItemName') as TJSONString).Value.PadRight(60) + ' | ' +
+              (LJSONObject.GetValue('Quantity') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ClientPrice') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('DiscountValue') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('VATRate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('TotalVAT') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('Total') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+            LExportText := LExportText +
+              '"' + (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ItemGID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ItemName') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('Quantity') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ClientPrice') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('DiscountValue') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('VATRate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('TotalVAT') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('Total') as TJSONString).Value + '"' + #$0D#$0A;;
+          end;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  WriteLn('');
+  WriteLn('Край на обработка на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+
+  // Visualize
+  if GV0 or GV3 then begin
+    WriteLn('Начало на визуализация на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+  end;
+
+  // Export
+  if GE0 or GE3 then begin
+    WriteLn('Начало на експорт на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'детайли.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+  end;
+end;
+
+procedure ProcessData4;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+  LFolderName: String;
+  LDate: TDateTime;
+  LSearchOption: TSearchOption;
+  LList: TStringDynArray;
+  i: Integer;
+begin
+  // Import
+  LImportFolder := TPath.Combine(GBaseFolder, 'сторно');
+  if not TDirectory.Exists(LImportFolder) then Exit;
+
+  // Process
+  WriteLn('Начало на обработка на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+  LVizualizationText := '';
+  LExportText := '';
+  LDate := GStartDate;
+  while LDate <= GEndDate do begin
+    Write('.');
+    LFolderName := LImportFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'сторно#*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((GStore = '') or (GStore = (LJSONObject.GetValue('StoreID') as TJSONString).Value)) and
+          ((GWorkstation = '') or (GWorkstation = (LJSONObject.GetValue('WorkstationID') as TJSONString).Value)) and
+          ((GFiscalDevice = '') or (GFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value)) and
+          ((GUser = '') or (GUser = (LJSONObject.GetValue('UserGID') as TJSONString).Value))
+        ) then begin
+          LVizualizationText := LVizualizationText + ' | ' +
+            (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value.PadRight(40) + ' | ' +
+            (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ItemGID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ItemName') as TJSONString).Value.PadRight(60) + ' | ' +
+            (LJSONObject.GetValue('Quantity') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ClientPrice') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('DiscountValue') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('VATRate') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('TotalVAT') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('Total') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('CompletedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('CompletedTime') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ReversalDate') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('ReversalTime') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('UserGID') as TJSONString).Value.PadRight(15) + ' | ' +
+            (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value.PadRight(40) + ' | ' + #$0D#$0A;;
+          LExportText := LExportText +
+            '"' + (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ItemGID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ItemName') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('Quantity') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ClientPrice') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('DiscountValue') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('VATRate') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('TotalVAT') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('Total') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('CompletedDate') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('CompletedTime') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ReversalDate') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('ReversalTime') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('UserGID') as TJSONString).Value + '",' +
+            '"' + (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value + '"' + #$0D#$0A;;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  WriteLn('');
+  WriteLn('Край на обработка на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+
+  // Visualize
+  if GV0 or GV1 then begin
+    WriteLn('Начало на визуализация на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+  end;
+
+  // Export
+  if GE0 or GE4 then begin
+    WriteLn('Начало на експорт на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'сторно.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ДАННИ ЗА СТОРНИРАНИ ПРОДАЖБИ');
+  end;
+end;
+
+procedure ProcessData5;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+  LFolderName: String;
+  LDate: TDateTime;
+  LSearchOption: TSearchOption;
+  LList: TStringDynArray;
+  i: Integer;
+begin
+  // Import
+  LImportFolder := TPath.Combine(GBaseFolder, 'продажби');
+  if not TDirectory.Exists(LImportFolder) then Exit;
+
+  // Process
+  WriteLn('Начало на обработка на АНУЛИРАНИ ПРОДАЖБИ');
+  LVizualizationText := '';
+  LExportText := '';
+  LDate := GStartDate;
+  while LDate <= GEndDate do begin
+    Write('.');
+    LFolderName := LImportFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'продажба#*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((GStore = '') or (GStore = (LJSONObject.GetValue('StoreID') as TJSONString).Value)) and
+          ((GWorkstation = '') or (GWorkstation = (LJSONObject.GetValue('WorkstationID') as TJSONString).Value)) and
+          ((GFiscalDevice = '') or (GFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value)) and
+          ((GUser = '') or (GUser = (LJSONObject.GetValue('UserGID') as TJSONString).Value))
+        ) then begin
+          LJSONArray := LJSONObject.GetValue('Cancellations') as TJSONArray;
+
+          for LJSONValue in LJSONArray do begin
+            LJSONObject := LJSONValue as TJSONObject;
+            LVizualizationText := LVizualizationText + ' | ' +
+              (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value.PadRight(40) + ' | ' +
+              (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ItemGID') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ItemName') as TJSONString).Value.PadRight(60) + ' | ' +
+              (LJSONObject.GetValue('Quantity') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('ClientPrice') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('DiscountValue') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('VATRate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('TotalVAT') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('Total') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CreatedDate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CreatedTime') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CancellationDate') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('CancellationTime') as TJSONString).Value.PadRight(15) + ' | ' +
+              (LJSONObject.GetValue('UserGID') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+            LExportText := LExportText +
+              '"' + (LJSONObject.GetValue('SaleUniqueID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ItemGID') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ItemName') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('Quantity') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('ClientPrice') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('DiscountValue') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('VATRate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('TotalVAT') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('Total') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CreatedDate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CreatedTime') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CancellationDate') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('CancellationTime') as TJSONString).Value + '",' +
+              '"' + (LJSONObject.GetValue('UserGID') as TJSONString).Value + '"' + #$0D#$0A;;
+          end;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  WriteLn('');
+  WriteLn('Край на обработка на АНУЛИРАНИ ПРОДАЖБИ');
+
+  // Visualize
+  if GV0 or GV5 then begin
+    WriteLn('Начало на визуализация на АНУЛИРАНИ ПРОДАЖБИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на АНУЛИРАНИ ПРОДАЖБИ');
+  end;
+
+  // Export
+  if GE0 or GE5 then begin
+    WriteLn('Начало на експорт на ДЕТАЙЛНИ ДАННИ ЗА ПРОДАЖБИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'анулирани.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на АНУЛИРАНИ ПРОДАЖБИ');
+  end;
+end;
+
+procedure ProcessData6;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'стоки.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV6 then begin
+    WriteLn('Начало на визуализация на СТОКИ/УСЛУГИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на СТОКИ/УСЛУГИ');
+  end;
+
+  // Export
+  if GE0 or GE6 then begin
+    WriteLn('Начало на експорт на СТОКИ/УСЛУГИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'стоки.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на СТОКИ/УСЛУГИ');
+  end;
+end;
+
+procedure ProcessData7;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'клиенти.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('TaxID') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('TaxID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV7 then begin
+    WriteLn('Начало на визуализация на КЛИЕНТИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на КЛИЕНТИ');
+  end;
+
+  // Export
+  if GE0 or GE7 then begin
+    WriteLn('Начало на експорт на КЛИЕНТИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'клиенти.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на КЛИЕНТИ');
+  end;
+end;
+
+procedure ProcessData8;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'операции.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV8 then begin
+    WriteLn('Начало на визуализация на ДЕЙСТВИЯ/ОПЕРАЦИИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ДЕЙСТВИЯ/ОПЕРАЦИИ');
+  end;
+
+  // Export
+  if GE0 or GE8 then begin
+    WriteLn('Начало на експорт на ДЕЙСТВИЯ/ОПЕРАЦИИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'операции.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ДЕЙСТВИЯ/ОПЕРАЦИИ');
+  end;
+end;
+
+procedure ProcessData9;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'видове плащания.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV9 then begin
+    WriteLn('Начало на визуализация на ВИДОВЕ ПЛАЩАНИЯ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ВИДОВЕ ПЛАЩАНИЯ');
+  end;
+
+  // Export
+  if GE0 or GE9 then begin
+    WriteLn('Начало на експорт на ВИДОВЕ ПЛАЩАНИЯ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'видове плащания.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ВИДОВЕ ПЛАЩАНИЯ');
+  end;
+end;
+
+procedure ProcessData10;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'търговски обекти.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('Address') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Address') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV10 then begin
+    WriteLn('Начало на визуализация на ТЪРГОВСКИ ОБЕКТИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ТЪРГОВСКИ ОБЕКТИ');
+  end;
+
+  // Export
+  if GE0 or GE10 then begin
+    WriteLn('Начало на експорт на ТЪРГОВСКИ ОБЕКТИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'търговски обекти.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ТЪРГОВСКИ ОБЕКТИ');
+  end;
+end;
+
+procedure ProcessData11;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'работни места.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('StoreGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('FiscalDeviceGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('StoreGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('FiscalDeviceGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV11 then begin
+    WriteLn('Начало на визуализация на РАБОТНИ МЕСТА');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на РАБОТНИ МЕСТА');
+  end;
+
+  // Export
+  if GE0 or GE11 then begin
+    WriteLn('Начало на експорт на РАБОТНИ МЕСТА');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'работни места.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на РАБОТНИ МЕСТА');
+  end;
+end;
+
+procedure ProcessData12;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'фискални устройства.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Brand') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('Model') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('SerialNumber') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Brand') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Model') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('SerialNumber') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV12 then begin
+    WriteLn('Начало на визуализация на ФИСКАЛНИ УСТРОЙСТВА');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ФИСКАЛНИ УСТРОЙСТВА');
+  end;
+
+  // Export
+  if GE0 or GE12 then begin
+    WriteLn('Начало на експорт на ФИСКАЛНИ УСТРОЙСТВА');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'фискални устройства.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ФИСКАЛНИ УСТРОЙСТВА');
+  end;
+end;
+
+procedure ProcessData13;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'разрешения.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV13 then begin
+    WriteLn('Начало на визуализация на ПРАВА/РАЗРЕШЕНИЯ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ПРАВА/РАЗРЕШЕНИЯ');
+  end;
+
+  // Export
+  if GE0 or GE13 then begin
+    WriteLn('Начало на експорт на ПРАВА/РАЗРЕШЕНИЯ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'разрешения.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ПРАВА/РАЗРЕШЕНИЯ');
+  end;
+end;
+
+procedure ProcessData14;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'роли.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV14 then begin
+    WriteLn('Начало на визуализация на РОЛИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на РОЛИ');
+  end;
+
+  // Export
+  if GE0 or GE14 then begin
+    WriteLn('Начало на експорт на РОЛИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'роли.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на РОЛИ');
+  end;
+end;
+
+procedure ProcessData15;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'разрешения на роли.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('PermissionGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('RoleGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('PermissionGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('RoleGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV15 then begin
+    WriteLn('Начало на визуализация на ПРАВА/РАЗРЕШЕНИЯ НА РОЛИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ПРАВА/РАЗРЕШЕНИЯ НА РОЛИ');
+  end;
+
+  // Export
+  if GE0 or GE15 then begin
+    WriteLn('Начало на експорт на ПРАВА/РАЗРЕШЕНИЯ НА РОЛИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'разрешения на роли.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ПРАВА/РАЗРЕШЕНИЯ НА РОЛИ');
+  end;
+end;
+
+procedure ProcessData16;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'потребители.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('Name') as TJSONString).Value.PadRight(40) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('Name') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV16 then begin
+    WriteLn('Начало на визуализация на ПОТРЕБИТЕЛИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на ПОТРЕБИТЕЛИ');
+  end;
+
+  // Export
+  if GE0 or GE16 then begin
+    WriteLn('Начало на експорт на ПОТРЕБИТЕЛИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'потребители.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на ПОТРЕБИТЕЛИ');
+  end;
+end;
+
+procedure ProcessData17;
+var
+  LImportFolder: String;
+  LImportFileName: String;
+  LExportFolder: String;
+  LExportFileName: String;
+  LText: String;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject: TJSONObject;
+  LVizualizationText: String;
+  LExportText: String;
+  LVizualizationLine: String;
+  LExportLine: String;
+begin
+  // Import
+  LImportFolder := 'номенклатури';
+  if not TDirectory.Exists(LImportFolder) then Exit;
+  LImportFileName := TPath.Combine(LImportFolder, 'роли на потребители.json');
+  if not TFile.Exists(LImportFileName) then Exit;
+  LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+  LJSONArray := TJSONObject.ParseJSONValue(LText) as TJSONArray;
+
+  // Process
+  LVizualizationText := '';
+  LExportText := '';
+  for LJSONValue in LJSONArray do begin
+    LJSONObject := LJSONValue as TJSONObject;
+    LVizualizationText := LVizualizationText + ' | ' +
+      (LJSONObject.GetValue('GID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('RoleGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('UserGID') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('AttachedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value.PadRight(15) + ' | ' +
+      (LJSONObject.GetValue('DetachedAt') as TJSONString).Value.PadRight(15) + ' | ' + #$0D#$0A;;
+    LExportText := LExportText +
+      '"' + (LJSONObject.GetValue('GID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('RoleGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('UserGID') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('AttachedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('ModifiedAt') as TJSONString).Value + '",' +
+      '"' + (LJSONObject.GetValue('DetachedAt') as TJSONString).Value + '"' + #$0D#$0A;;
+  end;
+
+  // Visualize
+  if GV0 or GV17 then begin
+    WriteLn('Начало на визуализация на РОЛИ НА ПОТРЕБИТЕЛИ');
+    WriteLn(LVizualizationText);
+    WriteLn('Край на визуализация на РОЛИ НА ПОТРЕБИТЕЛИ');
+  end;
+
+  // Export
+  if GE0 or GE17 then begin
+    WriteLn('Начало на експорт на РОЛИ НА ПОТРЕБИТЕЛИ');
+    LExportFolder := TPath.Combine(TPath.Combine('данни', 'експорт'), GExportFolder);
+    TDirectory.CreateDirectory(LExportFolder);
+    LExportFileName := TPath.Combine(LExportFolder, 'роли на потребители.csv');
+    TFile.WriteAllText(LExportFileName, LExportText);
+    WriteLn('Край на експорт на РОЛИ НА ПОТРЕБИТЕЛИ');
+  end;
+end;
+
+procedure ProcessData;
+begin
+  if GV0 or GV1 or GE0 or GE1 then ProcessData1;
+  if GV0 or GV2 or GE0 or GE2 then ProcessData2;
+  if GV0 or GV3 or GE0 or GE3 then ProcessData3;
+  if GV0 or GV4 or GE0 or GE4 then ProcessData4;
+  if GV0 or GV5 or GE0 or GE5 then ProcessData5;
+  if GV0 or GV6 or GE0 or GE6 then ProcessData6;
+  if GV0 or GV7 or GE0 or GE7 then ProcessData7;
+  if GV0 or GV8 or GE0 or GE8 then ProcessData8;
+  if GV0 or GV9 or GE0 or GE9 then ProcessData9;
+  if GV0 or GV10 or GE0 or GE10 then ProcessData10;
+  if GV0 or GV11 or GE0 or GE11 then ProcessData11;
+  if GV0 or GV12 or GE0 or GE12 then ProcessData12;
+  if GV0 or GV13 or GE0 or GE13 then ProcessData13;
+  if GV0 or GV14 or GE0 or GE14 then ProcessData14;
+  if GV0 or GV15 or GE0 or GE15 then ProcessData15;
+  if GV0 or GV16 or GE0 or GE16 then ProcessData16;
+  if GV0 or GV17 or GE0 or GE17 then ProcessData17;
+end;
+
+
+
+begin
+  ShowHeader;
+
+//  RegisterGlobals;
+
+//source-кодът, от който е генериран изпълнимият файл,
+//за достъп и извличане на данни от БД в структуриран четим вид
+//с възможност за избор- от всички или от част от таблиците,
+//с които работи софтуерът, когато информацията,
+//съдържаща се в експортираните от изпълнимия файл таблици,
+//представлява лични данни по смисъла на Регламент (ЕС) 2016/679
+//на Европейския парламент и на Съвета от27 април 2016
+//(ОВ, L119 от 4 май 2016 г.) или здравна информация по смисъла
+//на чл. 27 от Закона за здравето, при експорта тези данни не се извличат;
+
+
+//Софтуерът следва да осигурява чрез потребителски интерфейс
+//визуализация и експорт на данни от базата данни в табличен вид,
+//файлов формат XLS/XLSX илиCSV, при прилагане на следните филтри:
+//За търговец (приSaaS);
+//За период (от дата до дата) и/или
+//За търговски обект (всички или конкретно посочен), и/или
+//За ФУ, на което са регистрирани продажбите (всички ФУ или конкретно ФУ), и/или
+//За работно място (всички или конкретно посочено), и/или
+//За оператор (всички или конкретно посочен).
+
+//Експортираните данни са със следната структура:
+//18.1. Таблица - Обобщени данни за продажбите:
+//-	уникален номер на продажба - съгласно т. 9;
+//-	системен номер на продажбата, присвоен от софтуера;
+//-	код и наименование на търговски обект;
+//-	дата на откриване на продажбата;
+//-	време на откриване на продажбата (час, минута, секунда);
+//-	код на работно място;
+//-	код на оператор;
+//-	обща сума на продажбата - без ДДС, в лв.;
+//-	отстъпка - в лв.;
+//-	ДДС - сума - в лв.;
+//-	дължима сума по продажбата - в лв.;
+//-	фактура за продажбата - номер (ако е издадена фактура и в софтуера е налична информация);
+//-	фактура за продажбата - дата (ако е издадена фактура и в софтуера е налична информация);
+//-	дата на приключване на продажбата;
+//-	време на приключване на продажбата (час, минута, секунда);
+//-	клиент код (при наличие на въведена информация);
+//-	клиент име (при наличие на въведена информация).
+//18.2. Таблица - Данни за плащанията по продажбите:
+//-	уникален номер на продажба - съгласно т. 9;
+//-	системен номер на продажбата, присвоен от софтуера;
+//-	дата на откриване на продажбата;
+//-	дата на приключване на продажбата;
+//-	обща сума по продажбата - в лв.;
+//-	дата на плащане;
+//-	код на оператор, регистрирал плащането;
+//-	платена сума без ДДС - в лв.;
+//-	ДДС - сума - в лв.
+//-	вид на плащането - съгласно номенклатурата в софтуера;
+//-	индивидуален номер на ФУ, на което е издаден ФБ за плащането.
+//18.3. Таблица - Детайлни данни за продажбите:
+//-	уникален номер на продажба - съгласно т. 9;
+//-	системен номер на продажбата, присвоен от софтуера;
+//-	код на стоката/услугата;
+//-	наименование на стоката/услугата;
+//-	количество;
+//-	единична цена (без отстъпка) - без ДДС, в лв.;
+//-	отстъпка (сума) - в лв.;
+//-	ДДС ставка;
+//-	ДДС - сума, в лв.;
+//-	обща сума - в лв.
+//18.4. Таблица - Сторнирани продажби:
+//-	уникален номер на продажба - съгласно т. 9;
+//-	системен номер на продажбата, присвоен от софтуера;
+//-	код на стоката/услугата;
+//-	наименование на стоката/услугата;
+//-	количество;
+//-	единична цена (без отстъпка) - без ДДС, в лв.;
+//-	отстъпка (сума) - в лв.;
+//-	ДДС ставка;
+//-	ДДС - сума, в лв.;
+//-	обща сума - в лв.;
+//-	дата на приключване на продажбата;
+//-	време на приключване на продажбата (час, мин., сек.);
+//-	дата на сторниране на продажбата;
+//-	време на сторниране на продажбата (час, мин., сек.);
+//-	индивидуален номер на ФУ, на което е издаден Сторно-ФБ;
+//-	код на оператор, извършил сторнирането.
+//18.5. Таблица - Анулирани продажби:
+//-	уникален номер на продажба - съгласно т. 9;
+//-	системен номер на продажбата, присвоен от софтуера;
+//-	код на анулираната стока/услуга;
+//-	наименование на анулираната стока/услуга;
+//-	количество; - единична цена (без отстъпка) - без ДДС, в лв.;
+//-	отстъпка (сума) - в лв.;
+//-	ДДС ставка;
+//-	ДДС - сума - в лв.;
+//-	обща сума - в лв.;
+//-	дата на откриване на продажбата;
+//-	време на откриване на продажбата (час, мин., сек.);
+//-	дата на анулиране на продажбата или на стоката/услугата;
+//-	време на анулиране на продажбата или на стоката/услугата (час, мин., сек.);
+//-	код на оператор, извършил анулирането.
+//18.6. Таблица - Обобщени данни за доставки (ако софтуерът разполага с функционалност за регистриране на доставки):
+//-	ID на запис;
+//-	дата на доставка;
+//-	време (час, минута, секунда);
+//-	код на оператор;
+//-	доставчик - код;
+//-	доставчик - име;
+//-	фактура за доставка - №;
+//-	фактура за доставка - дата;
+//-	обща сума на доставката (без отстъпка), без ДДС - в лв.;
+//-	отстъпка - в лв.;
+//-	ДДС - сума - в лв.
+//-	обща сума - в лв.;
+//-	вид на плащането - съгласно номенклатурата в софтуера.
+//18.7. Таблица - Детайлни данни за доставки (ако софтуерът разполага с функционалност за регистриране на доставки):
+//-	ID на запис - съвпада с ID на запис от таблицата с обобщени данни за доставки;
+//-	код на стоката/услугата;
+//-	наименование на стоката/услугата;
+//-	количество;
+//-	единична цена (без отстъпка) - в лв.;
+//-	отстъпка (сума) - в лв.;
+//-	ДДС сума - в лв.;
+//-	обща сума - в лв.
+//18.8. Таблица - Движение на стоки за период (ако софтуерът разполага с функционалност за проследяване движението на стоките):
+//-	код на стоката;
+//-	наименование на стоката;
+//-	количество в началото на периода;
+//-	обща стойност в началото на периода - в лв.;
+//-	дебитен оборот за периода - количество;
+//-	дебитен оборот за периода - стойност, в лв.;
+//-	кредитен оборот за периода - количество;
+//-	кредитен оборот за периода - стойност, в лв.;
+//-	количество в края на периода;
+//-	обща стойност в края на периода - в лв.
+//18.9. Таблици с номенклатури на:
+//-	стоки/услуги - код, наименование, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране;
+//-	доставчици - идентификатор (ЕИК, друг), имена, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране (ако софтуерът разполага с функционалност за въвеждане на доставчици);
+//-	клиенти - идентификатор (ЕИК, друг), имена, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране (ако софтуерът разполага с функционалност за въвеждане на клиенти);
+//-	видове операции (действия) - код, наименование, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране;
+//-	видове плащания - код, наименование, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране;
+//-	търговски обекти - код, наименование, местонахождение, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране;
+//-	работни места - код, търговски обект, в който се намира, индивидуален номер на свързаното към него ФУ, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране;
+//-	потребители (оператори) - уникален код в системата, имена по документ за самоличност, дата на първоначално конфигуриране в системата, дата на последна промяна, дата на деактивиране; присвоени роли и период на активност за всяка от тях, други въведени данни;
+//-	роли на потребителите (операторите) на софтуера - код, наименование, права, дата на конфигуриране/деактивиране; извършени промени в присвоените права на всяка роля - дата и извършени промени;
+//-	права, присвоявани на ролите - код, наименование, описание, дата на конфигуриране/деактивиране.
+//Допуска се предоставянето на алтернативни номенклатурни таблици, които като обхват на съдържащата се в тях информация съответстват на посочените в т. 18.9.
+
+
+  if ParamCount = 0 then begin
+    ShowUsage;
+  end;
+
+  try
+    ProcessParameters;
+    ProcessData;
+  except
+    on E: Exception do
+      Writeln(E.ClassName, ': ', E.Message);
+  end;
+end.

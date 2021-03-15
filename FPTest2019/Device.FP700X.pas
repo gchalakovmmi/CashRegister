@@ -29,8 +29,7 @@ type
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FP700XError(ASender: TObject; error_Code: Integer;
-      var error_Message: WideString);
+    procedure FP700XError(ASender: TObject; error_Code: Integer; var error_Message: WideString);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -42,10 +41,19 @@ type
     procedure CloseConnection;
     procedure StopCOMServer;
 
+    procedure ReadDateAndTime(var ADeviceDateTime: TDateTime);
+    procedure SetDateAndTime(const ADateTime: TDateTime);
+
+    procedure CheckTheStatusOfTheFiscalTransaction;
+
     procedure CheckAndResolve;
     procedure CheckTimeDifference;
 
-//    procedure CheckTheStatusOfTheFiscalTransaction(var
+    procedure CashInCashOut(const AType, AAmount: WideString);
+
+    procedure DailyReport(const AType: WideString);
+    procedure PeriodReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
+
 
 //IsOpen
 // 0 - Receipt is closed;
@@ -62,22 +70,20 @@ type
 //depending dec point position );
 
 
-
-
     procedure OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
     procedure PrintFiscalText(const AText: WideString);
     procedure PrintSeparatingLine;
     procedure SellItem(const AItem, ATaxCode, APrice, AQuantity, ADiscountType, ADiscountValue, AMeasure: WideString);
     procedure SubTotal(var ASubTotal: WideString);
     procedure Discount(var ASubTotal: WideString);
-    procedure Total(const APaidMode, AAmountIn, APinPadPaidMode: WideString);
+    procedure Total(const APaidMode, AAmountIn: WideString; var AStatus, AAmount: WideString);
     procedure DrawerKickOut;
     procedure CloseFiscalReceipt;
     procedure CancelFiscalReceipt;
 
     procedure OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
 
-
+    procedure CloseNonFiscalReceipt;
   {$ENDREGION}
 
 
@@ -85,28 +91,36 @@ type
   private
     FObservable: IObservable;
 
+    FLastErrorCode: Integer;
+    FLastErrorMessage: WideString;
+
     FErrorCode: WideString;
+    FSlipNumber: WideString;
     FCash: Double;
+
+    FTransactionIsOpen: WideString;
+    FTransactionNumber: WideString;
+    FTransactionItems: WideString;
+    FTransactionAmount: WideString;
+    FTransactionPayed: WideString;
   {$ENDREGION}
 
 
   {$REGION 'Private Properties Getters/Setters'}
   private
-    function GetErrorCodeI: Integer;
-    procedure SetErrorCodeI(AValue: Integer);
+
   {$ENDREGION}
 
 
   {$REGION 'Private Properties'}
   private
-		property ErrorCodeI: Integer read GetErrorCodeI write SetErrorCodeI;
+
   {$ENDREGION}
 
 
   {$REGION 'Interfaced Properties Getters/Setters'}
   public
     function GetObservable: IObservable;
-    function GetCash: Double;
   {$ENDREGION}
 
 
@@ -114,8 +128,9 @@ type
   public
     property Observable: IObservable read GetObservable implements IObservable;
 
-		property ErrorCode: WideString read FErrorCode write FErrorCode;
-		property Cash: Double read GetCash;
+		property ErrorCode: WideString read FErrorCode;
+    property SlipNumber: WideString read FSlipNumber;
+		property Cash: Double read FCash;
   {$ENDREGION}
 
 
@@ -127,14 +142,16 @@ type
 
     procedure XReport;
     procedure ZReport;
-    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
 
     procedure SetupSale(const ASale: IModelClassSale);
     procedure OpenSale(const ASale: IModelClassSale);
     procedure RegistrationOfSale(const ASaleDetails: IModelClassSaleDetail);
     procedure RegistrationOfDiscount(const ASaleDetails: IModelClassSaleDetail);
     procedure RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
-    procedure Totals(const ASale: IModelClassSale);
+    procedure VoucherTotal(const ASale: IModelClassSale);
+    procedure CardTotal(const ASale: IModelClassSale);
+    procedure CashTotal(const ASale: IModelClassSale);
     procedure CloseSale(const ASale: IModelClassSale);
     procedure DiscardSale(const ASale: IModelClassSale);
     procedure DuplicateReceipt;
@@ -146,6 +163,19 @@ type
     procedure CloseReversal(const ASale: IModelClassSale);
     procedure DiscardReversal(const ASale: IModelClassSale);
 
+    function ReceiptIsClosed: Boolean;
+    function FiscalReceiptIsOpen: Boolean;
+    function StornoReceiptIsOpen: Boolean;
+    function NonFiscalReceiptIsOpen: Boolean;
+    function OpenReceiptNumber: String;
+    function OpenReceiptItems: String;
+    function OpenReceiptWithoutItems: Boolean;
+    function OpenReceiptAmount: String;
+    function OpenReceiptWithoutDue: Boolean;
+    function OpenReceiptPayed: String;
+    function OpenReceiptWithNoPayment: Boolean;
+    function OpenReceiptWithPartialPayment: Boolean;
+    function OpenReceiptWithFullPayment: Boolean;
   {$ENDREGION}
 
 
@@ -168,7 +198,8 @@ uses
   Model.Notification,
   Model.Pattern.Observer.Observable,
   Globals,
-  View.Message;
+  View.Message,
+  Model.AppSettings;
 
 {$R *.dfm}
 
@@ -212,96 +243,318 @@ end;
 
 procedure TDeviceFP700X.StartCOMServer;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  try
+  repeat
+    FLastErrorCode := -1;
     try
-      FP700X.RemoteMachineName := '';
-      FP700X.Connect;
-      SendNotification([actFiscalDeviceAfterStartCOMServer]);
-    except
-      ShowMessage('The program can not detect the driver. ' + sLineBreak + 'Please install "FP3530 - COMServer" or call the support team! ');
-      SendNotification([actFiscalDeviceErrorStartCOMServer]);
-      Exit;
+      try
+        FP700X.RemoteMachineName := '';
+        FP700X.Connect;
+        FLastErrorCode := 0;
+      except
+        ShowMessage('The program can not detect the driver. ' + sLineBreak + 'Please install "FP3530 - COMServer" or call the support team! ');
+      end;
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-  finally
-    if FP700X.connected_ToDevice then begin
-      SendNotification([actFiscalDeviceAfterOpenConnection]);
-    end;
-  end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.OpenConnection;
 begin
-  if not G.FiscalDevicePresent then Exit;
+  repeat
+  	FLastErrorCode := 0;
+    try
+      if not FP700X.connected_ToDevice then begin
+        FLastErrorCode := -1;
 
-	ErrorCodeI := 0;
-	try
-		if not FP700X.connected_ToDevice then begin
-      ErrorCodeI := -1;
-      try
-        try
-          ErrorCodeI := FP700X.set_TransportType(ctc_RS232);
-          if ErrorCodeI <> 0 then Exit;
+        FLastErrorCode := FP700X.set_TransportType(ctc_RS232);
+        if FLastErrorCode <> 0 then Exit;
 
-          ErrorCodeI := FP700X.set_RS232(G.FiscalDeviceCOMPort, G.FiscalDeviceBaudRate);
-          if ErrorCodeI <> 0 then Exit;
-          ErrorCodeI := 0;
-        except
-          On E: Exception do begin
-            ShowMessage(E.Message);
-            SendNotification([actFiscalDeviceErrorSettingsChange]);
-          end;
-        end;
-      finally
-        SendNotification([actFiscalDeviceAfterSettingsChange]);
+        FLastErrorCode := FP700X.set_RS232(G.FiscalDeviceCOMPort, G.FiscalDeviceBaudRate);
+        if FLastErrorCode <> 0 then Exit;
+
+        FLastErrorCode := FP700X.open_Connection;
+        if FLastErrorCode <> 0 then Exit;
       end;
-
-			ErrorCodeI := FP700X.open_Connection;
-			if ErrorCodeI <> 0 then Exit;
-		end;
-	finally
-		if ErrorCodeI <> 0 then begin
-			ShowMessage(FP700X.lastError_Message);
-      SendNotification([actFiscalDeviceErrorOpenConnection]);
-		end else begin
-			if FP700X.connected_ToDevice then begin
-				if not FP700X.Active_OnAfterOpenConnection then begin
-          SendNotification([actFiscalDeviceAfterOpenConnection]);
-        end;
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
       end;
-		end;
-	end;
+    end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.CloseConnection;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-	ErrorCodeI := FP700X.close_Connection;
-	if ErrorCodeI <> 0 then begin
-    ShowMessage(FP700X.lastError_Message);
-    SendNotification([actFiscalDeviceErrorCloseConnection]);
-  end;
-	if not FP700X.Active_OnAfterCloseConnection then begin
-    SendNotification([actFiscalDeviceAfterCloseConnection]);
-  end;
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := FP700X.close_Connection;
+      if FLastErrorCode <> 0 then Exit;
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.StopCOMServer;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-	try
+  repeat
+    FLastErrorCode := -1;
 		try
-			FP700X.Disconnect;
-		except
-      SendNotification([actFiscalDeviceErrorStopCOMServer]);
-		end;
-	finally
-    SendNotification([actFiscalDeviceAfterStopCOMServer]);
-	end;
+      try
+        FP700X.Disconnect;
+        FLastErrorCode := 0;
+      except
+        ShowMessage('The program can not stop COM server');
+      end;
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
 end;
+
+
+procedure TDeviceFP700X.ReadDateAndTime(var ADeviceDateTime: TDateTime);
+var
+  LDay: WideString;
+  LMonth: WideString;
+  LYear: WideString;
+  LHour: WideString;
+  LMinute: WideString;
+  LSecond: WideString;
+  LDST: WideString;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_062_info_Get_DateTime_01(
+        FP700X,
+        FErrorCode,
+        LDay,
+        LMonth,
+        LYear,
+        LHour,
+        LMinute,
+        LSecond,
+        LDST
+      );
+      ADeviceDateTime := EncodeDateTime(
+        StrToInt(LYear),
+        StrToInt(LMonth),
+        StrToInt(LDay),
+        StrToInt(LHour),
+        StrToInt(LMinute),
+        StrToInt(LSecond),
+        0
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+procedure TDeviceFP700X.SetDateAndTime(const ADateTime: TDateTime);
+var
+  LDateTime: WideString;
+  LErrorCode: WideString;
+  LYear: Word;
+  LMonth: Word;
+  LDay: Word;
+  LHour: Word;
+  LMinute: Word;
+  LSecond: Word;
+  LMilliSecond: Word;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      DecodeDateTime(ADateTime, LYear, LMonth, LDay, LHour, LMinute, LSecond, LMilliSecond);
+      if LYear > 2000 then Dec(LYear, 2000);
+      LDateTime := '';
+      LDateTime := LDateTime + LDay.ToString.PadLeft(2, '0') + '-';
+      LDateTime := LDateTime + LMonth.ToString.PadLeft(2, '0') + '-';
+      LDateTime := LDateTime + LYear.ToString.PadLeft(2, '0') + ' ';
+      LDateTime := LDateTime + LHour.ToString.PadLeft(2, '0') + ':';
+      LDateTime := LDateTime + LMinute.ToString.PadLeft(2, '0') + ':';
+      LDateTime := LDateTime + LSecond.ToString.PadLeft(2, '0');
+
+      FLastErrorCode := Model_FP700X.execute_061_config_Set_DateTime(
+        FP700X,         //
+        LDateTime,      //
+        FErrorCode      //
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+
+procedure TDeviceFP700X.CheckTheStatusOfTheFiscalTransaction;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_076_info_Get_FTransactionStatus(
+        FP700X,
+        FErrorCode,
+        FTransactionIsOpen,
+        FTransactionNumber,
+        FTransactionItems,
+        FTransactionAmount,
+        FTransactionPayed
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+
+
+procedure TDeviceFP700X.CashInCashOut(const AType, AAmount: WideString);
+var
+  LInput: WideString;
+  LOutput: WideString;
+  LResults: TArray<String>;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      LInput := AType+'\t'+AAmount;
+      FLastErrorCode := FP700X.execute_Command(
+        70,
+        LInput,
+        LOutput
+      );
+      if FLastErrorCode = 0 then begin
+        LResults := String(LOutput).Split([#9]);
+        FCash := StrToFloat(LResults[1]);
+        SendNotification([actFiscalDeviceAfterCashCheck]);
+      end;
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+procedure TDeviceFP700X.DailyReport(const AType: WideString);
+var
+  LnRep: WideString;
+  LTotalSumA: WideString;
+  LTotalSumB: WideString;
+  LTotalSumC: WideString;
+  LTotalSumD: WideString;
+  LTotalSumE: WideString;
+  LTotalSumF: WideString;
+  LTotalSumG: WideString;
+  LTotalSumH: WideString;
+  LStornoSumA: WideString;
+  LStornoSumB: WideString;
+  LStornoSumC: WideString;
+  LStornoSumD: WideString;
+  LStornoSumE: WideString;
+  LStornoSumF: WideString;
+  LStornoSumG: WideString;
+  LStornoSumH: WideString;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_069_report_DailyClosure_01(
+        FP700X,
+        AType,
+        FErrorCode,
+        LnRep,
+        LTotalSumA,
+        LTotalSumB,
+        LTotalSumC,
+        LTotalSumD,
+        LTotalSumE,
+        LTotalSumF,
+        LTotalSumG,
+        LTotalSumH,
+        LStornoSumA,
+        LStornoSumB,
+        LStornoSumC,
+        LStornoSumD,
+        LStornoSumE,
+        LStornoSumF,
+        LStornoSumG,
+        LStornoSumH
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+procedure TDeviceFP700X.PeriodReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
+var
+  LInput: WideString;
+  LOutput: WideString;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      if AShort then begin
+        LInput := '0\t'+
+          DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+          MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+          (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+'\t'+
+          DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+          MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+          (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+'\t';
+      end else begin
+        LInput := '1\t'+
+          DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+          MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+          (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+'\t'+
+          DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+          MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+          (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+'\t';
+      end;
+      FLastErrorCode := FP700X.execute_Command(
+        94,
+        LInput,
+        LOutput
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
+
+
 
 {TODO -oOwner -cGeneral : ActionItem}
 procedure TDeviceFP700X.CheckAndResolve;
@@ -326,589 +579,357 @@ end;
 
 procedure TDeviceFP700X.CheckTimeDifference;
 var
-  LDeviceDateTime: TDateTime;                  //
-
-  function GetDeviceDateTime(var ADeviceDateTime: TDateTime): Integer;
-  var
-    LResult: Integer;                 //
-    LErrorCode: WideString;           //
-    LDay: WideString;                 //
-    LMonth: WideString;               //
-    LYear: WideString;                //
-    LHour: WideString;                //
-    LMinute: WideString;              //
-    LSecond: WideString;              //
-    LDST: WideString;
-  begin
-    if not G.FiscalDevicePresent then Exit(-1);
-
-    Result := -1;
-
-    SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
-    try
-      LResult := Model_FP700X.execute_062_info_Get_DateTime_01(
-        FP700X,         //
-        LErrorCode,     //
-        LDay,           //
-        LMonth,         //
-        LYear,          //
-        LHour,          //
-        LMinute,        //
-        LSecond,        //
-        LDST            //
-      );
-      if LResult <> 0 then begin
-        ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
-      end;
-    finally
-      ADeviceDateTime := EncodeDateTime(
-        StrToInt(LYear),
-        StrToInt(LMonth),
-        StrToInt(LDay),
-        StrToInt(LHour),
-        StrToInt(LMinute),
-        StrToInt(LSecond),
-        0
-      );
-      Result := 0;
-      SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
-    end;
-  end;
-
-  function SetDeviceDateTime(const ADateTime: TDateTime): Integer;
-  var
-    LResult: Integer;                 //
-    LDateTime: WideString;            //
-    LErrorCode: WideString;           //
-    LYear: Word;                      //
-    LMonth: Word;                     //
-    LDay: Word;                       //
-    LHour: Word;                      //
-    LMinute: Word;                    //
-    LSecond: Word;                    //
-    LMilliSecond: Word;               //
-  begin
-    if not G.FiscalDevicePresent then Exit(-1);
-
-    Result := -1;
-
-    SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
-    try
-      DecodeDateTime(ADateTime, LYear, LMonth, LDay, LHour, LMinute, LSecond, LMilliSecond);
-      if LYear > 2000 then Dec(LYear, 2000);
-      LDateTime := '';
-      LDateTime := LDateTime + LDay.ToString.PadLeft(2, '0') + '-';
-      LDateTime := LDateTime + LMonth.ToString.PadLeft(2, '0') + '-';
-      LDateTime := LDateTime + LYear.ToString.PadLeft(2, '0') + ' ';
-      LDateTime := LDateTime + LHour.ToString.PadLeft(2, '0') + ':';
-      LDateTime := LDateTime + LMinute.ToString.PadLeft(2, '0') + ':';
-      LDateTime := LDateTime + LSecond.ToString.PadLeft(2, '0');
-
-      LResult := Model_FP700X.execute_061_config_Set_DateTime(
-        FP700X,         //
-        LDateTime,      //
-        LErrorCode      //
-      );
-
-      if LResult <> 0 then begin
-        ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
-      end;
-    finally
-      Result := 0;
-      SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
-    end;
-  end;
-
+  LDeviceDateTime: TDateTime;
 begin
-  SendNotification([actFiscalDeviceBeforeCheckTimeDifference]);
-	try
-    if GetDeviceDateTime(LDeviceDateTime) <> 0 then begin
-      SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
-    end else begin
-      if SetDeviceDateTime(Now) <> 0 then begin
-        SendNotification([actFiscalDeviceErrorCheckTimeDifference]);
-      end;
-    end;
-
-      if SecondsBetween(Now, LDeviceDateTime) > 10 then begin
-
-      end;
-	finally
-    SendNotification([actFiscalDeviceAfterCheckTimeDifference]);
-	end;
+  ReadDateAndTime(LDeviceDateTime);
+  if SecondsBetween(Now, LDeviceDateTime) > 10 then begin
+    SetDateAndTime(Now);
+  end;
 end;
-
 
 
 
 
 
 procedure TDeviceFP700X.OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
-var
-  ErrorCode: WideString;         //
-  SlipNumber: WideString;        //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeOpenFiscalCheck]);
-	try
-    if
-      Model_FP700X.execute_048_receipt_Fiscal_Open(
-        FP700X,           //
-        AOperatorNumber,  //
-        AOperatorPassword,//
-        AUNP,             //
-        ATillNumber,      //
-        ErrorCode,        //
-        SlipNumber        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorOpenFiscalCheck]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_048_receipt_Fiscal_Open(
+        FP700X,
+        AOperatorNumber,
+        AOperatorPassword,
+        AUNP,
+        ATillNumber,
+        FErrorCode,
+        FSlipNumber
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterOpenFiscalCheck]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.PrintFiscalText(const AText: WideString);
-var
-  InputText: WideString;         //
-  Bold: WideString;              //
-  Italic: WideString;            //
-  DoubleHeight: WideString;      //
-  UnderLine: WideString;         //
-  Alignment: WideString;         //
-  ErrorCode: WideString;         //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeFiscalText]);
-	try
-    InputText := AText;
-    Bold := '0';
-    Italic := '0';
-    DoubleHeight := '0';
-    UnderLine := '0';
-    Alignment := '0';
-    if
-      Model_FP700X.execute_054_receipt_Fiscal_Text(
-        FP700X,       //
-        InputText,    //
-        Bold,         //
-        Italic,       //
-        DoubleHeight, //
-        UnderLine,    //
-        Alignment,    //
-        ErrorCode     //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorFiscalText]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_054_receipt_Fiscal_Text(
+        FP700X,
+        AText,
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        FErrorCode
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterFiscalText]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.PrintSeparatingLine;
-var
-  LineType: WideString;     //
-  ErrorCode: WideString;    //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeSeparatingLine]);
-	try
-    LineType := '1';        //
-    if
-      Model_FP700X.execute_092_receipt_Separating_Line(
-        FP700X,             //
-        LineType,           //
-        ErrorCode           //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorSeparatingLine]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_092_receipt_Separating_Line(
+        FP700X,
+        '1',
+        FErrorCode
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterSeparatingLine]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.SellItem(const AItem, ATaxCode, APrice, AQuantity, ADiscountType, ADiscountValue, AMeasure: WideString);
 var
-  TextRow1: WideString;       //
-  TaxGroup: WideString;       //
-  SinglePrice: WideString;    //
-  Quantity: WideString;       //
-  Discount_Type: WideString;  //
-  Discount_Value: WideString; //
-  Department: WideString;     //
-  Measure: WideString;        //
-  ErrorCode: WideString;      //
-  SlipNumber: WideString;     //
-
-  LResult: Integer;
+  LQuantity: String;
+  LPrice: String;
+  LDiscountValue: String;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeSale]);
-	try
-    TextRow1 := AItem;                //
-    TaxGroup := ATaxCode;             //
-    SinglePrice := APrice;            //
-    Quantity := AQuantity;            //
-    Discount_Type := ADiscountType;   //
-    Discount_Value := ADiscountValue; //
-    Department := '0';                //
-    Measure := AMeasure;
-//    ShowMessage(
-//      ' | '+
-//      TextRow1
-//      +' | '+
-//      TaxGroup
-//      +' | '+
-//      SinglePrice
-//      +' | '+
-//      Quantity
-//      +' | '+
-//      Discount_Type
-//      +' | '+
-//      Discount_Value
-//      +' | '+
-//      Department
-//      +' | '+
-//      Measure
-//      +' | '
-//    );
-    LResult := Model_FP700X.execute_049_receipt_Sale_Un(
-      FP700X,                     //
-      TextRow1,                   //
-      TaxGroup,                   //
-      SinglePrice,                //
-      Quantity,                   //
-      Discount_Type,              //
-      Discount_Value,             //
-      Department,                 //
-      Measure,                    //
-      ErrorCode,                  //
-      SlipNumber                  //
-    );
-    if LResult <> 0 then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorSale]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      LQuantity := AQuantity;
+      LPrice := APrice;
+      LDiscountValue := ADiscountValue;
+      if LQuantity.ToDouble < 0 then begin
+        LPrice := FormatFloat('0.00', -LPrice.ToDouble);
+        LQuantity := FormatFloat('0.000', -LQuantity.ToDouble);
+        LDiscountValue := FormatFloat('0.00', -LDiscountValue.ToDouble);
+      end;
+      FLastErrorCode := Model_FP700X.execute_049_receipt_Sale_Un(
+        FP700X,
+        AItem,
+        ATaxCode,
+        LPrice,
+        LQuantity,
+        ADiscountType,
+        LDiscountValue,
+        '0',
+        AMeasure,
+        FErrorCode,
+        FSlipNumber
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterSale]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.SubTotal(var ASubTotal: WideString);
 var
-   ToPrint: WideString;          //
-   ToDisplay: WideString;        //
-   Discount_Type: WideString;    //
-   Discount_Value: WideString;   //
-   ErrorCode: WideString;        //
-   SlipNumber: WideString;       //
-   TaxA: WideString;             //
-   TaxB: WideString;             //
-   TaxC: WideString;             //
-   TaxD: WideString;             //
-   TaxE: WideString;             //
-   TaxF: WideString;             //
-   TaxG: WideString;             //
-   TaxH: WideString;             //
+  LTaxA: WideString;
+  LTaxB: WideString;
+  LTaxC: WideString;
+  LTaxD: WideString;
+  LTaxE: WideString;
+  LTaxF: WideString;
+  LTaxG: WideString;
+  LTaxH: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeSubTotal]);
-	try
-    ToPrint := '0';
-    ToDisplay := '0';
-    Discount_Type := '0';
-    Discount_Value := '0';
-    if
-      Model_FP700X.execute_051_receipt_Subtotal(
-        FP700X,               //
-        ToPrint,              //
-        ToDisplay,            //
-        Discount_Type,        //
-        Discount_Value,       //
-        ErrorCode,            //
-        SlipNumber,           //
-        ASubtotal,            //
-        TaxA,                 //
-        TaxB,                 //
-        TaxC,                 //
-        TaxD,                 //
-        TaxE,                 //
-        TaxF,                 //
-        TaxG,                 //
-        TaxH                  //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorSubTotal]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_051_receipt_Subtotal(
+        FP700X,
+        '0',
+        '0',
+        '0',
+        '0',
+        FErrorCode,
+        FSlipNumber,
+        ASubtotal,
+        LTaxA,
+        LTaxB,
+        LTaxC,
+        LTaxD,
+        LTaxE,
+        LTaxF,
+        LTaxG,
+        LTaxH
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterSubTotal]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.Discount(var ASubTotal: WideString);
 var
-   ToPrint: WideString;          //
-   ToDisplay: WideString;        //
-   Discount_Type: WideString;    //
-   Discount_Value: WideString;   //
-   ErrorCode: WideString;        //
-   SlipNumber: WideString;       //
-   TaxA: WideString;             //
-   TaxB: WideString;             //
-   TaxC: WideString;             //
-   TaxD: WideString;             //
-   TaxE: WideString;             //
-   TaxF: WideString;             //
-   TaxG: WideString;             //
-   TaxH: WideString;             //
+  LTaxA: WideString;
+  LTaxB: WideString;
+  LTaxC: WideString;
+  LTaxD: WideString;
+  LTaxE: WideString;
+  LTaxF: WideString;
+  LTaxG: WideString;
+  LTaxH: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeSubTotal]);
-	try
-    ToPrint := '1';
-    ToDisplay := '0';
-    Discount_Type := '4';
-    Discount_Value := '0';
-    if
-      Model_FP700X.execute_051_receipt_Subtotal(
-        FP700X,               //
-        ToPrint,              //
-        ToDisplay,            //
-        Discount_Type,        //
-        ASubtotal,            //
-        ErrorCode,            //
-        SlipNumber,           //
-        ASubtotal,            //
-        TaxA,                 //
-        TaxB,                 //
-        TaxC,                 //
-        TaxD,                 //
-        TaxE,                 //
-        TaxF,                 //
-        TaxG,                 //
-        TaxH                  //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorSubTotal]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_051_receipt_Subtotal(
+        FP700X,
+        '1',
+        '0',
+        '4',
+        ASubtotal,
+        FErrorCode,
+        FSlipNumber,
+        ASubtotal,
+        LTaxA,
+        LTaxB,
+        LTaxC,
+        LTaxD,
+        LTaxE,
+        LTaxF,
+        LTaxG,
+        LTaxH
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterSubTotal]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
-procedure TDeviceFP700X.Total(const APaidMode, AAmountIn, APinPadPaidMode: WideString);
-var
-  ErrorCode: WideString;       //
-  AnswerField_01: WideString;  //
-  AnswerField_02: WideString;  //
+procedure TDeviceFP700X.Total(const APaidMode, AAmountIn: WideString; var AStatus, AAmount: WideString);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeTotal]);
-	try
-    if
-      Model_FP700X.execute_053_receipt_Total(
-        FP700X,               //
-        APaidMode,            //
-        AAmountIn,            //
-        APinPadPaidMode,      //
-        ErrorCode,            //
-        AnswerField_01,       //
-        AnswerField_02        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorTotal]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_053_receipt_Total(
+        FP700X,
+        APaidMode,
+        AAmountIn,
+        '',
+        FErrorCode,
+        AStatus,
+        AAmount
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterTotal]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.DrawerKickOut;
-var
-  LmSec: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeDrawerKickOut]);
-	try
-    LmSec := '100';
-    if
-      Model_FP700X.execute_106_receipt_Drawer_KickOut(
-        FP700X,                //
-        LmSec,                 //
-        FErrorCode             //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorDrawerKickOut]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_106_receipt_Drawer_KickOut(
+        FP700X,
+        '100',
+        FErrorCode
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterDrawerKickOut]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.CloseFiscalReceipt;
-var
-  ErrorCode: WideString;      //
-  SlipNumber: WideString;     //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeCloseFiscalCheck]);
-	try
-    if
-      Model_FP700X.execute_056_receipt_Fiscal_Close(
-        FP700X,           //
-        ErrorCode,        //
-        SlipNumber        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorCloseFiscalCheck]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_056_receipt_Fiscal_Close(
+        FP700X,
+        FErrorCode,
+        FSlipNumber
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterCloseFiscalCheck]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.CancelFiscalReceipt;
-var
-  ErrorCode: WideString;      //
-
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeCancelFiscalCheck]);
-	try
-    if
-      Model_FP700X.execute_060_receipt_Fiscal_Cancel(
-        FP700X,           //
-        ErrorCode        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorCancelFiscalCheck]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_060_receipt_Fiscal_Cancel(
+        FP700X,
+        FErrorCode
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterCancelFiscalCheck]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 procedure TDeviceFP700X.DuplicateReceipt;
-var
-  ErrorCode: WideString;      //
-
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeDuplicateReceipt]);
-	try
-    if
-      Model_FP700X.execute_109_receipt_Print_Duplicate(
-        FP700X,           //
-        ErrorCode        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorDuplicateReceipt]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_109_receipt_Print_Duplicate(
+        FP700X,
+        FErrorCode
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterDuplicateReceipt]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
 
 procedure TDeviceFP700X.OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
-var
-  ErrorCode: WideString;         //
-  SlipNumber: WideString;        //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeOpenReversalCheck]);
-	try
-//    ShowMessage(
-//      ' | '+
-//      AOperatorNumber
-//      +' | '+
-//      AOperatorPassword
-//      +' | '+
-//      ATillNumber
-//      +' | '+
-//      '1'
-//      +' | '+
-//      ADocNumber
-//      +' | '+
-//      ADocDateTime
-//      +' | '+
-//      AFiscalDeviceID
-//      +' | '+
-//      ''
-//      +' | '+
-//      ''
-//      +' | '+
-//      AUNP
-//      +' | '
-//    );
-    if
-      Model_FP700X.execute_043_receipt_StornoOpen_C01(
-        FP700X,           //
-        AOperatorNumber,  //
-        AOperatorPassword,//
-        ATillNumber,      //
-        '1',              //
-        ADocNumber,       //
-        ADocDateTime,     //
-        AFiscalDeviceID,  //
-        '',               //
-        '',               //
-        AUNP,             //
-        ErrorCode,        //
-        SlipNumber        //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorOpenReversalCheck]);
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_043_receipt_StornoOpen_C01(
+        FP700X,
+        AOperatorNumber,
+        AOperatorPassword,
+        ATillNumber,
+        '1',
+        ADocNumber,
+        ADocDateTime,
+        AFiscalDeviceID,
+        '',
+        '',
+        AUNP,
+        FErrorCode,
+        FSlipNumber
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
     end;
-	finally
-    SendNotification([actFiscalDeviceAfterOpenReversalCheck]);
-	end;
+  until FLastErrorCode = 0;
 end;
 
+
+procedure TDeviceFP700X.CloseNonFiscalReceipt;
+begin
+  repeat
+    FLastErrorCode := -1;
+    try
+      FLastErrorCode := Model_FP700X.execute_039_receipt_NonFiscal_Close(
+        FP700X,
+        FErrorCode,
+        FSlipNumber
+      );
+    finally
+      if FLastErrorCode <> 0 then begin
+        FLastErrorMessage := FP700X.get_ErrorMessageByCode(FLastErrorCode);
+        ViewMessage.ShowBadMessagePlus(FLastErrorMessage);
+      end;
+    end;
+  until FLastErrorCode = 0;
+end;
 
 
 {$ENDREGION}
 
 
 {$REGION 'Private Properties Getters/Setters'}
-
-function TDeviceFP700X.GetErrorCodeI: Integer;
-begin
-  Result := StrToInt(FErrorCode);
-end;
-
-procedure TDeviceFP700X.SetErrorCodeI(AValue: Integer);
-begin
-  FErrorCode := IntToStr(AValue);
-end;
 
 {$ENDREGION}
 
@@ -920,353 +941,50 @@ begin
   Result := FObservable;
 end;
 
-function TDeviceFP700X.GetCash: Double;
-begin
-  Result := FCash;
-end;
-
 {$ENDREGION}
 
 
 {$REGION 'Interfaced Methods'}
 
 procedure TDeviceFP700X.CashCheck;
-var
-	ErrorCode : WideString; //
-	CashSum   : WideString; //
-	ServIn    : WideString; //
-	ServOut   : WideString; //
-	AmountType: WideString; //
-	Amount    : WideString; //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeCashCheck]);
-	try
-    AmountType := '0'; //
-    Amount := '0';     // If Amount=0,the only Answer is returned, and receipt does not print.
-    if
-      Model_FP700X.execute_070_info_Get_CashIn_CashOut(
-        FP700X,                                              //
-        AmountType,                                          //
-        Amount,                                              //
-        ErrorCode,                                           //
-        CashSum,                                             //
-        ServIn,                                              //
-        ServOut
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorCashCheck]);
-    end else begin
-      FCash := StrToFloat(CashSum);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterCashCheck]);
-	end;
+  CashInCashOut('0', '0.00');
 end;
 
 procedure TDeviceFP700X.CashIn(const AAmount: WideString);
-var
-	ErrorCode : WideString; //
-	CashSum   : WideString; //
-	ServIn    : WideString; //
-	ServOut   : WideString; //
-	AmountType: WideString; //
-	Amount    : WideString; //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeCashIn]);
-	try
-    AmountType := '0'; //
-    Amount := AAmount;
-    if
-      Model_FP700X.execute_070_receipt_CashIn_CashOut(
-        FP700X,                                   //
-        AmountType,                                      //
-        Amount,                                          //
-        ErrorCode,                                       //
-        CashSum,                                         //
-        ServIn,                                          //
-        ServOut
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorCashIn]);
-    end else begin
-      FCash := StrToFloat(CashSum);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterCashIn]);
-	end;
+  CashInCashOut('0', AAmount);
 end;
 
 procedure TDeviceFP700X.CashOut(const AAmount: WideString);
-var
-	ErrorCode : WideString; //
-	CashSum   : WideString; //
-	ServIn    : WideString; //
-	ServOut   : WideString; //
-	AmountType: WideString; //
-	Amount    : WideString; //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeCashOut]);
-	try
-    AmountType := '1'; //
-    Amount := AAmount;
-    if
-      Model_FP700X.execute_070_receipt_CashIn_CashOut(
-        FP700X,                                   //
-        AmountType,                                      //
-        Amount,                                          //
-        ErrorCode,                                       //
-        CashSum,                                         //
-        ServIn,                                          //
-        ServOut
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorCashOut]);
-    end else begin
-      FCash := StrToFloat(CashSum);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterCashOut]);
-	end;
+  CashInCashOut('1', AAmount);
 end;
 
 
 procedure TDeviceFP700X.XReport;
-var
-   Option: WideString;                 //
-   ErrorCode: WideString;              //
-   nRep: WideString;                   //
-   TotalSum_A: WideString;             //
-   TotalSum_B: WideString;             //
-   TotalSum_C: WideString;             //
-   TotalSum_D: WideString;             //
-   TotalSum_E: WideString;             //
-   TotalSum_F: WideString;             //
-   TotalSum_G: WideString;             //
-   TotalSum_H: WideString;             //
-   StornoSum_A: WideString;            //
-   StornoSum_B: WideString;            //
-   StornoSum_C: WideString;            //
-   StornoSum_D: WideString;            //
-   StornoSum_E: WideString;            //
-   StornoSum_F: WideString;            //
-   StornoSum_G: WideString;            //
-   StornoSum_H: WideString;            //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeXReport]);
-	try
-    Option := 'X'; //
-    if
-      Model_FP700X.execute_069_report_DailyClosure_01(
-        FP700X,                 //
-        Option,                 //
-        ErrorCode,              //
-        nRep,                   //
-        TotalSum_A,             //
-        TotalSum_B,             //
-        TotalSum_C,             //
-        TotalSum_D,             //
-        TotalSum_E,             //
-        TotalSum_F,             //
-        TotalSum_G,             //
-        TotalSum_H,             //
-        StornoSum_A,            //
-        StornoSum_B,            //
-        StornoSum_C,            //
-        StornoSum_D,            //
-        StornoSum_E,            //
-        StornoSum_F,            //
-        StornoSum_G,            //
-        StornoSum_H             //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorXReport]);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterXReport]);
-	end;
+  DailyReport('X');
 end;
 
 procedure TDeviceFP700X.ZReport;
-var
-   Option: WideString;                 //
-   ErrorCode: WideString;              //
-   nRep: WideString;                   //
-   TotalSum_A: WideString;             //
-   TotalSum_B: WideString;             //
-   TotalSum_C: WideString;             //
-   TotalSum_D: WideString;             //
-   TotalSum_E: WideString;             //
-   TotalSum_F: WideString;             //
-   TotalSum_G: WideString;             //
-   TotalSum_H: WideString;             //
-   StornoSum_A: WideString;            //
-   StornoSum_B: WideString;            //
-   StornoSum_C: WideString;            //
-   StornoSum_D: WideString;            //
-   StornoSum_E: WideString;            //
-   StornoSum_F: WideString;            //
-   StornoSum_G: WideString;            //
-   StornoSum_H: WideString;            //
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforeZReport]);
-	try
-    Option := 'Z'; //
-    if
-      Model_FP700X.execute_069_report_DailyClosure_01(
-        FP700X,                 //
-        Option,                 //
-        ErrorCode,              //
-        nRep,                   //
-        TotalSum_A,             //
-        TotalSum_B,             //
-        TotalSum_C,             //
-        TotalSum_D,             //
-        TotalSum_E,             //
-        TotalSum_F,             //
-        TotalSum_G,             //
-        TotalSum_H,             //
-        StornoSum_A,            //
-        StornoSum_B,            //
-        StornoSum_C,            //
-        StornoSum_D,            //
-        StornoSum_E,            //
-        StornoSum_F,            //
-        StornoSum_G,            //
-        StornoSum_H             //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorZReport]);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterZReport]);
-	end;
+  DailyReport('Z');
 end;
 
-procedure TDeviceFP700X.PReport(const APeriodStart, APeriodFinish: TDate);
-var
-  From_DateTime: WideString;
-  To_DateTime: WideString;
-  Input_DocType: WideString;
-  ErrorCode: WideString;
-  Start_DateTime: WideString;
-  End_DateTime: WideString;
-  First_DocumentNumber: WideString;
-  Last_DocumentNumber: WideString;
-
-  ReportType: WideString;        //
-  StartNumber: WideString;       //
-  EndNumber: WideString;         //
+procedure TDeviceFP700X.PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  SendNotification([actFiscalDeviceBeforePReport]);
-
-  try
-    From_DateTime :=
-      DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
-      MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
-      (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+' '+
-      HourOf(APeriodStart).ToString.PadLeft(2, '0')+':'+
-      MinuteOf(APeriodStart).ToString.PadLeft(2, '0')+':'+
-      SecondOf(APeriodStart).ToString.PadLeft(2, '0')+' DST';
-    To_DateTime :=
-      DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
-      MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
-      (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+' '+
-      HourOf(APeriodFinish).ToString.PadLeft(2, '0')+':'+
-      MinuteOf(APeriodFinish).ToString.PadLeft(2, '0')+':'+
-      SecondOf(APeriodFinish).ToString.PadLeft(2, '0')+' DST';
-    Input_DocType := '2';
-
-    ShowMessage(
-      ' | '+
-      From_DateTime
-      +' | '+
-      To_DateTime
-      +' | '+
-      Input_DocType
-      +' | '
-    );
-    if
-      Model_FP700X.execute_124_klen_Documents_InRange(
-        FP700X,                 //
-        From_DateTime,          //
-        To_DateTime,            //
-        Input_DocType,          //
-        ErrorCode,              //
-        Start_DateTime,         //
-        End_DateTime,           //
-        First_DocumentNumber,   //
-        Last_DocumentNumber     //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorPReport]);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterPReport]);
-  end;
-
-	try
-    ReportType := '0';
-    StartNumber := First_DocumentNumber;
-    EndNumber := Last_DocumentNumber;
-    StartNumber := '1';
-    EndNumber := '1';
-    ShowMessage(
-      ' | '+
-      ReportType
-      +' | '+
-      StartNumber
-      +' | '+
-      EndNumber
-      +' | '
-    );
-    if
-      Model_FP700X.execute_095_report_FMByNumRange(
-        FP700X,       //
-        ReportType,   //
-        StartNumber,  //
-        EndNumber,    //
-        ErrorCode     //
-      ) <> 0
-    then begin
-      ShowMessage(FP700X.get_ErrorMessageByCode(StrToInt(ErrorCode)));
-      SendNotification([actFiscalDeviceErrorPReport]);
-    end;
-	finally
-    SendNotification([actFiscalDeviceAfterPReport]);
-	end;
+  PeriodReport(APeriodStart, APeriodFinish, AShort);
 end;
 
 
 procedure TDeviceFP700X.SetupSale(const ASale: IModelClassSale);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
   CheckAndResolve;
 end;
 
 procedure TDeviceFP700X.OpenSale(const ASale: IModelClassSale);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  // Open Fiscal Check
   OpenFiscalReceipt(
     ASale.UserGID,
     '0000',
@@ -1274,10 +992,15 @@ begin
     ASale.WorkstationID
   );
 
-  // Print Cashier Info
+  ASale.ReceiptID := SlipNumber;
+
   PrintFiscalText('КАСИЕР: ' + G.UserName + '     КАСА: ' + ASale.WorkstationID);
 
-  // Print Separator
+  if ASale.ClientGID <> TAppSettings.GetSetting('CommonClientGID') then begin
+    PrintFiscalText('КЛИЕНТ: ' + ASale.ClientName);
+    PrintFiscalText('БУЛСТАТ: ' + ASale.ClientTaxNumber);
+  end;
+
   PrintSeparatingLine;
 end;
 
@@ -1286,19 +1009,30 @@ var
   LSubTotalBefore: WideString;
   LSubTotalAfter: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
   SubTotal(LSubTotalBefore);
 
-  SellItem(
-    ASaleDetails.ItemName,
-    '2',
-    ASaleDetails.ClientPrice,
-    ASaleDetails.Quantity,
-    ASaleDetails.DiscountType,
-    ASaleDetails.DiscountValue,
-    ASaleDetails.Measure
-  );
+  if ASaleDetails.VATRate = '9.00' then begin
+    SellItem(
+      ASaleDetails.ItemName,
+      '4',
+      ASaleDetails.ClientPrice,
+      ASaleDetails.Quantity,
+      ASaleDetails.DiscountType,
+      ASaleDetails.DiscountValue,
+      ASaleDetails.Measure
+    );
+  end else begin
+    SellItem(
+      ASaleDetails.ItemName,
+      '2',
+      ASaleDetails.ClientPrice,
+      ASaleDetails.Quantity,
+      ASaleDetails.DiscountType,
+      ASaleDetails.DiscountValue,
+      ASaleDetails.Measure
+    );
+  end;
+
 
   SubTotal(LSubTotalAfter);
 
@@ -1313,8 +1047,6 @@ var
   LSubTotalAfter: WideString;
   LDiscount: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
   SubTotal(LSubTotalBefore);
 
   LDiscount := FormatFloat('0.00', - ASaleDetails.Quantity.ToDouble * ASaleDetails.ClientPrice.ToDouble);
@@ -1332,19 +1064,29 @@ var
   LSubTotalBefore: WideString;
   LSubTotalAfter: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
   SubTotal(LSubTotalBefore);
 
-  SellItem(
-    ASaleCancellation.ItemName,
-    '2',
-    ASaleCancellation.ClientPrice,
-    ASaleCancellation.Quantity,
-    ASaleCancellation.DiscountType,
-    ASaleCancellation.DiscountValue,
-    ASaleCancellation.Measure
-  );
+  if ASaleCancellation.VATRate = '9.00' then begin
+    SellItem(
+      ASaleCancellation.ItemName,
+      '4',
+      ASaleCancellation.ClientPrice,
+      ASaleCancellation.Quantity,
+      ASaleCancellation.DiscountType,
+      ASaleCancellation.DiscountValue,
+      ASaleCancellation.Measure
+    );
+  end else begin
+    SellItem(
+      ASaleCancellation.ItemName,
+      '2',
+      ASaleCancellation.ClientPrice,
+      ASaleCancellation.Quantity,
+      ASaleCancellation.DiscountType,
+      ASaleCancellation.DiscountValue,
+      ASaleCancellation.Measure
+    );
+  end;
 
   SubTotal(LSubTotalAfter);
 
@@ -1353,34 +1095,52 @@ begin
   end;
 end;
 
-procedure TDeviceFP700X.Totals(const ASale: IModelClassSale);
+procedure TDeviceFP700X.VoucherTotal(const ASale: IModelClassSale);
+var
+  LStatus: WideString;
+  LAmount: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
+  ASale.Due := OpenReceiptAmount;
+  Total('3', ASale.VoucherPayment, LStatus, LAmount);
+end;
 
-  // Fiscalize Voucher Payment
-  if ASale.VoucherPayment.ToDouble > 0 then begin
-    Total('3', ASale.VoucherPayment, '');
+procedure TDeviceFP700X.CardTotal(const ASale: IModelClassSale);
+var
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  ASale.Due := OpenReceiptAmount;
+  Total('2', ASale.CardPayment, LStatus, LAmount);
+end;
+
+procedure TDeviceFP700X.CashTotal(const ASale: IModelClassSale);
+var
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  ASale.Due := OpenReceiptAmount;
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if OpenReceiptAmount.ToDouble > (ASale.CashPayment.ToDouble + OpenReceiptPayed.ToDouble) then begin
+      ASale.CashPayment := FormatFloat('0.00', OpenReceiptAmount.ToDouble - OpenReceiptPayed.ToDouble);
+    end;
   end;
-
-  // Fiscalize Card Payment
-  if ASale.CardPayment.ToDouble > 0 then begin
-    Total('2', ASale.CardPayment, '');
+  if OpenReceiptAmount.ToDouble = OpenReceiptPayed.ToDouble then begin
+    ASale.CashPayment := '0.00';
   end;
+  ASale.Returned := FormatFloat('0.00', ASale.VoucherPayment.ToDouble + ASale.CardPayment.ToDouble + ASale.CashPayment.ToDouble - ASale.Due.ToDouble);
+  ASale.UpdateInDataSet;
 
-  // Fiscalize Cash Payment
-  if ASale.CashPayment.ToDouble > 0 then begin
-    Total('0', ASale.CashPayment, '');
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if ASale.CashPayment <> '0.00' then begin
+      Total('0', ASale.CashPayment, LStatus, LAmount);
+    end;
   end;
 end;
 
 procedure TDeviceFP700X.CloseSale(const ASale: IModelClassSale);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  // Open Till
   DrawerKickOut;
 
-  // Close Fiscal Check
   CloseFiscalReceipt;
 end;
 
@@ -1392,23 +1152,18 @@ end;
 
 procedure TDeviceFP700X.OpenReversal(const ASale: IModelClassSale);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  // Open Fiscal Check
   OpenReversalReceipt(
     ASale.UserGID,
     '0000',
     ASale.WorkstationID,
     ASale.SaleID,
-    ASale.CreatedDate + ' ' + ASale.CreatedTime + ' DST',
+    ASale.CreatedDate + ' ' + ASale.CreatedTime,
     ASale.FiscalDeviceID,
     ASale.SaleUniqueID
   );
 
-  // Print Cashier Info
   PrintFiscalText('КАСИЕР: ' + G.UserName + '     КАСА: ' + ASale.WorkstationID);
 
-  // Print Separator
   PrintSeparatingLine;
 end;
 
@@ -1417,19 +1172,29 @@ var
   LSubTotalBefore: WideString;
   LSubTotalAfter: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
   SubTotal(LSubTotalBefore);
 
-  SellItem(
-    ASaleReversal.ItemName,
-    '2',
-    ASaleReversal.ClientPrice,
-    ASaleReversal.Quantity,
-    ASaleReversal.DiscountType,
-    ASaleReversal.DiscountValue,
-    ASaleReversal.Measure
-  );
+  if ASaleReversal.VATRate = '9.00' then begin
+    SellItem(
+      ASaleReversal.ItemName,
+      '4',
+      ASaleReversal.ClientPrice,
+      ASaleReversal.Quantity,
+      ASaleReversal.DiscountType,
+      ASaleReversal.DiscountValue,
+      ASaleReversal.Measure
+    );
+  end else begin
+    SellItem(
+      ASaleReversal.ItemName,
+      '2',
+      ASaleReversal.ClientPrice,
+      ASaleReversal.Quantity,
+      ASaleReversal.DiscountType,
+      ASaleReversal.DiscountValue,
+      ASaleReversal.Measure
+    );
+  end;
 
   SubTotal(LSubTotalAfter);
 
@@ -1439,27 +1204,25 @@ begin
 end;
 
 procedure TDeviceFP700X.TotalsOnReversal(const ASaleReversal: IModelClassSaleReversal);
+var
+  LStatus: WideString;
+  LAmount: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  Total('0', ASaleReversal.Total, '');
+  Total('0', ASaleReversal.Total, LStatus, LAmount);
 end;
 
 procedure TDeviceFP700X.TotalsOnReversalAll(const ADue: WideString);
+var
+  LStatus: WideString;
+  LAmount: WideString;
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  Total('0', ADue, '');
+  Total('0', ADue, LStatus, LAmount);
 end;
 
 procedure TDeviceFP700X.CloseReversal(const ASale: IModelClassSale);
 begin
-  if not G.FiscalDevicePresent then Exit;
-
-  // Open Till
   DrawerKickOut;
 
-  // Close Fiscal Check
   CloseFiscalReceipt;
 end;
 
@@ -1468,6 +1231,115 @@ begin
   CancelFiscalReceipt;
 end;
 
+
+function TDeviceFP700X.ReceiptIsClosed: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result := (FTransactionIsOpen = '0');
+end;
+
+function TDeviceFP700X.FiscalReceiptIsOpen: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result := (FTransactionIsOpen = '1');
+end;
+
+function TDeviceFP700X.StornoReceiptIsOpen: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result :=
+    (FTransactionIsOpen = '2') or
+    (FTransactionIsOpen = '3') or
+    (FTransactionIsOpen = '4');
+end;
+
+function TDeviceFP700X.NonFiscalReceiptIsOpen: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result := (FTransactionIsOpen = '5');
+end;
+
+function TDeviceFP700X.OpenReceiptNumber: String;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  if (FTransactionIsOpen <> '0') then begin
+    Result := FTransactionNumber;
+  end else begin
+    Result := '-1';
+  end;
+end;
+
+function TDeviceFP700X.OpenReceiptItems: String;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  if (FTransactionIsOpen <> '0') then begin
+    Result := FTransactionItems;
+  end else begin
+    Result := '-1';
+  end;
+end;
+
+function TDeviceFP700X.OpenReceiptWithoutItems: Boolean;
+begin
+  Result := (OpenReceiptItems = '0');
+end;
+
+function TDeviceFP700X.OpenReceiptAmount: String;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  if (FTransactionIsOpen <> '0') then begin
+    Result := FTransactionAmount;
+  end else begin
+    Result := '-1';
+  end;
+end;
+
+function TDeviceFP700X.OpenReceiptWithoutDue: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result :=
+    (FTransactionIsOpen <> '0') and
+    (FTransactionAmount = '0.00');
+end;
+
+function TDeviceFP700X.OpenReceiptPayed: String;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  if (FTransactionIsOpen <> '0') then begin
+    Result := FTransactionPayed;
+  end else begin
+    Result := '-1';
+  end;
+end;
+
+function TDeviceFP700X.OpenReceiptWithNoPayment: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result :=
+    (FTransactionIsOpen <> '0') and
+    (FTransactionPayed = '0.00');
+end;
+
+function TDeviceFP700X.OpenReceiptWithPartialPayment: Boolean;
+begin
+  ShowMessage('101');
+  CheckTheStatusOfTheFiscalTransaction;
+  ShowMessage('102');
+  Result :=
+    (FTransactionIsOpen <> '0') and
+    (FTransactionAmount <> FTransactionPayed) and
+    (FTransactionPayed <> '0.00');
+  ShowMessage('103');
+end;
+
+function TDeviceFP700X.OpenReceiptWithFullPayment: Boolean;
+begin
+  CheckTheStatusOfTheFiscalTransaction;
+  Result :=
+    (FTransactionIsOpen <> '0') and
+    (FTransactionAmount = FTransactionPayed) and
+    (FTransactionPayed <> '0.00');
+end;
 
 {$ENDREGION}
 

@@ -1,0 +1,55 @@
+unit Interfaces.Model.Classes;
+
+interface
+
+uses
+  System.JSON,
+  System.Generics.Collections;
+
+type
+  IModelClassBaseObject = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата<summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование<summary>
+    property Name: String read GetName write SetName;
+
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна промяна<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+  IModelClassBaseCollection = interface
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Attach(const AObject: IModelClassBaseObject);
+    procedure Detach(const AObject: IModelClassBaseObject);
+    function GetByGID(const AGID: String): IModelClassBaseObject;
+
+    procedure SaveToFile;
+  end;
+
+implementation
+
+end.

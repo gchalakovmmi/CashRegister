@@ -81,8 +81,6 @@ object ViewCheckItem: TViewCheckItem
     ParentBackground = False
     TabOrder = 0
     StyleElements = []
-    ExplicitTop = 108
-    ExplicitWidth = 834
     object LabelCode: TLabel
       Left = 0
       Top = 0

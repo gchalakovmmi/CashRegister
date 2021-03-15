@@ -1759,13 +1759,13 @@ END
 /* Z:\!anet4\Sources\FPTest2019\Device.FP700X.dfm */
 /* Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Users.dfm */
 /* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\Buttons.res */
-/* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\ExtDlgs.res */
 /* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\Vcl.DBLogDlg.dfm */
 /* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\Vcl.DBPWDlg.dfm */
 /* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\DBCtrls.res */
 /* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\DBGrids.res */
-/* Z:\!anet4\Sources\FPTest2019\Views\View.SelectItem.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.SelectClient.dfm */
+/* c:\program files (x86)\embarcadero\studio\20.0\lib\Win32\release\ExtDlgs.res */
+/* Z:\!anet4\Sources\FPTest2019\Views\View.SelectItem.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.Sale.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.Login.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Components\ButtonWithColor.RES */
@@ -1774,7 +1774,10 @@ END
 /* Z:\!anet4\Sources\FPTest2019\Views\View.CheckItem.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.dfm */
+/* Z:\!anet4\Sources\FPTest2019\Views\View.Admin.Nomenclatures.Stores.dfm */
+/* Z:\!anet4\Sources\FPTest2019\Views\View.Admin.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.Reports.dfm */
+/* Z:\!anet4\Sources\FPTest2019\Views\View.Audit.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.CashInOut.dfm */
 /* Z:\!anet4\Sources\FPTest2019\Views\View.Main.dfm */
 /* Z:\!anet4\Sources\FPTest2019\FPTest2019.res */

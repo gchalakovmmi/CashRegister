@@ -1,0 +1,27 @@
+﻿unit Interfaces.Model.Classes.RolesUsers;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.RoleUser;
+
+type
+  IModelClassRolesUsers = interface
+  ['{78B5A6B7-FE0A-4D4A-A78E-407B16D933AE}']
+    function GetList: TList<IModelClassRoleUser>;
+
+    property List: TList<IModelClassRoleUser> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const ARoleUser: IModelClassRoleUser);
+    function GetByGID(const AGID: String): IModelClassRoleUser;
+  end;
+
+implementation
+
+end.

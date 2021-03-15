@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.Stores;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Store;
+
+type
+  IModelClassStores = interface
+    function GetList: TList<IModelClassStore>;
+
+    property List: TList<IModelClassStore> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AStore: IModelClassStore);
+    function GetByGID(const AGID: String): IModelClassStore;
+  end;
+
+implementation
+
+end.

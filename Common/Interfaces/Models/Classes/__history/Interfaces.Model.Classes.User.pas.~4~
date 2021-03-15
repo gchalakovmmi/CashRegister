@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.User;
+
+interface
+
+uses
+  Interfaces.Model.Classes,
+  Interfaces.Model.Classes.Roles,
+  Interfaces.Model.Classes.Permissions;
+
+type
+  IModelClassUser = interface(IModelClassBaseObject)
+    function GetPassword: String;
+    procedure SetPassword(const AValue: String);
+    ///<summary>хеш на паролата на потребителя<summary>
+    property Password: String read GetPassword write SetPassword;
+
+    function GetRoles: IModelClassRoles;
+    property Roles: IModelClassRoles read GetRoles;
+
+    function GetPermissions: IModelClassPermissions;
+    property Permissions: IModelClassPermissions read GetPermissions;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,24 @@
+unit View.Operation.Cancellations;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TViewOperationCancellations = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewOperationCancellations: TViewOperationCancellations;
+
+implementation
+
+{$R *.dfm}
+
+end.

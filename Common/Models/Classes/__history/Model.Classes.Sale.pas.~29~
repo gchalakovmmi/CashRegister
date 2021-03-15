@@ -1,0 +1,1561 @@
+﻿unit Model.Classes.Sale;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Sale;
+
+  function CreateModelClassSale: IModelClassSale;
+  function CreateFromDataSetModelClassSale: IModelClassSale;
+  function CreateFromJSONModelClassSale(const AJSONObject: TJSONObject): IModelClassSale;
+  function CreateFromFileModelClassSale(const AFileName: String): IModelClassSale; overload;
+  function CreateFromFileModelClassSale(const AGID, ACreatedDate: String): IModelClassSale; overload;
+  procedure AssignDataSetModelClassSale(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.DateUtils,
+  Helper.MyFuncs,
+  Model.Generator.GIDs,
+  Model.AppSettings,
+  Globals,
+  Interfaces.Model.Classes.Sale.Details,
+  Interfaces.Model.Classes.Sale.Detail,
+  Interfaces.Model.Classes.Sale.Cancellations,
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversals,
+  Interfaces.Model.Classes.Sale.Reversal,
+  Interfaces.Model.Classes.Sale.Payments,
+  Interfaces.Model.Classes.Sale.Payment,
+  Model.Classes.Sale.Details,
+  Model.Classes.Sale.Detail,
+  Model.Classes.Sale.Cancellations,
+  Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Reversals,
+  Model.Classes.Sale.Reversal,
+  Model.Classes.Sale.Payments,
+  Model.Classes.Sale.Payment,
+  Bde.DBTables,
+  View.Message;
+
+type
+  TModelClassSale = class(TInterfacedObject, IModelClassSale)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure AddDetail(const ASaleDetail: IModelClassSaleDetail);
+    procedure AddCancellation(const ASaleCancellation: IModelClassSaleCancellation);
+    procedure AddReversal(const ASaleReversal: IModelClassSaleReversal);
+    procedure AddPayment(const ASalePayment: IModelClassSalePayment);
+    function GenerateCashPayment: IModelClassSalePayment;
+    function GenerateVoucherPayment: IModelClassSalePayment;
+    function GenerateCardPayment: IModelClassSalePayment;
+    function GenerateReturnedPayment: IModelClassSalePayment;
+    function GenerateReversalPayment(const ASaleReversal: IModelClassSaleReversal): IModelClassSalePayment;
+    procedure SaveToFile;
+    procedure ExecSQL(const ASQL: String);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FStoreID: String;
+    FStoreName: String;
+    FWorkstationID: String;
+    FFiscalDeviceID: String;
+    FUserGID: String;
+    FSaleID: String;
+    FSaleUniqueID: String;
+    FReceiptID: String;
+    FClientGID: String;
+    FClientName: String;
+    FClientTaxNumberType: String;
+    FClientTaxNumber: String;
+    FClientAddress: String;
+    FClientReceiver: String;
+    FClientBuyer: String;
+    FClientVIPStatus: String;
+    FClientSurcharge: String;
+    FInvoiceID: String;
+    FInvoiceDate: String;
+    FCreatedDate: String;
+    FCreatedTime: String;
+    FCompletedDate: String;
+    FCompletedTime: String;
+    FTotalBase: String;
+    FDiscount: String;
+    FTotalVAT: String;
+    FDue: String;
+    FCashPayment: String;
+    FVoucherPayment: String;
+    FCardPayment: String;
+    FReturned: String;
+    FStage: String;
+
+    FDetails: IModelClassSaleDetails;
+    FCancellations: IModelClassSaleCancellations;
+    FReversals: IModelClassSaleReversals;
+    FPayments: IModelClassSalePayments;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetStoreID: String;
+    procedure SetStoreID(const AValue: String);
+    function GetStoreName: String;
+    procedure SetStoreName(const AValue: String);
+    function GetWorkstationID: String;
+    procedure SetWorkstationID(const AValue: String);
+    function GetFiscalDeviceID: String;
+    procedure SetFiscalDeviceID(const AValue: String);
+    function GetUserGID: String;
+    procedure SetUserGID(const AValue: String);
+    function GetSaleID: String;
+    procedure SetSaleID(const AValue: String);
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    function GetReceiptID: String;
+    procedure SetReceiptID(const AValue: String);
+    function GetClientGID: String;
+    procedure SetClientGID(const AValue: String);
+    function GetClientName: String;
+    procedure SetClientName(const AValue: String);
+    function GetClientTaxNumberType: String;
+    procedure SetClientTaxNumberType(const AValue: String);
+    function GetClientTaxNumber: String;
+    procedure SetClientTaxNumber(const AValue: String);
+    function GetClientAddress: String;
+    procedure SetClientAddress(const AValue: String);
+    function GetClientReceiver: String;
+    procedure SetClientReceiver(const AValue: String);
+    function GetClientBuyer: String;
+    procedure SetClientBuyer(const AValue: String);
+    function GetClientVIPStatus: String;
+    procedure SetClientVIPStatus(const AValue: String);
+    function GetClientSurcharge: String;
+    procedure SetClientSurcharge(const AValue: String);
+    function GetInvoiceID: String;
+    procedure SetInvoiceID(const AValue: String);
+    function GetInvoiceDate: String;
+    procedure SetInvoiceDate(const AValue: String);
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    function GetCompletedDate: String;
+    procedure SetCompletedDate(const AValue: String);
+    function GetCompletedTime: String;
+    procedure SetCompletedTime(const AValue: String);
+    function GetTotalBase: String;
+    procedure SetTotalBase(const AValue: String);
+    function GetDiscount: String;
+    procedure SetDiscount(const AValue: String);
+    function GetTotalVAT: String;
+    procedure SetTotalVAT(const AValue: String);
+    function GetDue: String;
+    procedure SetDue(const AValue: String);
+    function GetCashPayment: String;
+    procedure SetCashPayment(const AValue: String);
+    function GetVoucherPayment: String;
+    procedure SetVoucherPayment(const AValue: String);
+    function GetCardPayment: String;
+    procedure SetCardPayment(const AValue: String);
+    function GetReturned: String;
+    procedure SetReturned(const AValue: String);
+    function GetStage: String;
+    procedure SetStage(const AValue: String);
+
+    function GetDetails: IModelClassSaleDetails;
+    procedure SetDetails(const AValue: IModelClassSaleDetails);
+    function GetCancellations: IModelClassSaleCancellations;
+    procedure SetCancellations(const AValue: IModelClassSaleCancellations);
+    function GetReversals: IModelClassSaleReversals;
+    procedure SetReversals(const AValue: IModelClassSaleReversals);
+    function GetPayments: IModelClassSalePayments;
+    procedure SetPayments(const AValue: IModelClassSalePayments);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+    ///<sumarry>код на търговски обект</summary>
+    property StoreID: String read GetStoreID write SetStoreID;
+    ///<sumarry>наименование на търговски обект</summary>
+    property StoreName: String read GetStoreName write SetStoreName;
+    ///<sumarry>код на работно място</summary>
+    property WorkstationID: String read GetWorkstationID write SetWorkstationID;
+    ///<sumarry>номер на фискалното устройство</summary>
+    property FiscalDeviceID: String read GetFiscalDeviceID write SetFiscalDeviceID;
+    ///<sumarry>номер на оператор</summary>
+    property UserGID: String read GetUserGID write SetUserGID;
+    ///<sumarry>пореден номер на продажбата</summary>
+    property SaleID: String read GetSaleID write SetSaleID;
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+    ///<sumarry>номер на фискален бон</summary>
+    property ReceiptID: String read GetReceiptID write SetReceiptID;
+    ///<sumarry>клиент код (при наличие на въведена информация)</summary>
+    property ClientGID: String read GetClientGID write SetClientGID;
+    ///<sumarry>клиент име (при наличие на въведена информация)</summary>
+    property ClientName: String read GetClientName write SetClientName;
+    ///<sumarry>вид номер (ЕИК/ЕГН/ЛНЧ/СН)</summary>
+    property ClientTaxNumberType: String read GetClientTaxNumberType write SetClientTaxNumberType;
+    ///<sumarry>ЕИК/ЕГН/ЛНЧ/СН</summary>
+    property ClientTaxNumber: String read GetClientTaxNumber write SetClientTaxNumber;
+    ///<sumarry>адрес на клиента</summary>
+    property ClientAddress: String read GetClientAddress write SetClientAddress;
+    ///<sumarry>МОЛ на клиента</summary>
+    property ClientReceiver: String read GetClientReceiver write SetClientReceiver;
+    ///<sumarry>получател на клиента</summary>
+    property ClientBuyer: String read GetClientBuyer write SetClientBuyer;
+    ///<sumarry>клиент VIP статус (при наличие на въведена информация)</summary>
+    property ClientVIPStatus: String read GetClientVIPStatus write SetClientVIPStatus;
+    ///<sumarry>клиент надценка над доставни цени</summary>
+    property ClientSurcharge: String read GetClientSurcharge write SetClientSurcharge;
+    ///<sumarry>фактура за продажбата - номер (ако е издадена фактура и в софтуера е налична информация)</summary>
+    property InvoiceID: String read GetInvoiceID write SetInvoiceID;
+    ///<sumarry>фактура за продажбата - дата (ако е издадена фактура и в софтуера е налична информация)</summary>
+    property InvoiceDate: String read GetInvoiceDate write SetInvoiceDate;
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    property CreatedTime: String read GetCreatedTime write SetCreatedTime;
+    ///<sumarry>дата на приключване на продажбата</summary>
+    property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+    ///<sumarry>време на приключване на продажбата (час, минута, секунда)</summary>
+    property CompletedTime: String read GetCompletedTime write SetCompletedTime;
+    ///<sumarry>обща сума на продажбата - без ДДС, в лв.</summary>
+    property TotalBase: String read GetTotalBase write SetTotalBase;
+    ///<summary>отстъпка - в лв.</summary>
+    property Discount: String read GetDiscount write SetDiscount;
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    property TotalVAT: String read GetTotalVAT write SetTotalVAT;
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    property Due: String read GetDue write SetDue;
+    ///<sumarry>сума платена в брой в лв.</summary>
+    property CashPayment: String read GetCashPayment write SetCashPayment;
+    ///<sumarry>сума платена с ваучер в лв.</summary>
+    property VoucherPayment: String read GetVoucherPayment write SetVoucherPayment;
+    ///<sumarry>сума платена с карта в лв.</summary>
+    property CardPayment: String read GetCardPayment write SetCardPayment;
+    ///<sumarry>върнато ресто в лв.</summary>
+    property Returned: String read GetReturned write SetReturned;
+    ///<sumarry>етап на обработка на продажбата</summary>
+    property Stage: String read GetStage write SetStage;
+
+    ///<sumarry>детайлни данни за продажбата</summary>
+    property Details: IModelClassSaleDetails read GetDetails write SetDetails;
+    ///<sumarry>данни за анулиранията по продажбата</summary>
+    property Cancellations: IModelClassSaleCancellations read GetCancellations write SetCancellations;
+    ///<sumarry>данни за сторниранията по продажбата</summary>
+    property Reversals: IModelClassSaleReversals read GetReversals write SetReversals;
+    ///<sumarry>данни за плащанията по продажбата</summary>
+    property Payments: IModelClassSalePayments read GetPayments write SetPayments;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+    procedure ToFile;
+    procedure ReversalToFile(const AReversal: IModelClassSaleReversal);
+
+    function GetSaleDetailByGID(const AGID: String): IModelClassSaleDetail;
+
+    procedure SetupSale;
+    procedure OpenSale;
+    procedure RegistrationOfSale(const ASaleDetail: IModelClassSaleDetail);
+    procedure RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
+    procedure VoucherTotal;
+    procedure CardTotal;
+    procedure CashTotal;
+    procedure CloseSale;
+    procedure DiscardSale;
+
+    procedure RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassSale: IModelClassSale;
+begin
+  Result := TModelClassSale.Create;
+end;
+
+function CreateFromDataSetModelClassSale: IModelClassSale;
+begin
+  Result := TModelClassSale.Create;
+  Result.UpdateFromDataSet;
+end;
+
+function CreateFromJSONModelClassSale(const AJSONObject: TJSONObject): IModelClassSale;
+begin
+  Result := TModelClassSale.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromFileModelClassSale(const AFileName: String): IModelClassSale;
+var
+  LText: String;
+begin
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassSale(TJSONObject.ParseJSONValue(LText) as TJSONObject);
+end;
+
+function CreateFromFileModelClassSale(const AGID, ACreatedDate: String): IModelClassSale; overload;
+var
+  LFolderName: String;
+  LFileName: String;
+begin
+  LFolderName := G.SalesFolder;
+  LFolderName := TPath.Combine(LFolderName, '20'+ACreatedDate.Substring(6,2));
+  LFolderName := TPath.Combine(LFolderName, ACreatedDate.Substring(3,2));
+  LFolderName := TPath.Combine(LFolderName, ACreatedDate.Substring(0,2));
+  LFileName := TPath.Combine(LFolderName, 'Sale'+AGID+'.json');
+  Result := CreateFromFileModelClassSale(LFileName);
+end;
+
+
+procedure AssignDataSetModelClassSale(const ADataSet: TFDDataSet);
+begin
+  TModelClassSale.DataSet := ADataSet;
+end;
+
+{ TModelClassSale }
+
+{$REGION 'Private Methods'}
+
+procedure TModelClassSale.AddDetail(const ASaleDetail: IModelClassSaleDetail);
+begin
+  Details.List.Add(ASaleDetail);
+end;
+
+procedure TModelClassSale.AddCancellation(const ASaleCancellation: IModelClassSaleCancellation);
+begin
+  Cancellations.List.Add(ASaleCancellation);
+  Stage := 'налични продажби';
+end;
+
+procedure TModelClassSale.AddReversal(const ASaleReversal: IModelClassSaleReversal);
+begin
+  Reversals.List.Add(ASaleReversal);
+  Stage := 'налични продажби';
+end;
+
+procedure TModelClassSale.AddPayment(const ASalePayment: IModelClassSalePayment);
+begin
+  Payments.List.Add(ASalePayment);
+  Stage := 'налични плащания';
+end;
+
+function TModelClassSale.GenerateCashPayment: IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'cash';
+  Result.Payment := CashPayment;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+function TModelClassSale.GenerateVoucherPayment: IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'voucher';
+  Result.Payment := VoucherPayment;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+function TModelClassSale.GenerateCardPayment: IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'card';
+  Result.Payment := CardPayment;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+function TModelClassSale.GenerateReturnedPayment: IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'returned';
+  Result.Payment := Returned;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+function TModelClassSale.GenerateReversalPayment(const ASaleReversal: IModelClassSaleReversal): IModelClassSalePayment;
+begin
+  Result := CreateModelClassSalePayment;
+  Result.GID := TGeneratorGIDs.NewGIDByName('SalePaymentGID').ToString;
+  Result.ParentGID := GID;
+  Result.SaleUniqueID := SaleUniqueID;
+  Result.FiscalDeviceID := FiscalDeviceID;
+  Result.UserID := UserGID;
+  Result.CreatedDate := CreatedDate;
+  Result.CompletedDate := CreatedDate;
+  Result.PaymentDate := CreatedDate;
+  Result.PaymentType := 'cash reversal';
+  Result.Payment := ASaleReversal.Total;
+  Result.PaymentBase := FormatFloat('0.00', _Round(Result.Payment.ToDouble / 1.2, 0.01));
+  Result.PaymentVAT := FormatFloat('0.00', _Round(Result.Payment.ToDouble - Result.PaymentBase.ToDouble, 0.01));
+end;
+
+procedure TModelClassSale.SaveToFile;
+var
+  LFolderName: String;
+  LFileName: String;
+begin
+  LFolderName := G.SalesFolder;
+  LFolderName := TPath.Combine(LFolderName, '20' + CreatedDate.Substring(6, 2));
+  LFolderName := TPath.Combine(LFolderName, CreatedDate.Substring(3, 2));
+  LFolderName := TPath.Combine(LFolderName, CreatedDate.Substring(0, 2));
+  LFileName := TPath.Combine(LFolderName, 'Sale'+GID+'.json');
+
+  TDirectory.CreateDirectory(LFolderName);
+
+  TFile.WriteAllText(LFileName, ToJSON.ToString, TEncoding.UTF8);
+
+  TAppSettings.SetSetting('LastSaleFileName', LFileName);
+end;
+
+procedure TModelClassSale.ExecSQL(const ASQL: String);
+var
+  LDataBase: TDataBase;
+begin
+  LDataBase := TDataBase.Create(nil);
+  try
+    try
+      LDataBase.DatabaseName := 'MDBS'+FloatToStr(Now);
+      LDataBase.DriverName := 'STANDARD';
+      LDataBase.Params.Clear;
+//      LDataBase.Params.Add('path=.\');
+      LDataBase.Open;
+      LDataBase.Execute(ASQL+'', nil, false, nil);
+      LDataBase.Close;
+    except
+      ViewMessage.ShowBadMessage('Проблем при работа с временните файлове!'+#$0D+ASQL+#$0D);
+    end;
+  finally
+    LDataBase.Free;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassSale.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassSale.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassSale.GetStoreID: String;
+begin
+  Result := FStoreID;
+end;
+
+procedure TModelClassSale.SetStoreID(const AValue: String);
+begin
+  FStoreID := AValue;
+end;
+
+function TModelClassSale.GetStoreName: String;
+begin
+  Result := FStoreName;
+end;
+
+procedure TModelClassSale.SetStoreName(const AValue: String);
+begin
+  FStoreName := AValue;
+end;
+
+function TModelClassSale.GetWorkstationID: String;
+begin
+  Result := FWorkstationID;
+end;
+
+procedure TModelClassSale.SetWorkstationID(const AValue: String);
+begin
+  FWorkstationID := AValue;
+end;
+
+function TModelClassSale.GetFiscalDeviceID: String;
+begin
+  Result := FFiscalDeviceID;
+end;
+
+procedure TModelClassSale.SetFiscalDeviceID(const AValue: String);
+begin
+  FFiscalDeviceID := AValue;
+end;
+
+function TModelClassSale.GetUserGID: String;
+begin
+  Result := FUserGID;
+end;
+
+procedure TModelClassSale.SetUserGID(const AValue: String);
+begin
+  FUserGID := AValue;
+end;
+
+function TModelClassSale.GetSaleID: String;
+begin
+  Result := FSaleID;
+end;
+
+procedure TModelClassSale.SetSaleID(const AValue: String);
+begin
+  FSaleID := AValue;
+end;
+
+function TModelClassSale.GetSaleUniqueID: String;
+begin
+  Result := FSaleUniqueID;
+end;
+
+procedure TModelClassSale.SetSaleUniqueID(const AValue: String);
+begin
+  FSaleUniqueID := AValue;
+end;
+
+function TModelClassSale.GetReceiptID: String;
+begin
+  Result := FReceiptID;
+end;
+
+procedure TModelClassSale.SetReceiptID(const AValue: String);
+begin
+  FReceiptID := AValue;
+end;
+
+function TModelClassSale.GetClientGID: String;
+begin
+  Result := FClientGID;
+end;
+
+procedure TModelClassSale.SetClientGID(const AValue: String);
+begin
+  FClientGID := AValue;
+end;
+
+function TModelClassSale.GetClientName: String;
+begin
+  Result := FClientName;
+end;
+
+procedure TModelClassSale.SetClientName(const AValue: String);
+begin
+  FClientName := AValue;
+end;
+
+function TModelClassSale.GetClientTaxNumberType: String;
+begin
+  Result := FClientTaxNumberType;
+end;
+
+procedure TModelClassSale.SetClientTaxNumberType(const AValue: String);
+begin
+  FClientTaxNumberType := AValue;
+end;
+
+function TModelClassSale.GetClientTaxNumber: String;
+begin
+  Result := FClientTaxNumber;
+end;
+
+procedure TModelClassSale.SetClientTaxNumber(const AValue: String);
+begin
+  FClientTaxNumber := AValue;
+end;
+
+function TModelClassSale.GetClientAddress: String;
+begin
+  Result := FClientAddress;
+end;
+
+procedure TModelClassSale.SetClientAddress(const AValue: String);
+begin
+  FClientAddress := AValue;
+end;
+
+function TModelClassSale.GetClientReceiver: String;
+begin
+  Result := FClientReceiver;
+end;
+
+procedure TModelClassSale.SetClientReceiver(const AValue: String);
+begin
+  FClientReceiver := AValue;
+end;
+
+function TModelClassSale.GetClientBuyer: String;
+begin
+  Result := FClientBuyer;
+end;
+
+procedure TModelClassSale.SetClientBuyer(const AValue: String);
+begin
+  FClientBuyer := AValue;
+end;
+
+function TModelClassSale.GetClientVIPStatus: String;
+begin
+  Result := FClientVIPStatus;
+end;
+
+procedure TModelClassSale.SetClientVIPStatus(const AValue: String);
+begin
+  FClientVIPStatus := AValue;
+end;
+
+function TModelClassSale.GetClientSurcharge: String;
+begin
+  Result := FClientSurcharge;
+end;
+
+procedure TModelClassSale.SetClientSurcharge(const AValue: String);
+begin
+  FClientSurcharge := AValue;
+end;
+
+function TModelClassSale.GetInvoiceID: String;
+begin
+  Result := FInvoiceID;
+end;
+
+procedure TModelClassSale.SetInvoiceID(const AValue: String);
+begin
+  FInvoiceID := AValue;
+end;
+
+function TModelClassSale.GetInvoiceDate: String;
+begin
+  Result := FInvoiceDate;
+end;
+
+procedure TModelClassSale.SetInvoiceDate(const AValue: String);
+begin
+  FInvoiceDate := AValue;
+end;
+
+function TModelClassSale.GetCreatedDate: String;
+begin
+  Result := FCreatedDate;
+end;
+
+procedure TModelClassSale.SetCreatedDate(const AValue: String);
+begin
+  FCreatedDate := AValue;
+end;
+
+function TModelClassSale.GetCreatedTime: String;
+begin
+  Result := FCreatedTime;
+end;
+
+procedure TModelClassSale.SetCreatedTime(const AValue: String);
+begin
+  FCreatedTime := AValue;
+end;
+
+function TModelClassSale.GetCompletedDate: String;
+begin
+  Result := FCompletedDate;
+end;
+
+procedure TModelClassSale.SetCompletedDate(const AValue: String);
+begin
+  FCompletedDate := AValue;
+end;
+
+function TModelClassSale.GetCompletedTime: String;
+begin
+  Result := FCompletedTime;
+end;
+
+procedure TModelClassSale.SetCompletedTime(const AValue: String);
+begin
+  FCompletedTime := AValue;
+end;
+
+function TModelClassSale.GetTotalBase: String;
+begin
+  Result := FTotalBase;
+end;
+
+procedure TModelClassSale.SetTotalBase(const AValue: String);
+begin
+  FTotalBase := AValue;
+end;
+
+function TModelClassSale.GetDiscount: String;
+begin
+  Result := FDiscount;
+end;
+
+procedure TModelClassSale.SetDiscount(const AValue: String);
+begin
+  FDiscount := AValue;
+end;
+
+function TModelClassSale.GetTotalVAT: String;
+begin
+  Result := FTotalVAT;
+end;
+
+procedure TModelClassSale.SetTotalVAT(const AValue: String);
+begin
+  FTotalVAT := AValue;
+end;
+
+function TModelClassSale.GetDue: String;
+begin
+  Result := FDue;
+end;
+
+procedure TModelClassSale.SetDue(const AValue: String);
+begin
+  FDue := AValue;
+end;
+
+function TModelClassSale.GetCashPayment: String;
+begin
+  Result := FCashPayment;
+end;
+
+procedure TModelClassSale.SetCashPayment(const AValue: String);
+begin
+  FCashPayment := AValue;
+end;
+
+function TModelClassSale.GetVoucherPayment: String;
+begin
+  Result := FVoucherPayment;
+end;
+
+procedure TModelClassSale.SetVoucherPayment(const AValue: String);
+begin
+  FVoucherPayment := AValue;
+end;
+
+function TModelClassSale.GetCardPayment: String;
+begin
+  Result := FCardPayment;
+end;
+
+procedure TModelClassSale.SetCardPayment(const AValue: String);
+begin
+  FCardPayment := AValue;
+end;
+
+function TModelClassSale.GetReturned: String;
+begin
+  Result := FReturned;
+end;
+
+procedure TModelClassSale.SetReturned(const AValue: String);
+begin
+  FReturned := AValue;
+end;
+
+function TModelClassSale.GetStage: String;
+begin
+  Result := FStage;
+end;
+
+procedure TModelClassSale.SetStage(const AValue: String);
+begin
+  FStage := AValue;
+end;
+
+
+function TModelClassSale.GetDetails: IModelClassSaleDetails;
+begin
+  Result := FDetails;
+end;
+
+procedure TModelClassSale.SetDetails(const AValue: IModelClassSaleDetails);
+begin
+  FDetails := AValue;
+end;
+
+function TModelClassSale.GetCancellations: IModelClassSaleCancellations;
+begin
+  Result := FCancellations;
+end;
+
+procedure TModelClassSale.SetCancellations(const AValue: IModelClassSaleCancellations);
+begin
+  FCancellations := AValue;
+end;
+
+function TModelClassSale.GetReversals: IModelClassSaleReversals;
+begin
+  Result := FReversals;
+end;
+
+procedure TModelClassSale.SetReversals(const AValue: IModelClassSaleReversals);
+begin
+  FReversals := AValue;
+end;
+
+function TModelClassSale.GetPayments: IModelClassSalePayments;
+begin
+  Result := FPayments;
+end;
+
+procedure TModelClassSale.SetPayments(const AValue: IModelClassSalePayments);
+begin
+  FPayments := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassSale.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').AsString;
+  StoreID := DataSet.FieldByName('StoreID').AsString;
+  StoreName := DataSet.FieldByName('StoreName').AsString;
+  WorkstationID := DataSet.FieldByName('WorkstationID').AsString;
+  FiscalDeviceID := DataSet.FieldByName('FiscalDeviceID').AsString;
+  UserGID := DataSet.FieldByName('UserGID').AsString;
+  SaleID := DataSet.FieldByName('SaleID').AsString;
+  SaleUniqueID := DataSet.FieldByName('SaleUniqueID').AsString;
+  ReceiptID := DataSet.FieldByName('ReceiptID').AsString;
+  ClientGID := DataSet.FieldByName('ClientGID').AsString;
+  ClientName := DataSet.FieldByName('ClientName').AsString;
+  ClientTaxNumberType := DataSet.FieldByName('ClientTaxNumberType').AsString;
+  ClientTaxNumber := DataSet.FieldByName('ClientTaxNumber').AsString;
+  ClientAddress := DataSet.FieldByName('ClientAddress').AsString;
+  ClientReceiver := DataSet.FieldByName('ClientReceiver').AsString;
+  ClientBuyer := DataSet.FieldByName('ClientBuyer').AsString;
+  ClientVIPStatus := DataSet.FieldByName('ClientVIPStatus').AsString;
+  ClientSurcharge := DataSet.FieldByName('ClientSurcharge').AsString;
+  InvoiceID := DataSet.FieldByName('InvoiceID').AsString;
+  InvoiceDate := DataSet.FieldByName('InvoiceDate').AsString;
+  CreatedDate := DataSet.FieldByName('CreatedDate').AsString;
+  CreatedTime := DataSet.FieldByName('CreatedTime').AsString;
+  CompletedDate := DataSet.FieldByName('CompletedDate').AsString;
+  CompletedTime := DataSet.FieldByName('CompletedTime').AsString;
+  TotalBase := DataSet.FieldByName('TotalBase').AsString;
+  Discount := DataSet.FieldByName('Discount').AsString;
+  TotalVAT := DataSet.FieldByName('TotalVAT').AsString;
+  Due := DataSet.FieldByName('Due').AsString;
+  CashPayment := DataSet.FieldByName('CashPayment').AsString;
+  VoucherPayment := DataSet.FieldByName('VoucherPayment').AsString;
+  CardPayment := DataSet.FieldByName('CardPayment').AsString;
+  Returned := DataSet.FieldByName('Returned').AsString;
+  Stage := DataSet.FieldByName('Stage').AsString;
+end;
+
+procedure TModelClassSale.UpdateInDataSet;
+begin
+  if DataSet.Locate('gid', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').AsString := GID;
+  DataSet.FieldByName('StoreID').AsString := StoreID;
+  DataSet.FieldByName('StoreName').AsString := StoreName;
+  DataSet.FieldByName('WorkstationID').AsString := WorkstationID;
+  DataSet.FieldByName('FiscalDeviceID').AsString := FiscalDeviceID;
+  DataSet.FieldByName('UserGID').AsString := UserGID;
+  DataSet.FieldByName('SaleID').AsString := SaleID;
+  DataSet.FieldByName('SaleUniqueID').AsString := SaleUniqueID;
+  DataSet.FieldByName('ReceiptID').AsString := ReceiptID;
+  DataSet.FieldByName('ClientGID').AsString := ClientGID;
+  DataSet.FieldByName('ClientName').AsString := ClientName;
+  DataSet.FieldByName('ClientTaxNumberType').AsString := ClientTaxNumberType;
+  DataSet.FieldByName('ClientTaxNumber').AsString := ClientTaxNumber;
+  DataSet.FieldByName('ClientAddress').AsString := ClientAddress;
+  DataSet.FieldByName('ClientReceiver').AsString := ClientReceiver;
+  DataSet.FieldByName('ClientBuyer').AsString := ClientBuyer;
+  DataSet.FieldByName('ClientVIPStatus').AsString := ClientVIPStatus;
+  DataSet.FieldByName('ClientSurcharge').AsString := ClientSurcharge;
+  DataSet.FieldByName('InvoiceID').AsString := InvoiceID;
+  DataSet.FieldByName('InvoiceDate').AsString := InvoiceDate;
+  DataSet.FieldByName('CreatedDate').AsString := CreatedDate;
+  DataSet.FieldByName('CreatedTime').AsString := CreatedTime;
+  DataSet.FieldByName('CompletedDate').AsString := CompletedDate;
+  DataSet.FieldByName('CompletedTime').AsString := CompletedTime;
+  DataSet.FieldByName('TotalBase').AsString := TotalBase;
+  DataSet.FieldByName('Discount').AsString := Discount;
+  DataSet.FieldByName('TotalVAT').AsString := TotalVAT;
+  DataSet.FieldByName('Due').AsString := Due;
+  DataSet.FieldByName('CashPayment').AsString := CashPayment;
+  DataSet.FieldByName('VoucherPayment').AsString := VoucherPayment;
+  DataSet.FieldByName('CardPayment').AsString := CardPayment;
+  DataSet.FieldByName('Returned').AsString := Returned;
+  DataSet.FieldByName('Stage').AsString := Stage;
+
+  DataSet.Post;
+end;
+
+function TModelClassSale.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('StoreID', StoreID);
+  Result.AddPair('StoreName', StoreName);
+  Result.AddPair('WorkstationID', WorkstationID);
+  Result.AddPair('FiscalDeviceID', FiscalDeviceID);
+  Result.AddPair('UserGID', UserGID);
+  Result.AddPair('SaleID', SaleID);
+  Result.AddPair('SaleUniqueID', SaleUniqueID);
+  Result.AddPair('ReceiptID', ReceiptID);
+  Result.AddPair('ClientGID', ClientGID);
+  Result.AddPair('ClientName', ClientName);
+  Result.AddPair('ClientTaxNumberType', ClientTaxNumberType);
+  Result.AddPair('ClientTaxNumber', ClientTaxNumber);
+  Result.AddPair('ClientAddress', ClientAddress);
+  Result.AddPair('ClientReceiver', ClientReceiver);
+  Result.AddPair('ClientBuyer', ClientBuyer);
+  Result.AddPair('ClientVIPStatus', ClientVIPStatus);
+  Result.AddPair('ClientSurcharge', ClientSurcharge);
+  Result.AddPair('InvoiceID', InvoiceID);
+  Result.AddPair('InvoiceDate', InvoiceDate);
+  Result.AddPair('CreatedDate', CreatedDate);
+  Result.AddPair('CreatedTime', CreatedTime);
+  Result.AddPair('CompletedDate', CompletedDate);
+  Result.AddPair('CompletedTime', CompletedTime);
+  Result.AddPair('TotalBase', TotalBase);
+  Result.AddPair('Discount', Discount);
+  Result.AddPair('TotalVAT', TotalVAT);
+  Result.AddPair('Due', Due);
+  Result.AddPair('CashPayment', CashPayment);
+  Result.AddPair('VoucherPayment', VoucherPayment);
+  Result.AddPair('CardPayment', CardPayment);
+  Result.AddPair('Returned', Returned);
+  Result.AddPair('Stage', Stage);
+  Result.AddPair('Details', Details.ToJSON);
+  Result.AddPair('Cancellations', Cancellations.ToJSON);
+  Result.AddPair('Reversals', Reversals.ToJSON);
+  Result.AddPair('Payments', Payments.ToJSON);
+end;
+
+procedure TModelClassSale.ToFile;
+var
+  LTemplateFileName: String;
+  LTempFileName: String;
+  LResultFileName: String;
+
+  LSaleDetail: IModelClassSaleDetail;
+  LSaleCancellation: IModelClassSaleCancellation;
+  LSQL: String;
+  LCashPayment: String;
+begin
+  LTemplateFileName := TPath.Combine(G.TempFolder,'details.db');
+  LTempFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.tmp');
+  LResultFileName := TPath.Combine(G.TempFolder, 't'+GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.db');
+  // Copy template
+  TFile.Copy(LTemplateFileName, LTempFileName);
+
+  // Store Details
+  for LSaleDetail in Details.List do begin
+    LSQL :=
+      // OPERATIONID
+      GID+', '''+
+      // OPNUMBER
+      SaleID+''', '''+
+      // ONDATE
+      DateToStr(Date)+''', '''+
+      // ONTIME
+      TimeToStr(TimeOf(Now))+''', '+
+      // OPGROUP
+      '2001, '+
+      // OPTYPE
+      '3002, '+
+      // FROMCONTRAGENTID
+      StoreID+', '+
+      // TOCONTRAGENTID
+      ClientGID+', '''+
+      // VIP
+      ClientVIPStatus+''', '+
+      // MARKUP
+      ClientSurcharge+', '+
+      // ITEMID
+      LSaleDetail.ItemGID+', '''+
+      // BARCODE
+      LSaleDetail.BarCode+''', '''+
+      // DESCRIPTION
+      LSaleDetail.ItemName+''', '''+
+      // MEASURE
+      LSaleDetail.Measure+''', '+
+      // COEFF
+      LSaleDetail.PackCoeff+', '+
+      // QUANTITY
+      LSaleDetail.Quantity+', '+
+      // TOTALQUANTITY
+      FormatFloat('0.000', _Round(LSaleDetail.Quantity.ToDouble * LSaleDetail.PackCoeff.ToDouble, 0.001))+', '+
+      // PRICE
+      FormatFloat('0.00', _Round(LSaleDetail.ClientPrice.ToDouble / LSaleDetail.PackCoeff.ToDouble, 0.01))+', '+
+      // DISCOUNT
+      LSaleDetail.PackDiscount+', '+
+      // VENDORPRICE
+      FormatFloat('0.0000', _Round(LSaleDetail.VendorPrice.ToDouble / LSaleDetail.PackCoeff.ToDouble, 0.0001))+', '+
+      // TOTAL
+      FormatFloat('0.00', _Round(LSaleDetail.Total.ToDouble, 0.01))+', '+
+      // ACT
+      '''*'', '+
+      // USERID
+      UserGID+', '+
+      // MACHINEID
+      WorkstationID+', '''+
+      // TYPED
+      LSaleDetail.Typed+'''';
+
+    LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+    // Store to Temp File
+    ExecSQL(LSQL);
+  end;
+
+  // Store Cancelations
+  for LSaleCancellation in Cancellations.List do begin
+    LSQL :=
+      // OPERATIONID
+      GID+', '''+
+      // OPNUMBER
+      SaleID+''', '''+
+      // ONDATE
+      DateToStr(Date)+''', '''+
+      // ONTIME
+      TimeToStr(TimeOf(Now))+''', '+
+      // OPGROUP
+      '2001, '+
+      // OPTYPE
+      '3002, '+
+      // FROMCONTRAGENTID
+      StoreID+', '+
+      // TOCONTRAGENTID
+      ClientGID+', '''+
+      // VIP
+      ClientVIPStatus+''', '+
+      // MARKUP
+      ClientSurcharge+', '+
+      // ITEMID
+      LSaleCancellation.ItemGID+', '''+
+      // BARCODE
+      LSaleCancellation.BarCode+''', '''+
+      // DESCRIPTION
+      LSaleCancellation.ItemName+''', '''+
+      // MEASURE
+      LSaleCancellation.Measure+''', '+
+      // COEFF
+      LSaleCancellation.PackCoeff+', '+
+      // QUANTITY
+      FormatFloat('0.000', _Round(LSaleCancellation.Quantity.ToDouble, 0.001))+', '+
+      // TOTALQUANTITY
+      FormatFloat('0.000', _Round(LSaleCancellation.Quantity.ToDouble * LSaleCancellation.PackCoeff.ToDouble, 0.001))+', '+
+      // PRICE
+      FormatFloat('0.00', _Round(LSaleCancellation.ClientPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.01))+', '+
+      // DISCOUNT
+      LSaleCancellation.PackDiscount+', '+
+      // VENDORPRICE
+      FormatFloat('0.0000', _Round(LSaleCancellation.VendorPrice.ToDouble / LSaleCancellation.PackCoeff.ToDouble, 0.0001))+', '+
+      // TOTAL
+      FormatFloat('0.00', _Round(LSaleCancellation.Total.ToDouble, 0.01))+', '+
+      // ACT
+      '''*'', '+
+      // USERID
+      UserGID+', '+
+      // MACHINEID
+      WorkstationID+', '''+
+      // TYPED
+      LSaleDetail.Typed+'''';
+
+    LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+    // Store to Temp File
+    ExecSQL(LSQL);
+  end;
+
+  // Store Payments
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3098, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'ВАУЧЕР'+''', '''+              // DESCRIPTION
+    'ЛЕВА'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    VoucherPayment+', '+            // QUANTITY
+    VoucherPayment+', '+            // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    VoucherPayment+', '+            // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3099, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'ПАРИ ПО СМЕТКА'+''', '''+      // DESCRIPTION
+    'ЛЕВА'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    CardPayment+', '+               // QUANTITY
+    CardPayment+', '+               // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    CardPayment+', '+               // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  LCashPayment := FormatFloat('0.00', _Round(CashPayment.ToDouble - Returned.ToDouble, 0.01));
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3009, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'ПАРИ В БРОЙ'+''', '''+         // DESCRIPTION
+    'ЛЕВА'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    LCashPayment+', '+              // QUANTITY
+    LCashPayment+', '+              // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    LCashPayment+', '+              // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  // Rename template to result
+  TFile.Move(LTempFileName, LResultFileName);
+end;
+
+procedure TModelClassSale.ReversalToFile(const AReversal: IModelClassSaleReversal);
+var
+  LTemplateFileName: String;
+  LTempFileName: String;
+  LResultFileName: String;
+
+  LSQL: String;
+  LCashPayment: String;
+begin
+  LTemplateFileName := TPath.Combine(G.TempFolder,'details.db');
+  LTempFileName := TPath.Combine(G.TempFolder, 't'+GID+AReversal.GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.tmp');
+  LResultFileName := TPath.Combine(G.TempFolder, 't'+GID+AReversal.GID+'_'+FormatDateTime('yyyy.mm', Date)+'_'+StoreID+'_3002.db');
+  // Copy template
+  TFile.Copy(LTemplateFileName, LTempFileName);
+
+  // Store Details
+  LSQL :=
+    // OPERATIONID
+    GID+', '''+
+    // OPNUMBER
+    SaleID+''', '''+
+    // ONDATE
+    DateToStr(Date)+''', '''+
+    // ONTIME
+    TimeToStr(TimeOf(Now))+''', '+
+    // OPGROUP
+    '2001, '+
+    // OPTYPE
+    '3002, '+
+    // FROMCONTRAGENTID
+    StoreID+', '+
+    // TOCONTRAGENTID
+    ClientGID+', '''+
+    // VIP
+    ClientVIPStatus+''', '+
+    // MARKUP
+    ClientSurcharge+', '+
+    // ITEMID
+    AReversal.ItemGID+', '''+
+    // BARCODE
+    AReversal.BarCode+''', '''+
+    // DESCRIPTION
+    AReversal.ItemName+''', '''+
+    // MEASURE
+    AReversal.Measure+''', '+
+    // COEFF
+    AReversal.PackCoeff+', '+
+    // QUANTITY
+    FormatFloat('0.000', _Round(-AReversal.Quantity.ToDouble , 0.001))+', '+
+    // TOTALQUANTITY
+    FormatFloat('0.000', _Round(AReversal.Quantity.ToDouble * AReversal.PackCoeff.ToDouble, 0.001))+', '+
+    // PRICE
+    FormatFloat('0.00', _Round(AReversal.ClientPrice.ToDouble / AReversal.PackCoeff.ToDouble, 0.01))+', '+
+    // DISCOUNT
+    AReversal.PackDiscount+', '+
+    // VENDORPRICE
+    FormatFloat('0.0000', _Round(AReversal.VendorPrice.ToDouble / AReversal.PackCoeff.ToDouble, 0.0001))+', '+
+    // TOTAL
+    FormatFloat('0.00', _Round(-AReversal.Total.ToDouble, 0.01))+', '+
+    // ACT
+    '''*'', '+
+    // USERID
+    AReversal.UserGID+', '+
+    // MACHINEID
+    WorkstationID+', '''+
+    // TYPED
+    ''+'''';
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+LSQL+')';
+
+  // Store to Temp File
+  ExecSQL(LSQL);
+
+
+  // Store Payments
+  LCashPayment := FormatFloat('0.00', _Round(-AReversal.Total.ToDouble, 0.01));
+  LSQL :=
+    GID+', '''+                     // OPERATIONID
+    SaleID+''', '''+                // OPNUMBER
+    DateToStr(Date)+''', '''+       // ONDATE
+    TimeToStr(TimeOf(Now))+''', '+  // ONTIME
+    '2001, '+                       // OPGROUP
+    '3009, '+                       // OPTYPE
+    StoreID+', '+                   // FROMCONTRAGENTID
+    ClientGID+', '+                 // TOCONTRAGENTID
+    '1000'+', '''+                  // ITEMID
+    ''+''', '''+                    // BARCODE
+    'ПАРИ В БРОЙ'+''', '''+         // DESCRIPTION
+    'ЛЕВА'+''', '+                  // MEASURE
+    '1, '+                          // COEFF
+    LCashPayment+', '+              // QUANTITY
+    LCashPayment+', '+              // TOTALQUANTITY
+    '1'+', '+                       // PRICE
+    '1'+', '+                       // VENDORPRICE
+    LCashPayment+', '+              // TOTAL
+    '''*'', '+                      // ACT
+    UserGID+', '+                   // USERID
+    WorkstationID+', '''+           // MACHINEID
+    ' '+'''';                       // TYPED
+
+  LSQL := 'INSERT INTO "'+LTempFileName+'" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+LSQL+')';
+  ExecSQL(LSQL);
+
+  // Rename template to result
+  TFile.Move(LTempFileName, LResultFileName);
+end;
+
+
+
+function TModelClassSale.GetSaleDetailByGID(const AGID: String): IModelClassSaleDetail;
+var
+  LSaleDetail: IModelClassSaleDetail;
+begin
+  Result := nil;
+  for LSaleDetail in Details.List do begin
+    if LSaleDetail.GID = AGID then begin
+      Result := LSaleDetail;
+    end;
+  end;
+end;
+
+
+
+procedure TModelClassSale.SetupSale;
+begin
+  GID := TGeneratorGIDs.NextGIDByName('SaleGID').ToString;
+  StoreID := G.StoreID;
+  StoreName := G.StoreName;
+  WorkstationID := G.WorkstationID;
+  FiscalDeviceID := G.FiscalDeviceID;
+  UserGID := G.UserGID.ToString;
+  SaleID := TGeneratorGIDs.NextGIDByName('SaleID').ToString;
+  SaleUniqueID := FiscalDeviceID + '-' + UserGID.PadLeft(4, '0') + '-' + SaleID.PadLeft(7, '0');
+  ReceiptID := '';
+  ClientGID := TAppSettings.GetSetting('CommonClientGID');
+  ClientName := TAppSettings.GetSetting('CommonClientName');
+  ClientTaxNumberType := TAppSettings.GetSetting('CommonClientTaxNumberType');
+  ClientTaxNumber := TAppSettings.GetSetting('CommonClientTaxNumber');
+  ClientReceiver := TAppSettings.GetSetting('CommonReceiver');
+  ClientBuyer := TAppSettings.GetSetting('CommonClientBuyer');
+  ClientVIPStatus := TAppSettings.GetSetting('CommonClientVIPStatus');
+  ClientSurcharge := TAppSettings.GetSetting('CommonClientSurcharge');
+  InvoiceID := '';
+  InvoiceDate := '';
+  CreatedDate := FormatDateTime('dd-mm-yy', Date);
+  CreatedTime := FormatDateTime('hh:mm:ss', Time);
+  CompletedDate := '';
+  CompletedTime := '';
+  TotalBase := '0.00';
+  Discount := '0.00';
+  TotalVAT := '0.00';
+  Due := '0.00';
+  CashPayment := '0.00';
+  VoucherPayment := '0.00';
+  CardPayment := '0.00';
+  Returned := '0.00';
+  Stage := 'подготвена';
+end;
+
+procedure TModelClassSale.OpenSale;
+begin
+  TGeneratorGIDs.CommitGIDByName('SaleGID');
+  TGeneratorGIDs.CommitGIDByName('SaleID');
+  CreatedDate := FormatDateTime('dd-mm-yy', Date);
+  CreatedTime := FormatDateTime('hh:mm:ss', Time);
+  Stage := 'отворена';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.RegistrationOfSale(const ASaleDetail: IModelClassSaleDetail);
+begin
+  Due := FormatFloat('0.00', _Round(Due.ToDouble + ASaleDetail.Total.ToDouble, 0.01));
+  Returned := (CashPayment.ToDouble + VoucherPayment.ToDouble + CardPayment.ToDouble - Due.ToDouble).ToString;
+  AddDetail(ASaleDetail);
+  Stage := 'налични продажби';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
+begin
+  Due := FormatFloat('0.00', _Round(Due.ToDouble + ASaleCancellation.Total.ToDouble, 0.01));
+  Returned := (CashPayment.ToDouble + VoucherPayment.ToDouble + CardPayment.ToDouble - Due.ToDouble).ToString;
+  AddCancellation(ASaleCancellation);
+  Stage := 'налични продажби';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.RegistrationOfReversal(const ASaleReversal: IModelClassSaleReversal);
+begin
+  AddReversal(ASaleReversal);
+  Stage := 'налични продажби';
+  AddPayment(GenerateReversalPayment(ASaleReversal));
+  SaveToFile;
+end;
+
+procedure TModelClassSale.VoucherTotal;
+begin
+  AddPayment(GenerateVoucherPayment);
+  Stage := 'налични плащания';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.CardTotal;
+begin
+  AddPayment(GenerateCardPayment);
+  Stage := 'налични плащания';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.CashTotal;
+begin
+  AddPayment(GenerateCashPayment);
+  AddPayment(GenerateReturnedPayment);
+  Stage := 'налични плащания';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.CloseSale;
+begin
+  CompletedDate := FormatDateTime('dd-mm-yy', Date);
+  CompletedTime := FormatDateTime('hh:mm:ss', Time);
+  Stage := 'приключена';
+  SaveToFile;
+  ToFile;
+  TAppSettings.SetSetting('LastSaleFileName', '');
+end;
+
+procedure TModelClassSale.DiscardSale;
+var
+  LSaleDetail: IModelClassSaleDetail;
+begin
+  // Cancel all not cancelled yet items
+  for LSaleDetail in Details.List do begin
+    if LSaleDetail.IsCancelled = 'не' then begin
+      AddCancellation(LSaleDetail.ToSaleCancellation);
+    end;
+  end;
+
+  // Update payments
+  VoucherPayment := '0.00';
+  CardPayment := '0.00';
+  CashPayment := '0.00';
+  Returned := '0.00';
+
+  VoucherPayment;
+  CardPayment;
+  CashPayment;
+
+  CompletedDate := FormatDateTime('dd-mm-yy', Date);
+  CompletedTime := FormatDateTime('hh:mm:ss', Time);
+  Stage := 'приключена';
+  SaveToFile;
+  ToFile;
+  TAppSettings.SetSetting('LastSaleFileName', '');
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassSale.Create;
+begin
+  inherited;
+  Details := CreateModelClassSaleDetails;
+  Cancellations := CreateModelClassSaleCancellations;
+  Reversals := CreateModelClassSaleReversals;
+  Payments := CreateModelClassSalePayments;
+end;
+
+constructor TModelClassSale.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID := (AJSONObject.GetValue('GID') as TJSONString).Value;
+  StoreID := (AJSONObject.GetValue('StoreID') as TJSONString).Value;
+  StoreName := (AJSONObject.GetValue('StoreName') as TJSONString).Value;
+  WorkstationID := (AJSONObject.GetValue('WorkstationID') as TJSONString).Value;
+  FiscalDeviceID := (AJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value;
+  UserGID := (AJSONObject.GetValue('UserGID') as TJSONString).Value;
+  SaleID := (AJSONObject.GetValue('SaleID') as TJSONString).Value;
+  SaleUniqueID := (AJSONObject.GetValue('SaleUniqueID') as TJSONString).Value;
+  ReceiptID := (AJSONObject.GetValue('ReceiptID') as TJSONString).Value;
+  ClientGID := (AJSONObject.GetValue('ClientGID') as TJSONString).Value;
+  ClientName := (AJSONObject.GetValue('ClientName') as TJSONString).Value;
+  ClientTaxNumberType := (AJSONObject.GetValue('ClientTaxNumberType') as TJSONString).Value;
+  ClientTaxNumber := (AJSONObject.GetValue('ClientTaxNumber') as TJSONString).Value;
+  ClientAddress := (AJSONObject.GetValue('ClientAddress') as TJSONString).Value;
+  ClientReceiver := (AJSONObject.GetValue('ClientReceiver') as TJSONString).Value;
+  ClientBuyer := (AJSONObject.GetValue('ClientBuyer') as TJSONString).Value;
+  ClientVIPStatus := (AJSONObject.GetValue('ClientVIPStatus') as TJSONString).Value;
+  ClientSurcharge := (AJSONObject.GetValue('ClientSurcharge') as TJSONString).Value;
+  InvoiceID := (AJSONObject.GetValue('InvoiceID') as TJSONString).Value;
+  InvoiceDate := (AJSONObject.GetValue('InvoiceDate') as TJSONString).Value;
+  CreatedDate := (AJSONObject.GetValue('CreatedDate') as TJSONString).Value;
+  CreatedTime := (AJSONObject.GetValue('CreatedTime') as TJSONString).Value;
+  CompletedDate := (AJSONObject.GetValue('CompletedDate') as TJSONString).Value;
+  CompletedTime := (AJSONObject.GetValue('CompletedTime') as TJSONString).Value;
+  TotalBase := (AJSONObject.GetValue('TotalBase') as TJSONString).Value;
+  Discount := (AJSONObject.GetValue('Discount') as TJSONString).Value;
+  TotalVAT := (AJSONObject.GetValue('TotalVAT') as TJSONString).Value;
+  Due := (AJSONObject.GetValue('Due') as TJSONString).Value;
+  CashPayment := (AJSONObject.GetValue('CashPayment') as TJSONString).Value;
+  VoucherPayment := (AJSONObject.GetValue('VoucherPayment') as TJSONString).Value;
+  CardPayment := (AJSONObject.GetValue('CardPayment') as TJSONString).Value;
+  Returned := (AJSONObject.GetValue('Returned') as TJSONString).Value;
+  Stage := (AJSONObject.GetValue('Stage') as TJSONString).Value;
+
+  Details := CreateFromJSONModelClassSaleDetails(AJSONObject.GetValue('Details') as TJSONArray);
+  Cancellations := CreateFromJSONModelClassSaleCancellations(AJSONObject.GetValue('Cancellations') as TJSONArray);
+  Reversals := CreateFromJSONModelClassSaleReversals(AJSONObject.GetValue('Reversals') as TJSONArray);
+  Payments := CreateFromJSONModelClassSalePayments(AJSONObject.GetValue('Payments') as TJSONArray);
+end;
+
+destructor TModelClassSale.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

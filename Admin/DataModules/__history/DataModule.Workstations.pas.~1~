@@ -1,0 +1,25 @@
+unit DataModule.Workstations;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleWorkstations = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleWorkstations: TDataModuleWorkstations;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

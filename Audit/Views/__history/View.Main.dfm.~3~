@@ -1,0 +1,26 @@
+object ViewMain: TViewMain
+  Left = 0
+  Top = 0
+  Caption = #1040#1053#1045#1058' 4 - '#1054#1044#1048#1058
+  ClientHeight = 266
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object StatusBar: TStatusBar
+    Left = 0
+    Top = 247
+    Width = 635
+    Height = 19
+    Panels = <>
+    ExplicitLeft = 328
+    ExplicitTop = 144
+    ExplicitWidth = 0
+  end
+end

@@ -1,0 +1,30 @@
+unit Interfaces.ViewModel.Nomenclature.Stores;
+
+interface
+
+uses
+  Interfaces.GUIRecords,
+
+  Interfaces.ViewModel.Login,
+
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Nomenclature.Stores;
+
+type
+  IViewModelNomenclatureStores = interface
+  ['{686A59CD-DA36-4DF7-B5B5-1676478E250A}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelNomenclatureStores;
+    property Model: IModelNomenclatureStores read GetModel;
+
+    function GetGUIRecord: TViewNomenclatureStoresGUIRecord;
+  end;
+
+implementation
+
+end.

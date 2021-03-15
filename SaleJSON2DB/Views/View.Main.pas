@@ -1,0 +1,72 @@
+unit View.Main;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Interfaces.Model.Classes.Sale,
+  Vcl.StdCtrls;
+
+type
+  TViewMain = class(TForm)
+    OpenDialog: TOpenDialog;
+    ButtonSelectSale: TButton;
+    procedure ButtonSelectSaleClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewMain: TViewMain;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Globals,
+  System.IOUtils,
+  System.JSON,
+  Model.Classes.Sale;
+
+procedure TViewMain.FormCreate(Sender: TObject);
+begin
+  G := TGlobal.Create;
+  Initialize;
+end;
+
+procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  G.Free;
+  Action := caFree;
+end;
+
+procedure TViewMain.ButtonSelectSaleClick(Sender: TObject);
+var
+  LFileName: String;
+  LSaleText: String;
+  LSale: IModelClassSale;
+  LTemplateFileName: string;
+  LTempFileName: string;
+  LResultFileName: string;
+begin
+  if OpenDialog.Execute then begin
+    LFileName := OpenDialog.FileName;
+    LSaleText := TFile.ReadAllText(LFileName);
+    LSale := CreateFromFileModelClassSale(LFileName);
+    LSale.ToFile;
+  end;
+end;
+
+end.

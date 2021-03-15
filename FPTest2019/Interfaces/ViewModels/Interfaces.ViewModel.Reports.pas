@@ -22,7 +22,7 @@ type
 
     function GetGUIRecord: TViewReportsGUIRecord;
 
-    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
   end;
 
 implementation

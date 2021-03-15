@@ -1,0 +1,38 @@
+﻿unit Interfaces.Model.Classes.User;
+
+interface
+
+uses
+  Interfaces.Model.Classes,
+  Interfaces.Model.Classes.Roles,
+  Interfaces.Model.Classes.Role,
+  Interfaces.Model.Classes.Permissions,
+  Interfaces.Model.Classes.Permission;
+
+type
+  IModelClassUser = interface(IModelClassBaseObject)
+  ['{399DD09E-55BB-4841-96E7-098BCA0012C4}']
+    function GetPassword: String;
+    procedure SetPassword(const AValue: String);
+    ///<summary>хеш на паролата на потребителя<summary>
+    property Password: String read GetPassword write SetPassword;
+
+    function GetRoles: IModelClassRoles;
+    ///<summary>роли присвоени на потребителя<summary>
+    property Roles: IModelClassRoles read GetRoles;
+
+    function GetPermissions: IModelClassPermissions;
+    ///<summary>права присвоени на потребителя<summary>
+    property Permissions: IModelClassPermissions read GetPermissions;
+
+    procedure AssignRole(const ARole: IModelClassRole);
+    procedure AssignPermission(const APermission: IModelClassPermission);
+    function HaveRole(const ARole: IModelClassRole): Boolean; overload;
+    function HaveRole(const ARoleName: String): Boolean; overload;
+    function Can(const APermission: IModelClassPermission): Boolean; overload;
+    function Can(const APermissionName: String): Boolean; overload;
+  end;
+
+implementation
+
+end.

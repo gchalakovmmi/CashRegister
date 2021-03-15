@@ -1,0 +1,24 @@
+unit View.Nomenclature.Action;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TViewNomenclatureAction = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureAction: TViewNomenclatureAction;
+
+implementation
+
+{$R *.dfm}
+
+end.

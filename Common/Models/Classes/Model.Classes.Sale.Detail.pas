@@ -20,6 +20,7 @@ uses
     ASelectedVENDORPRICE,
     ASelectedCLIENTPRICE,
     ASelectedDISCOUNT,
+    ASelectedLOT,
     ASaleGID,
     ASaleUniqueID,
     ASaleCreatedDate,
@@ -43,8 +44,8 @@ uses
   Interfaces.Model.Classes.Sale.Cancellation,
   Interfaces.Model.Classes.Sale.Reversal,
   Model.Classes.Sale.Cancellation,
-  Model.Classes.Sale.Reversal,
-  View.Message;
+  Model.Classes.Sale.Reversal;//,
+//  View.Message;
 
 type
   TModelClassSaleDetail = class(TInterfacedObject, IModelClassSaleDetail)
@@ -176,7 +177,7 @@ type
 
   {$REGION 'Interfaced Properties'}
   public
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на детайла по продажбата, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
     ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
     property ParentGID: String read GetParentGID write SetParentGID;
@@ -244,7 +245,7 @@ type
     procedure UpdateInDataSet2;
 
     function ToJSON: TJSONObject;
-    function ToSaleDuplication: IModelClassSaleDetail;
+//    function ToSaleDuplication: IModelClassSaleDetail;
     function ToSaleCancellation: IModelClassSaleCancellation;
     function ToSaleReversal: IModelClassSaleReversal;
   {$ENDREGION}
@@ -273,6 +274,7 @@ function CreateFromSelectedItemModelClassSaleDetail(const
   ASelectedVENDORPRICE,
   ASelectedCLIENTPRICE,
   ASelectedDISCOUNT,
+  ASelectedLOT,
   ASaleGID,
   ASaleUniqueID,
   ASaleCreatedDate,
@@ -281,7 +283,18 @@ function CreateFromSelectedItemModelClassSaleDetail(const
   ASaleClientVIPStatus: String
 ): IModelClassSaleDetail;
 var
-  LTotal: Double;
+  LQuantity: Int64;
+  LVendorPrice: Int64;
+  LClientPrice: Int64;
+  LPackDiscount: Int64;
+  LClientSurcharge: Int64;
+  LVIPPrice: Int64;
+  LPrice: Int64;
+  LTotal: Int64;
+  LClientPriceBase: Int64;
+  LDiscountValue: Int64;
+  LTotalBase: Int64;
+  LTotalVAT: Int64;
 begin
   Result := CreateModelClassSaleDetail;
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleDetailGID').ToString;
@@ -298,11 +311,12 @@ begin
   end;
   Result.ItemName := Result.ItemName.PadRight(G.FiscalDeviceLineWidth);
   Result.Measure := ASelectedMEASURE;
+
   Result.Quantity := ASelectedQUANTITY;
   Result.VendorPrice := ASelectedVENDORPRICE;
   Result.ClientPrice := ASelectedCLIENTPRICE;
   Result.PackDiscount := ASelectedDISCOUNT;
-
+  Result.ClientSurcharge := ASaleClientSurcharge;
 
   Result.ParentGID := ASaleGID;
   Result.SaleUniqueID := ASaleUniqueID;
@@ -310,31 +324,102 @@ begin
   Result.CreatedDate := ASaleCreatedDate;
   Result.CreatedTime := ASaleCreatedTime;
 
-  Result.Price := FormatFloat('0.00', _Round(Result.ClientPrice.ToDouble * (100.00 - Result.PackDiscount.ToDouble) / 100, 0.01));
-  Result.ClientSurcharge := ASaleClientSurcharge;
+  // 0.000 -> 0000
+  LQuantity := ASelectedQUANTITY.Replace('.','').ToInteger;
+  // 0.0000 -> 00000
+  LVendorPrice := ASelectedVENDORPRICE.Replace('.','').ToInteger;
+  // 0.00 -> 000
+  LClientPrice := ASelectedCLIENTPRICE.Replace('.','').ToInteger;
+  // 0 -> 0
+  LPackDiscount := ASelectedDISCOUNT.Replace('.','').ToInteger;
+  // 0.00 -> 000
+  LClientSurcharge := ASaleClientSurcharge.Replace('.','').ToInteger;
+
+
+  // 000
+  LPrice := ((LClientPrice * (10000 - LPackDiscount*100)) div 1000 + 5) div 10;
+
   if ASaleClientVIPStatus = '*' then begin
-    Result.Price := FormatFloat('0.00', Min(Result.Price.ToDouble, _Round(Result.VendorPrice.ToDouble * (100 + Result.ClientSurcharge.ToDouble) / 100, 0.01)));
+    // 0000*000/00000
+    LVIPPrice := ((LVendorPrice * (10000 + LClientSurcharge)) div 100000 + 5) div 10;
+    // 000
+    LPrice := Min(LPrice, LVIPPrice);
   end;
-  Result.ClientPriceBase := FormatFloat('0.00', _Round(Result.Price.ToDouble / 1.2, 0.01));
-  Result.DiscountValue := FormatFloat('0.00', _Round(Result.Quantity.ToDouble * (Result.ClientPrice.ToDouble - Result.Price.ToDouble), 0.01));
-  if Result.DiscountValue.ToDouble = 0.00 then begin
+
+
+  if (ASelectedLOT = '9') then begin
+    // 000
+    LClientPriceBase := ((LPrice * 1000) div 109 + 5) div 10;
+
+    // 000*00 -> 00000
+    LDiscountValue := LQuantity * (LClientPrice - LPrice);
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 1000) div 109 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 1000) div 109 - 5) div 10;
+      end else begin
+        // 000
+        LTotal := 0;
+        // 000
+        LTotalBase := 0;
+      end;
+    end;
+
+  end else begin
+    // 000
+    LClientPriceBase := ((LPrice * 100) div 12 + 5) div 10;
+
+    // 000*00 -> 00000
+    LDiscountValue := LQuantity * (LClientPrice - LPrice);
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 100) div 12 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 100) div 12 - 5) div 10;
+      end else begin
+        // 000
+        LTotal := 0;
+        // 000
+        LTotalBase := 0;
+      end;
+    end;
+  end;
+
+  // 000
+  LTotalVAT := LTotal - LTotalBase;
+
+  Result.Price := FormatFloat('0.00', LPrice / 100);
+  Result.ClientPriceBase := FormatFloat('0.00', LClientPriceBase / 100);
+  Result.DiscountValue := FormatFloat('0.00', LDiscountValue / 100000);
+  if LDiscountValue = 0 then begin
     Result.DiscountType := '0';
   end else begin
     Result.DiscountType := '4';
   end;
-  LTotal := Result.Quantity.ToDouble * Result.Price.ToDouble * 1000;
-  if LTotal > 0 then begin
-    LTotal := LTotal + 5;
+
+  Result.TotalBase := FormatFloat('0.00', LTotalBase / 100);
+  if (ASelectedLOT = '9') then begin
+    Result.VATRate := '9.00';
   end else begin
-    LTotal := LTotal - 5;
+    Result.VATRate := '20.00';
   end;
-  LTotal := Int(LTotal);
-  LTotal := Int(LTotal/10);
-  LTotal := LTotal/100;
-  Result.TotalBase := _Round(LTotal / 1.20, 0.01).ToString;
-  Result.VATRate := '20.00';
-  Result.TotalVAT := (LTotal - _Round(LTotal / 1.20, 0.01)).ToString;
-  Result.Total := FormatFloat('0.00', LTotal);
+  Result.TotalVAT := FormatFloat('0.00', LTotalVAT / 100);
+  Result.Total := FormatFloat('0.00', LTotal / 100);
   Result.IsCancelled := 'не';
 end;
 
@@ -819,6 +904,7 @@ begin
   Result.AddPair('IsCancelled', IsCancelled);
 end;
 
+{*
 function TModelClassSaleDetail.ToSaleDuplication: IModelClassSaleDetail;
 var
   LTotal: Double;
@@ -865,7 +951,7 @@ begin
   Result.Total := FormatFloat('0.00', LTotal);
   Result.IsCancelled := 'не';
 end;
-
+  *}
 function TModelClassSaleDetail.ToSaleCancellation: IModelClassSaleCancellation;
 begin
   Result := CreateModelClassSaleCancellation;
@@ -883,13 +969,13 @@ begin
   Result.PackCoeff := PackCoeff;
   Result.ItemName := ItemName;
   Result.Measure := Measure;
-  Result.Quantity := Quantity;
+  Result.Quantity := FormatFloat('0.000', -Quantity.ToDouble);
   Result.VendorPrice := VendorPrice;
   Result.ClientSurcharge := ClientSurcharge;
   Result.PackDiscount := PackDiscount;
-  Result.ClientPrice := FormatFloat('0.00', -ClientPrice.ToDouble);
-  Result.ClientPriceBase := FormatFloat('0.00', -ClientPriceBase.ToDouble);
-  Result.Price := FormatFloat('0.00', -Price.ToDouble);
+  Result.ClientPrice := ClientPrice;
+  Result.ClientPriceBase := ClientPriceBase;
+  Result.Price := Price;
   Result.DiscountValue := FormatFloat('0.00', -DiscountValue.ToDouble);
   Result.DiscountType := DiscountType;
   Result.TotalBase := FormatFloat('0.00', -TotalBase.ToDouble);

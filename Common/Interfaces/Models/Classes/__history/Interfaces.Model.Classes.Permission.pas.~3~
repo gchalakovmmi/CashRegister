@@ -1,0 +1,48 @@
+﻿unit Interfaces.Model.Classes.Permission;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassPermission = interface
+  ['{98FE18A6-594E-4250-9726-728BA1E54050}']
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на разрешението<summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование на разрешението<summary>
+    property Name: String read GetName write SetName;
+
+    function GetDescription: String;
+    procedure SetDescription(const AValue: String);
+    ///<summary>описание на разрешението<summary>
+    property Description: String read GetDescription write SetDescription;
+
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на разрешението в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна промяна на разрешението<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на разрешението от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

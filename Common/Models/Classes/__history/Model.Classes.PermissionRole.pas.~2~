@@ -1,0 +1,263 @@
+﻿unit Model.Classes.PermissionRole;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.PermissionRole;
+
+  function CreateModelClassPermissionRole: IModelClassPermissionRole;
+  function CreateFromJSONModelClassPermissionRole(const AJSONObject: TJSONObject): IModelClassPermissionRole;
+  function CreateFromDataSetModelClassPermissionRole: IModelClassPermissionRole;
+  procedure AssignDataSetModelClassPermissionRole(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - присвоени права на роля</summary>
+  TModelClassPermissionRole = class(TInterfacedObject, IModelClassPermissionRole)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FPermissionGID: String;
+    FRoleGID: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetPermissionGID: String;
+    procedure SetPermissionGID(const AValue: String);
+    function GetRoleGID: String;
+    procedure SetRoleGID(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на връзката между разрешението и ролята<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>код в системата на разрешението<summary>
+    property PermissionGID: String read GetPermissionGID write SetPermissionGID;
+    ///<summary>код в системата на ролята<summary>
+    property RoleGID: String read GetRoleGID write SetRoleGID;
+    ///<summary>дата и час на първоначално конфигуриране на присвоеното право на ролята в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на на последна промяна на присвоеното право на ролята<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на присвоеното право на ролята от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassPermissionRole: IModelClassPermissionRole;
+begin
+  Result := TModelClassPermissionRole.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('PermissionRoleGID').ToString;
+end;
+
+function CreateFromJSONModelClassPermissionRole(const AJSONObject: TJSONObject): IModelClassPermissionRole;
+begin
+  Result := TModelClassPermissionRole.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassPermissionRole: IModelClassPermissionRole;
+begin
+  Result := TModelClassPermissionRole.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassPermissionRole(const ADataSet: TFDDataSet);
+begin
+  TModelClassPermissionRole.DataSet := ADataSet;
+end;
+
+{ TModelClassPermissionRole }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassPermissionRole.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+function TModelClassPermissionRole.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassPermissionRole.GetPermissionGID: String;
+begin
+  Result := FPermissionGID;
+end;
+
+function TModelClassPermissionRole.SetPermissionGID(const AValue: String);
+begin
+  FPermissionGID := AValue;
+end;
+
+function TModelClassPermissionRole.GetRoleGID: String;
+begin
+  Result := FRoleGID;
+end;
+
+function TModelClassPermissionRole.SetRoleGID(const AValue: String);
+begin
+  FRoleGID := AValue;
+end;
+
+function TModelClassPermissionRole.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+function TModelClassPermissionRole.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassPermissionRole.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+function TModelClassPermissionRole.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassPermissionRole.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+function TModelClassPermissionRole.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassPermissionRole.UpdateFromDataSet;
+begin
+  PermissionGID := DataSet.FieldByName('PermissionGID').Value;
+  RoleGID := DataSet.FieldByName('RoleGID').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassPermissionRole.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('PermissionGID').Value := PermissionGID;
+  DataSet.FieldByName('RoleGID').Value := RoleGID;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassPermissionRole.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('PermissionGID', PermissionGID);
+  Result.AddPair('RoleGID', RoleGID);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassPermissionRole.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  PermissionGID = (AJSONObject.GetValue('PermissionGID') as TJSONString).Value;
+  RoleGID = (AJSONObject.GetValue('RoleGID') as TJSONString).Value;
+  AttachedAt = (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt = (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt = (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,227 @@
+﻿unit Model.Classes.RolesUsers;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.RolesUsers;
+
+  procedure AssignDataSetModelClassRolesUsers(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassRolesUsers(const AFileName: String);
+  function CreateModelClassRolesUsers: IModelClassRolesUsers;
+  function CreateFromJSONModelClassRolesUsers(const AJSONArray: TJSONArray): IModelClassRolesUsers;
+  function CreateFromFileModelClassRolesUsers: IModelClassRolesUsers; overload;
+  function CreateFromFileModelClassRolesUsers(const AFileName: String): IModelClassRolesUsers; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections,
+  Interfaces.Model.Classes.RoleUser,
+  Model.Classes.RoleUser;
+
+type
+  ///<summary>Таблица - присвоени роли на потребители (оператори)</summary>
+  TModelClassRolesUsers = class(TInterfacedObject, IModelClassRolesUsers)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassRoleUser>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassRoleUser>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassRoleUser> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const ARoleUser: IModelClassRoleUser);
+    function GetByGID(const AGID: String): IModelClassRoleUser;
+
+    procedure SaveToFile(const AFileName: String);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassRolesUsers: IModelClassRolesUsers;
+begin
+  Result := TModelClassRolesUsers.Create;
+end;
+
+function CreateFromJSONModelClassRolesUsers(const AJSONArray: TJSONArray): IModelClassRolesUsers;
+begin
+  Result := TModelClassRolesUsers.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassRolesUsers(const AFileName: String): IModelClassRolesUsers;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassRolesUsers(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+procedure AssignDataSetModelClassRolesUsers(const ADataSet: TFDDataSet);
+begin
+  TModelClassRolesUsers.DataSet := ADataSet;
+end;
+
+{ TModelClassRolesUsers }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassRolesUsers.GetList: TList<IModelClassRoleUser>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassRolesUsers.UpdateFromDataSet;
+var
+  LRoleUser: IModelClassRoleUser;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LRoleUser in List do begin
+      if LRoleUser.GID = DataSet.FieldByName('gid').Value then begin
+        LRoleUser.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LRoleUser := CreateFromDataSetModelClassRoleUser;
+      List.Add(LRoleUser);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassRolesUsers.UpdateInDataSet;
+var
+  LRoleUser: IModelClassRoleUser;
+begin
+  for LRoleUser in List do begin
+    LRoleUser.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassRolesUsers.ToJSON: TJSONArray;
+var
+  LRoleUser: IModelClassRoleUser;
+begin
+  Result := TJSONArray.Create;
+  for LRoleUser in List do begin
+    Result.Add(LRoleUser.ToJSON);
+  end;
+end;
+
+procedure TModelClassRolesUsers.Add(const ARoleUser: IModelClassRoleUser);
+begin
+  List.Add(ARoleUser);
+end;
+
+function TModelClassRolesUsers.GetByGID(const AGID: String): IModelClassRoleUser;
+var
+  LRoleUser: IModelClassRoleUser;
+begin
+  Result := nil;
+  for LRoleUser in List do begin
+    if LRoleUser.GID = AGID then begin
+      Result := LRoleUser;
+    end;
+  end;
+end;
+
+procedure TModelClassRolesUsers.SaveToFile(const AFileName: String);
+begin
+  TFile.WriteAllText(AFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassRolesUsers.Create;
+begin
+  inherited;
+  FList := TList<IModelClassRoleUser>.Create;
+end;
+
+constructor TModelClassRolesUsers.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassRoleUser>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassRoleUser(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassRolesUsers.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

@@ -16,7 +16,7 @@ type
 
     procedure XReport;
     procedure ZReport;
-    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
   end;
 
 implementation

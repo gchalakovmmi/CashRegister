@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.Measures;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Measure;
+
+type
+  IModelClassMeasures = interface
+    function GetList: TList<IModelClassMeasure>;
+
+    property List: TList<IModelClassMeasure> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AMeasure: IModelClassMeasure);
+    function GetByGID(const AGID: String): IModelClassMeasure;
+  end;
+
+implementation
+
+end.

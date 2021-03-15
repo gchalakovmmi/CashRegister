@@ -140,7 +140,6 @@ object ViewReversal: TViewReversal
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 3
-    ExplicitHeight = 503
     object Grid: TDBGrid
       Left = 0
       Top = 6

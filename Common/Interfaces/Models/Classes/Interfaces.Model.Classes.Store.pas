@@ -1,50 +1,19 @@
-unit Interfaces.Model.Classes.Store;
+п»їunit Interfaces.Model.Classes.Store;
 
 interface
 
 uses
-  System.JSON;
+  Interfaces.Model.Classes;
 
 type
-  IModelClassStore = interface
-  ['{F317D450-D9AA-4E5E-B34E-E836A0257E17}']
-    function GetGID: String;
-    procedure SetGID(const AValue: String);
-    ///<sumarry>код на търговския обект в системата</summary>
-    property GID: String read GetGID write SetGID;
-
-    function GetName: String;
-    procedure SetName(const AValue: String);
-    ///<sumarry>наименование на търговския обект</summary>
-    property Name: String read GetName write SetName;
-
+  IModelClassStore = interface(IModelClassBaseObject)
+  ['{58B6AEFF-E9C7-4A07-93CB-AD9963EC9237}']
     function GetAddress: String;
     procedure SetAddress(const AValue: String);
-    ///<sumarry>местонахождение на търговския обект</summary>
+    ///<summary>РјРµСЃС‚РѕРЅР°С…РѕР¶РґРµРЅРёРµ РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚<summary>
     property Address: String read GetAddress write SetAddress;
-
-    function GetAttachedAt: String;
-    procedure SetAttachedAt(const AValue: String);
-    ///<sumarry>дата и час на първоначално конфигуриране на търговския обект в системата</summary>
-    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
-
-    function GetModifiedAt: String;
-    procedure SetModifiedAt(const AValue: String);
-    ///<sumarry>дата и час на на последна промяна на търговския обект</summary>
-    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
-
-    function GetDetachedAt: String;
-    procedure SetDetachedAt(const AValue: String);
-    ///<sumarry>пореден номер на продажбата</summary>
-    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
-
-
-    procedure UpdateFromDataSet;
-    procedure UpdateInDataSet;
-    function ToJSON: TJSONObject;
   end;
 
 implementation
 
 end.
-

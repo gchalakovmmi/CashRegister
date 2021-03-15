@@ -1,0 +1,143 @@
+object ViewMain: TViewMain
+  Left = 0
+  Top = 0
+  BorderStyle = bsSingle
+  Caption = #1040#1053#1045#1058' 4 - '#1040#1044#1052#1048#1053#1048#1057#1058#1056#1048#1056#1040#1053#1045
+  ClientHeight = 462
+  ClientWidth = 1054
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsMDIForm
+  Menu = MainMenu
+  OldCreateOrder = False
+  WindowState = wsMaximized
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object StatusBar: TStatusBar
+    Left = 0
+    Top = 443
+    Width = 1054
+    Height = 19
+    Panels = <
+      item
+        Width = 200
+      end
+      item
+        Width = 200
+      end
+      item
+        Width = 200
+      end
+      item
+        Width = 200
+      end>
+  end
+  object MainMenu: TMainMenu
+    Left = 56
+    Top = 24
+    object MenuItemNomenclatures: TMenuItem
+      Caption = #1053#1086#1084#1077#1085#1082#1083#1072#1090#1091#1088#1080
+      object MenuItemStores: TMenuItem
+        Caption = #1058#1098#1088#1075#1086#1074#1089#1082#1080' '#1086#1073#1077#1082#1090#1080
+        OnClick = MenuItemStoresClick
+      end
+      object MenuItemFiscalDevices: TMenuItem
+        Caption = #1060#1080#1089#1082#1072#1083#1085#1080' '#1091#1089#1090#1088#1086#1081#1089#1090#1074#1072
+        OnClick = MenuItemFiscalDevicesClick
+      end
+      object MenuItemWorkstations: TMenuItem
+        Caption = #1056#1072#1073#1086#1090#1085#1080' '#1084#1077#1089#1090#1072
+        OnClick = MenuItemWorkstationsClick
+      end
+      object MenuItemSeparator1: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemActions: TMenuItem
+        Caption = #1054#1087#1077#1088#1072#1094#1080#1080
+        OnClick = MenuItemActionsClick
+      end
+      object MenuItemPaymentTypes: TMenuItem
+        Caption = #1042#1080#1076#1086#1074#1077' '#1087#1083#1072#1097#1072#1085#1080#1103
+        OnClick = MenuItemPaymentTypesClick
+      end
+      object MenuItemSeparator2: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemPermissions: TMenuItem
+        Caption = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1103
+        OnClick = MenuItemPermissionsClick
+      end
+      object MenuItemRoles: TMenuItem
+        Caption = #1056#1086#1083#1080
+        OnClick = MenuItemRolesClick
+      end
+      object MenuItemPermissionsRoles: TMenuItem
+        Caption = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1103' '#1079#1072' '#1088#1086#1083#1080
+        OnClick = MenuItemPermissionsRolesClick
+      end
+      object MenuItemSeparator3: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemUsers: TMenuItem
+        Caption = #1055#1086#1090#1088#1077#1073#1080#1090#1077#1083#1080
+        OnClick = MenuItemUsersClick
+      end
+      object MenuItemRolesUsers: TMenuItem
+        Caption = #1056#1086#1083#1080' '#1085#1072' '#1087#1086#1090#1088#1077#1073#1080#1090#1077#1083#1080
+        OnClick = MenuItemRolesUsersClick
+      end
+      object MenuItemSeparator4: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemClients: TMenuItem
+        Caption = #1050#1083#1080#1077#1085#1090#1080
+        OnClick = MenuItemClientsClick
+      end
+      object MenuItemItems: TMenuItem
+        Caption = #1057#1090#1086#1082#1080
+        OnClick = MenuItemItemsClick
+      end
+      object MenuItemMeasures: TMenuItem
+        Caption = #1052#1077#1088#1082#1080
+        OnClick = MenuItemMeasuresClick
+      end
+    end
+    object MenuItemSettings: TMenuItem
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+    end
+    object MenuItemOperations: TMenuItem
+      Caption = #1054#1087#1077#1088#1072#1094#1080#1080
+      object MenuItemSales: TMenuItem
+        Caption = #1055#1088#1086#1076#1072#1078#1073#1080
+      end
+      object MenuItemCancellations: TMenuItem
+        Caption = #1040#1085#1091#1083#1080#1088#1072#1085#1080#1103
+      end
+      object MenuItemReversals: TMenuItem
+        Caption = #1057#1090#1086#1088#1085#1086
+      end
+      object MenuItemPayments: TMenuItem
+        Caption = #1055#1083#1072#1097#1072#1085#1080#1103
+      end
+    end
+    object MenuItemLogs: TMenuItem
+      Caption = #1044#1085#1077#1074#1085#1080#1094#1080
+    end
+    object MenuItemExit: TMenuItem
+      Caption = #1048#1079#1093#1086#1076
+      OnClick = MenuItemExitClick
+    end
+  end
+  object TimerInitialize: TTimer
+    Interval = 200
+    OnTimer = TimerInitializeTimer
+    Left = 144
+    Top = 24
+  end
+end

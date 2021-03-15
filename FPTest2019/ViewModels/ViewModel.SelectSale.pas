@@ -74,6 +74,7 @@ type
 
     procedure ButtonExitClick;
     procedure ButtonReversalClick;
+    procedure ButtonAssignNewClientClick;
     procedure DatePickerChange(const ADate: TDate);
   {$ENDREGION}
 
@@ -154,6 +155,11 @@ begin
   ShowViewReversal;
   DataModuleSale.RefreshData(FDate);
   SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelSelectSale.ButtonAssignNewClientClick;
+begin
+  Model.AssignNewClient;
 end;
 
 procedure TViewModelSelectSale.DatePickerChange(const ADate: TDate);

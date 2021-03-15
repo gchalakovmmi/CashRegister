@@ -1,0 +1,16 @@
+﻿unit Interfaces.Model.Classes.Actions;
+
+interface
+
+uses
+  Interfaces.Model.Classes;
+
+type
+  IModelClassActions = interface(IModelClassBaseCollection)
+  ['{06879D1C-438B-40CD-9531-1BB35DD15AA2}']
+
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,290 @@
+﻿[
+  {
+    "GID": "1",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "1",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "2",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "2",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "3",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "3",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "4",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "4",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "5",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "5",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "6",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "6",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "7",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "7",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "8",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "8",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "9",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "9",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "10",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "10",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "11",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "11",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "12",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "12",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "13",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "13",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "14",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "14",
+    "RoleGID": "1"
+  },
+  {
+    "GID": "15",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "1",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "16",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "5",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "17",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "7",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "18",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "8",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "19",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "9",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "20",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "10",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "21",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "11",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "22",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "12",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "23",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "13",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "24",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "14",
+    "RoleGID": "2"
+  },
+  {
+    "GID": "25",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "15",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "26",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "16",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "27",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "17",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "28",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "18",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "29",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "19",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "30",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "20",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "31",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "21",
+    "RoleGID": "3"
+  },
+  {
+    "GID": "32",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": "",
+    "PermissionGID": "22",
+    "RoleGID": "3"
+  }
+]

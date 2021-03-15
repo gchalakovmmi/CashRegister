@@ -17,6 +17,7 @@ type
     procedure UpdateFromDataSet(const AParentGID: Integer);
     procedure UpdateInDataSet;
     function ToJSON: TJSONArray;
+    function Include(const AType, AAmount: String): Boolean;
   end;
 
 implementation

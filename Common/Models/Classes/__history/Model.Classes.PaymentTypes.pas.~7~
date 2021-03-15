@@ -1,0 +1,130 @@
+﻿unit Model.Classes.PaymentTypes;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.PaymentTypes;
+
+  procedure AssignDataSetModelClassPaymentTypes(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassPaymentTypes(const AFileName: String);
+  function CreateModelClassPaymentTypes: IModelClassPaymentTypes;
+  function CreateFromJSONModelClassPaymentTypes(const AJSONArray: TJSONArray): IModelClassPaymentTypes;
+  function CreateFromFileModelClassPaymentTypes: IModelClassPaymentTypes; overload;
+  function CreateFromFileModelClassPaymentTypes(const AFileName: String): IModelClassPaymentTypes; overload;
+
+implementation
+
+uses
+  Model.Classes.BaseCollection;
+
+type
+  ///<summary>Таблица - видове плащания</summary>
+  TModelClassPaymentTypes = class(TModelClassBaseCollection, IModelClassPaymentTypes)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassPaymentTypes }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassPaymentTypes(const ADataSet: TFDDataSet);
+begin
+  TModelClassPaymentTypes.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassPaymentTypes(const AFileName: String);
+begin
+  TModelClassPaymentTypes.AssignFileName(AFileName);
+end;
+
+function CreateModelClassPaymentTypes: IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.Create;
+end;
+
+function CreateFromJSONModelClassPaymentTypes(const AJSONArray: TJSONArray): IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassPaymentTypes: IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.CreateFromFile;
+end;
+
+function CreateFromFileModelClassPaymentTypes(const AFileName: String): IModelClassPaymentTypes;
+begin
+  Result := TModelClassPaymentTypes.CreateFromFile(AFileName);
+end;
+
+end.

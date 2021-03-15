@@ -12,7 +12,7 @@ type
   ['{F881C152-6A1C-45A6-ACD4-F0A9414FB96C}']
     function GetGID: String;
     procedure SetGID(const Value: String);
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на детайла по продажбата, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
 
     function GetParentGID: String;
@@ -158,7 +158,7 @@ type
     procedure UpdateFromDataSet;
     procedure UpdateInDataSet;
     function ToJSON: TJSONObject;
-    function ToSaleDuplication: IModelClassSaleDetail;
+//    function ToSaleDuplication: IModelClassSaleDetail;
     function ToSaleCancellation: IModelClassSaleCancellation;
     function ToSaleReversal: IModelClassSaleReversal;
   end;

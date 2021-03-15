@@ -1,0 +1,235 @@
+object ViewReversal: TViewReversal
+  Left = 476
+  Top = 95
+  BorderIcons = []
+  BorderStyle = bsSingle
+  BorderWidth = 1
+  Caption = #1055#1056#1054#1044#1040#1046#1041#1040
+  ClientHeight = 723
+  ClientWidth = 1205
+  Color = 12566527
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -19
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDefault
+  StyleElements = []
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 23
+  object StatusBar: TStatusBar
+    Left = 0
+    Top = 704
+    Width = 1205
+    Height = 19
+    Panels = <
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end
+      item
+        Alignment = taRightJustify
+        Width = 100
+      end>
+    ParentColor = True
+    ParentFont = True
+    UseSystemFont = False
+    StyleElements = []
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Top = 0
+    Width = 1205
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 1
+    object ButtonCheckItem: TButton
+      Left = 488
+      Top = 8
+      Width = 234
+      Height = 33
+      Action = ActionReversalAll
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+    end
+    object ButtonExit: TButton
+      Left = 8
+      Top = 8
+      Width = 234
+      Height = 33
+      Action = ActionExit
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+    end
+    object ButtonRemoveItem: TButton
+      Left = 248
+      Top = 8
+      Width = 234
+      Height = 33
+      Action = ActionReversal
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 2
+    end
+  end
+  object PanelShow: TPanel
+    Left = 0
+    Top = 41
+    Width = 1205
+    Height = 64
+    Align = alTop
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 2
+    object EditShow: TDBEdit
+      Left = 8
+      Top = 6
+      Width = 971
+      Height = 56
+      DataField = 'LastItemName'
+      DataSource = DataModuleSale.DataSourceSale
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlack
+      Font.Height = -40
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = True
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+      StyleElements = []
+      OnEnter = EditShowEnter
+    end
+  end
+  object PanelGrid: TPanel
+    Left = 0
+    Top = 105
+    Width = 1205
+    Height = 599
+    Align = alClient
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 3
+    ExplicitHeight = 503
+    object Grid: TDBGrid
+      Left = 0
+      Top = 6
+      Width = 1200
+      Height = 499
+      Color = 12566527
+      DataSource = DataModuleSale.DataSourceSaleDetails
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlack
+      Font.Height = -19
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
+      TabOrder = 0
+      TitleFont.Charset = RUSSIAN_CHARSET
+      TitleFont.Color = 36608
+      TitleFont.Height = -15
+      TitleFont.Name = 'Verdana'
+      TitleFont.Style = [fsBold]
+      StyleElements = []
+      OnDrawColumnCell = GridDrawColumnCell
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'BarCode'
+          Title.Alignment = taCenter
+          Title.Caption = #1041#1040#1056#1050#1054#1044
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'ItemName'
+          Title.Alignment = taCenter
+          Title.Caption = #1040#1056#1058#1048#1050#1059#1051
+          Width = 300
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Measure'
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1071#1056#1050#1040
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Quantity'
+          Title.Alignment = taCenter
+          Title.Caption = #1050#1054#1051'.'
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Price'
+          Title.Alignment = taCenter
+          Title.Caption = #1045#1044'.'#1062#1045#1053#1040
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Title.Caption = #1057#1059#1052#1040
+          Visible = True
+        end>
+    end
+  end
+  object ActionManager: TActionManager
+    Left = 792
+    Top = 56
+    StyleName = 'Platform Default'
+    object ActionExit: TAction
+      Caption = 'ESC - '#1048#1047#1061#1054#1044
+      ShortCut = 27
+      OnExecute = ActionExitExecute
+    end
+    object ActionReversal: TAction
+      Caption = 'F8 - '#1057#1058#1054#1056#1053#1054' '#1040#1056#1058#1048#1050#1059#1051
+      ShortCut = 119
+      OnExecute = ActionReversalExecute
+    end
+    object ActionReversalAll: TAction
+      Caption = 'Alt+F8 - '#1057#1058#1054#1056#1053#1054' '#1042#1057#1048#1063#1050#1048
+      ShortCut = 32887
+      OnExecute = ActionReversalAllExecute
+    end
+  end
+end

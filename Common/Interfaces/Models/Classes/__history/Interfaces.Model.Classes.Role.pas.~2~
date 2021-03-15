@@ -1,0 +1,39 @@
+﻿unit Interfaces.Model.Classes.Role;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassRole = interface
+  ['{41415139-D4FF-4B89-AC7A-311A47B9FCC7}']
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на ролята<summary>
+    property GID: String read GetGID write SetGID;
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование на ролята<summary>
+    property Name: String read GetName write SetName;
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на ролята в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на на последна промяна на ролята<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на ролята от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

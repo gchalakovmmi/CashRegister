@@ -1,0 +1,651 @@
+unit Helper.DatabaseBuilder;
+
+interface
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.Hash,
+  Interfaces.Model.Classes.Store,
+  Interfaces.Model.Classes.Workstation,
+  Interfaces.Model.Classes.FiscalDevice,
+  Interfaces.Model.Classes.Item,
+  Interfaces.Model.Classes.Measure,
+  Interfaces.Model.Classes.Client,
+  Interfaces.Model.Classes.Action,
+  Interfaces.Model.Classes.PaymentType,
+  Interfaces.Model.Classes.Permission,
+  Interfaces.Model.Classes.Role,
+  Interfaces.Model.Classes.User,
+  Interfaces.Model.Classes.PermissionRole,
+  Interfaces.Model.Classes.RoleUser,
+  Model.AppSettings,
+  Model.Classes.BaseCollection,
+
+  Interfaces.Model.Classes.Stores,
+  Model.Classes.Stores,
+  Model.Classes.Store,
+  Interfaces.Model.Classes.Workstations,
+  Model.Classes.WorkStations,
+  Model.Classes.WorkStation,
+  Interfaces.Model.Classes.FiscalDevices,
+  Model.Classes.FiscalDevices,
+  Model.Classes.FiscalDevice,
+  Interfaces.Model.Classes.Actions,
+  Model.Classes.Actions,
+  Model.Classes.Action,
+  Interfaces.Model.Classes.PaymentTypes,
+  Model.Classes.PaymentTypes,
+  Model.Classes.PaymentType,
+  Interfaces.Model.Classes.Permissions,
+  Model.Classes.Permissions,
+  Model.Classes.Permission,
+  Interfaces.Model.Classes.Roles,
+  Model.Classes.Roles,
+  Model.Classes.Role,
+  Interfaces.Model.Classes.PermissionsRoles,
+  Model.Classes.PermissionsRoles,
+  Model.Classes.PermissionRole,
+  Interfaces.Model.Classes.Users,
+  Model.Classes.Users,
+  Model.Classes.User,
+  Interfaces.Model.Classes.RolesUsers,
+  Model.Classes.RolesUsers,
+  Model.Classes.RoleUser,
+  Interfaces.Model.Classes.Clients,
+  Model.Classes.Clients,
+  Model.Classes.Client,
+  Interfaces.Model.Classes.Items,
+  Model.Classes.Items,
+  Model.Classes.Item,
+  Interfaces.Model.Classes.Measures,
+  Model.Classes.Measures,
+  Model.Classes.Measure;
+
+
+
+type
+  TDatabaseBuilder = class
+
+  private class var { class fields }
+    // Folder names
+    FAppFolder: String;
+    FGlobalNomenclaturesFolder: String;
+//    FStoreFolder: String;
+//    FLocalNomenclaturesFolder: String;
+//    FWorkstationFolderName: String;
+//    FLocalSalesFolderName: String;
+//    FLocalReversalsFolderName: String;
+//    FLocalLogsFolderName: String;
+//    FLocalTempFolderName: String;
+
+    // File names
+    FStoresFileName: String;
+    FWorkstationsFileName: String;
+    FFiscalDevicesFileName: String;
+    FActionsFileName: String;
+    FPaymentTypesFileName: String;
+    FPermissionsFileName: String;
+    FRolesFileName: String;
+    FPermissionsRolesFileName: String;
+    FUsersFileName: String;
+    FRolesUsersFileName: String;
+    FClientsFileName: String;
+    FItemsFileName: String;
+    FMeasuresFileName: String;
+
+  private { class methods }
+    class procedure InitializeGlobalFolderNames;
+    class procedure InitializeGlobalFileNames;
+    class procedure InitializeGlobalORM;
+
+  public { class methods }
+    class procedure BuildDataBase;
+
+  end;
+
+implementation
+
+{ TDatabaseBuilder }
+
+class procedure TDatabaseBuilder.BuildDataBase;
+var
+  LStores: IModelClassStores;
+  LWorkstations: IModelClassWorkstations;
+  LFiscalDevices: IModelClassFiscalDevices;
+  LActions: IModelClassActions;
+  LAction: IModelClassAction;
+  LPaymentTypes: IModelClassPaymentTypes;
+  LPaymentType: IModelClassPaymentType;
+  LPermissions: IModelClassPermissions;
+  LPermission: IModelClassPermission;
+  LRoles: IModelClassRoles;
+  LRole: IModelClassRole;
+  LPermissionsRoles: IModelClassPermissionsRoles;
+  LPermissionRole: IModelClassPermissionRole;
+  LUsers: IModelClassUsers;
+  LUser: IModelClassUser;
+  LRolesUsers: IModelClassRolesUsers;
+  LRoleUser: IModelClassRoleUser;
+  LClients: IModelClassClients;
+  LClient: IModelClassClient;
+  LItems: IModelClassItems;
+//  LItem: IModelClassItem;
+  LMeasures: IModelClassMeasures;
+//  LMeasure: IModelClassMeasure;
+begin
+  // Create GlobalNomenclatureFolder
+  InitializeGlobalFolderNames;
+  InitializeGlobalFileNames;
+  InitializeGlobalORM;
+  ForceDirectories(FGlobalNomenclaturesFolder);
+//  Exit;
+//
+//
+//  // Create Stores
+//  LStores := CreateModelClassStores;
+//  LStores.SaveToFile;
+//
+//
+//  // Create Workstations
+//  LWorkstations := CreateModelClassWorkstations;
+//  LWorkStations.SaveToFile;
+//
+//
+//  // Create FiscalDevices
+//  LFiscalDevices := CreateModelClassFiscalDevices;
+//  LFiscalDevices.SaveToFile;
+//
+//
+//  // Create Actions
+//  LActions := CreateModelClassActions;
+//
+//  //•	ВЛИЗАНЕ В СИСТЕМАТА (ВПИСВАНЕ LOGIN)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'login';
+//  LActions.Attach(LAction);
+//  //•	ИЗЛИЗАНЕ ОТ СИСТЕМАТА (ОТПИСВАНЕ LOGOUT)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'logout';
+//  LActions.Attach(LAction);
+//  //•	РАЗГЛЕЖДАНЕ НА НОМЕНКЛАТУРИ/НАСТРОЙКИ/ОПЕРАЦИИ/ДНЕВНИЦИ (SHOW)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'show';
+//  LActions.Attach(LAction);
+//  //•	КОНФИГУРИРАНЕ НА НОМЕНКЛАТУРА (ATTACH)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'attach';
+//  LActions.Attach(LAction);
+//  //•	ПРОМЯНА НА НОМЕНКЛАТУРА/КОНФИГУРАЦИЯ (MODIFY)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'modify';
+//  LActions.Attach(LAction);
+//  //•	ИЗВЕЖДАНЕ НА НОМЕНКЛАТУРА (DETACH)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'detach';
+//  LActions.Attach(LAction);
+//  //•	ЕКСПОРТ (EXPORT)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'export';
+//  LActions.Attach(LAction);
+//  //•	ПРОДАЖБА (SALE)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'sale';
+//  LActions.Attach(LAction);
+//  //•	АНУЛИРАНЕ (CANCELLATION)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'cancellation';
+//  LActions.Attach(LAction);
+//  //•	ПЛАЩАНЕ (PAYMENT)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'payment';
+//  LActions.Attach(LAction);
+//  //•	СТОРНО (REVERSAL)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'reversal';
+//  LActions.Attach(LAction);
+//  //•	ОТЧЕТИ (REPORT)
+//  LAction := CreateModelClassAction;
+//  LAction.Name := 'report';
+//  LActions.Attach(LAction);
+//
+//  LActions.SaveToFile;
+//
+//
+//  // Create PaymentTypes
+//  LPaymentTypes := CreateModelClassPaymentTypes;
+//
+//  //•	В БРОЙ
+//  LPaymentType := CreateModelClassPaymentType;
+//  LPaymentType.Name := 'В БРОЙ';
+//  LPaymentTypes.Attach(LPaymentType);
+//  //•	С КАРТА
+//  LPaymentType := CreateModelClassPaymentType;
+//  LPaymentType.Name := 'КАРТА';
+//  LPaymentTypes.Attach(LPaymentType);
+//  //•	С ВАУЧЕР
+//  LPaymentType := CreateModelClassPaymentType;
+//  LPaymentType.Name := 'ВАУЧЕР';
+//  LPaymentTypes.Attach(LPaymentType);
+//  //•	ВЪРНАТА СУМА В БРОЙ
+//  LPaymentType := CreateModelClassPaymentType;
+//  LPaymentType.Name := 'РЕСТО';
+//  LPaymentTypes.Attach(LPaymentType);
+//
+//  LPaymentTypes.SaveToFile;
+
+
+  // Create Permissions
+  LPermissions := CreateModelClassPermissions;
+
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА НОМЕНКЛАТУРА
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА НОМЕНКЛАТУРА';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ КОНФИГУРИРАНЕ НА НОМЕНКЛАТУРА
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'конфигуриране';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ КОНФИГУРИРАНЕ НА НОМЕНКЛАТУРА';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ПРОМЯНА НА НОМЕНКЛАТУРА
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'промяна';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ПРОМЯНА НА НОМЕНКЛАТУРА';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ИЗВЕЖДАНЕ НА НОМЕНКЛАТУРА
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'извеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ИЗВЕЖДАНЕ НА НОМЕНКЛАТУРА';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА КОНФИГУРАЦИЯ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'конфигурация-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА КОНФИГУРАЦИЯ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ НАСТРОЙКА НА КОНФИГУРАЦИЯ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'конфигурация';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ НАСТРОЙКА НА КОНФИГУРАЦИЯ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПРОДАЖБИ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'продажби-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПРОДАЖБИ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДЕТАЙЛИ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'детайли-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДЕТАЙЛИ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА АНУЛИРАНИЯ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'анулиране-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА АНУЛИРАНИЯ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПЛАЩАНИЯ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'плащания-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПЛАЩАНИЯ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА СТОРНО
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'сторно-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА СТОРНО';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДНЕВНИЦИ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'дневници-разглеждане';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДНЕВНИЦИ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ФИЛТРИРАНЕ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'филтриране';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ФИЛТРИРАНЕ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ЕКСПОРТ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'експорт';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ЕКСПОРТ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ПРОДАЖБА
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'продажба';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ПРОДАЖБА';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ СТОРНО
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'сторно';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ СТОРНО';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ПРОВЕРКА НА АРТИКУЛ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'проверка на артикул';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ПРОВЕРКА НА АРТИКУЛ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ВНОС
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'служебен внос';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ВНОС';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ИЗНОС
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'служебен износ';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ИЗНОС';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ БЕЗ НУЛИРАНЕ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'отчет без нулиране';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ БЕЗ НУЛИРАНЕ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ С НУЛИРАНЕ
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'отчет с нулиране';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ С НУЛИРАНЕ';
+  LPermissions.Attach(LPermission);
+  //•	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ ЗА ПЕРИОД
+  LPermission := CreateModelClassPermission;
+  LPermission.Name := 'отчет за период';
+  LPermission.Description := 'право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ ЗА ПЕРИОД';
+  LPermissions.Attach(LPermission);
+
+  LPermissions.SaveToFile;
+
+
+//  // Create Roles
+//  LRoles := CreateModelClassRoles;
+//
+//  //•	АДМИНИСТРАТОР
+//  LRole := CreateModelClassRole;
+//  LRole.Name := 'АДМИНИСТРАТОР';
+//  LRoles.Attach(LRole);
+//  //•	ОДИТОР
+//  LRole := CreateModelClassRole;
+//  LRole.Name := 'ОДИТОР';
+//  LRoles.Attach(LRole);
+//  //•	КАСИЕР
+//  LRole := CreateModelClassRole;
+//  LRole.Name := 'КАСИЕР';
+//  LRoles.Attach(LRole);
+//
+//  LRoles.SaveToFile;
+
+
+  // Create Permissions Roles
+  LPermissionsRoles := CreateModelClassPermissionsRoles;
+
+  //•	АДМИНИСТРАТОР с права:
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА НОМЕНКЛАТУРА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ КОНФИГУРИРАНЕ НА НОМЕНКЛАТУРА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('конфигуриране').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ПРОМЯНА НА НОМЕНКЛАТУРА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('промяна').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ИЗВЕЖДАНЕ НА НОМЕНКЛАТУРА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('извеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА КОНФИГУРАЦИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('конфигурация-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ НАСТРОЙКА НА КОНФИГУРАЦИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('конфигурация').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПРОДАЖБИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('продажби-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДЕТАЙЛИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('детайли-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА АНУЛИРАНИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('анулиране-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПЛАЩАНИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('плащания-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА СТОРНО
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('сторно-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДНЕВНИЦИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('дневници-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ФИЛТРИРАНЕ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('филтриране').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ЕКСПОРТ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('експорт').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+
+  //•	ОДИТОР с права:
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА НОМЕНКЛАТУРА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА КОНФИГУРАЦИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('конфигурация-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПРОДАЖБИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('продажби-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДЕТАЙЛИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('детайли-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА АНУЛИРАНИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('анулиране-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ПЛАЩАНИЯ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('плащания-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА СТОРНО
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('сторно-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ РАЗГЛЕЖДАНЕ НА ДНЕВНИЦИ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('дневници-разглеждане').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ФИЛТРИРАНЕ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('филтриране').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ЕКСПОРТ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('експорт').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+
+  //•	КАСИЕР с права:
+  //O	право за изпълнение на ОПЕРАЦИЯ ПРОДАЖБА
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('продажба').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ СТОРНО
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('сторно').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ПРОВЕРКА НА АРТИКУЛ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('проверка на артикул').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ВНОС
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('служебен внос').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ СЛУЖЕБЕН ИЗНОС
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('служебен износ').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ БЕЗ НУЛИРАНЕ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('отчет без нулиране').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ С НУЛИРАНЕ
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('отчет с нулиране').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+  //O	право за изпълнение на ОПЕРАЦИЯ ОТЧЕТ ЗА ПЕРИОД
+  LPermissionRole := CreateModelClassPermissionRole;
+  LPermissionRole.PermissionGID := LPermissions.GetByName('отчет за период').GID;
+  LPermissionRole.RoleGID := LRoles.GetByName('КАСИЕР').GID;
+  LPermissionsRoles.Attach(LPermissionRole);
+
+  LPermissionsRoles.SaveToFile;
+
+
+//  // Create Users
+//  LUsers := CreateModelClassUsers;
+//
+//  //•	СИСТЕМЕН АДМИНИСТРАТОР с парола по подразбиране АНЕТ4
+//  LUser := CreateModelClassUser;
+//  LUser.Password := THashSHA2.GetHashString('АНЕТ4');
+//  LUser.Name := 'СИСТЕМЕН АДМИНИСТРАТОР';
+//  LUsers.Attach(LUser);
+//  //•	ОДИТОР с парола по подразбиране АНЕТ4ОДИТ
+//  LUser := CreateModelClassUser;
+//  LUser.Password := THashSHA2.GetHashString('АНЕТ4ОДИТ');
+//  LUser.Name := 'ОДИТОР';
+//  LUsers.Attach(LUser);
+//
+//  LUsers.SaveToFile;
+//
+//
+//  // Create RolesUsers
+//  LRolesUsers := CreateModelClassRolesUsers;
+//
+//  //•	СИСТЕМЕН АДМИНИСТРАТОР с роля АДМИНИСТРАТОР
+//  LRoleUser := CreateModelClassRoleUser;
+//  LRoleUser.RoleGID := LRoles.GetByName('АДМИНИСТРАТОР').GID;
+//  LRoleUser.UserGID := LUsers.GetByName('СИСТЕМЕН АДМИНИСТРАТОР').GID;
+//  LRolesUsers.Attach(LRoleUser);
+//  //•	ОДИТОР с роля ОДИТОР
+//  LRoleUser := CreateModelClassRoleUser;
+//  LRoleUser.RoleGID := LRoles.GetByName('ОДИТОР').GID;
+//  LRoleUser.UserGID := LUsers.GetByName('ОДИТОР').GID;
+//  LRolesUsers.Attach(LRoleUser);
+//
+//  LRolesUsers.SaveToFile;
+//
+//
+//  // Create Clients
+//  LClients := CreateModelClassClients;
+//
+//  //•	КЛИЕНТ ОБЩИ ПРОДАЖБИ – това е клиента, който се използва по подразбиране в продажбите
+//  LClient := CreateModelClassClient;
+//  LClient.Name := 'КЛИЕНТ ОБЩИ ПРОДАЖБИ';
+//  LClient.TaxID := '';
+//  LClient.Address := '';
+//  LClient.Contact := '';
+//  LClient.VIP := '';
+//  LClient.MarkUp := '0';
+//  LClient.LoyaltyCard := '';
+//  LClient.AttachedAt := '';
+//  LClient.ModifiedAt := '';
+//  LClient.DetachedAt := '';
+//  LClients.Attach(LClient);
+//
+//  LClients.SaveToFile;
+//
+//
+//  // Create Items
+//  LItems := CreateModelClassItems;
+//  LItems.SaveToFile;
+//
+//
+//  // Create Measures
+//  LMeasures := CreateModelClassMeasures;
+//  LMeasures.SaveToFile;
+end;
+
+class procedure TDatabaseBuilder.InitializeGlobalFolderNames;
+begin
+  FAppFolder := TPath.GetDirectoryName(ParamStr(0));
+  FGlobalNomenclaturesFolder := TPath.Combine(FAppFolder, 'номенклатури');
+  ForceDirectories(FGlobalNomenclaturesFolder);
+end;
+
+class procedure TDatabaseBuilder.InitializeGlobalFileNames;
+begin
+  FStoresFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'търговски обекти.json');
+  FWorkstationsFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'работни места.json');
+  FFiscalDevicesFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'фискални устройства.json');
+  FActionsFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'операции.json');
+  FPaymentTypesFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'видове плащания.json');
+  FPermissionsFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'разрешения.json');
+  FRolesFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'роли.json');
+  FPermissionsRolesFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'разрешения на роли.json');
+  FUsersFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'потребители.json');
+  FRolesUsersFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'роли на потребители.json');
+  FClientsFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'клиенти.json');
+  FItemsFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'стоки.json');
+  FMeasuresFileName := TPath.Combine(FGlobalNomenclaturesFolder, 'мерки.json');
+end;
+
+class procedure TDatabaseBuilder.InitializeGlobalORM;
+begin
+  TModelClassBaseCollection<IModelClassStore>.AssignClassData(FStoresFileName, nil, CreateModelClassStore, CreateFromDataSetModelClassStore, CreateFromJSONModelClassStore);
+  TModelClassBaseCollection<IModelClassWorkstation>.AssignClassData(FWorkstationsFileName, nil, CreateModelClassWorkstation, CreateFromDataSetModelClassWorkstation, CreateFromJSONModelClassWorkstation);
+  TModelClassBaseCollection<IModelClassFiscalDevice>.AssignClassData(FFiscalDevicesFileName, nil, CreateModelClassFiscalDevice, CreateFromDataSetModelClassFiscalDevice, CreateFromJSONModelClassFiscalDevice);
+  TModelClassBaseCollection<IModelClassAction>.AssignClassData(FActionsFileName, nil, CreateModelClassAction, CreateFromDataSetModelClassAction, CreateFromJSONModelClassAction);
+  TModelClassBaseCollection<IModelClassPaymentType>.AssignClassData(FPaymentTypesFileName, nil, CreateModelClassPaymentType, CreateFromDataSetModelClassPaymentType, CreateFromJSONModelClassPaymentType);
+  TModelClassBaseCollection<IModelClassPermission>.AssignClassData(FPermissionsFileName, nil, CreateModelClassPermission, CreateFromDataSetModelClassPermission, CreateFromJSONModelClassPermission);
+  TModelClassBaseCollection<IModelClassRole>.AssignClassData(FRolesFileName, nil, CreateModelClassRole, CreateFromDataSetModelClassRole, CreateFromJSONModelClassRole);
+  TModelClassBaseCollection<IModelClassPermissionRole>.AssignClassData(FPermissionsRolesFileName, nil, CreateModelClassPermissionRole, CreateFromDataSetModelClassPermissionRole, CreateFromJSONModelClassPermissionRole);
+  TModelClassBaseCollection<IModelClassUser>.AssignClassData(FUsersFileName, nil, CreateModelClassUser, CreateFromDataSetModelClassUser, CreateFromJSONModelClassUser);
+  TModelClassBaseCollection<IModelClassRoleUser>.AssignClassData(FRolesUsersFileName, nil, CreateModelClassRoleUser, CreateFromDataSetModelClassRoleUser, CreateFromJSONModelClassRoleUser);
+  TModelClassBaseCollection<IModelClassClient>.AssignClassData(FClientsFileName, nil, CreateModelClassClient, CreateFromDataSetModelClassClient, CreateFromJSONModelClassClient);
+  TModelClassBaseCollection<IModelClassItem>.AssignClassData(FItemsFileName, nil, CreateModelClassItem, CreateFromDataSetModelClassItem, CreateFromJSONModelClassItem);
+  TModelClassBaseCollection<IModelClassMeasure>.AssignClassData(FMeasuresFileName, nil, CreateModelClassMeasure, CreateFromDataSetModelClassMeasure, CreateFromJSONModelClassMeasure);
+end;
+
+end.

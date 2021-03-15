@@ -71,6 +71,7 @@ type
 
   {$REGION 'Interfaced Methods'}
   public
+//    function GetGUISetupRecord(const AWidth, AHeight: Integer): TViewSelectItemGUISetupRecord;
     function GetGUIRecord(const AWidth, AHeight: Integer): TViewSelectItemGUIRecord;
     procedure GridKeyDown(var Key: Word; Shift: TShiftState);
     procedure GridKeyPressed(Key: Char);
@@ -147,7 +148,7 @@ function TViewModelSelectItem.GetGUIRecord(const AWidth, AHeight: Integer): TVie
 begin
   Result.Top := AHeight - 300;
   Result.Left := 8;
-  Result.Width := AWidth - 350;
+  Result.Width := AWidth - 16;
   Result.EditText := DataModuleItems.KeyWord;
 end;
 

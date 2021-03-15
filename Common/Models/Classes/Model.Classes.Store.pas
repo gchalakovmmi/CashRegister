@@ -1,4 +1,4 @@
-unit Model.Classes.Store;
+п»їunit Model.Classes.Store;
 
 interface
 
@@ -7,126 +7,92 @@ uses
   FireDAC.Comp.DataSet,
   Interfaces.Model.Classes.Store;
 
-  function CreateModelClassStore: IModelClassStore;
-  function CreateFromDataSetModelClassStore: IModelClassStore;
-  function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
   procedure AssignDataSetModelClassStore(const ADataSet: TFDDataSet);
+  function CreateModelClassStore: IModelClassStore;
+  function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
+  function CreateFromDataSetModelClassStore: IModelClassStore;
 
 implementation
 
 uses
-  System.IOUtils,
   System.SysUtils,
-  System.DateUtils,
-  Helper.MyFuncs,
   Model.Generator.GIDs,
-  Model.AppSettings,
-  Globals,
-  View.Message;
+  Model.Classes.BaseObject;
 
 type
-  TModelClassStore = class(TInterfacedObject, IModelClassStore)
+  ///<summary>РўР°Р±Р»РёС†Р° - С‚СЉСЂРіРѕРІСЃРєРё РѕР±РµРєС‚Рё</summary>
+  TModelClassStore = class(TModelClassBaseObject, IModelClassStore)
 
   {$REGION 'Class Properties'}
   private class var
-    FDataSet: TFDDataSet;
+
   public
-    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+
   {$ENDREGION}
+
 
   {$REGION 'Private Methods'}
   private
 
   {$ENDREGION}
 
+
   {$REGION 'Private Fields'}
   private
-    FGID: String;
-    FName: String;
     FAddress: String;
-    FAttachedAt: String;
-    FModifiedAt: String;
-    FDetachedAt: String;
   {$ENDREGION}
+
 
   {$REGION 'Private Properties Getters/Setters'}
   private
 
   {$ENDREGION}
 
+
   {$REGION 'Private Properties'}
   private
 
   {$ENDREGION}
 
+
   {$REGION 'Interfaced Properties Getters/Setters'}
   public
-    function GetGID: String;
-    procedure SetGID(const AValue: String);
-    function GetName: String;
-    procedure SetName(const AValue: String);
     function GetAddress: String;
     procedure SetAddress(const AValue: String);
-    function GetAttachedAt: String;
-    procedure SetAttachedAt(const AValue: String);
-    function GetModifiedAt: String;
-    procedure SetModifiedAt(const AValue: String);
-    function GetDetachedAt: String;
-    procedure SetDetachedAt(const AValue: String);
   {$ENDREGION}
+
 
   {$REGION 'Interfaced Properties'}
   public
-    ///<sumarry>код на търговския обект в системата</summary>
-    property GID: String read GetGID write SetGID;
-    ///<sumarry>наименование на търговския обект</summary>
-    property Name: String read GetName write SetName;
-    ///<sumarry>местонахождение на търговския обект</summary>
+    ///<summary>РєРѕРґ РІ СЃРёСЃС‚РµРјР°С‚Р° РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚<summary>
+//    property GID: String read GetGID write SetGID;
+    ///<summary>РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚<summary>
+//    property Name: String read GetName write SetName;
+    ///<summary>РјРµСЃС‚РѕРЅР°С…РѕР¶РґРµРЅРёРµ РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚<summary>
     property Address: String read GetAddress write SetAddress;
-    ///<sumarry>дата и час на първоначално конфигуриране на търговския обект в системата</summary>
-    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
-    ///<sumarry>дата и час на на последна промяна на търговския обект</summary>
-    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
-    ///<sumarry>пореден номер на продажбата</summary>
-    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+    ///<summary>РґР°С‚Р° Рё С‡Р°СЃ РЅР° РїСЉСЂРІРѕРЅР°С‡Р°Р»РЅРѕ РєРѕРЅС„РёРіСѓСЂРёСЂР°РЅРµ РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚ РІ СЃРёСЃС‚РµРјР°С‚Р°<summary>
+//    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>РґР°С‚Р° Рё С‡Р°СЃ РЅР° РїРѕСЃР»РµРґРЅР° РїСЂРѕРјСЏРЅР° РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚<summary>
+//    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>РґР°С‚Р° Рё С‡Р°СЃ РЅР° РёР·РІРµР¶РґР°РЅРµ РЅР° С‚СЉСЂРіРѕРІСЃРєРёСЏ РѕР±РµРєС‚ РѕС‚ СѓРїРѕС‚СЂРµР±Р°<summary>
+//    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
   {$ENDREGION}
+
 
   {$REGION 'Interfaced Methods'}
   public
-    procedure UpdateFromDataSet;
-    procedure UpdateInDataSet;
-    function ToJSON: TJSONObject;
+    procedure UpdateFromDataSet; override;
+    procedure UpdateInDataSet; override;
+    function ToJSON: TJSONObject; override;
   {$ENDREGION}
+
 
   {$REGION 'Constructors/Destructors'}
   public
     constructor Create;
     constructor CreateFromJSON(const AJSONObject: TJSONObject);
-    destructor Destroy; override;
   {$ENDREGION}
   end;
-
-function CreateModelClassStore: IModelClassStore;
-begin
-  Result := TModelClassStore.Create;
-end;
-
-function CreateFromDataSetModelClassStore: IModelClassStore;
-begin
-  Result := TModelClassStore.Create;
-  Result.UpdateFromDataSet;
-end;
-
-function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
-begin
-  Result := TModelClassStore.CreateFromJSON(AJSONObject);
-end;
-
-
-procedure AssignDataSetModelClassStore(const ADataSet: TFDDataSet);
-begin
-  TModelClassStore.DataSet := ADataSet;
-end;
 
 { TModelClassStore }
 
@@ -142,26 +108,6 @@ end;
 
 {$REGION 'Interfaced Properties Getters/Setters'}
 
-function TModelClassStore.GetGID: String;
-begin
-  Result := FGID;
-end;
-
-procedure TModelClassStore.SetGID(const AValue: String);
-begin
-  FGID := AValue;
-end;
-
-function TModelClassStore.GetName: String;
-begin
-  Result := FName;
-end;
-
-procedure TModelClassStore.SetName(const AValue: String);
-begin
-  FName := AValue;
-end;
-
 function TModelClassStore.GetAddress: String;
 begin
   Result := FAddress;
@@ -172,36 +118,6 @@ begin
   FAddress := AValue;
 end;
 
-function TModelClassStore.GetAttachedAt: String;
-begin
-  Result := FAttachedAt;
-end;
-
-procedure TModelClassStore.SetAttachedAt(const AValue: String);
-begin
-  FAttachedAt := AValue;
-end;
-
-function TModelClassStore.GetModifiedAt: String;
-begin
-  Result := FModifiedAt;
-end;
-
-procedure TModelClassStore.SetModifiedAt(const AValue: String);
-begin
-  FModifiedAt := AValue;
-end;
-
-function TModelClassStore.GetDetachedAt: String;
-begin
-  Result := FDetachedAt;
-end;
-
-procedure TModelClassStore.SetDetachedAt(const AValue: String);
-begin
-  FDetachedAt := AValue;
-end;
-
 {$ENDREGION}
 
 
@@ -209,41 +125,23 @@ end;
 
 procedure TModelClassStore.UpdateFromDataSet;
 begin
-  GID := DataSet.FieldByName('GID').AsString;
-  Name := DataSet.FieldByName('Name').AsString;
-  Address := DataSet.FieldByName('Address').AsString;
-  AttachedAt := DataSet.FieldByName('AttachedAt').AsString;
-  ModifiedAt := DataSet.FieldByName('ModifiedAt').AsString;
-  DetachedAt := DataSet.FieldByName('DetachedAt').AsString;
+  inherited UpdateFromDataSet;
+  Address := DataSet.FieldByName('Address').Value;
 end;
 
 procedure TModelClassStore.UpdateInDataSet;
 begin
-  if DataSet.Locate('gid', GID) then begin
-    DataSet.Edit;
-  end else begin
-    DataSet.Append;
-  end;
+  inherited UpdateInDataSet;
 
-  DataSet.FieldByName('GID').AsString := GID;
-  DataSet.FieldByName('Name').AsString := Name;
-  DataSet.FieldByName('Address').AsString := Address;
-  DataSet.FieldByName('AttachedAt').AsString := AttachedAt;
-  DataSet.FieldByName('ModifiedAt').AsString := ModifiedAt;
-  DataSet.FieldByName('DetachedAt').AsString := DetachedAt;
-
+  DataSet.Edit;
+  DataSet.FieldByName('Address').Value := Address;
   DataSet.Post;
 end;
 
 function TModelClassStore.ToJSON: TJSONObject;
 begin
-  Result := TJSONObject.Create;
-  Result.AddPair('GID', GID);
-  Result.AddPair('Name', Name);
+  Result := inherited ToJSON;
   Result.AddPair('Address', Address);
-  Result.AddPair('AttachedAt', AttachedAt);
-  Result.AddPair('ModifiedAt', ModifiedAt);
-  Result.AddPair('DetachedAt', DetachedAt);
 end;
 
 {$ENDREGION}
@@ -253,26 +151,36 @@ end;
 
 constructor TModelClassStore.Create;
 begin
-  inherited;
-  //
+  inherited Create;
+  GID := TGeneratorGIDs.NewGIDByName('StoreGID').ToString;
 end;
 
 constructor TModelClassStore.CreateFromJSON(const AJSONObject: TJSONObject);
 begin
-  GID := (AJSONObject.GetValue('GID') as TJSONString).Value;
-  Name := (AJSONObject.GetValue('Name') as TJSONString).Value;
+  inherited CreateFromJSON(AJSONObject);
   Address := (AJSONObject.GetValue('Address') as TJSONString).Value;
-  AttachedAt := (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
-  ModifiedAt := (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
-  DetachedAt := (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
-end;
-
-destructor TModelClassStore.Destroy;
-begin
-  //
-  inherited;
 end;
 
 {$ENDREGION}
+
+procedure AssignDataSetModelClassStore(const ADataSet: TFDDataSet);
+begin
+  TModelClassStore.AssignDataSet(ADataSet);
+end;
+
+function CreateModelClassStore: IModelClassStore;
+begin
+  Result := TModelClassStore.Create;
+end;
+
+function CreateFromJSONModelClassStore(const AJSONObject: TJSONObject): IModelClassStore;
+begin
+  Result := TModelClassStore.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassStore: IModelClassStore;
+begin
+  Result := TModelClassStore.CreateFromDataSet;
+end;
 
 end.

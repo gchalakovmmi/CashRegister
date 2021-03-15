@@ -1,0 +1,28 @@
+﻿unit Interfaces.Model.Classes.Clients;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Client;
+
+type
+  IModelClassClients = interface
+  ['{F3C60C91-7214-4DED-AE97-981C5E4246C8}']
+    function GetList: TList<IModelClassClient>;
+
+    property List: TList<IModelClassClient> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Attach(const AClient: IModelClassClient);
+    procedure Detach(const AClient: IModelClassClient);
+    function GetByGID(const AGID: String): IModelClassClient;
+  end;
+
+implementation
+
+end.

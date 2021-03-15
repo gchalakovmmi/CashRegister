@@ -1,0 +1,136 @@
+unit Model.Nomenclature.Store;
+
+interface
+
+uses
+  Interfaces.Model.Nomenclature.Store;
+
+  function CreateModelNomenclatureStore: IModelNomenclatureStore;
+
+implementation
+
+uses
+  System.SysUtils,
+  Winapi.Windows,
+  Globals,
+  Interfaces.Enums, DataModule.Stores;
+
+type
+  TModelNomenclatureStore = class(TInterfacedObject, IModelNomenclatureStore)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FAction: TAMDAction;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure SetAction(const AAction: TAMDAction);
+
+    procedure Confirm;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelNomenclatureStore }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelNomenclatureStore.SetAction(const AAction: TAMDAction);
+begin
+  FAction := AAction;
+  case AAction of
+    amdAttach: begin
+      DataModuleStores.FDMemTable.Append;
+    end;
+    amdModify: begin
+      DataModuleStores.FDMemTable.Edit;
+    end;
+    amdDetach: begin
+    end;
+  end;
+end;
+
+procedure TModelNomenclatureStore.Confirm;
+begin
+  case FAction of
+    amdAttach: begin
+      DataModuleStores.FDMemTableAttachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+      DataModuleStores.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdModify: begin
+      DataModuleStores.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdDetach: begin
+      DataModuleStores.FDMemTableDetachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+  end;
+  DataModuleStores.FDMemTable.Post;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+function CreateModelNomenclatureStore: IModelNomenclatureStore;
+begin
+  Result := TModelNomenclatureStore.Create;
+end;
+
+{ TModelNomenclatureStore }
+
+end.

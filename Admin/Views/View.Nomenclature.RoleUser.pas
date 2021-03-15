@@ -1,0 +1,234 @@
+unit View.Nomenclature.RoleUser;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.RoleUser;
+
+type
+  TViewNomenclatureRoleUser = class(TForm)
+    LabelUserName: TLabel;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+    LabelRoleName: TLabel;
+    DBComboBoxRoleName: TDBComboBox;
+    DBComboBoxUserName: TDBComboBox;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclatureRoleUser;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclatureRoleUser read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure PopulateNames;
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclatureRoleUser(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.RoleUser,
+  DataModule.RolesUsers,
+  DataModule.Roles,
+  DataModule.Users;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclatureRoleUser.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclatureRoleUser;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclatureRoleUser.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclatureRoleUser.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclatureRoleUser.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclatureRoleUser.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclatureRoleUser.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclatureRoleUserGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBComboBoxRoleName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewNomenclatureRoleUser.PopulateNames;
+begin
+  DBComboBoxRoleName.Items.Clear;
+  DataModuleRoles.FDMemTable.First;
+  while not DataModuleRoles.FDMemTable.Eof do begin
+    if DataModuleRoles.FDMemTableDetachedAt.AsString = '' then begin
+      DBComboBoxRoleName.Items.Add(DataModuleRoles.FDMemTableName.AsString);
+    end;
+    DataModuleRoles.FDMemTable.Next;
+  end;
+
+  DBComboBoxUserName.Items.Clear;
+  DataModuleUsers.FDMemTable.First;
+  while not DataModuleUsers.FDMemTable.Eof do begin
+    if DataModuleUsers.FDMemTableDetachedAt.AsString = '' then begin
+      DBComboBoxUserName.Items.Add(DataModuleUsers.FDMemTableName.AsString);
+    end;
+    DataModuleUsers.FDMemTable.Next;
+  end;
+
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclatureRoleUser(const AAction: TAMDAction);
+var
+  LViewNomenclatureRoleUser: TViewNomenclatureRoleUser;
+begin
+  LViewNomenclatureRoleUser := TViewNomenclatureRoleUser.Create(Application.MainForm);
+  LViewNomenclatureRoleUser.ViewModel.SetAction(AAction);
+  LViewNomenclatureRoleUser.UpdateGUI;
+
+  LViewNomenclatureRoleUser.PopulateNames;
+
+  case AAction of
+    amdAttach: begin
+      if LViewNomenclatureRoleUser.ViewModel.Can(amdAttach) then begin
+        LViewNomenclatureRoleUser.Show;
+      end else begin
+        LViewNomenclatureRoleUser.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclatureRoleUser.ViewModel.Can(amdModify) then begin
+        LViewNomenclatureRoleUser.Show;
+      end else begin
+        LViewNomenclatureRoleUser.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclatureRoleUser.ViewModel.Can(amdDetach) then begin
+        LViewNomenclatureRoleUser.ViewModel.Confirm;
+      end else begin
+        LViewNomenclatureRoleUser.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

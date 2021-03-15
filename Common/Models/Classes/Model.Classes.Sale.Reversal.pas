@@ -24,8 +24,8 @@ uses
   Globals,
   Model.Generator.GIDs,
   Interfaces.Model.Classes.Sale.Cancellation,
-  Model.Classes.Sale.Cancellation,
-  View.Message;
+  Model.Classes.Sale.Cancellation;//,
+//  View.Message;
 
 type
   TModelClassSaleReversal = class(TInterfacedObject, IModelClassSaleReversal)
@@ -152,7 +152,7 @@ type
 
   {$REGION 'Interfaced Properties'}
   public
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на сторнирането, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
     ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
     property ParentGID: String read GetParentGID write SetParentGID;

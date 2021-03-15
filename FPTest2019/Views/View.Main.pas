@@ -30,15 +30,14 @@ type
     ButtonCashIn: TBitBtnWithColor;
     ButtonCashOut: TBitBtnWithColor;
     ButtonReversal: TBitBtnWithColor;
-
-    ButtonSelectPrinter: TBitBtnWithColor;
     ButtonXReport: TBitBtnWithColor;
     ButtonPReport: TBitBtnWithColor;
     ButtonZReport: TBitBtnWithColor;
-    ButtonAudit: TBitBtnWithColor;
+    ButtonItemCheck: TBitBtnWithColor;
 
     StatusBar: TStatusBar;
-    ButtonItemCheck: TBitBtnWithColor;
+    Panel: TPanel;
+    TimerInitialize: TTimer;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -49,23 +48,22 @@ type
     procedure ButtonCashInClick(Sender: TObject);
     procedure ButtonCashOutClick(Sender: TObject);
     procedure ButtonReversalClick(Sender: TObject);
+    procedure ButtonAdminClick(Sender: TObject);
 
     procedure ButtonSelectPrinterClick(Sender: TObject);
     procedure ButtonXReportClick(Sender: TObject);
     procedure ButtonPReportClick(Sender: TObject);
     procedure ButtonZReportClick(Sender: TObject);
-    procedure ButtonAuditClick(Sender: TObject);
     procedure ButtonItemCheckClick(Sender: TObject);
+    procedure ButtonAuditClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure TimerInitializeTimer(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
   private
     procedure ProcessNotification(const AModelNotification: IModelNotification);
     procedure UpdateGUI;
-
-//    function TryToStartCOMServer: Boolean;
-//    procedure SetButtons(afterCase: TAfterCase);
-//    function SetTransportProtocol: Integer;
   {$ENDREGION}
 
   {$REGION 'Private Fields'}
@@ -133,14 +131,25 @@ begin
   FViewModel.Observable.Subscribe(FObserver);
 
   UpdateGUI;
-
-  ViewModel.Login;
 end;
 
 procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   G.Free;
   Action := caFree;
+end;
+
+procedure TViewMain.FormResize(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
+procedure TViewMain.TimerInitializeTimer(Sender: TObject);
+begin
+  TimerInitialize.Enabled := False;
+  UpdateGUI;
+
+  ViewModel.Login;
 end;
 
 procedure TViewMain.ButtonSaleClick(Sender: TObject);
@@ -168,9 +177,9 @@ begin
   ViewModel.Reversal;
 end;
 
-procedure TViewMain.ButtonItemCheckClick(Sender: TObject);
+procedure TViewMain.ButtonAdminClick(Sender: TObject);
 begin
-  ViewModel.CheckItem;
+  ViewModel.Admin;
 end;
 
 
@@ -192,6 +201,11 @@ end;
 procedure TViewMain.ButtonZReportClick(Sender: TObject);
 begin
   ViewModel.ZReport;
+end;
+
+procedure TViewMain.ButtonItemCheckClick(Sender: TObject);
+begin
+  ViewModel.CheckItem;
 end;
 
 procedure TViewMain.ButtonAuditClick(Sender: TObject);
@@ -222,6 +236,8 @@ begin
   LGUIRecord := ViewModel.GetGUIRecord;
 
   Caption := LGUIRecord.Caption;
+  Panel.Top := (ClientHeight - Panel.Height) div 2;
+  Panel.Left := (ClientWidth - Panel.Width) div 2;
   StatusBar.Panels[0].Text := LGUIRecord.StoreName;
   StatusBar.Panels[1].Text := LGUIRecord.WorkstationName;
   StatusBar.Panels[2].Text := LGUIRecord.UserName;

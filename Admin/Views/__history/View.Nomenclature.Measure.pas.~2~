@@ -1,0 +1,34 @@
+unit View.Nomenclature.Measure;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask,
+  Vcl.ExtCtrls;
+
+type
+  TViewNomenclatureMeasure = class(TForm)
+    LabelName: TLabel;
+    LabelStoreName: TLabel;
+    LabelFiscalDeviceName: TLabel;
+    Panel: TPanel;
+    ButtonConfirm: TButton;
+    ButtonCancel: TButton;
+    DBEditName: TDBEdit;
+    DBComboBoxFiscalDeviceName: TDBComboBox;
+    DBComboBoxStoreName: TDBComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureMeasure: TViewNomenclatureMeasure;
+
+implementation
+
+{$R *.dfm}
+
+end.

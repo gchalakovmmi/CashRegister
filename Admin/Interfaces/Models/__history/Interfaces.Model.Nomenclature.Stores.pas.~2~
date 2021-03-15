@@ -1,0 +1,13 @@
+unit Interfaces.Model.Nomenclature.Stores;
+
+interface
+
+type
+  IModelNomenclatureStores = interface
+  ['{743003E6-CBAE-4826-A4A6-44EA26A627C8}']
+    function ActiveModel: IModelClassStore;
+  end;
+
+implementation
+
+end.

@@ -10,7 +10,7 @@ type
   ['{52A3DA06-74A4-49E9-A696-4A651F1E74D0}']
     function GetGID: String;
     procedure SetGID(const AValue: String);
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на плащането, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
 
     function GetParentGID: String;
@@ -42,6 +42,11 @@ type
     procedure SetCompletedDate(const AValue: String);
     ///<sumarry>дата на приключване на продажбата</summary>
     property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+
+    function GetDue: String;
+    procedure SetDue(const AValue: String);
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    property Due: String read GetDue write SetDue;
 
     function GetPaymentDate: String;
     procedure SetPaymentDate(const AValue: String);

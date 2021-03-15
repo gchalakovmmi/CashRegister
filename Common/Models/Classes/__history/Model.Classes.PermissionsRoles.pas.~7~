@@ -1,0 +1,220 @@
+﻿unit Model.Classes.PermissionsRoles;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.PermissionsRoles;
+
+  procedure AssignDataSetModelClassPermissionsRoles(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassPermissionsRoles(const AFileName: String);
+  function CreateModelClassPermissionsRoles: IModelClassPermissionsRoles;
+  function CreateFromJSONModelClassPermissionsRoles(const AJSONArray: TJSONArray): IModelClassPermissionsRoles;
+  function CreateFromFileModelClassPermissionsRoles: IModelClassPermissionsRoles; overload;
+  function CreateFromFileModelClassPermissionsRoles(const AFileName: String): IModelClassPermissionsRoles; overload;
+
+implementation
+
+uses
+  Model.Classes.BaseCollection;
+
+type
+  ///<summary>Таблица - присвоени права на роля</summary>
+  TModelClassPermissionsRoles = class(TModelClassBaseCollection, IModelClassPermissionsRoles)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassPermissionsRoles }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassPermissionsRoles.GetList: TList<IModelClassPermissionRole>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassPermissionsRoles.UpdateFromDataSet;
+var
+  LPermissionRole: IModelClassPermissionRole;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LPermissionRole in List do begin
+      if LPermissionRole.GID = DataSet.FieldByName('gid').Value then begin
+        LPermissionRole.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LPermissionRole := CreateFromDataSetModelClassPermissionRole;
+      List.Add(LPermissionRole);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassPermissionsRoles.UpdateInDataSet;
+var
+  LPermissionRole: IModelClassPermissionRole;
+begin
+  for LPermissionRole in List do begin
+    LPermissionRole.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassPermissionsRoles.ToJSON: TJSONArray;
+var
+  LPermissionRole: IModelClassPermissionRole;
+begin
+  Result := TJSONArray.Create;
+  for LPermissionRole in List do begin
+    Result.Add(LPermissionRole.ToJSON);
+  end;
+end;
+
+procedure TModelClassPermissionsRoles.Add(const APermissionRole: IModelClassPermissionRole);
+begin
+  List.Add(APermissionRole);
+  SaveToFile;
+end;
+
+function TModelClassPermissionsRoles.GetByGID(const AGID: String): IModelClassPermissionRole;
+var
+  LPermissionRole: IModelClassPermissionRole;
+begin
+  Result := nil;
+  for LPermissionRole in List do begin
+    if LPermissionRole.GID = AGID then begin
+      Result := LPermissionRole;
+    end;
+  end;
+end;
+
+procedure TModelClassPermissionsRoles.SaveToFile;
+begin
+  TFile.WriteAllText(G.PermissionsRolesFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassPermissionsRoles.Create;
+begin
+  inherited;
+  FList := TList<IModelClassPermissionRole>.Create;
+end;
+
+constructor TModelClassPermissionsRoles.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassPermissionRole>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassPermissionRole(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassPermissionsRoles.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassPermissionsRoles(const ADataSet: TFDDataSet);
+begin
+  TModelClassPermissionsRoles.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassPermissionsRoles(const AFileName: String);
+begin
+  TModelClassPermissionsRoles.AssignFileName(AFileName);
+end;
+
+function CreateModelClassPermissionsRoles: IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.Create;
+end;
+
+function CreateFromJSONModelClassPermissionsRoles(const AJSONArray: TJSONArray): IModelClassPermissionsRoles;
+begin
+  Result := TModelClassPermissionsRoles.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassPermissionsRoles(const AFileName: String): IModelClassPermissionsRoles;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassPermissionsRoles(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+end.

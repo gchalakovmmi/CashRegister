@@ -1,0 +1,206 @@
+unit View.Nomenclature.Permission;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.Permission;
+
+type
+  TViewNomenclaturePermission = class(TForm)
+    LabelName: TLabel;
+    DBEditName: TDBEdit;
+    LabelDescription: TLabel;
+    DBEditDescription: TDBEdit;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclaturePermission;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclaturePermission read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclaturePermission(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.Permission,
+  DataModule.Permissions;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclaturePermission.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclaturePermission;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclaturePermission.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclaturePermission.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclaturePermission.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclaturePermission.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclaturePermission.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclaturePermissionGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBEditName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclaturePermission(const AAction: TAMDAction);
+var
+  LViewNomenclaturePermission: TViewNomenclaturePermission;
+begin
+  LViewNomenclaturePermission := TViewNomenclaturePermission.Create(Application.MainForm);
+  LViewNomenclaturePermission.ViewModel.SetAction(AAction);
+  case AAction of
+    amdAttach: begin
+      if LViewNomenclaturePermission.ViewModel.Can(amdAttach) then begin
+        LViewNomenclaturePermission.Show;
+      end else begin
+        LViewNomenclaturePermission.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclaturePermission.ViewModel.Can(amdModify) then begin
+        LViewNomenclaturePermission.Show;
+      end else begin
+        LViewNomenclaturePermission.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclaturePermission.ViewModel.Can(amdDetach) then begin
+        LViewNomenclaturePermission.ViewModel.Confirm;
+      end else begin
+        LViewNomenclaturePermission.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

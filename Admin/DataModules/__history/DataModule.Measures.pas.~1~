@@ -1,0 +1,25 @@
+unit DataModule.Measures;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleMeasures = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleMeasures: TDataModuleMeasures;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -263,6 +263,8 @@ var
 begin
   LViewReversalGUIRecord := ViewModel.GetGUIRecord;
 
+  Caption := LViewReversalGUIRecord.Caption;
+
   Self.Update;
 end;
 

@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.PermissionsRoles;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.PermissionRole;
+
+type
+  IModelClassPermissionsRoles = interface
+    function GetList: TList<IModelClassPermissionRole>;
+
+    property List: TList<IModelClassPermissionRole> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const APermissionRole: IModelClassPermissionRole);
+    function GetByGID(const AGID: String): IModelClassPermissionRole;
+  end;
+
+implementation
+
+end.

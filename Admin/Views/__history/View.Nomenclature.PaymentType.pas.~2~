@@ -1,0 +1,204 @@
+unit View.Nomenclature.PaymentType;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.PaymentType;
+
+type
+  TViewNomenclaturePaymentType = class(TForm)
+    LabelName: TLabel;
+      DBEditName: TDBEdit;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var PaymentType: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclaturePaymentType;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclaturePaymentType read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclaturePaymentType(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.PaymentType,
+  DataModule.PaymentTypes;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclaturePaymentType.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclaturePaymentType;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclaturePaymentType.FormClose(Sender: TObject; var PaymentType: TCloseAction);
+begin
+  PaymentType := caFree;
+end;
+
+procedure TViewNomenclaturePaymentType.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclaturePaymentType.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclaturePaymentType.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclaturePaymentType.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclaturePaymentTypeGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBEditName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclaturePaymentType(const AAction: TAMDAction);
+var
+  LViewNomenclaturePaymentType: TViewNomenclaturePaymentType;
+begin
+  LViewNomenclaturePaymentType := TViewNomenclaturePaymentType.Create(Application.MainForm);
+  LViewNomenclaturePaymentType.ViewModel.SetAction(APaymentType);
+  case APaymentType of
+    amdAttach: begin
+      if LViewNomenclaturePaymentType.ViewModel.Can(amdAttach) then begin
+        LViewNomenclaturePaymentType.Show;
+      end else begin
+        LViewNomenclaturePaymentType.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclaturePaymentType.ViewModel.Can(amdModify) then begin
+        LViewNomenclaturePaymentType.Show;
+      end else begin
+        LViewNomenclaturePaymentType.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclaturePaymentType.ViewModel.Can(amdDetach) then begin
+        LViewNomenclaturePaymentType.ViewModel.Confirm;
+      end else begin
+        LViewNomenclaturePaymentType.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

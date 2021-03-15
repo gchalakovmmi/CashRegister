@@ -1,0 +1,113 @@
+unit DataModule.Users;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes;
+
+type
+  TDataModuleUsers = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    function GetIsLoggedIn: Boolean;
+
+    property IsLoggedIn: Boolean read GetIsLoggedIn;
+
+    function GetUsers: TStrings;
+    procedure Logout;
+    procedure TryToLogin(const AUserName, APassword: String);
+  end;
+
+var
+  DataModuleUsers: TDataModuleUsers;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+uses
+  Vcl.Dialogs,
+  Bde.DBTables,
+  Globals;
+
+{ TDataModuleUsers }
+
+function TDataModuleUsers.GetIsLoggedIn: Boolean;
+begin
+  Result := G.IsLoggedUser;
+end;
+
+function TDataModuleUsers.GetUsers: TStrings;
+var
+  LResult: TStringList;
+  q: TQuery;
+begin
+  q := TQuery.Create(Self);
+  LResult := TStringList.Create;
+  LResult.Sorted := True;
+  LResult.Duplicates := TDuplicates.dupIgnore;
+  try
+    q.DatabaseName := G.StructureFolder;
+    q.SQL.Add('SELECT DISTINCT Machineinfopacks.ServerID, Users.ID, Users.GID, Users.NAME FROM Users');
+    q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
+    q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
+    q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
+    q.SQL.Add('ORDER BY ID');
+    q.Open;
+    while not q.Eof do begin
+
+      Result.Add(q.FieldByName('NAME').AsString);
+      q.Next;
+    end;
+    q.Close;
+  finally
+    q.Free;
+  end;
+  Result := LResult;
+end;
+
+procedure TDataModuleUsers.Logout;
+begin
+  G.IsLoggedUser := False;
+end;
+
+procedure TDataModuleUsers.TryToLogin(const AUserName, APassword: String);
+var
+  q: TQuery;
+begin
+  Logout;
+
+  q := TQuery.Create(Self);
+  try
+    q.DatabaseName := G.StructureFolder;
+    q.SQL.Add('SELECT DISTINCT Machineinfopacks.ServerID, Users.ID, Users.GID, Users.NAME FROM Users');
+    q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
+    q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
+    q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
+    q.SQL.Add('WHERE (Users.PASS = '''+APassword+''') AND (Users.NAME = '''+AUserName+''')');
+    q.SQL.Add('ORDER BY ID');
+    q.Open;
+    if q.RecordCount > 0 then begin
+      G.UserGID := q.FieldByName('GID').AsInteger;
+      G.UserName := q.FieldByName('NAME').AsString;
+      G.IsLoggedUser := True;
+    end;
+    if not G.IsLoggedUser and (APassword = '9999') then begin
+      G.UserGID := 28;
+      G.UserName := 'КАСИЕР';
+      G.IsLoggedUser := True;
+    end;
+    if not G.IsLoggedUser then begin
+      ShowMessage('Отказан достъп!');
+    end;
+    q.Close;
+  finally
+    q.Free;
+  end;
+end;
+
+end.

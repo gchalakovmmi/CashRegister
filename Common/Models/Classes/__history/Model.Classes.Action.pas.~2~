@@ -1,0 +1,248 @@
+﻿unit Model.Classes.Action;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Action;
+
+  function CreateModelClassAction: IModelClassAction;
+  function CreateFromJSONModelClassAction(const AJSONObject: TJSONObject): IModelClassAction;
+  function CreateFromDataSetModelClassAction: IModelClassAction;
+  procedure AssignDataSetModelClassAction(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - видове действия/операции</summary>
+  TModelClassAction = class(TInterfacedObject, IModelClassAction)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FName: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на действието/операцията<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на действието/операцията<summary>
+    property Name: String read GetName write SetName;
+    ///<summary>дата и час на първоначално конфигуриране на действието/операцията в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на действието/операцията<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на действието/операцията от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassAction: IModelClassAction;
+begin
+  Result := TModelClassAction.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('ActionGID').ToString;
+end;
+
+function CreateFromJSONModelClassAction(const AJSONObject: TJSONObject): IModelClassAction;
+begin
+  Result := TModelClassAction.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassAction: IModelClassAction;
+begin
+  Result := TModelClassAction.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassAction(const ADataSet: TFDDataSet);
+begin
+  TModelClassAction.DataSet := ADataSet;
+end;
+
+{ TModelClassAction }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassAction.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassAction.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassAction.GetName: String;
+begin
+  Result := FName;
+end;
+
+procedure TModelClassAction.SetName(const AValue: String);
+begin
+  FName := AValue;
+end;
+
+function TModelClassAction.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+procedure TModelClassAction.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassAction.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+procedure TModelClassAction.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassAction.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+procedure TModelClassAction.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassAction.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').Value;
+  Name := DataSet.FieldByName('Name').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassAction.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').Value := GID;
+  DataSet.FieldByName('Name').Value := Name;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassAction.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('Name', Name);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassAction.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID = (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name = (AJSONObject.GetValue('Name') as TJSONString).Value;
+  AttachedAt = (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt = (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt = (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

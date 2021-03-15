@@ -1,0 +1,233 @@
+unit View.Nomenclature.Measure;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.Measure;
+
+type
+  TViewNomenclatureMeasure = class(TForm)
+    LabelMeasure: TLabel;
+    DBEditMeasure: TDBEdit;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+    LabelItemName: TLabel;
+    DBComboBoxItemName: TDBComboBox;
+    LabelCoeff: TLabel;
+    DBEditCoeff: TDBEdit;
+    DBEditBarcode: TDBEdit;
+    LabelBarcode: TLabel;
+    DBEditFactor: TDBEdit;
+    LabelFactor: TLabel;
+    DBEditMinimum: TDBEdit;
+    LabelMinimum: TLabel;
+    DBEditDiscount: TDBEdit;
+    LabelDiscount: TLabel;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclatureMeasure;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclatureMeasure read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure PopulateNames;
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclatureMeasure(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.Measure,
+  DataModule.Measures,
+  DataModule.Items;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclatureMeasure.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclatureMeasure;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclatureMeasure.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclatureMeasure.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclatureMeasure.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclatureMeasure.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclatureMeasure.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclatureMeasureGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBComboBoxItemName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewNomenclatureMeasure.PopulateNames;
+begin
+  DBComboBoxItemName.Items.Clear;
+  DataModuleItems.FDMemTable.First;
+  while not DataModuleItems.FDMemTable.Eof do begin
+    if DataModuleItems.FDMemTableDetachedAt.AsString = '' then begin
+      DBComboBoxItemName.Items.Add(DataModuleItems.FDMemTableName.AsString);
+    end;
+    DataModuleItems.FDMemTable.Next;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclatureMeasure(const AAction: TAMDAction);
+var
+  LViewNomenclatureMeasure: TViewNomenclatureMeasure;
+begin
+  LViewNomenclatureMeasure := TViewNomenclatureMeasure.Create(Application.MainForm);
+  LViewNomenclatureMeasure.ViewModel.SetAction(AAction);
+  LViewNomenclatureMeasure.UpdateGUI;
+
+  LViewNomenclatureMeasure.PopulateNames;
+
+  case AAction of
+    amdAttach: begin
+      if LViewNomenclatureMeasure.ViewModel.Can(amdAttach) then begin
+        LViewNomenclatureMeasure.Show;
+      end else begin
+        LViewNomenclatureMeasure.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclatureMeasure.ViewModel.Can(amdModify) then begin
+        LViewNomenclatureMeasure.Show;
+      end else begin
+        LViewNomenclatureMeasure.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclatureMeasure.ViewModel.Can(amdDetach) then begin
+        LViewNomenclatureMeasure.ViewModel.Confirm;
+      end else begin
+        LViewNomenclatureMeasure.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

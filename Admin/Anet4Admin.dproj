@@ -1,0 +1,970 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0D5E2941-249E-4FE6-A865-DA29084DA729}</ProjectGuid>
+        <ProjectVersion>18.5</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
+        <MainSource>Anet4Admin.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Application</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_N>false</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_F>false</DCC_F>
+        <DCC_K>false</DCC_K>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <SanitizedProjectName>Anet4Admin</SanitizedProjectName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_UsePackage>DBXSqliteDriver;RESTComponents;DataSnapServerMidas;DBXDb2Driver;DBXInterBaseDriver;vclactnband;vclFireDAC;emsclientfiredac;DataSnapFireDAC;svnui;tethering;FireDACADSDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;vcltouch;vcldb;bindcompfmx;svn;Intraweb;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;FireDACIBDriver;fmx;fmxdae;vclib;FireDACDBXDriver;dbexpress;IndyCore;vclx;dsnap;DataSnapCommon;emsclient;FireDACCommon;bdertl;RESTBackendComponents;DataSnapConnectors;VCLRESTComponents;soapserver;vclie;bindengine;DBXMySQLDriver;FireDACOracleDriver;CloudService;FireDACMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;FireDACCommonDriver;DataSnapClient;inet;bindcompdbx;IndyIPCommon;vcl;IndyIPServer;DBXSybaseASEDriver;IndySystem;FireDACDb2Driver;dsnapcon;madExcept_;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;madBasic_;TeeDB;FireDAC;emshosting;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;FireDACASADriver;FireDACTDataDriver;DBXOdbcDriver;FMXTee;soaprtl;DbxCommonDriver;ibxpress;Tee;fd_BGR;DataSnapServer;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;vclwinx;ibxbindings;rtl;emsserverresource;DbxClientDriver;FireDACDSDriver;DBXSybaseASADriver;madDisAsm_;CustomIPTransport;vcldsnap;Anet4;bindcomp;appanalytics;DBXInformixDriver;IndyIPClient;bindcompvcl;TeeUI;dbxcds;VclSmp;adortl;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;DataSnapProviderClient;dbrtl;inetdbxpress;FireDACMongoDBDriver;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_UsePackage>DBXSqliteDriver;RESTComponents;DataSnapServerMidas;DBXDb2Driver;DBXInterBaseDriver;vclactnband;vclFireDAC;emsclientfiredac;DataSnapFireDAC;tethering;FireDACADSDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;vcltouch;vcldb;bindcompfmx;Intraweb;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;FireDACIBDriver;fmx;fmxdae;vclib;FireDACDBXDriver;dbexpress;IndyCore;vclx;dsnap;DataSnapCommon;emsclient;FireDACCommon;RESTBackendComponents;DataSnapConnectors;VCLRESTComponents;soapserver;vclie;bindengine;DBXMySQLDriver;FireDACOracleDriver;CloudService;FireDACMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;FireDACCommonDriver;DataSnapClient;inet;bindcompdbx;IndyIPCommon;vcl;IndyIPServer;DBXSybaseASEDriver;IndySystem;FireDACDb2Driver;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;TeeDB;FireDAC;emshosting;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;FireDACASADriver;FireDACTDataDriver;DBXOdbcDriver;FMXTee;soaprtl;DbxCommonDriver;ibxpress;Tee;DataSnapServer;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;vclwinx;ibxbindings;rtl;emsserverresource;DbxClientDriver;FireDACDSDriver;DBXSybaseASADriver;CustomIPTransport;vcldsnap;bindcomp;appanalytics;DBXInformixDriver;IndyIPClient;bindcompvcl;TeeUI;dbxcds;VclSmp;adortl;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;DataSnapProviderClient;dbrtl;inetdbxpress;FireDACMongoDBDriver;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+        <DCC_RemoteDebug>true</DCC_RemoteDebug>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_RemoteDebug>false</DCC_RemoteDebug>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <Debugger_RunParams>&quot;търговски обект 1&quot; &quot;каса 1&quot; &quot;DT652267&quot; &quot;3&quot; &quot;0&quot;</Debugger_RunParams>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="Views\View.Main.pas">
+            <Form>ViewMain</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Login.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Main.pas"/>
+        <DCCReference Include="Models\Model.Login.pas"/>
+        <DCCReference Include="Models\Model.Main.pas"/>
+        <DCCReference Include="Interfaces\Interfaces.Enums.pas"/>
+        <DCCReference Include="Interfaces\Interfaces.GUIRecords.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Login.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Main.pas"/>
+        <DCCReference Include="Interfaces\Models\Interfaces.Model.Login.pas"/>
+        <DCCReference Include="Interfaces\Models\Interfaces.Model.Main.pas"/>
+        <DCCReference Include="DataModules\DataModule.Stores.pas">
+            <Form>DataModuleStores</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Workstations.pas">
+            <Form>DataModuleWorkstations</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.FiscalDevices.pas">
+            <Form>DataModuleFiscalDevices</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Actions.pas">
+            <Form>DataModuleActions</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.PaymentTypes.pas">
+            <Form>DataModulePaymentTypes</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Permissions.pas">
+            <Form>DataModulePermissions</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Roles.pas">
+            <Form>DataModuleRoles</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.PermissionsRoles.pas">
+            <Form>DataModulePermissionsRoles</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Users.pas">
+            <Form>DataModuleUsers</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Common\Models\Model.AppSettings.pas"/>
+        <DCCReference Include="..\Common\Models\Model.Generator.GIDs.pas"/>
+        <DCCReference Include="..\Common\Models\Model.Notification.pas"/>
+        <DCCReference Include="..\Common\Models\Model.Pattern.Observer.Observable.pas"/>
+        <DCCReference Include="..\Common\Models\Model.Pattern.Observer.Observer.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Interfaces.Model.Notification.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Interfaces.Model.Pattern.Observer.pas"/>
+        <DCCReference Include="Views\View.Login.pas">
+            <Form>ViewLogin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Action.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Actions.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Clients.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevice.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevices.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Item.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Items.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Measure.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Measures.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentType.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentTypes.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permission.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionRole.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permissions.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionsRoles.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Role.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Roles.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RolesUsers.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RoleUser.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payment.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payments.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversal.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Stores.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.User.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Users.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstation.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstations.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Action.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Actions.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Clients.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.FiscalDevice.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.FiscalDevices.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Item.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Items.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Measure.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Measures.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PaymentType.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PaymentTypes.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Permission.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PermissionRole.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Permissions.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PermissionsRoles.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Role.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Roles.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.RolesUsers.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.RoleUser.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellations.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Detail.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Details.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Payment.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Payments.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversal.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversals.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sales.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Store.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Stores.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Users.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Workstation.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Workstations.pas"/>
+        <DCCReference Include="..\Common\Helpers\Helper.MyFuncs.pas"/>
+        <DCCReference Include="Views\View.Message.pas">
+            <Form>ViewMessage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.User.pas"/>
+        <DCCReference Include="Globals.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.BaseObject.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.BaseCollection.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Stores.pas">
+            <Form>ViewNomenclatureStores</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Stores.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Stores.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Store.pas">
+            <Form>ViewNomenclatureStore</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Store.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Store.pas"/>
+        <DCCReference Include="DataModules\DataModule.RolesUsers.pas">
+            <Form>DataModuleRolesUsers</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Views\View.Nomenclature.FiscalDevices.pas">
+            <Form>ViewNomenclatureFiscalDevices</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.FiscalDevices.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.FiscalDevices.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.FiscalDevice.pas">
+            <Form>ViewNomenclatureFiscalDevice</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.FiscalDevice.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.FiscalDevice.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Actions.pas">
+            <Form>ViewNomenclatureActions</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Actions.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Actions.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Action.pas">
+            <Form>ViewNomenclatureAction</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Action.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Action.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.PaymentTypes.pas">
+            <Form>ViewNomenclaturePaymentTypes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.PaymentTypes.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.PaymentTypes.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.PaymentType.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.PaymentType.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.PaymentType.pas">
+            <Form>ViewNomenclaturePaymentType</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Nomenclature.Permissions.pas">
+            <Form>ViewNomenclaturePermissions</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Permissions.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Permissions.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Permission.pas">
+            <Form>ViewNomenclaturePermission</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Permission.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Permission.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Roles.pas">
+            <Form>ViewNomenclatureRoles</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Roles.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Roles.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Role.pas">
+            <Form>ViewNomenclatureRole</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Role.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Role.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Workstations.pas">
+            <Form>ViewNomenclatureWorkstations</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Workstations.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Workstations.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Workstation.pas">
+            <Form>ViewNomenclatureWorkstation</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Workstation.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Workstation.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Users.pas">
+            <Form>ViewNomenclatureUsers</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Users.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Users.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.User.pas">
+            <Form>ViewNomenclatureUser</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.User.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.User.pas"/>
+        <DCCReference Include="DataModules\DataModule.Clients.pas">
+            <Form>DataModuleClients</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Views\View.Nomenclature.Clients.pas">
+            <Form>ViewNomenclatureClients</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Clients.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Clients.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Client.pas">
+            <Form>ViewNomenclatureClient</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Client.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Client.pas"/>
+        <DCCReference Include="DataModules\DataModule.Items.pas">
+            <Form>DataModuleItems</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataModules\DataModule.Measures.pas">
+            <Form>DataModuleMeasures</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Views\View.Nomenclature.PermissionsRoles.pas">
+            <Form>ViewNomenclaturePermissionsRoles</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.PermissionsRoles.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.PermissionsRoles.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.PermissionRole.pas">
+            <Form>ViewNomenclaturePermissionRole</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.PermissionRole.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.PermissionRole.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.RolesUsers.pas">
+            <Form>ViewNomenclatureRolesUsers</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.RolesUsers.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.RolesUsers.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.RoleUser.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.RoleUser.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.RoleUser.pas">
+            <Form>ViewNomenclatureRoleUser</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Nomenclature.Items.pas">
+            <Form>ViewNomenclatureItems</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Items.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Items.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Item.pas">
+            <Form>ViewNomenclatureItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Item.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Item.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Measures.pas">
+            <Form>ViewNomenclatureMeasures</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Measures.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Measures.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Nomenclature.Measure.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Nomenclature.Measure.pas"/>
+        <DCCReference Include="Views\View.Nomenclature.Measure.pas">
+            <Form>ViewNomenclatureMeasure</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Helpers\Helper.DatabaseBuilder.pas"/>
+        <DCCReference Include="Views\View.Operation.Sales.pas">
+            <Form>ViewOperationSales</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Operation.Details.pas">
+            <Form>ViewOperatonDetails</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Operation.Cancellations.pas">
+            <Form>ViewOperationCancellations</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Operation.Payments.pas">
+            <Form>ViewOperationPayments</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Operation.Reversals.pas">
+            <Form>ViewOperationReversals</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Log.pas">
+            <Form>ViewLog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Views\View.Settings.pas">
+            <Form>ViewSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Application</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">Anet4Admin.dpr</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\FP3550.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerDBXPluginEnt260.bpl">DBExpress Enterprise Data Explorer Integration</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k260.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp260.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Deployment Version="3">
+                <DeployFile LocalName="Win32\Debug\Anet4Admin.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>Anet4Admin.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployClass Name="AdditionalDebugSymbols">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <RemoteDir>classes</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidFileProvider">
+                    <Platform Name="Android">
+                        <RemoteDir>res\xml</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidGDBServer">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeArmeabiFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeMipsFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\mips</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidServiceOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashImageDef">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashStyles">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashStylesV21">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_DefaultAppIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon144">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon36">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-ldpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon48">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon96">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage426">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-small</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage470">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-normal</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage640">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-large</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage960">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xlarge</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DebugSymbols">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyFramework">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.framework</Extensions>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.framework</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="DependencyPackage">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="File">
+                    <Platform Name="Android">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1024">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1536">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch2048">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch768">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch320">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640x1136">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectAndroidManifest">
+                    <Platform Name="Android">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceDebug">
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSEntitlements">
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSInfoPList">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSResource">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXDebug">
+                    <Platform Name="OSX64">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXEntitlements">
+                    <Platform Name="OSX32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXInfoPList">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXResource">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\Resources</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="ProjectOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX64">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectUWPManifest">
+                    <Platform Name="Win32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+            </Deployment>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+    <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
+</Project>

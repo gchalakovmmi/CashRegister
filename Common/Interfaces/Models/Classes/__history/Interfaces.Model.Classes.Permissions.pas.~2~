@@ -1,0 +1,27 @@
+﻿unit Interfaces.Model.Classes.Permissions;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Permission;
+
+type
+  IModelClassPermissions = interface
+  ['{96630C20-398C-4052-93B0-F108E298E0D5}']
+    function GetList: TList<IModelClassPermission>;
+
+    property List: TList<IModelClassPermission> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const APermission: IModelClassPermission);
+    function GetByGID(const AGID: String): IModelClassPermission;
+  end;
+
+implementation
+
+end.

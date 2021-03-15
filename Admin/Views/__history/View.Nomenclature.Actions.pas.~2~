@@ -1,0 +1,29 @@
+unit View.Nomenclature.Actions;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls;
+
+type
+  TViewNomenclatureActions = class(TForm)
+    Panel: TPanel;
+    SpeedButtonAttach: TSpeedButton;
+    SpeedButtonModify: TSpeedButton;
+    SpeedButtonDetach: TSpeedButton;
+    SpeedButtonExit: TSpeedButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureActions: TViewNomenclatureActions;
+
+implementation
+
+{$R *.dfm}
+
+end.

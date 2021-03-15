@@ -1,0 +1,29 @@
+unit Interfaces.ViewModel.Nomenclature.RolesUsers;
+
+interface
+
+uses
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer;
+
+type
+  IViewModelNomenclatureRolesUsers = interface
+  ['{C08B361A-A464-44B0-A104-2D6205ADDBAF}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetGUIRecord(const AWidth: Integer): TViewNomenclatureRolesUsersGUIRecord;
+
+    procedure Attach;
+    procedure Modify;
+    procedure Detach;
+
+    procedure CloseForm;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,25 @@
+unit DataModule.PermissionsRoles;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModulePermissionsRoles = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModulePermissionsRoles: TDataModulePermissionsRoles;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,16 @@
+unit Interfaces.ViewModel.Admin;
+
+interface
+
+type
+  IViewModelAdmin = interface
+  ['{0B24489A-7828-4005-82C5-9026E9A73F18}']
+    procedure Nomenclatures;
+    procedure Logs;
+    procedure Sales;
+    procedure Reversals;
+  end;
+
+implementation
+
+end.

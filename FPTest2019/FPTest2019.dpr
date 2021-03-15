@@ -9,6 +9,9 @@ uses
   Forms,
   Vcl.Themes,
   Vcl.Styles,
+  Vcl.Dialogs,
+  Windows,
+
   Interfaces.Enums in '..\Common\Interfaces\Interfaces.Enums.pas',
   Interfaces.GUIRecords in 'Interfaces\Interfaces.GUIRecords.pas',
   Interfaces.Model.Pattern.Observer in '..\Common\Interfaces\Models\Interfaces.Model.Pattern.Observer.pas',
@@ -87,7 +90,6 @@ uses
   Interfaces.Model.CashOut in 'Interfaces\Models\Interfaces.Model.CashOut.pas',
   Model.CashOut in 'Models\Model.CashOut.pas',
   DataModule.Users in 'DataModules\DataModule.Users.pas' {DataModuleUsers: TDataModule},
-  Model.Classes.Client in '..\Common\Models\Classes\Model.Classes.Client.pas',
   Model.Classes.Sale.Cancellation in '..\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas',
   Model.Classes.Sale.Cancellations in '..\Common\Models\Classes\Model.Classes.Sale.Cancellations.pas',
   Model.Classes.Sale.Detail in '..\Common\Models\Classes\Model.Classes.Sale.Detail.pas',
@@ -98,7 +100,6 @@ uses
   Model.Classes.Sale.Reversal in '..\Common\Models\Classes\Model.Classes.Sale.Reversal.pas',
   Model.Classes.Sale.Reversals in '..\Common\Models\Classes\Model.Classes.Sale.Reversals.pas',
   Model.Classes.Sales in '..\Common\Models\Classes\Model.Classes.Sales.pas',
-  Interfaces.Model.Classes.Client in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas',
   Interfaces.Model.Classes.Sale.Cancellation in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas',
   Interfaces.Model.Classes.Sale.Cancellations in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas',
   Interfaces.Model.Classes.Sale.Detail in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas',
@@ -111,21 +112,81 @@ uses
   Interfaces.Model.Classes.Sales in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas',
   Model.AppSettings in '..\Common\Models\Model.AppSettings.pas',
   Model.Generator.GIDs in '..\Common\Models\Model.Generator.GIDs.pas',
-  Model.Classes.Stores in '..\Common\Models\Classes\Model.Classes.Stores.pas',
-  Model.Classes.Store in '..\Common\Models\Classes\Model.Classes.Store.pas',
   Interfaces.Model.Classes.Store in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas',
-  Interfaces.Model.Classes.Stores in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Stores.pas';
+  Interfaces.Model.Classes.Stores in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Stores.pas',
+  Interfaces.Model.Classes.FiscalDevice in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevice.pas',
+  Interfaces.Model.Classes.FiscalDevices in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevices.pas',
+  Interfaces.Model.Classes.Permission in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permission.pas',
+  Interfaces.Model.Classes.PermissionRole in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionRole.pas',
+  Interfaces.Model.Classes.Permissions in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permissions.pas',
+  Interfaces.Model.Classes.PermissionsRoles in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionsRoles.pas',
+  Interfaces.Model.Classes.Role in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Role.pas',
+  Interfaces.Model.Classes.Roles in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Roles.pas',
+  Interfaces.Model.Classes.RolesUsers in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RolesUsers.pas',
+  Interfaces.Model.Classes.RoleUser in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RoleUser.pas',
+  Interfaces.Model.Classes.User in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.User.pas',
+  Interfaces.Model.Classes.Users in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Users.pas',
+  Interfaces.Model.Classes.Workstation in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstation.pas',
+  Interfaces.Model.Classes.Workstations in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstations.pas',
+  Model.Classes.FiscalDevice in '..\Common\Models\Classes\Model.Classes.FiscalDevice.pas',
+  Model.Classes.FiscalDevices in '..\Common\Models\Classes\Model.Classes.FiscalDevices.pas',
+  Model.Classes.Permission in '..\Common\Models\Classes\Model.Classes.Permission.pas',
+  Model.Classes.PermissionRole in '..\Common\Models\Classes\Model.Classes.PermissionRole.pas',
+  Model.Classes.Permissions in '..\Common\Models\Classes\Model.Classes.Permissions.pas',
+  Model.Classes.PermissionsRoles in '..\Common\Models\Classes\Model.Classes.PermissionsRoles.pas',
+  Model.Classes.Role in '..\Common\Models\Classes\Model.Classes.Role.pas',
+  Model.Classes.Roles in '..\Common\Models\Classes\Model.Classes.Roles.pas',
+  Model.Classes.RolesUsers in '..\Common\Models\Classes\Model.Classes.RolesUsers.pas',
+  Model.Classes.RoleUser in '..\Common\Models\Classes\Model.Classes.RoleUser.pas',
+  Model.Classes.Store in '..\Common\Models\Classes\Model.Classes.Store.pas',
+  Model.Classes.Stores in '..\Common\Models\Classes\Model.Classes.Stores.pas',
+  Model.Classes.User in '..\Common\Models\Classes\Model.Classes.User.pas',
+  Model.Classes.Users in '..\Common\Models\Classes\Model.Classes.Users.pas',
+  Model.Classes.Workstation in '..\Common\Models\Classes\Model.Classes.Workstation.pas',
+  Model.Classes.Workstations in '..\Common\Models\Classes\Model.Classes.Workstations.pas',
+  Interfaces.Model.Classes.Action in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Action.pas',
+  Interfaces.Model.Classes.Actions in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Actions.pas',
+  Model.Classes.Action in '..\Common\Models\Classes\Model.Classes.Action.pas',
+  Model.Classes.Actions in '..\Common\Models\Classes\Model.Classes.Actions.pas',
+  Interfaces.Model.Classes.PaymentType in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentType.pas',
+  Interfaces.Model.Classes.PaymentTypes in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentTypes.pas',
+  Model.Classes.PaymentType in '..\Common\Models\Classes\Model.Classes.PaymentType.pas',
+  Model.Classes.PaymentTypes in '..\Common\Models\Classes\Model.Classes.PaymentTypes.pas',
+  Model.Classes.Client in '..\Common\Models\Classes\Model.Classes.Client.pas',
+  Model.Classes.Clients in '..\Common\Models\Classes\Model.Classes.Clients.pas',
+  Interfaces.Model.Classes.Client in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas',
+  Interfaces.Model.Classes.Clients in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Clients.pas',
+  View.Audit in 'Views\View.Audit.pas' {ViewAudit},
+  Interfaces.ViewModel.Audit in 'Interfaces\ViewModels\Interfaces.ViewModel.Audit.pas',
+  ViewModel.Audit in 'ViewModels\ViewModel.Audit.pas',
+  View.Admin in 'Views\View.Admin.pas' {ViewAdmin},
+  ViewModel.Admin in 'ViewModels\ViewModel.Admin.pas',
+  Interfaces.ViewModel.Admin in 'Interfaces\ViewModels\Interfaces.ViewModel.Admin.pas',
+  View.Admin.Nomenclatures.Stores in 'Views\View.Admin.Nomenclatures.Stores.pas' {ViewAdminNomenclatureStores},
+  Interfaces.Model.Classes in '..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.pas',
+  Model.Classes.BaseCollection in '..\Common\Models\Classes\Model.Classes.BaseCollection.pas',
+  Model.Classes.BaseObject in '..\Common\Models\Classes\Model.Classes.BaseObject.pas',
+  Helper.StringMath in 'Helpers\Helper.StringMath.pas';
+
+var
+  Mutex : THandle;
 
 {$R *.res}
 
 begin
-  Application.Initialize;
-  Application.CreateForm(TDataModuleItems, DataModuleItems);
-  Application.CreateForm(TDataModuleClients, DataModuleClients);
-  Application.CreateForm(TDataModuleSale, DataModuleSale);
-  Application.CreateForm(TViewMain, ViewMain);
-  Application.CreateForm(TViewMessage, ViewMessage);
-  Application.CreateForm(TDeviceFP700X, DeviceFP700X);
-  Application.CreateForm(TDataModuleUsers, DataModuleUsers);
-  Application.Run;
+  Mutex := CreateMutex(nil, True, 'CashRegister_Application_Mutex');
+  if (Mutex = 0) OR (GetLastError = ERROR_ALREADY_EXISTS) then begin
+    ShowMessage('Тази програма е вече стартирана!');
+  end else begin
+    Application.Initialize;
+    Application.CreateForm(TDataModuleItems, DataModuleItems);
+    Application.CreateForm(TDataModuleClients, DataModuleClients);
+    Application.CreateForm(TDataModuleSale, DataModuleSale);
+    Application.CreateForm(TViewMain, ViewMain);
+    Application.CreateForm(TViewMessage, ViewMessage);
+    Application.CreateForm(TDeviceFP700X, DeviceFP700X);
+    Application.CreateForm(TDataModuleUsers, DataModuleUsers);
+    Application.CreateForm(TViewAdminNomenclatureStores, ViewAdminNomenclatureStores);
+    Application.Run;
+  end;
 end.

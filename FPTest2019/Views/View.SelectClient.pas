@@ -160,6 +160,7 @@ begin
 
   Top := LViewSelectClientGUIRecord.Top;
   Left := LViewSelectClientGUIRecord.Left;
+  Width := LViewSelectClientGUIRecord.Width;
   Edit.Text := LViewSelectClientGUIRecord.EditText;
 
   ActiveControl := Grid;

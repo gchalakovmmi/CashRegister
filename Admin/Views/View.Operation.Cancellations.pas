@@ -1,0 +1,332 @@
+unit View.Operation.Cancellations;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.WinXPickers,
+  Data.DB,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+//  Interfaces.ViewModel.Operation.Cancellations,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin;
+
+type
+  TViewOperationCancellations = class(TForm)
+
+    DBGrid: TDBGrid;
+    Panel: TPanel;
+    SpeedButtonExit: TSpeedButton;
+    SpeedButtonFilter: TSpeedButton;
+    SpeedButtonExport: TSpeedButton;
+    PanelFilter: TPanel;
+    LabelDateFrom: TLabel;
+    DatePickerFrom: TDatePicker;
+    LabelPeriodTo: TLabel;
+    DatePickerTo: TDatePicker;
+    LabelStore: TLabel;
+    ComboBoxStore: TComboBox;
+    LabelWorkstation: TLabel;
+    ComboBoxWorkstation: TComboBox;
+    LabelUser: TLabel;
+    ComboBoxUser: TComboBox;
+    LabelFiscalDevice: TLabel;
+    ComboBoxFiscalDevice: TComboBox;
+    FDMemTable: TFDMemTable;
+    DataSource: TDataSource;
+    FDMemTableSaleUniqueID: TStringField;
+    FDMemTableSaleGID: TStringField;
+    FDMemTableTotalVAT: TStringField;
+    FDMemTableItemGID: TStringField;
+    FDMemTableItemName: TStringField;
+    FDMemTableQuantity: TStringField;
+    FDMemTableClientBasePrice: TStringField;
+    FDMemTableDiscountValue: TStringField;
+    FDMemTableVATRate: TStringField;
+    FDMemTableTotal: TStringField;
+    FDMemTableCreatedDate: TStringField;
+    FDMemTableCreatedTime: TStringField;
+    FDMemTableCancellationDate: TStringField;
+    FDMemTableCancellationTime: TStringField;
+    FDMemTableUserGID: TStringField;
+    FDMemTableUserName: TStringField;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
+    procedure SpeedButtonExitClick(Sender: TObject);
+    procedure SpeedButtonFilterClick(Sender: TObject);
+    procedure SpeedButtonExportClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+
+    procedure RefreshData;
+    procedure ApplyFilter;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+//    FViewModel: IViewModelOperationCancellations;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+//    property ViewModel: IViewModelOperationCancellations read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewOperationCancellations;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  System.Math,
+  System.Types,
+  System.IOUtils,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale,
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Cancellation,
+
+  Model.Pattern.Observer.Observer,
+//  ViewModel.Operation.Cancellations,
+  DataModule.Actions;
+
+{$REGION 'Published Methods'}
+
+procedure TViewOperationCancellations.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+//  FViewModel := CreateViewModelOperationCancellations;
+//  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewOperationCancellations.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewOperationCancellations.FormResize(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewOperationCancellations.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewOperationCancellations.UpdateGUI;
+//var
+//  LGUIRecord: TViewOperationCancellationsGUIRecord;
+begin
+//  LGUIRecord := ViewModel.GetGUIRecord(ClientWidth);
+//
+//  DBGrid.Columns[0].Width := LGUIRecord.DBGridColumns0Width;
+//  DBGrid.Columns[1].Width := LGUIRecord.DBGridColumns1Width;
+//  DBGrid.Columns[2].Width := LGUIRecord.DBGridColumns2Width;
+//  DBGrid.Columns[3].Width := LGUIRecord.DBGridColumns3Width;
+//  DBGrid.Columns[4].Width := LGUIRecord.DBGridColumns4Width;
+
+//  FDMemTable.CreateDataSet;
+
+  ActiveControl := DBGrid;
+end;
+
+procedure TViewOperationCancellations.RefreshData;
+var
+  LList: TStringDynArray;
+  I: Integer;
+  LSale: IModelClassSale;
+  LCancellation: IModelClassSaleCancellation;
+
+  procedure AppendFromModel;
+  begin
+    FDMemTable.Append;
+    FDMemTableSaleUniqueID.AsString := LCancellation.SaleUniqueID;
+    FDMemTableSaleGID.AsString := LCancellation.GID;
+    FDMemTableTotalVAT.AsString := LCancellation.TotalVAT;
+    FDMemTableItemGID.AsString := LCancellation.ItemGID;
+    FDMemTableItemName.AsString := LCancellation.ItemName;
+    FDMemTableQuantity.AsString := LCancellation.Quantity;
+    FDMemTableClientBasePrice.AsString := LCancellation.ClientPriceBase;
+    FDMemTableDiscountValue.AsString := LCancellation.DiscountValue;
+    FDMemTableVATRate.AsString := LCancellation.VATRate;
+    FDMemTableTotal.AsString := LCancellation.Total;
+    FDMemTableCreatedDate.AsString := LCancellation.CreatedDate;
+    FDMemTableCreatedTime.AsString := LCancellation.CreatedTime;
+    FDMemTableCancellationDate.AsString := LCancellation.CancellationDate;
+    FDMemTableCancellationTime.AsString := LCancellation.CancellationTime;
+    FDMemTableUserGID.AsString := LCancellation.UserGID;
+    if LCancellation.UserGID = '6' then begin
+      FDMemTableUserName.AsString := 'ÊÐÀÑÈÌÈÐÀ ßÍ×ÅÂÀ';
+    end else begin
+      if LCancellation.UserGID = '8' then begin
+        FDMemTableUserName.AsString := 'ÏÅÍÊÀ ÆÅÊÎÂÀ';
+      end else begin
+        FDMemTableUserName.AsString := 'ÈÂÀÍÊÀ ÌÈÍÊÎÂÀ';
+      end;
+    end;
+    FDMemTable.Post;
+  end;
+
+begin
+  { Populate the memo with the results }
+  FDMemTable.Close;
+  FDMemTable.IndexFieldNames := '';
+  FDMemTable.CreateDataSet;
+
+  LList := TDirectory.GetFiles('.\ïðîäàæáè\2019\12\18\1', 'Sale*.json', TSearchOption.soTopDirectoryOnly);
+
+  for I := 0 to Length(LList) - 1 do begin
+    LSale := CreateFromFileModelClassSale(LList[i]);
+    for LCancellation in LSale.Cancellations.List do begin
+      AppendFromModel;
+    end;
+  end;
+
+  LList := TDirectory.GetFiles('.\ïðîäàæáè\2019\12\18\2', 'Sale*.json', TSearchOption.soTopDirectoryOnly);
+
+  for I := 0 to Length(LList) - 1 do begin
+    LSale := CreateFromFileModelClassSale(LList[i]);
+    for LCancellation in LSale.Cancellations.List do begin
+      AppendFromModel;
+    end;
+  end;
+end;
+
+procedure TViewOperationCancellations.ApplyFilter;
+begin
+//  FDMemTable.First;
+//  while not FDMemTable.Eof do begin
+//    if
+////      ((DatePickerFrom.Date > FDMemTableCreatedDate.AsDateTime) or (DatePickerTo.Date < FDMemTableCreatedDate.AsDateTime)) or
+//      ((ComboBoxStore.ItemIndex > 0) and (ComboBoxStore.Items[ComboBoxStore.ItemIndex] <> FDMemTableStoreName.AsString)) or
+//      ((ComboBoxWorkstation.ItemIndex > 0) and (ComboBoxWorkstation.Items[ComboBoxWorkstation.ItemIndex] <> FDMemTableWorkstationName.AsString)) or
+//      ((ComboBoxUser.ItemIndex > 0) and (ComboBoxUser.Items[ComboBoxUser.ItemIndex] <> FDMemTableUserName.AsString)) or
+//      ((ComboBoxFiscalDevice.ItemIndex > 0) and (ComboBoxFiscalDevice.Items[ComboBoxFiscalDevice.ItemIndex] <> FDMemTableFiscalDeviceName.AsString))
+//    then begin
+//      FDMemTable.Delete;
+//    end else begin
+//      FDMemTable.Next;
+//    end;
+//  end;
+  FDMemTable.First;
+//  FDMemTable.IndexFieldNames := 'CreatedTime';
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewOperationCancellations.SpeedButtonExitClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TViewOperationCancellations.SpeedButtonExportClick(Sender: TObject);
+begin
+  ApplyFilter;
+end;
+
+procedure TViewOperationCancellations.SpeedButtonFilterClick(Sender: TObject);
+begin
+  RefreshData;
+  ApplyFilter;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewOperationCancellations;
+var
+  LViewOperationCancellations: TViewOperationCancellations;
+begin
+  LViewOperationCancellations := TViewOperationCancellations.Create(Application.MainForm);
+  LViewOperationCancellations.Show;
+end;
+
+end.

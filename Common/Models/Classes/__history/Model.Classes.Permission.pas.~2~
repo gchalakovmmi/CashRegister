@@ -1,0 +1,267 @@
+﻿unit Model.Classes.Permission;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Permission;
+
+  function CreateModelClassPermission: IModelClassPermission;
+  function CreateFromJSONModelClassPermission(const AJSONObject: TJSONObject): IModelClassPermission;
+  function CreateFromDataSetModelClassPermission: IModelClassPermission;
+  procedure AssignDataSetModelClassPermission(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - права (разрешения)</summary>
+  TModelClassPermission = class(TInterfacedObject, IModelClassPermission)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FName: String;
+    FDescription: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    function GetDescription: String;
+    procedure SetDescription(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на разрешението<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на разрешението<summary>
+    property Name: String read GetName write SetName;
+    ///<summary>описание на разрешението<summary>
+    property Description: String read GetDescription write SetDescription;
+    ///<summary>дата и час на първоначално конфигуриране на разрешението в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на разрешението<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на разрешението от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassPermission: IModelClassPermission;
+begin
+  Result := TModelClassPermission.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('PermissionGID').ToString;
+end;
+
+function CreateFromJSONModelClassPermission(const AJSONObject: TJSONObject): IModelClassPermission;
+begin
+  Result := TModelClassPermission.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassPermission: IModelClassPermission;
+begin
+  Result := TModelClassPermission.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassPermission(const ADataSet: TFDDataSet);
+begin
+  TModelClassPermission.DataSet := ADataSet;
+end;
+
+{ TModelClassPermission }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassPermission.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+function TModelClassPermission.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassPermission.GetName: String;
+begin
+  Result := FName;
+end;
+
+function TModelClassPermission.SetName(const AValue: String);
+begin
+  FName := AValue;
+end;
+
+function TModelClassPermission.GetDescription: String;
+begin
+  Result := FDescription;
+end;
+
+function TModelClassPermission.SetDescription(const AValue: String);
+begin
+  FDescription := AValue;
+end;
+
+function TModelClassPermission.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+function TModelClassPermission.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassPermission.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+function TModelClassPermission.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassPermission.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+function TModelClassPermission.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassPermission.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').Value;
+  Name := DataSet.FieldByName('Name').Value;
+  Description := DataSet.FieldByName('Description').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassPermission.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').Value := GID;
+  DataSet.FieldByName('Name').Value := Name;
+  DataSet.FieldByName('Description').Value := Description;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassPermission.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('Name', Name);
+  Result.AddPair('Description', Description);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassPermission.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID = (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name = (AJSONObject.GetValue('Name') as TJSONString).Value;
+  Description = (AJSONObject.GetValue('Description') as TJSONString).Value;
+  AttachedAt = (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt = (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt = (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

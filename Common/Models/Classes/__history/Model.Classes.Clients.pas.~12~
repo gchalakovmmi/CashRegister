@@ -1,0 +1,241 @@
+﻿unit Model.Classes.Clients;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Clients;
+
+  function CreateModelClassClients: IModelClassClients;
+  function CreateFromJSONModelClassClients(const AJSONArray: TJSONArray): IModelClassClients;
+  function CreateFromFileModelClassClients(const AFileName: String): IModelClassClients;
+  procedure AssignDataSetModelClassClients(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassClients(const AFileName: String);
+
+implementation
+
+uses
+  Globals,
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections,
+  Interfaces.Model.Classes.Client,
+  Model.Classes.Client;
+
+type
+  ///<summary>Таблица - клиенти</summary>
+  TModelClassClients = class(TInterfacedObject, IModelClassClients)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+    FFileName: String;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassClient>;
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassClient>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassClient> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+    procedure SaveToFile;
+
+    procedure Attach(const AClient: IModelClassClient);
+    procedure Detach(const AClient: IModelClassClient);
+    function GetByGID(const AGID: String): IModelClassClient;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassClients: IModelClassClients;
+begin
+  Result := TModelClassClients.Create;
+end;
+
+function CreateFromJSONModelClassClients(const AJSONArray: TJSONArray): IModelClassClients;
+begin
+  Result := TModelClassClients.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassClients(const AFileName: String): IModelClassClients;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassClients(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+procedure AssignDataSetModelClassClients(const ADataSet: TFDDataSet);
+begin
+  TModelClassClients.DataSet := ADataSet;
+end;
+
+procedure AssignFileNameModelClassClients(const AFileName: String);
+begin
+  TModelClassClients.FileName := AFileName;
+end;
+
+{ TModelClassClients }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassClients.GetList: TList<IModelClassClient>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassClients.UpdateFromDataSet;
+var
+  LClient: IModelClassClient;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LClient in List do begin
+      if LClient.GID = DataSet.FieldByName('gid').Value then begin
+        LClient.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LClient := CreateFromDataSetModelClassClient;
+      List.Add(LClient);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassClients.UpdateInDataSet;
+var
+  LClient: IModelClassClient;
+begin
+  for LClient in List do begin
+    LClient.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassClients.ToJSON: TJSONArray;
+var
+  LClient: IModelClassClient;
+begin
+  Result := TJSONArray.Create;
+  for LClient in List do begin
+    Result.Add(LClient.ToJSON);
+  end;
+end;
+
+procedure TModelClassClients.SaveToFile;
+begin
+  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+function TModelClassClients.GetByGID(const AGID: String): IModelClassClient;
+var
+  LClient: IModelClassClient;
+begin
+  Result := nil;
+  for LClient in List do begin
+    if LClient.GID = AGID then begin
+      Result := LClient;
+    end;
+  end;
+end;
+
+procedure TModelClassClients.Attach(const AClient: IModelClassClient);
+begin
+  AClient.AttachedAt := FormatDateTime('dd.mm.yyyy', Date);
+  List.Add(AClient);
+end;
+
+procedure TModelClassClients.Detach(const AClient: IModelClassClient);
+begin
+  AClient.DetachedAt := FormatDateTime('dd.mm.yyyy', Date);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassClients.Create;
+begin
+  inherited;
+  FList := TList<IModelClassClient>.Create;
+end;
+
+constructor TModelClassClients.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassClient>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassClient(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassClients.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

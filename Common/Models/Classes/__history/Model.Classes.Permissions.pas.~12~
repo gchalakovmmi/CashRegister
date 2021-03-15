@@ -1,0 +1,138 @@
+﻿unit Model.Classes.Permissions;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Permissions;
+
+  procedure AssignDataSetModelClassPermissions(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassPermissions(const AFileName: String);
+  function CreateModelClassPermissions: IModelClassPermissions;
+  function CreateFromJSONModelClassPermissions(const AJSONArray: TJSONArray): IModelClassPermissions;
+  function CreateFromFileModelClassPermissions: IModelClassPermissions; overload;
+  function CreateFromFileModelClassPermissions(const AFileName: String): IModelClassPermissions; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.Permission;
+
+type
+  ///<summary>Таблица - права (разрешения)</summary>
+  TModelClassPermissions = class(TModelClassBaseCollection<IModelClassPermission>, IModelClassPermissions)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure SaveToFile; override;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassPermissions }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassPermissions.SaveToFile;
+begin
+  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassPermissions(const ADataSet: TFDDataSet);
+begin
+  TModelClassPermissions.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassPermissions(const AFileName: String);
+begin
+  TModelClassPermissions.FileName := AFileName;
+end;
+
+function CreateModelClassPermissions: IModelClassPermissions;
+begin
+  Result := TModelClassPermissions.Create;
+end;
+
+function CreateFromJSONModelClassPermissions(const AJSONArray: TJSONArray): IModelClassPermissions;
+begin
+  Result := TModelClassPermissions.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassPermissions: IModelClassPermissions;
+begin
+  Result := TModelClassPermissions.CreateFromFile(TModelClassPermissions.FileName);
+end;
+
+function CreateFromFileModelClassPermissions(const AFileName: String): IModelClassPermissions;
+begin
+  Result := TModelClassPermissions.CreateFromFile(AFileName);
+end;
+
+end.

@@ -105,11 +105,8 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=АНЕТ4 ЕООД;FileDescription=$(MSBuildProjectName);FileVersion=0.2.0.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=bg.anet4.$(MSBuildProjectName)</VerInfo_Keys>
-        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <VerInfo_Keys>CompanyName=АНЕТ4 ЕООД;FileDescription=$(MSBuildProjectName);FileVersion=1.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=bg.anet4.$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Build>2</VerInfo_Build>
-        <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
@@ -221,7 +218,6 @@
         <DCCReference Include="Components\ButtonWithColor.pas"/>
         <DCCReference Include="Views\View.CashIn.pas">
             <Form>ViewCashIn</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.CashIn.pas"/>
         <DCCReference Include="ViewModels\ViewModel.CashIn.pas"/>
@@ -229,7 +225,6 @@
         <DCCReference Include="Models\Model.CashIn.pas"/>
         <DCCReference Include="Views\View.CashOut.pas">
             <Form>ViewCashOut</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.CashOut.pas"/>
         <DCCReference Include="ViewModels\ViewModel.CashOut.pas"/>
@@ -237,10 +232,8 @@
         <DCCReference Include="Models\Model.CashOut.pas"/>
         <DCCReference Include="DataModules\DataModule.Users.pas">
             <Form>DataModuleUsers</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Client.pas"/>
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas"/>
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Cancellations.pas"/>
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Detail.pas"/>
@@ -251,7 +244,6 @@
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversal.pas"/>
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sale.Reversals.pas"/>
         <DCCReference Include="..\Common\Models\Classes\Model.Classes.Sales.pas"/>
-        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas"/>
@@ -264,10 +256,67 @@
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas"/>
         <DCCReference Include="..\Common\Models\Model.AppSettings.pas"/>
         <DCCReference Include="..\Common\Models\Model.Generator.GIDs.pas"/>
-        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Stores.pas"/>
-        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Store.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas"/>
         <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Stores.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevice.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.FiscalDevices.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permission.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionRole.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Permissions.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PermissionsRoles.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Role.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Roles.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RolesUsers.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.RoleUser.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.User.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Users.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstation.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Workstations.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.FiscalDevice.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.FiscalDevices.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Permission.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PermissionRole.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Permissions.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PermissionsRoles.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Role.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Roles.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.RolesUsers.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.RoleUser.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Store.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Stores.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.User.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Users.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Workstation.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Workstations.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Action.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Actions.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Action.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Actions.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentType.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.PaymentTypes.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PaymentType.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.PaymentTypes.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.Clients.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Client.pas"/>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Clients.pas"/>
+        <DCCReference Include="Views\View.Audit.pas">
+            <Form>ViewAudit</Form>
+        </DCCReference>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Audit.pas"/>
+        <DCCReference Include="ViewModels\ViewModel.Audit.pas"/>
+        <DCCReference Include="Views\View.Admin.pas">
+            <Form>ViewAdmin</Form>
+        </DCCReference>
+        <DCCReference Include="ViewModels\ViewModel.Admin.pas"/>
+        <DCCReference Include="Interfaces\ViewModels\Interfaces.ViewModel.Admin.pas"/>
+        <DCCReference Include="Views\View.Admin.Nomenclatures.Stores.pas">
+            <Form>ViewAdminNomenclatureStores</Form>
+        </DCCReference>
+        <DCCReference Include="..\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.BaseCollection.pas"/>
+        <DCCReference Include="..\Common\Models\Classes\Model.Classes.BaseObject.pas"/>
+        <DCCReference Include="Helpers\Helper.StringMath.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -779,6 +828,9 @@
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
             </Deployment>
+            <UnitTesting>
+                <TestProjectName>Z:\!anet4\Sources\FPTest2019\Test\FPTest2019Tests.dproj</TestProjectName>
+            </UnitTesting>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

@@ -1,0 +1,89 @@
+unit uModelLowLevelProtocol;
+
+interface
+
+type
+  TModelLowLevelProtocol = class
+
+  private
+    FLEN: Char;
+    FSEQ: Char;
+    FCMD: Char;
+    FDATA: String;
+    FSTATUS: String;
+    FBCC: String;
+    FBCCWord: Word;
+
+    FRequestPacket: String;
+    FResponcePacket: String;
+  private
+    procedure CalculateLEN;
+    procedure CalculateSEQ;
+    procedure CalculateBCC;
+
+
+    function GetRequestPacket: String;
+  public
+    property RequestPacket: String read GetRequestPacket;
+    procedure CompilePacket;
+    procedure DecompilePacket;
+
+    function GetPacket(const ACMD: Char; const ADATA: String): String;
+  end;
+
+implementation
+
+{ TModelLowLevelProtocol }
+
+procedure TModelLowLevelProtocol.CalculateBCC;
+var
+  i: Integer;
+begin
+  FBCCWord := Byte(FLEN) + Byte(FSEQ) + Byte(FCMD);
+  for i := 1 to Length(FDATA) do begin
+    FBCCWord := FBCCWord + Byte(FDATA[i]);
+  end;
+  FBCCWord := FBCCWord + Byte(#05);
+  FBCC := Char($30 + (FBCCWord div (16*16*16) mod 16)) +
+          Char($30 + (FBCCWord div (16*16) mod 16)) +
+          Char($30 + (FBCCWord div (16) mod 16)) +
+          Char($30 + (FBCCWord div (1) mod 16));
+end;
+
+procedure TModelLowLevelProtocol.CalculateLEN;
+begin
+  FLEN := Char($20+1+1+1+Length(FDATA)+1);
+end;
+
+procedure TModelLowLevelProtocol.CalculateSEQ;
+begin
+  FSEQ := #$20;
+end;
+
+procedure TModelLowLevelProtocol.CompilePacket;
+begin
+  FRequestPacket := #01+FLEN+FSEQ+FCMD+FDATA+#05+FBCC+#03;
+end;
+
+procedure TModelLowLevelProtocol.DecompilePacket;
+begin
+
+end;
+
+function TModelLowLevelProtocol.GetPacket(const ACMD: Char; const ADATA: String): String;
+begin
+  FCMD := ACMD;
+  FDATA := ADATA;
+  Result := GetRequestPacket;
+end;
+
+function TModelLowLevelProtocol.GetRequestPacket: String;
+begin
+  CalculateLEN;
+  CalculateSEQ;
+  CalculateBCC;
+  CompilePacket;
+  Result := FRequestPacket;
+end;
+
+end.

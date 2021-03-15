@@ -1,0 +1,268 @@
+unit View.Settings;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.WinXPickers,
+  Data.DB,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+//  Interfaces.ViewModel.Settings,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.Stan.StorageBin, Vcl.Mask, Vcl.DBCtrls;
+
+type
+  TViewSettings = class(TForm)
+    Panel: TPanel;
+    SpeedButtonExit: TSpeedButton;
+    SpeedButtonExport: TSpeedButton;
+    FDMemTable: TFDMemTable;
+    DataSource: TDataSource;
+    DBComboBoxFiscalDeviceName: TDBComboBox;
+    LabelFiscalDeviceName: TLabel;
+    DBComboBoxStoreName: TDBComboBox;
+    LabelStoreName: TLabel;
+    DBEditName: TDBEdit;
+    LabelName: TLabel;
+    SpeedButtonModify: TSpeedButton;
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    FDMemTableGlobalGID: TStringField;
+    FDMemTableStoreGID: TStringField;
+    FDMemTableFiscalDeviceGID: TStringField;
+    FDMemTableWorkstationGID: TStringField;
+    FDMemTableCurrentStoeGID: TStringField;
+    FDMemTableCurrentStoreName: TStringField;
+    FDMemTableCurrentWorkstationGID: TStringField;
+    FDMemTableCurrentWorkstationName: TStringField;
+    FDMemTableFiscalDeviceCOMPort: TStringField;
+    FDMemTableActionGID: TStringField;
+    FDMemTablePaymentTypeGID: TStringField;
+    FDMemTablePermissionGID: TStringField;
+    FDMemTableRoleGID: TStringField;
+    FDMemTablePermissionRoleGID: TStringField;
+    FDMemTableUserGID: TStringField;
+    FDMemTableRoleUserGID: TStringField;
+    FDMemTableClientGID: TStringField;
+    FDMemTableItemGID: TStringField;
+    FDMemTableMeasureGID: TStringField;
+    FDMemTableSaleGID: TStringField;
+    FDMemTableSaleDetailGID: TStringField;
+    FDMemTableCancellationGID: TStringField;
+    FDMemTablePaymentGID: TStringField;
+    FDMemTableReversalGID: TStringField;
+    FDMemTableLogGID: TStringField;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label6: TLabel;
+    DBEdit6: TDBEdit;
+    Label7: TLabel;
+    DBEdit7: TDBEdit;
+    Label8: TLabel;
+    DBEdit8: TDBEdit;
+    Label9: TLabel;
+    DBEdit9: TDBEdit;
+    Label10: TLabel;
+    DBEdit10: TDBEdit;
+    Panel3: TPanel;
+    Label11: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    DBEdit12: TDBEdit;
+    DBEdit13: TDBEdit;
+    DBEdit14: TDBEdit;
+    DBEdit15: TDBEdit;
+    DBEdit16: TDBEdit;
+    DBEdit17: TDBEdit;
+    DBEdit18: TDBEdit;
+    DBEdit19: TDBEdit;
+    Label12: TLabel;
+    DBEdit11: TDBEdit;
+    Label20: TLabel;
+    DBEdit20: TDBEdit;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
+    procedure SpeedButtonExitClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+//    FViewModel: IViewModelSettings;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+//    property ViewModel: IViewModelSettings read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewSettings;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+//  ViewModel.Settings,
+  DataModule.Actions;
+
+{$REGION 'Published Methods'}
+
+procedure TViewSettings.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+//  FViewModel := CreateViewModelSettings;
+//  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewSettings.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewSettings.FormResize(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewSettings.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewSettings.UpdateGUI;
+//var
+//  LGUIRecord: TViewSettingsGUIRecord;
+begin
+//  LGUIRecord := ViewModel.GetGUIRecord(ClientWidth);
+//
+//  DBGrid.Columns[0].Width := LGUIRecord.DBGridColumns0Width;
+//  DBGrid.Columns[1].Width := LGUIRecord.DBGridColumns1Width;
+//  DBGrid.Columns[2].Width := LGUIRecord.DBGridColumns2Width;
+//  DBGrid.Columns[3].Width := LGUIRecord.DBGridColumns3Width;
+//  DBGrid.Columns[4].Width := LGUIRecord.DBGridColumns4Width;
+
+//  FDMemTable.CreateDataSet;
+
+//  ActiveControl := DBGrid;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewSettings.SpeedButtonExitClick(Sender: TObject);
+begin
+  Close;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewSettings;
+var
+  LViewSettings: TViewSettings;
+begin
+  LViewSettings := TViewSettings.Create(Application.MainForm);
+  LViewSettings.Show;
+end;
+
+end.

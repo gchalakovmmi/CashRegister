@@ -1,0 +1,25 @@
+program TestFP700X;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils,
+  FP3530_TLB in 'FP3530_TLB.pas',
+  Device.FP700X in 'Device.FP700X.pas',
+  Interfaces.Enums in 'Interfaces.Enums.pas',
+  Interfaces.Model.Notification in '..\Common\Interfaces\Models\Interfaces.Model.Notification.pas',
+  Interfaces.Model.Pattern.Observer in '..\Common\Interfaces\Models\Interfaces.Model.Pattern.Observer.pas',
+  Model.Notification in '..\Common\Models\Model.Notification.pas',
+  Model.Pattern.Observer.Observable in '..\Common\Models\Model.Pattern.Observer.Observable.pas',
+  Model.Pattern.Observer.Observer in '..\Common\Models\Model.Pattern.Observer.Observer.pas';
+
+begin
+  try
+    { TODO -oUser -cConsole Main : Insert code here }
+  except
+    on E: Exception do
+      Writeln(E.ClassName, ': ', E.Message);
+  end;
+end.

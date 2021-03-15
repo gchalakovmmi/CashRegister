@@ -1,0 +1,70 @@
+unit View.Operation.Details;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.WinXPickers,
+  Vcl.Buttons, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TViewOperatonDetails = class(TForm)
+    DBGrid: TDBGrid;
+    Panel: TPanel;
+    SpeedButtonExit: TSpeedButton;
+    SpeedButtonFilter: TSpeedButton;
+    SpeedButtonExport: TSpeedButton;
+    PanelFilter: TPanel;
+    LabelDateFrom: TLabel;
+    LabelPeriodTo: TLabel;
+    LabelStore: TLabel;
+    LabelWorkstation: TLabel;
+    LabelUser: TLabel;
+    LabelFiscalDevice: TLabel;
+    DatePickerFrom: TDatePicker;
+    DatePickerTo: TDatePicker;
+    ComboBoxStore: TComboBox;
+    ComboBoxWorkstation: TComboBox;
+    ComboBoxUser: TComboBox;
+    FiscalDevice: TComboBox;
+    FDMemTable: TFDMemTable;
+    FDMemTableSaleUniqueID: TStringField;
+    FDMemTableSaleGID: TStringField;
+    FDMemTableStoreGID: TStringField;
+    FDMemTableStoreName: TStringField;
+    FDMemTableCreatedDate: TStringField;
+    FDMemTableCreatedTime: TStringField;
+    FDMemTableWorkstationGID: TStringField;
+    FDMemTableWorkstationName: TStringField;
+    FDMemTableFiscalDeviceGID: TStringField;
+    FDMemTableFiscalDeviceName: TStringField;
+    FDMemTableUserGID: TStringField;
+    FDMemTableUserName: TStringField;
+    FDMemTableTotalBase: TStringField;
+    FDMemTableDiscount: TStringField;
+    FDMemTableTotalVAT: TStringField;
+    FDMemTableDue: TStringField;
+    FDMemTableInvoiceID: TStringField;
+    FDMemTableInvoiceDate: TStringField;
+    FDMemTableCompletedDate: TStringField;
+    FDMemTableCompletedTime: TStringField;
+    FDMemTableClientGID: TStringField;
+    FDMemTableClientName: TStringField;
+    DataSource: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewOperatonDetails: TViewOperatonDetails;
+
+implementation
+
+{$R *.dfm}
+
+end.

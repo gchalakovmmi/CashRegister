@@ -9,6 +9,27 @@
         <Projects Include="Framework\Artisan\artisan.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Admin\Anet4Admin.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Audit\Anet4Audit.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Anet4DBExport\Anet4DBExport.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TestNetInfo\TestNetInfo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TestFP700X\TestFP700X.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="FPTest2019\Test\FPTest2019Tests.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SaleJSON2DB\SaleJSON2DB.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +56,77 @@
     <Target Name="artisan:Make">
         <MSBuild Projects="Framework\Artisan\artisan.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Anet4Admin">
+        <MSBuild Projects="Admin\Anet4Admin.dproj"/>
+    </Target>
+    <Target Name="Anet4Admin:Clean">
+        <MSBuild Projects="Admin\Anet4Admin.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Anet4Admin:Make">
+        <MSBuild Projects="Admin\Anet4Admin.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Anet4Audit">
+        <MSBuild Projects="Audit\Anet4Audit.dproj"/>
+    </Target>
+    <Target Name="Anet4Audit:Clean">
+        <MSBuild Projects="Audit\Anet4Audit.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Anet4Audit:Make">
+        <MSBuild Projects="Audit\Anet4Audit.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Anet4DBExport">
+        <MSBuild Projects="Anet4DBExport\Anet4DBExport.dproj"/>
+    </Target>
+    <Target Name="Anet4DBExport:Clean">
+        <MSBuild Projects="Anet4DBExport\Anet4DBExport.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Anet4DBExport:Make">
+        <MSBuild Projects="Anet4DBExport\Anet4DBExport.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TestNetInfo">
+        <MSBuild Projects="TestNetInfo\TestNetInfo.dproj"/>
+    </Target>
+    <Target Name="TestNetInfo:Clean">
+        <MSBuild Projects="TestNetInfo\TestNetInfo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestNetInfo:Make">
+        <MSBuild Projects="TestNetInfo\TestNetInfo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TestFP700X">
+        <MSBuild Projects="TestFP700X\TestFP700X.dproj"/>
+    </Target>
+    <Target Name="TestFP700X:Clean">
+        <MSBuild Projects="TestFP700X\TestFP700X.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestFP700X:Make">
+        <MSBuild Projects="TestFP700X\TestFP700X.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FPTest2019Tests">
+        <MSBuild Projects="FPTest2019\Test\FPTest2019Tests.dproj"/>
+    </Target>
+    <Target Name="FPTest2019Tests:Clean">
+        <MSBuild Projects="FPTest2019\Test\FPTest2019Tests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FPTest2019Tests:Make">
+        <MSBuild Projects="FPTest2019\Test\FPTest2019Tests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SaleJSON2DB">
+        <MSBuild Projects="SaleJSON2DB\SaleJSON2DB.dproj"/>
+    </Target>
+    <Target Name="SaleJSON2DB:Clean">
+        <MSBuild Projects="SaleJSON2DB\SaleJSON2DB.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SaleJSON2DB:Make">
+        <MSBuild Projects="SaleJSON2DB\SaleJSON2DB.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FPTest2019;artisan"/>
+        <CallTarget Targets="FPTest2019;artisan;Anet4Admin;Anet4Audit;Anet4DBExport;TestNetInfo;TestFP700X;FPTest2019Tests;SaleJSON2DB"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FPTest2019:Clean;artisan:Clean"/>
+        <CallTarget Targets="FPTest2019:Clean;artisan:Clean;Anet4Admin:Clean;Anet4Audit:Clean;Anet4DBExport:Clean;TestNetInfo:Clean;TestFP700X:Clean;FPTest2019Tests:Clean;SaleJSON2DB:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FPTest2019:Make;artisan:Make"/>
+        <CallTarget Targets="FPTest2019:Make;artisan:Make;Anet4Admin:Make;Anet4Audit:Make;Anet4DBExport:Make;TestNetInfo:Make;TestFP700X:Make;FPTest2019Tests:Make;SaleJSON2DB:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

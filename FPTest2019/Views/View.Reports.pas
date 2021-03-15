@@ -16,7 +16,7 @@ uses
   Vcl.WinXPickers,
   Interfaces.Model.Pattern.Observer,
   Interfaces.Model.Notification,
-  Interfaces.ViewModel.Reports;
+  Interfaces.ViewModel.Reports, ButtonWithColor;
 
 type
   TViewReports = class(TForm, IObserver, IObservable)
@@ -24,12 +24,14 @@ type
       DatePickerPeriodStart: TDatePicker;
       LabelPeriodFinish: TLabel;
       DatePickerPeriodFinish: TDatePicker;
-      ButtonPeriodReport: TButton;
+    ButtonPeriodReportShort: TBitBtnWithColor;
+    ButtonPeriodReportDetailed: TBitBtnWithColor;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ButtonPeriodReportClick(Sender: TObject);
+    procedure ButtonPeriodReportShortClick(Sender: TObject);
+    procedure ButtonPeriodReportDetailedClick(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -114,9 +116,14 @@ begin
   Action := caFree;
 end;
 
-procedure TViewReports.ButtonPeriodReportClick(Sender: TObject);
+procedure TViewReports.ButtonPeriodReportShortClick(Sender: TObject);
 begin
-  ViewModel.PReport(DatePickerPeriodStart.Date, DatePickerPeriodFinish.Date);
+  ViewModel.PReport(DatePickerPeriodStart.Date, DatePickerPeriodFinish.Date, True);
+end;
+
+procedure TViewReports.ButtonPeriodReportDetailedClick(Sender: TObject);
+begin
+  ViewModel.PReport(DatePickerPeriodStart.Date, DatePickerPeriodFinish.Date, False);
 end;
 
 {$ENDREGION}

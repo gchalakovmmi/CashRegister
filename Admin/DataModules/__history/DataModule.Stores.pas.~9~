@@ -1,0 +1,64 @@
+unit DataModule.Stores;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.StorageBin,
+  Data.DB,
+  Interfaces.Model.Classes.Stores,
+  Model.Classes.Stores;
+
+type
+  TDataModuleStores = class(TDataModule)
+    FDMemTable: TFDMemTable;
+    FDMemTableGID: TStringField;
+    FDMemTableName: TStringField;
+    FDMemTableAttachedAt: TStringField;
+    FDMemTableModifiedAt: TStringField;
+    FDMemTableDetachedAt: TStringField;
+    FDMemTableAddress: TStringField;
+    DataSource: TDataSource;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    FStores: IModelClassStores;
+  public
+    procedure SaveToFile;
+  end;
+
+var
+  DataModuleStores: TDataModuleStores;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModuleStores }
+
+procedure TDataModuleStores.DataModuleCreate(Sender: TObject);
+begin
+  FStores := CreateFromFileModelClassStores;
+  AssignDataSetModelClassStores(FDMemTable);
+  FStores.UpdateInDataSet;
+end;
+
+procedure TDataModuleStores.SaveToFile;
+begin
+  AssignDataSetModelClassStores(FDMemTable);
+  FStores.UpdateFromDataSet;
+  FStores.SaveToFile;
+end;
+
+end.

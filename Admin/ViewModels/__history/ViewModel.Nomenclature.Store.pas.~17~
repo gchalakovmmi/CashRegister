@@ -1,0 +1,229 @@
+unit ViewModel.Nomenclature.Store;
+
+interface
+
+uses
+  Interfaces.ViewModel.Nomenclature.Store;
+
+  function CreateViewModelNomenclatureStore: IViewModelNomenclatureStore;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Pattern.Observer.Observer,
+  Model.Notification,
+  Model.Generator.GIDs,
+
+  DataModule.Stores;
+
+type
+  TViewModelNomenclatureStore = class(TInterfacedObject, IViewModelNomenclatureStore)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FAction: TAMDAction;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver;
+    property Observable: IObservable read GetObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewNomenclatureStoreGUIRecord;
+
+    procedure SetAction(const AAction: TAMDAction);
+
+    function Can(const AAction: TAMDAction): Boolean;
+
+    procedure Confirm;
+    procedure Cancel;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelNomenclatureStores }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelNomenclatureStore.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//
+end;
+
+procedure TViewModelNomenclatureStore.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelNomenclatureStore.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelNomenclatureStore.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelNomenclatureStore.GetGUIRecord: TViewNomenclatureStoreGUIRecord;
+begin
+//
+end;
+
+procedure TViewModelNomenclatureStore.SetAction(const AAction: TAMDAction);
+begin
+  FAction := AAction;
+  case AAction of
+    amdAttach: DataModuleStores.FDMemTable.Append;
+    amdModify: DataModuleStores.FDMemTable.Edit;
+    amdDetach: ;
+  end;
+end;
+
+function TViewModelNomenclatureStore.Can(const AAction: TAMDAction): Boolean;
+begin
+  case AAction of
+    amdAttach: begin
+      Result := True;
+    end;
+    amdModify: begin
+      Result := False;
+      if DataModuleStores.FDMemTable.Active and (DataModuleStores.FDMemTable.RecordCount > 0) then begin
+        if DataModuleStores.FDMemTableDetachedAt.AsString = '' then begin
+          Result := True;
+        end;
+      end;
+    end;
+    amdDetach: begin
+      Result := False;
+      if DataModuleStores.FDMemTable.Active and (DataModuleStores.FDMemTable.RecordCount > 0) then begin
+        if DataModuleStores.FDMemTableDetachedAt.AsString = '' then begin
+          Result := True;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TViewModelNomenclatureStore.Confirm;
+begin
+  DataModuleStores.FDMemTable.Edit;
+
+  case FAction of
+    amdAttach: begin
+      DataModuleStores.FDMemTableGID.AsString := TGeneratorGIDs.NewGIDByName('StoreGID').ToString;
+      DataModuleStores.FDMemTableAttachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+      DataModuleStores.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdModify: begin
+      DataModuleStores.FDMemTableModifiedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+    amdDetach: begin
+      DataModuleStores.FDMemTableDetachedAt.AsString := FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+    end;
+  end;
+
+  DataModuleStores.FDMemTable.Post;
+
+  DataModuleStores.SaveToFile;
+
+  SendNotification([actCloseForm]);
+end;
+
+procedure TViewModelNomenclatureStore.Cancel;
+begin
+  DataModuleStores.FDMemTable.Cancel;
+
+  SendNotification([actCloseForm]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelNomenclatureStore.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+end;
+
+destructor TViewModelNomenclatureStore.Destroy;
+begin
+//
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelNomenclatureStore: IViewModelNomenclatureStore;
+begin
+  Result := TViewModelNomenclatureStore.Create;
+end;
+
+end.

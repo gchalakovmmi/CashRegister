@@ -1,0 +1,235 @@
+unit View.Nomenclature.PermissionRole;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.PermissionRole;
+
+type
+  TViewNomenclaturePermissionRole = class(TForm)
+    LabelName: TLabel;
+    DBEditName: TDBEdit;
+    LabelStoreName: TLabel;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+    LabelFiscalDeviceName: TLabel;
+    DBComboBoxFiscalDeviceName: TDBComboBox;
+    DBComboBoxStoreName: TDBComboBox;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclaturePermissionRole;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclaturePermissionRole read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure PopulateNames;
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclaturePermissionRole(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.PermissionRole,
+  DataModule.PermissionsRoles,
+  DataModule.Permissions,
+  DataModule.Roles;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclaturePermissionRole.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclaturePermissionRole;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclaturePermissionRole.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclaturePermissionRole.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclaturePermissionRole.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclaturePermissionRole.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclaturePermissionRole.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclaturePermissionRoleGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBEditName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewNomenclaturePermissionRole.PopulateNames;
+begin
+  DBComboBoxStoreName.Items.Clear;
+  DataModulePermissions.FDMemTable.First;
+  while not DataModulePermissions.FDMemTable.Eof do begin
+    if DataModulePermissions.FDMemTableDetachedAt.AsString = '' then begin
+      DBComboBoxStoreName.Items.Add(DataModulePermissions.FDMemTableName.AsString);
+    end;
+    DataModulePermissions.FDMemTable.Next;
+  end;
+
+  DBComboBoxFiscalDeviceName.Items.Clear;
+  DataModuleRoles.FDMemTable.First;
+  while not DataModuleRoles.FDMemTable.Eof do begin
+    if DataModuleRoles.FDMemTableDetachedAt.AsString = '' then begin
+      DBComboBoxFiscalDeviceName.Items.Add(DataModuleRoles.FDMemTableName.AsString);
+    end;
+    DataModuleRoles.FDMemTable.Next;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclaturePermissionRole(const AAction: TAMDAction);
+var
+  LViewNomenclaturePermissionRole: TViewNomenclaturePermissionRole;
+begin
+  LViewNomenclaturePermissionRole := TViewNomenclaturePermissionRole.Create(Application.MainForm);
+  LViewNomenclaturePermissionRole.ViewModel.SetAction(AAction);
+  LViewNomenclaturePermissionRole.UpdateGUI;
+
+  LViewNomenclaturePermissionRole.PopulateNames;
+
+  case AAction of
+    amdAttach: begin
+      if LViewNomenclaturePermissionRole.ViewModel.Can(amdAttach) then begin
+        LViewNomenclaturePermissionRole.Show;
+      end else begin
+        LViewNomenclaturePermissionRole.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclaturePermissionRole.ViewModel.Can(amdModify) then begin
+        LViewNomenclaturePermissionRole.Show;
+      end else begin
+        LViewNomenclaturePermissionRole.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclaturePermissionRole.ViewModel.Can(amdDetach) then begin
+        LViewNomenclaturePermissionRole.ViewModel.Confirm;
+      end else begin
+        LViewNomenclaturePermissionRole.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

@@ -1,0 +1,207 @@
+unit View.Nomenclature.User;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Data.DB,
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.User,
+  DataModule.Users;
+
+type
+  TViewNomenclatureUser = class(TForm)
+    LabelName: TLabel;
+    DBEditName: TDBEdit;
+    LabelPassword: TLabel;
+    DBEditPassword: TDBEdit;
+
+    Panel: TPanel;
+      ButtonConfirm: TButton;
+      ButtonCancel: TButton;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonConfirmClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclatureUser;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclatureUser read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclatureUser(const AAction: TAMDAction);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.GUIRecords,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.User;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclatureUser.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclatureUser;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclatureUser.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclatureUser.ButtonConfirmClick(Sender: TObject);
+begin
+  ViewModel.Confirm;
+end;
+
+procedure TViewNomenclatureUser.ButtonCancelClick(Sender: TObject);
+begin
+  ViewModel.Cancel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclatureUser.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclatureUser.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclatureUserGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+
+  ActiveControl := DBEditName;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure ShowViewNomenclatureUser(const AAction: TAMDAction);
+var
+  LViewNomenclatureUser: TViewNomenclatureUser;
+begin
+  LViewNomenclatureUser := TViewNomenclatureUser.Create(Application.MainForm);
+  LViewNomenclatureUser.ViewModel.SetAction(AAction);
+  LViewNomenclatureUser.UpdateGUI;
+  case AAction of
+    amdAttach: begin
+      if LViewNomenclatureUser.ViewModel.Can(amdAttach) then begin
+        LViewNomenclatureUser.Show;
+      end else begin
+        LViewNomenclatureUser.Close;
+      end;
+    end;
+    amdModify: begin
+      if LViewNomenclatureUser.ViewModel.Can(amdModify) then begin
+        LViewNomenclatureUser.Show;
+      end else begin
+        LViewNomenclatureUser.Close;
+      end;
+    end;
+    amdDetach: begin
+      if LViewNomenclatureUser.ViewModel.Can(amdDetach) then begin
+        LViewNomenclatureUser.ViewModel.Confirm;
+      end else begin
+        LViewNomenclatureUser.Close;
+      end;
+    end;
+  end;
+end;
+
+end.
+

@@ -19,37 +19,6 @@ object ViewSale: TViewSale
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 23
-  object StatusBar: TStatusBar
-    Left = 0
-    Top = 704
-    Width = 1205
-    Height = 19
-    Panels = <
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end>
-    ParentColor = True
-    ParentFont = True
-    UseSystemFont = False
-    StyleElements = []
-  end
   object PanelButtons: TPanel
     Left = 0
     Top = 0
@@ -58,7 +27,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 1
+    TabOrder = 0
     object ButtonSaveAndNew: TButton
       Left = 764
       Top = 6
@@ -194,7 +163,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 2
+    TabOrder = 1
     object EditShow: TDBEdit
       Left = 8
       Top = 6
@@ -217,13 +186,14 @@ object ViewSale: TViewSale
   end
   object PanelPayment: TPanel
     Left = 0
-    Top = 430
+    Top = 449
     Width = 1205
     Height = 274
     Align = alBottom
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 3
+    TabOrder = 2
+    ExplicitTop = 430
     object LabelReturned: TLabel
       Left = 784
       Top = 200
@@ -405,17 +375,18 @@ object ViewSale: TViewSale
     Left = 0
     Top = 105
     Width = 1205
-    Height = 325
+    Height = 344
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 4
+    TabOrder = 3
+    ExplicitHeight = 325
     object Grid: TDBGrid
       AlignWithMargins = True
       Left = 8
       Top = 0
       Width = 1189
-      Height = 325
+      Height = 344
       Margins.Left = 8
       Margins.Top = 0
       Margins.Right = 8

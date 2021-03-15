@@ -1,0 +1,362 @@
+﻿unit Model.Classes.Client;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Client;
+
+  function CreateModelClassClient: IModelClassClient;
+  function CreateFromJSONModelClassClient(const AJSONObject: TJSONObject): IModelClassClient;
+  function CreateFromDataSetModelClassClient: IModelClassClient;
+  procedure AssignDataSetModelClassClient(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - клиенти</summary>
+  TModelClassClient = class(TInterfacedObject, IModelClassClient)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FName: String;
+    FTaxID: String;
+    FAddress: String;
+    FContact: String;
+    FVIP: String;
+    FMarkUp: String;
+    FLoyaltyCard: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    function GetTaxID: String;
+    procedure SetTaxID(const AValue: String);
+    function GetAddress: String;
+    procedure SetAddress(const AValue: String);
+    function GetContact: String;
+    procedure SetContact(const AValue: String);
+    function GetVIP: String;
+    procedure SetVIP(const AValue: String);
+    function GetMarkUp: String;
+    procedure SetMarkUp(const AValue: String);
+    function GetLoyaltyCard: String;
+    procedure SetLoyaltyCard(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на клиента<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на клиента<summary>
+    property Name: String read GetName write SetName;
+    ///<summary>идентификатор (ЕИК, ЕГН, друг) на клиента<summary>
+    property TaxID: String read GetTaxID write SetTaxID;
+    ///<summary>адрес на клиента<summary>
+    property Address: String read GetAddress write SetAddress;
+    ///<summary>лице за контакт (МОЛ) на клиента<summary>
+    property Contact: String read GetContact write SetContact;
+    ///<summary>специален статус на клиента<summary>
+    property VIP: String read GetVIP write SetVIP;
+    ///<summary>надценка на клиента<summary>
+    property MarkUp: String read GetMarkUp write SetMarkUp;
+    ///<summary>номер на карта за лоялност на клиента<summary>
+    property LoyaltyCard: String read GetLoyaltyCard write SetLoyaltyCard;
+    ///<summary>дата и час на първоначално конфигуриране на клиента в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на клиента<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на клиента от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassClient: IModelClassClient;
+begin
+  Result := TModelClassClient.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('ClientGID').ToString;
+end;
+
+function CreateFromJSONModelClassClient(const AJSONObject: TJSONObject): IModelClassClient;
+begin
+  Result := TModelClassClient.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassClient: IModelClassClient;
+begin
+  Result := TModelClassClient.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassClient(const ADataSet: TFDDataSet);
+begin
+  TModelClassClient.DataSet := ADataSet;
+end;
+
+{ TModelClassClient }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassClient.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+function TModelClassClient.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassClient.GetName: String;
+begin
+  Result := FName;
+end;
+
+function TModelClassClient.SetName(const AValue: String);
+begin
+  FName := AValue;
+end;
+
+function TModelClassClient.GetTaxID: String;
+begin
+  Result := FTaxID;
+end;
+
+function TModelClassClient.SetTaxID(const AValue: String);
+begin
+  FTaxID := AValue;
+end;
+
+function TModelClassClient.GetAddress: String;
+begin
+  Result := FAddress;
+end;
+
+function TModelClassClient.SetAddress(const AValue: String);
+begin
+  FAddress := AValue;
+end;
+
+function TModelClassClient.GetContact: String;
+begin
+  Result := FContact;
+end;
+
+function TModelClassClient.SetContact(const AValue: String);
+begin
+  FContact := AValue;
+end;
+
+function TModelClassClient.GetVIP: String;
+begin
+  Result := FVIP;
+end;
+
+function TModelClassClient.SetVIP(const AValue: String);
+begin
+  FVIP := AValue;
+end;
+
+function TModelClassClient.GetMarkUp: String;
+begin
+  Result := FMarkUp;
+end;
+
+function TModelClassClient.SetMarkUp(const AValue: String);
+begin
+  FMarkUp := AValue;
+end;
+
+function TModelClassClient.GetLoyaltyCard: String;
+begin
+  Result := FLoyaltyCard;
+end;
+
+function TModelClassClient.SetLoyaltyCard(const AValue: String);
+begin
+  FLoyaltyCard := AValue;
+end;
+
+function TModelClassClient.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+function TModelClassClient.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassClient.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+function TModelClassClient.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassClient.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+function TModelClassClient.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassClient.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').Value;
+  Name := DataSet.FieldByName('Name').Value;
+  TaxID := DataSet.FieldByName('TaxID').Value;
+  Address := DataSet.FieldByName('Address').Value;
+  Contact := DataSet.FieldByName('Contact').Value;
+  VIP := DataSet.FieldByName('VIP').Value;
+  MarkUp := DataSet.FieldByName('MarkUp').Value;
+  LoyaltyCard := DataSet.FieldByName('LoyaltyCard').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassClient.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').Value := GID;
+  DataSet.FieldByName('Name').Value := Name;
+  DataSet.FieldByName('TaxID').Value := TaxID;
+  DataSet.FieldByName('Address').Value := Address;
+  DataSet.FieldByName('Contact').Value := Contact;
+  DataSet.FieldByName('VIP').Value := VIP;
+  DataSet.FieldByName('MarkUp').Value := MarkUp;
+  DataSet.FieldByName('LoyaltyCard').Value := LoyaltyCard;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassClient.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('Name', Name);
+  Result.AddPair('TaxID', TaxID);
+  Result.AddPair('Address', Address);
+  Result.AddPair('Contact', Contact);
+  Result.AddPair('VIP', VIP);
+  Result.AddPair('MarkUp', MarkUp);
+  Result.AddPair('LoyaltyCard', LoyaltyCard);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassClient.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID = (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name = (AJSONObject.GetValue('Name') as TJSONString).Value;
+  TaxID = (AJSONObject.GetValue('TaxID') as TJSONString).Value;
+  Address = (AJSONObject.GetValue('Address') as TJSONString).Value;
+  Contact = (AJSONObject.GetValue('Contact') as TJSONString).Value;
+  VIP = (AJSONObject.GetValue('VIP') as TJSONString).Value;
+  MarkUp = (AJSONObject.GetValue('MarkUp') as TJSONString).Value;
+  LoyaltyCard = (AJSONObject.GetValue('LoyaltyCard') as TJSONString).Value;
+  AttachedAt = (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt = (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt = (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,166 @@
+unit ViewModel.Login;
+
+interface
+
+uses
+  Interfaces.ViewModel.Login;
+
+  function CreateViewModelLogin: IViewModelLogin;
+
+implementation
+
+uses
+  System.SysUtils,
+  System.Hash,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+
+  Interfaces.Model.Login,
+  Model.Login;
+
+type
+  TViewModelLogin = class(TInterfacedObject, IViewModelLogin, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModel: IModelLogin;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObservable: IObservable;
+    function GetModel: IModelLogin;
+    procedure SetModel(const Value: IModelLogin);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelLogin read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure Logout;
+    procedure TryLogin(const APassword: String);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateViewModelLogin: IViewModelLogin;
+begin
+  Result := TViewModelLogin.Create;
+end;
+
+{ TViewModelLogin }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelLogin.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelLogin.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelLogin.GetModel: IModelLogin;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelLogin.SetModel(const Value: IModelLogin);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewModelLogin.Logout;
+begin
+  Model.Logout;
+end;
+
+procedure TViewModelLogin.TryLogin(const APassword: String);
+begin
+  Model.Logout;
+  if APassword = '333' then begin
+    SendNotification([actCloseApp, actCloseForm]);
+  end else begin
+    Model.TryLogin('¿ƒÃ»Õ»—“–¿“Œ–', THashSHA2.GetHashString(APassword));
+    if Model.IsLoggedIn then begin
+      SendNotification([actLoginSuccess, actCloseForm]);
+    end else begin
+      SendNotification([actLoginFail, actResetGUI]);
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelLogin.Create;
+begin
+  inherited;
+  FObservable := CreateObservableClass;
+  FModel := CreateModelLogin;
+end;
+
+destructor TViewModelLogin.Destroy;
+begin
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

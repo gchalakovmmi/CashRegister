@@ -1,0 +1,26 @@
+﻿unit Interfaces.Model.Classes.FiscalDevices;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.FiscalDevice;
+
+type
+  IModelClassFiscalDevices = interface
+    function GetList: TList<IModelClassFiscalDevice>;
+
+    property List: TList<IModelClassFiscalDevice> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AFiscalDevice: IModelClassFiscalDevice);
+    function GetByGID(const AGID: String): IModelClassFiscalDevice;
+  end;
+
+implementation
+
+end.

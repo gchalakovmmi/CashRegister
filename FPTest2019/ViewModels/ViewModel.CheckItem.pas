@@ -28,7 +28,7 @@ uses
   DataModule.Items,
   DataModule.Clients,
   Model.CheckItem,
-  View.SelectItem;
+  View.SelectItem, Helper.MyFuncs;
 
 type
   TViewModelCheckItem = class(TInterfacedObject, IViewModelCheckItem, IObservable)
@@ -132,10 +132,14 @@ end;
 
 function TViewModelCheckItem.GetGUIRecord: TViewCheckItemGUIRecord;
 begin
+  Result.Caption := 'юмер 4 - опндюфах v ' + G.GetAppVersion + ' - [опнбепйю мю юпрхйск]';
   Result.LabelCodeCaption := DataModuleItems.SelectedBARCODE;
   Result.LabelItemCaption := DataModuleItems.SelectedNAME;
+  if DataModuleItems.SelectedCOEFF <> 1.00 then begin
+    Result.LabelItemCaption := DataModuleItems.SelectedCOEFF.ToString + ' x ' + DataModuleItems.SelectedNAME;
+  end;
   Result.LabelMeasureCaption := DataModuleItems.SelectedMEASURE;
-  Result.LabelPriceCaption := FormatFloat('0.00', DataModuleItems.SelectedCLIENTPRICE);
+  Result.LabelPriceCaption := FormatFloat('0.00', _Round(DataModuleItems.SelectedCOEFF * DataModuleItems.SelectedCLIENTPRICE * (100.00 - DataModuleItems.SelectedDISCOUNT) / 100, 0.01));
 end;
 
 procedure TViewModelCheckItem.KeyPressed(Key: Char);

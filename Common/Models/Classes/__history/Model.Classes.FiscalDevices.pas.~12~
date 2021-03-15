@@ -1,0 +1,138 @@
+﻿unit Model.Classes.FiscalDevices;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.FiscalDevices;
+
+  procedure AssignDataSetModelClassFiscalDevices(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassFiscalDevices(const AFileName: String);
+  function CreateModelClassFiscalDevices: IModelClassFiscalDevices;
+  function CreateFromJSONModelClassFiscalDevices(const AJSONArray: TJSONArray): IModelClassFiscalDevices;
+  function CreateFromFileModelClassFiscalDevices: IModelClassFiscalDevices; overload;
+  function CreateFromFileModelClassFiscalDevices(const AFileName:String): IModelClassFiscalDevices; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.FiscalDevice;
+
+type
+  ///<summary>Таблица - фискални устройства</summary>
+  TModelClassFiscalDevices = class(TModelClassBaseCollection<IModelClassFiscalDevice>, IModelClassFiscalDevices)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure SaveToFile; override;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassFiscalDevices }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassFiscalDevices.SaveToFile;
+begin
+  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassFiscalDevices(const ADataSet: TFDDataSet);
+begin
+  TModelClassFiscalDevices.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassFiscalDevices(const AFileName: String);
+begin
+  TModelClassFiscalDevices.FileName := AFileName;
+end;
+
+function CreateModelClassFiscalDevices: IModelClassFiscalDevices;
+begin
+  Result := TModelClassFiscalDevices.Create;
+end;
+
+function CreateFromJSONModelClassFiscalDevices(const AJSONArray: TJSONArray): IModelClassFiscalDevices;
+begin
+  Result := TModelClassFiscalDevices.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassFiscalDevices: IModelClassFiscalDevices;
+begin
+  Result := TModelClassFiscalDevices.CreateFromFile(TModelClassFiscalDevices.FileName);
+end;
+
+function CreateFromFileModelClassFiscalDevices(const AFileName:String): IModelClassFiscalDevices;
+begin
+  Result := TModelClassFiscalDevices.CreateFromFile(AFileName);
+end;
+
+end.

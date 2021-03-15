@@ -15,8 +15,9 @@ type
 
     property IsLoggedIn: Boolean read GetIsLoggedIn;
 
+    function GetUsers: TStrings;
     procedure Logout;
-    procedure TryToLogin(const APassword: String);
+    procedure TryToLogin(const AUserName, APassword: String);
   end;
 
 var
@@ -29,6 +30,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Vcl.Dialogs,
   Bde.DBTables,
   Globals;
 
@@ -39,12 +41,41 @@ begin
   Result := G.IsLoggedUser;
 end;
 
+function TDataModuleUsers.GetUsers: TStrings;
+var
+  LResult: TStringList;
+  q: TQuery;
+begin
+  q := TQuery.Create(Self);
+  LResult := TStringList.Create;
+  LResult.Sorted := True;
+  LResult.Duplicates := TDuplicates.dupIgnore;
+  try
+    q.DatabaseName := G.StructureFolder;
+    q.SQL.Add('SELECT DISTINCT Users.GID, Users.NAME FROM Users');
+    q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
+    q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
+    q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
+    q.Open;
+    while not q.Eof do begin
+      if q.FieldByName('NAME').AsString <> '' then begin
+        LResult.Add(q.FieldByName('NAME').AsString);
+      end;
+      q.Next;
+    end;
+    q.Close;
+  finally
+    q.Free;
+  end;
+  Result := LResult;
+end;
+
 procedure TDataModuleUsers.Logout;
 begin
   G.IsLoggedUser := False;
 end;
 
-procedure TDataModuleUsers.TryToLogin(const APassword: String);
+procedure TDataModuleUsers.TryToLogin(const AUserName, APassword: String);
 var
   q: TQuery;
 begin
@@ -57,7 +88,7 @@ begin
     q.SQL.Add('INNER JOIN Userjobs ON (Users.ID = Userjobs.UserID)');
     q.SQL.Add('INNER JOIN Jobinfopacks ON (Userjobs.JobID = Jobinfopacks.JobID)');
     q.SQL.Add('INNER JOIN Machineinfopacks ON (Jobinfopacks.InfoPackID = Machineinfopacks.InfoPackID)');
-    q.SQL.Add('WHERE (Users.PASS = '''+APassword+''') ');
+    q.SQL.Add('WHERE (Users.PASS = '''+APassword+''') AND (Users.NAME = '''+AUserName+''')');
     q.SQL.Add('ORDER BY ID');
     q.Open;
     if q.RecordCount > 0 then begin
@@ -69,6 +100,9 @@ begin
       G.UserGID := 28;
       G.UserName := 'КАСИЕР';
       G.IsLoggedUser := True;
+    end;
+    if not G.IsLoggedUser then begin
+      ShowMessage('Отказан достъп!');
     end;
     q.Close;
   finally

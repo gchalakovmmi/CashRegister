@@ -1,0 +1,191 @@
+unit View.Login;
+
+interface
+
+uses
+  System.Classes,
+  Vcl.Controls,
+  Vcl.StdCtrls,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  Vcl.Graphics,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.ViewModel.Login;
+
+type
+  TViewLogin = class(TForm, IObserver, IObservable)
+    EditPassword: TEdit;
+    ComboBoxUser: TComboBox;
+    LabelUser: TLabel;
+    LabelPassword: TLabel;
+    ButtonLogin: TButton;
+    ButtonCancel: TButton;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EditPasswordKeyPress(Sender: TObject; var Key: Char);
+    procedure EditPasswordExit(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure ResetGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FViewModel: IViewModelLogin;
+    FObserver: IObserver;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetViewModel: IViewModelLogin;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property ViewModel: IViewModelLogin read GetViewModel;
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewLogin;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.Login;
+
+{$REGION 'Published Methods'}
+
+procedure TViewLogin.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelLogin;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  ResetGUI;
+end;
+
+procedure TViewLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewLogin.EditPasswordKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #$0D then begin
+    ViewModel.TryLogin(EditPassword.Text);
+  end;
+end;
+
+procedure TViewLogin.EditPasswordExit(Sender: TObject);
+begin
+  ActiveControl := EditPassword;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewLogin.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actResetGUI in AModelNotification.Actions then begin
+    ResetGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+  if actCloseApp in AModelNotification.Actions then begin
+    Halt;
+  end;
+end;
+
+procedure TViewLogin.ResetGUI;
+begin
+  ViewModel.Logout;
+  EditPassword.Text := '';
+  ActiveControl := EditPassword;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewLogin.GetViewModel: IViewModelLogin;
+begin
+  Result := FViewModel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewLogin;
+var
+  LViewLogin: TViewLogin;
+begin
+  LViewLogin := TViewLogin.Create(nil);
+  try
+    LViewLogin.ShowModal;
+  finally
+    LViewLogin.Free;
+  end;
+end;
+
+end.

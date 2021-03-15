@@ -1,0 +1,102 @@
+unit Interfaces.Model.Classes;
+
+interface
+
+uses
+  System.JSON,
+  System.Generics.Collections;
+
+type
+  IModelClassBaseObject = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата<summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование<summary>
+    property Name: String read GetName write SetName;
+
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна пром€на<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+  IModelClassBaseCollection = interface
+//    function GetList: TList<T>;
+//    property List: TList<T> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Attach(const AObject: IModelClassBaseObject);
+    procedure Detach(const AObject: IModelClassBaseObject);
+    function GetByGID(const AGID: String): IModelClassBaseObject;
+
+    procedure SaveToFile;
+  end;
+
+  IIdentifyAble = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на потребител€<summary>
+    property GID: String read GetGID write SetGID;
+  end;
+
+  INameAble = interface
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование<summary>
+    property Name: String read GetName write SetName;
+  end;
+
+  IAttachAble = interface
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на потребител€ в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна пром€на на потребител€<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на потребител€ от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  end;
+
+  IJSONAbleObject = interface
+    function ToJSON: TJSONObject;
+  end;
+
+  IJSONAbleArray = interface
+    function ToJSON: TJSONArray;
+  end;
+
+  IDataSetAble = interface
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+  end;
+
+implementation
+
+end.

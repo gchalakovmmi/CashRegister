@@ -151,6 +151,7 @@ var
 begin
   LViewCheckItemGUIRecord := ViewModel.GetGUIRecord;
 
+  Caption := LViewCheckItemGUIRecord.Caption;
   LabelCode.Caption := LViewCheckItemGUIRecord.LabelCodeCaption;
   LabelItem.Caption := LViewCheckItemGUIRecord.LabelItemCaption;
   LabelMeasure.Caption := LViewCheckItemGUIRecord.LabelMeasureCaption;

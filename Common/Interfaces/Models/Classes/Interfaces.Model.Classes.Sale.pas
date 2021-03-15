@@ -51,6 +51,11 @@ type
     ///<sumarry>пореден номер на продажбата</summary>
     property SaleID: String read GetSaleID write SetSaleID;
 
+    function GetReceiptID: String;
+    procedure SetReceiptID(const AValue: String);
+    ///<sumarry>номер на фискален бон</summary>
+    property ReceiptID: String read GetReceiptID write SetReceiptID;
+
     function GetSaleUniqueID: String;
     procedure SetSaleUniqueID(const AValue: String);
     ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
@@ -68,7 +73,7 @@ type
 
     function GetClientTaxNumberType: String;
     procedure SetClientTaxNumberType(const AValue: String);
-    ///<sumarry>ЕИК/ЕГН/ЛНЧ/СН</summary>
+    ///<sumarry>вид номер (ЕИК/ЕГН/ЛНЧ/СН)</summary>
     property ClientTaxNumberType: String read GetClientTaxNumberType write SetClientTaxNumberType;
 
     function GetClientTaxNumber: String;
@@ -209,7 +214,9 @@ type
     procedure OpenSale;
     procedure RegistrationOfSale(const ASaleDetail: IModelClassSaleDetail);
     procedure RegistrationOfCancelation(const ASaleCancellation: IModelClassSaleCancellation);
-    procedure Totals;
+    procedure VoucherTotal;
+    procedure CardTotal;
+    procedure CashTotal;
     procedure CloseSale;
     procedure DiscardSale;
 

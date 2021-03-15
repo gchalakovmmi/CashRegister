@@ -1,0 +1,167 @@
+unit View.Admin.Nomenclatures.Stores;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.WinXPickers,
+  Vcl.StdCtrls, Vcl.DBGrids, Vcl.ExtCtrls, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TViewAdminNomenclatureStores = class(TForm)
+    GridSales: TDBGrid;
+    Panel1: TPanel;
+    ComboBox4: TComboBox;
+    DatePicker2: TDatePicker;
+    Label7: TLabel;
+    DatePicker3: TDatePicker;
+    Label8: TLabel;
+    ComboBox6: TComboBox;
+    Label9: TLabel;
+    ComboBox7: TComboBox;
+    Label10: TLabel;
+    Label11: TLabel;
+    ComboBox8: TComboBox;
+    Label12: TLabel;
+    T1: TFDMemTable;
+    DataSource1: TDataSource;
+    Button1: TButton;
+    Button2: TButton;
+    T1GID: TStringField;
+    T1Name: TStringField;
+    T1Address: TStringField;
+    T1AttachedAt: TStringField;
+    T1ModifiedAt: TStringField;
+    T1DetachedAt: TStringField;
+    Panel2: TPanel;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    T1FiscalDevice: TStringField;
+    T1Store: TStringField;
+    T1User: TStringField;
+    T1Role: TStringField;
+    T1CreatedAt: TStringField;
+    T1EventType: TStringField;
+    T1SUID: TStringField;
+    T1Description: TStringField;
+    T1Workstation: TStringField;
+    T1Brand: TStringField;
+    T1Model: TStringField;
+    T2: TFDMemTable;
+    DataSource2: TDataSource;
+    DBGrid1: TDBGrid;
+    T2SaleDate: TStringField;
+    T2SaleTime: TStringField;
+    T2Item: TStringField;
+    T2Measure: TStringField;
+    T2Quantity: TStringField;
+    T2Price: TStringField;
+    T2Discount: TStringField;
+    T2VATRate: TStringField;
+    T2VAT: TStringField;
+    T2Total: TStringField;
+    T1SaleUniqueID: TStringField;
+    T1Total: TStringField;
+    T1CreatedDate: TStringField;
+    T1CreatedTime: TStringField;
+    T1CompletedDate: TStringField;
+    T1CompletedTime: TStringField;
+    T1Client: TStringField;
+  private
+    { Private declarations }
+  public
+    procedure Populate;
+  end;
+
+var
+  ViewAdminNomenclatureStores: TViewAdminNomenclatureStores;
+
+implementation
+
+{$R *.dfm}
+
+{ TViewAdminNomenclatureStores }
+
+procedure TViewAdminNomenclatureStores.Populate;
+begin
+  T1.Close;
+  T1.CreateDataSet;
+
+  T1.Append;
+//  T1.FieldByName('GID').AsString := '1';
+//  T.FieldByName('Name').AsString := ' ¿—¿ 1';
+  T1.FieldByName('Store').AsString := 'Ã¿√¿«»Õ "¿Õ≈“ 4 - SWEET"';
+  T1.FieldByName('Workstation').AsString := ' ¿—¿ 1';
+  T1.FieldByName('FiscalDevice').AsString := 'DT652267';
+  T1.FieldByName('CreatedDate').AsString := '01-08-2019';
+  T1.FieldByName('CreatedTime').AsString := '09:10:11';
+  T1.FieldByName('CompletedDate').AsString := '01-08-2019';
+  T1.FieldByName('CompletedTime').AsString := '09:10:20';
+  T1.FieldByName('User').AsString := 'Ã¿–»ﬂ √≈Œ–√»≈¬¿';
+  T1.FieldByName('SaleUniqueID').AsString := 'DT652267-0007-0000001';
+  T1.FieldByName('Client').AsString := 'Œ¡Ÿ» œ–Œ‰¿∆¡»';
+  T1.FieldByName('Total').AsString := '27-07-2019 09:21:11';
+//  T.FieldByName('EventType').AsString := '‚ÔËÒ‚‡ÌÂ';
+//  T.FieldByName('Description').AsString := '‚ÔËÒ‚‡ÌÂ/Â„ËÒÚË‡ÌÂ (login) Ì‡ ÔÓÚÂ·ËÚÂÎ ‚ ÒËÒÚÂÏ‡Ú‡';
+//  T1.FieldByName('Model').AsString := 'FP-700X';
+//  T1.FieldByName('Brand').AsString := 'ƒ‡ÚÂÍÒ';
+  T1.Post;
+
+
+  T2.Close;
+  T2.CreateDataSet;
+
+  T2.Append;
+  T2.FieldByName('SaleDate').AsString := '01-08-2019';
+  T2.FieldByName('SaleTime').AsString := '09:10:11';
+  T2.FieldByName('Item').AsString := '¬¿Õ»À»ﬂ 0,2„';
+  T2.FieldByName('Measure').AsString := '¡–.';
+  T2.FieldByName('Quantity').AsString := '1.000';
+  T2.FieldByName('Price').AsString := '0.03';
+  T2.FieldByName('Discount').AsString := '0.00';
+  T2.FieldByName('VATRate').AsString := '20%';
+  T2.FieldByName('Total').AsString := '0.03';
+  T2.Post;
+
+  T2.Append;
+  T2.FieldByName('SaleDate').AsString := '01-08-2019';
+  T2.FieldByName('SaleTime').AsString := '09:10:12';
+  T2.FieldByName('Item').AsString := '’Àﬂ¡ “»œŒ¬ ¡”–√¿—’Àﬂ¡ 600„.';
+  T2.FieldByName('Measure').AsString := '¡–.';
+  T2.FieldByName('Quantity').AsString := '1.000';
+  T2.FieldByName('Price').AsString := '1.05';
+  T2.FieldByName('Discount').AsString := '0.00';
+  T2.FieldByName('VATRate').AsString := '20%';
+  T2.FieldByName('Total').AsString := '1.05';
+  T2.Post;
+
+  T2.Append;
+  T2.FieldByName('SaleDate').AsString := '01-08-2019';
+  T2.FieldByName('SaleTime').AsString := '09:10:12';
+  T2.FieldByName('Item').AsString := '’»—¿– ◊◊ - 1.5Î.';
+  T2.FieldByName('Measure').AsString := '¡–.';
+  T2.FieldByName('Quantity').AsString := '3.000';
+  T2.FieldByName('Price').AsString := '0.75';
+  T2.FieldByName('Discount').AsString := '0.00';
+  T2.FieldByName('VATRate').AsString := '20%';
+  T2.FieldByName('Total').AsString := '2.25';
+  T2.Post;
+
+  T2.Append;
+  T2.FieldByName('SaleDate').AsString := '01-08-2019';
+  T2.FieldByName('SaleTime').AsString := '09:10:14';
+  T2.FieldByName('Item').AsString := ' –¿¬≈ —»–≈Õ≈ ¡¿◊Œ »À»ﬂ';
+  T2.FieldByName('Measure').AsString := ' √.';
+  T2.FieldByName('Quantity').AsString := '0.950';
+  T2.FieldByName('Price').AsString := '7.49';
+  T2.FieldByName('Discount').AsString := '0.00';
+  T2.FieldByName('VATRate').AsString := '20%';
+  T2.FieldByName('Total').AsString := '7.12';
+  T2.Post;
+end;
+
+end.

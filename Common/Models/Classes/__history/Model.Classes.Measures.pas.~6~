@@ -1,0 +1,225 @@
+﻿unit Model.Classes.Measures;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Measures;
+
+  procedure AssignFileNameModelClassMeasures(const AFileName: String);
+  procedure AssignDataSetModelClassMeasures(const ADataSet: TFDDataSet);
+  function CreateModelClassMeasures: IModelClassMeasures;
+  function CreateFromJSONModelClassMeasures(const AJSONArray: TJSONArray): IModelClassMeasures;
+  function CreateFromFileModelClassMeasures: IModelClassMeasures; overload;
+  function CreateFromFileModelClassMeasures(const AFileName: String): IModelClassMeasures; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.Measure;
+
+type
+  ///<summary>Таблица - мерки/кодове</summary>
+  TModelClassMeasures = class(TInterfacedObject, IModelClassMeasures)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassMeasure>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassMeasure>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassMeasure> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AMeasure: IModelClassMeasure);
+    function GetByGID(const AGID: String): IModelClassMeasure;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassMeasures: IModelClassMeasures;
+begin
+  Result := TModelClassMeasures.Create;
+end;
+
+function CreateFromJSONModelClassMeasures(const AJSONArray: TJSONArray): IModelClassMeasures;
+begin
+  Result := TModelClassMeasures.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassMeasures(const AFileName: String): IModelClassMeasures;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassMeasures(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+procedure AssignDataSetModelClassMeasures(const ADataSet: TFDDataSet);
+begin
+  TModelClassMeasures.DataSet := ADataSet;
+end;
+
+{ TModelClassMeasures }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassMeasures.GetList: TList<IModelClassMeasure>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassMeasures.UpdateFromDataSet;
+var
+  LMeasure: IModelClassMeasure;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LMeasure in List do begin
+      if LMeasure.GID = DataSet.FieldByName('gid').Value then begin
+        LMeasure.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LMeasure := CreateFromDataSetModelClassMeasure;
+      List.Add(LMeasure);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassMeasures.UpdateInDataSet;
+var
+  LMeasure: IModelClassMeasure;
+begin
+  for LMeasure in List do begin
+    LMeasure.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassMeasures.ToJSON: TJSONArray;
+var
+  LMeasure: IModelClassMeasure;
+begin
+  Result := TJSONArray.Create;
+  for LMeasure in List do begin
+    Result.Add(LMeasure.ToJSON);
+  end;
+end;
+
+procedure TModelClassMeasures.Add(const AMeasure: IModelClassMeasure);
+begin
+  List.Add(AMeasure);
+  SaveToFile;
+end;
+
+function TModelClassMeasures.GetByGID(const AGID: String): IModelClassMeasure;
+var
+  LMeasure: IModelClassMeasure;
+begin
+  Result := nil;
+  for LMeasure in List do begin
+    if LMeasure.GID = AGID then begin
+      Result := LMeasure;
+    end;
+  end;
+end;
+
+procedure TModelClassMeasures.SaveToFile;
+begin
+  TFile.WriteAllText(G.MeasuresFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassMeasures.Create;
+begin
+  inherited;
+  FList := TList<IModelClassMeasure>.Create;
+end;
+
+constructor TModelClassMeasures.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassMeasure>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassMeasure(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassMeasures.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

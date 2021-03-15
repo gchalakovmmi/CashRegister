@@ -1,0 +1,200 @@
+﻿unit Model.Classes.Workstation;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Workstation;
+
+  function CreateModelClassWorkstation: IModelClassWorkstation;
+  function CreateFromJSONModelClassWorkstation(const AJSONObject: TJSONObject): IModelClassWorkstation;
+  function CreateFromDataSetModelClassWorkstation: IModelClassWorkstation;
+  procedure AssignDataSetModelClassWorkstation(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Classes.BaseObject,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - работни места</summary>
+  TModelClassWorkstation = class(TModelClassBaseObject, IModelClassWorkstation)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FStoreGID: String;
+    FFiscalDeviceGID: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetStoreGID: String;
+    procedure SetStoreGID(const AValue: String);
+    function GetFiscalDeviceGID: String;
+    procedure SetFiscalDeviceGID(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на работното място<summary>
+//    property GID: String read GetGID write SetGID;
+    ///<summary>код в системата на обекта, в който е работното място<summary>
+    property StoreGID: String read GetStoreGID write SetStoreGID;
+    ///<summary>наименование на работното място<summary>
+//    property Name: String read GetName write SetName;
+    ///<summary>код в системата на свързаното към работното място фискално устройство<summary>
+    property FiscalDeviceGID: String read GetFiscalDeviceGID write SetFiscalDeviceGID;
+    ///<summary>дата и час на първоначално конфигуриране на работното място в системата<summary>
+//    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на работното място<summary>
+//    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на работното място от употреба<summary>
+//    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassWorkstation: IModelClassWorkstation;
+begin
+  Result := TModelClassWorkstation.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('WorkstationGID').ToString;
+end;
+
+function CreateFromJSONModelClassWorkstation(const AJSONObject: TJSONObject): IModelClassWorkstation;
+begin
+  Result := TModelClassWorkstation.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassWorkstation: IModelClassWorkstation;
+begin
+  Result := TModelClassWorkstation.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassWorkstation(const ADataSet: TFDDataSet);
+begin
+  TModelClassWorkstation.AssignDataSet(ADataSet);
+end;
+
+{ TModelClassWorkstation }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassWorkstation.GetStoreGID: String;
+begin
+  Result := FStoreGID;
+end;
+
+procedure TModelClassWorkstation.SetStoreGID(const AValue: String);
+begin
+  FStoreGID := AValue;
+end;
+
+function TModelClassWorkstation.GetFiscalDeviceGID: String;
+begin
+  Result := FFiscalDeviceGID;
+end;
+
+procedure TModelClassWorkstation.SetFiscalDeviceGID(const AValue: String);
+begin
+  FFiscalDeviceGID := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassWorkstation.UpdateFromDataSet;
+begin
+  inherited;
+  StoreGID := DataSet.FieldByName('StoreGID').Value;
+  FiscalDeviceGID := DataSet.FieldByName('FiscalDeviceGID').Value;
+end;
+
+procedure TModelClassWorkstation.UpdateInDataSet;
+begin
+  inherited;
+
+  DataSet.Edit;
+  DataSet.FieldByName('StoreGID').Value := StoreGID;
+  DataSet.FieldByName('FiscalDeviceGID').Value := FiscalDeviceGID;
+  DataSet.Post;
+end;
+
+function TModelClassWorkstation.ToJSON: TJSONObject;
+begin
+  Result := inherited ToJSON;
+  Result.AddPair('StoreGID', StoreGID);
+  Result.AddPair('FiscalDeviceGID', FiscalDeviceGID);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassWorkstation.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  inherited CreateFromJSON(AJSONObject);
+  StoreGID := (AJSONObject.GetValue('StoreGID') as TJSONString).Value;
+  FiscalDeviceGID := (AJSONObject.GetValue('FiscalDeviceGID') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

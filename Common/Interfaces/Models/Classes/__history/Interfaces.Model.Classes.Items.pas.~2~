@@ -1,0 +1,27 @@
+﻿unit Interfaces.Model.Classes.Items;
+
+interface
+
+uses
+  System.Generics.Collections,
+  System.JSON,
+  Interfaces.Model.Classes.Item;
+
+type
+  IModelClassItems = interface
+  ['{B9529A30-A076-4354-9572-54CBBBE69943}']
+    function GetList: TList<IModelClassItem>;
+
+    property List: TList<IModelClassItem> read GetList;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AItem: IModelClassItem);
+    function GetByGID(const AGID: String): IModelClassItem;
+  end;
+
+implementation
+
+end.

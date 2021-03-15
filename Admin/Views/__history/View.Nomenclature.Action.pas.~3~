@@ -1,0 +1,34 @@
+unit View.Nomenclature.Action;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls,
+  Vcl.ExtCtrls;
+
+type
+  TViewNomenclatureAction = class(TForm)
+    LabelBrand: TLabel;
+    LabelModel: TLabel;
+    LabelSerialNumber: TLabel;
+    Panel: TPanel;
+    ButtonConfirm: TButton;
+    ButtonCancel: TButton;
+    DBEditBrand: TDBEdit;
+    DBEditModel: TDBEdit;
+    DBEditSerialNumber: TDBEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureAction: TViewNomenclatureAction;
+
+implementation
+
+{$R *.dfm}
+
+end.

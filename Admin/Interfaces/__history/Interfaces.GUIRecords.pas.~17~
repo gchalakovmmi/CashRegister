@@ -1,0 +1,161 @@
+unit Interfaces.GUIRecords;
+
+interface
+
+uses
+  System.UITypes;
+
+type
+  TViewMainGUIRecord = record
+    Caption: String;
+    StoreName: String;
+    WorkstationName: String;
+    UserName: String;
+    Time: String;
+  end;
+
+  TViewLoginGUIRecord = record
+
+  end;
+
+  TViewNomenclatureStoresGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+    DBGridColumns5Width: Integer;
+  end;
+
+  TViewNomenclatureStoreGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclatureworkstationsGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+    DBGridColumns5Width: Integer;
+    DBGridColumns6Width: Integer;
+  end;
+
+  TViewNomenclatureWorkstationGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclatureFiscalDevicesGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+    DBGridColumns5Width: Integer;
+    DBGridColumns6Width: Integer;
+  end;
+
+  TViewNomenclatureFiscalDeviceGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclatureActionsGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+  end;
+
+  TViewNomenclatureActionGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclaturePaymentTypesGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+  end;
+
+  TViewNomenclaturePaymentTypeGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclaturePermissionsGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+    DBGridColumns5Width: Integer;
+  end;
+
+  TViewNomenclaturePermissionGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclatureRolesGUIRecord = record
+    DBGridColumns0Width: Integer;
+    DBGridColumns1Width: Integer;
+    DBGridColumns2Width: Integer;
+    DBGridColumns3Width: Integer;
+    DBGridColumns4Width: Integer;
+  end;
+
+  TViewNomenclatureRoleGUIRecord = record
+    Caption: String;
+  end;
+
+  TViewNomenclaturePermissionsRolesGUIRecord = record
+
+  end;
+
+  TViewNomenclaturePermissionRoleGUIRecord = record
+
+  end;
+
+  TViewNomenclatureUsersGUIRecord = record
+
+  end;
+
+  TViewNomenclatureUserGUIRecord = record
+
+  end;
+
+  TViewNomenclatureRolesUsersGUIRecord = record
+
+  end;
+
+  TViewNomenclatureRoleUserGUIRecord = record
+
+  end;
+
+  TViewNomenclatureClientsGUIRecord = record
+
+  end;
+
+  TViewNomenclatureClientGUIRecord = record
+
+  end;
+
+  TViewNomenclatureItemsGUIRecord = record
+
+  end;
+
+  TViewNomenclatureItemGUIRecord = record
+
+  end;
+
+  TViewNomenclatureMeasuresGUIRecord = record
+
+  end;
+
+  TViewNomenclatureMeasureGUIRecord = record
+
+  end;
+
+implementation
+
+end.

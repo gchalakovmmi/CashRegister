@@ -1,0 +1,381 @@
+﻿unit Model.Classes.Item;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Item;
+
+  function CreateModelClassItem: IModelClassItem;
+  function CreateFromJSONModelClassItem(const AJSONObject: TJSONObject): IModelClassItem;
+  function CreateFromDataSetModelClassItem: IModelClassItem;
+  procedure AssignDataSetModelClassItem(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - стоки/услуги</summary>
+  TModelClassItem = class(TInterfacedObject, IModelClassItem)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FName: String;
+    FShortName: String;
+    FCode: String;
+    FVendorPrice: String;
+    FClientPrice: String;
+    FBaseMeasure: String;
+    FBaseCoeff: String;
+    FBasePrice: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    function GetShortName: String;
+    procedure SetShortName(const AValue: String);
+    function GetCode: String;
+    procedure SetCode(const AValue: String);
+    function GetVendorPrice: String;
+    procedure SetVendorPrice(const AValue: String);
+    function GetClientPrice: String;
+    procedure SetClientPrice(const AValue: String);
+    function GetBaseMeasure: String;
+    procedure SetBaseMeasure(const AValue: String);
+    function GetBaseCoeff: String;
+    procedure SetBaseCoeff(const AValue: String);
+    function GetBasePrice: String;
+    procedure SetBasePrice(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на стоката/услугата<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на вида стоката/услугата<summary>
+    property Name: String read GetName write SetName;
+    ///<summary>кратко наименование на стоката/услугата<summary>
+    property ShortName: String read GetShortName write SetShortName;
+    ///<summary>вътрешен код на стоката/услугата<summary>
+    property Code: String read GetCode write SetCode;
+    ///<summary>ед.цена (доставна) на стоката/услугата<summary>
+    property VendorPrice: String read GetVendorPrice write SetVendorPrice;
+    ///<summary>ед.цена (продажна) на стоката/услугата<summary>
+    property ClientPrice: String read GetClientPrice write SetClientPrice;
+    ///<summary>базова мярка на стоката/услугата<summary>
+    property BaseMeasure: String read GetBaseMeasure write SetBaseMeasure;
+    ///<summary>базов коефициент на стоката/услугата<summary>
+    property BaseCoeff: String read GetBaseCoeff write SetBaseCoeff;
+    ///<summary>базова цена на стоката/услугата<summary>
+    property BasePrice: String read GetBasePrice write SetBasePrice;
+    ///<summary>дата и час на първоначално конфигуриране на стоката/услугата в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на стоката/услугата<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на стоката/услугата от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassItem: IModelClassItem;
+begin
+  Result := TModelClassItem.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('ItemGID').ToString;
+end;
+
+function CreateFromJSONModelClassItem(const AJSONObject: TJSONObject): IModelClassItem;
+begin
+  Result := TModelClassItem.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassItem: IModelClassItem;
+begin
+  Result := TModelClassItem.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassItem(const ADataSet: TFDDataSet);
+begin
+  TModelClassItem.DataSet := ADataSet;
+end;
+
+{ TModelClassItem }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassItem.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassItem.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassItem.GetName: String;
+begin
+  Result := FName;
+end;
+
+procedure TModelClassItem.SetName(const AValue: String);
+begin
+  FName := AValue;
+end;
+
+function TModelClassItem.GetShortName: String;
+begin
+  Result := FShortName;
+end;
+
+procedure TModelClassItem.SetShortName(const AValue: String);
+begin
+  FShortName := AValue;
+end;
+
+function TModelClassItem.GetCode: String;
+begin
+  Result := FCode;
+end;
+
+procedure TModelClassItem.SetCode(const AValue: String);
+begin
+  FCode := AValue;
+end;
+
+function TModelClassItem.GetVendorPrice: String;
+begin
+  Result := FVendorPrice;
+end;
+
+procedure TModelClassItem.SetVendorPrice(const AValue: String);
+begin
+  FVendorPrice := AValue;
+end;
+
+function TModelClassItem.GetClientPrice: String;
+begin
+  Result := FClientPrice;
+end;
+
+procedure TModelClassItem.SetClientPrice(const AValue: String);
+begin
+  FClientPrice := AValue;
+end;
+
+function TModelClassItem.GetBaseMeasure: String;
+begin
+  Result := FBaseMeasure;
+end;
+
+procedure TModelClassItem.SetBaseMeasure(const AValue: String);
+begin
+  FBaseMeasure := AValue;
+end;
+
+function TModelClassItem.GetBaseCoeff: String;
+begin
+  Result := FBaseCoeff;
+end;
+
+procedure TModelClassItem.SetBaseCoeff(const AValue: String);
+begin
+  FBaseCoeff := AValue;
+end;
+
+function TModelClassItem.GetBasePrice: String;
+begin
+  Result := FBasePrice;
+end;
+
+procedure TModelClassItem.SetBasePrice(const AValue: String);
+begin
+  FBasePrice := AValue;
+end;
+
+function TModelClassItem.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+procedure TModelClassItem.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassItem.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+procedure TModelClassItem.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassItem.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+procedure TModelClassItem.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassItem.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').Value;
+  Name := DataSet.FieldByName('Name').Value;
+  ShortName := DataSet.FieldByName('ShortName').Value;
+  Code := DataSet.FieldByName('Code').Value;
+  VendorPrice := DataSet.FieldByName('VendorPrice').Value;
+  ClientPrice := DataSet.FieldByName('ClientPrice').Value;
+  BaseMeasure := DataSet.FieldByName('BaseMeasure').Value;
+  BaseCoeff := DataSet.FieldByName('BaseCoeff').Value;
+  BasePrice := DataSet.FieldByName('BasePrice').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassItem.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').Value := GID;
+  DataSet.FieldByName('Name').Value := Name;
+  DataSet.FieldByName('ShortName').Value := ShortName;
+  DataSet.FieldByName('Code').Value := Code;
+  DataSet.FieldByName('VendorPrice').Value := VendorPrice;
+  DataSet.FieldByName('ClientPrice').Value := ClientPrice;
+  DataSet.FieldByName('BaseMeasure').Value := BaseMeasure;
+  DataSet.FieldByName('BaseCoeff').Value := BaseCoeff;
+  DataSet.FieldByName('BasePrice').Value := BasePrice;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassItem.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('Name', Name);
+  Result.AddPair('ShortName', ShortName);
+  Result.AddPair('Code', Code);
+  Result.AddPair('VendorPrice', VendorPrice);
+  Result.AddPair('ClientPrice', ClientPrice);
+  Result.AddPair('BaseMeasure', BaseMeasure);
+  Result.AddPair('BaseCoeff', BaseCoeff);
+  Result.AddPair('BasePrice', BasePrice);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassItem.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID := (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name := (AJSONObject.GetValue('Name') as TJSONString).Value;
+  ShortName := (AJSONObject.GetValue('ShortName') as TJSONString).Value;
+  Code := (AJSONObject.GetValue('Code') as TJSONString).Value;
+  VendorPrice := (AJSONObject.GetValue('VendorPrice') as TJSONString).Value;
+  ClientPrice := (AJSONObject.GetValue('ClientPrice') as TJSONString).Value;
+  BaseMeasure := (AJSONObject.GetValue('BaseMeasure') as TJSONString).Value;
+  BaseCoeff := (AJSONObject.GetValue('BaseCoeff') as TJSONString).Value;
+  BasePrice := (AJSONObject.GetValue('BasePrice') as TJSONString).Value;
+  AttachedAt := (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt := (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt := (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

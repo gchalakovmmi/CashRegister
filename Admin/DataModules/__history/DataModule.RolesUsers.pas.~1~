@@ -1,0 +1,25 @@
+unit DataModule.RolesUsers;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleRolesUsers = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleRolesUsers: TDataModuleRolesUsers;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

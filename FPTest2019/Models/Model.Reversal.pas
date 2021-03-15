@@ -14,6 +14,7 @@ uses
   Vcl.Dialogs,
   System.UITypes,
   Helper.MyFuncs,
+  Model.AppSettings,
   Device.FP700X,
   DataModule.Sale,
   DataModule.Items,
@@ -224,6 +225,8 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 
@@ -262,6 +265,8 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 

@@ -33,8 +33,10 @@ uses
   View.CashIn,
   View.CashOut,
   View.SelectSale,
+  View.Admin,
   View.Reports,
   View.CheckItem,
+  View.Audit,
   Device.FP700X;
 
 type
@@ -91,6 +93,7 @@ type
     procedure CashIn;
     procedure CashOut;
     procedure Reversal;
+    procedure Admin;
 
     procedure SelectPrinter;
     procedure XReport;
@@ -176,7 +179,7 @@ end;
 
 function TViewModelMain.GetGUIRecord: TViewMainGUIRecord;
 begin
-  Result.Caption := 'ПРОДАЖБИ В МАГАЗИН АНЕТ 4 - v ' + Model.GetAppVersion;
+  Result.Caption := 'АНЕТ 4 - ПРОДАЖБИ v ' + Model.GetAppVersion;
   Result.StoreName := Model.GetStoreName;
   Result.WorkstationName := Model.GetWorkstationName;
   Result.UserName := Model.GetUserName;
@@ -214,6 +217,12 @@ end;
 procedure TViewModelMain.Reversal;
 begin
   ShowViewSelectSale;
+  SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelMain.Admin;
+begin
+  ShowViewAdmin;
   SendNotification([actUpdateGUI]);
 end;
 
@@ -258,7 +267,7 @@ end;
 
 procedure TViewModelMain.Audit;
 begin
-
+  ShowViewAudit;
   SendNotification([actUpdateGUI]);
 end;
 

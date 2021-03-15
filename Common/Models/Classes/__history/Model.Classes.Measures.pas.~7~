@@ -1,0 +1,135 @@
+﻿unit Model.Classes.Measures;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Measures;
+
+  procedure AssignFileNameModelClassMeasures(const AFileName: String);
+  procedure AssignDataSetModelClassMeasures(const ADataSet: TFDDataSet);
+  function CreateModelClassMeasures: IModelClassMeasures;
+  function CreateFromJSONModelClassMeasures(const AJSONArray: TJSONArray): IModelClassMeasures;
+  function CreateFromFileModelClassMeasures: IModelClassMeasures; overload;
+  function CreateFromFileModelClassMeasures(const AFileName: String): IModelClassMeasures; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.Measure;
+
+type
+  ///<summary>Таблица - мерки/кодове</summary>
+  TModelClassMeasures = class(TInterfacedObject, IModelClassMeasures)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+
+{ TModelClassMeasures }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+
+procedure AssignFileNameModelClassMeasures(const AFileName: String);
+begin
+  TModelClassMeasures.FileName := AFileName;
+end;
+
+procedure AssignDataSetModelClassMeasures(const ADataSet: TFDDataSet);
+begin
+  TModelClassMeasures.AssignDataSet(ADataSet);
+end;
+
+function CreateModelClassMeasures: IModelClassMeasures;
+begin
+  Result := TModelClassMeasures.Create;
+end;
+
+function CreateFromJSONModelClassMeasures(const AJSONArray: TJSONArray): IModelClassMeasures;
+begin
+  Result := TModelClassMeasures.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassMeasures(const AFileName: String): IModelClassMeasures;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassMeasures(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+end.

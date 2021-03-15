@@ -1,0 +1,267 @@
+﻿unit Model.Classes.User;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.User;
+
+  procedure AssignDataSetModelClassUser(const ADataSet: TFDDataSet);
+  function CreateModelClassUser: IModelClassUser;
+  function CreateFromJSONModelClassUser(const AJSONObject: TJSONObject): IModelClassUser;
+  function CreateFromDataSetModelClassUser: IModelClassUser;
+
+implementation
+
+uses
+  System.SysUtils,
+  Globals,
+  Interfaces.Model.Classes,
+  Interfaces.Model.Classes.Roles,
+  Interfaces.Model.Classes.Role,
+  Interfaces.Model.Classes.Permissions,
+  Interfaces.Model.Classes.Permission,
+  Interfaces.Model.Classes.RoleUser,
+  Interfaces.Model.Classes.PermissionRole,
+  Model.Generator.GIDs,
+  Model.Classes.BaseObject,
+  Model.Classes.Roles,
+  Model.Classes.Permissions;
+
+type
+  ///<summary>Таблица - потребители (оператори)</summary>
+  TModelClassUser = class(TModelClassBaseObject, IModelClassUser)
+
+  {$REGION 'Class Properties'}
+  private class var
+
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FPassword: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetPassword: String;
+    procedure SetPassword(const AValue: String);
+
+    function GetRoles: IModelClassRoles;
+    function GetPermissions: IModelClassPermissions;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на потребителя<summary>
+//    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на потребителя<summary>
+//    property Name: String read GetName write SetName;
+    ///<summary>хеш на паролата на потребителя<summary>
+    property Password: String read GetPassword write SetPassword;
+    ///<summary>дата и час на първоначално конфигуриране на потребителя в системата<summary>
+//    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на потребителя<summary>
+//    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на потребителя от употреба<summary>
+//    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    property Roles: IModelClassRoles read GetRoles;
+    property Permissions: IModelClassPermissions read GetPermissions;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure AssignRole(const ARole: IModelClassRole);
+    function HaveRole(const ARole: IModelClassRole): Boolean; overload;
+    function HaveRole(const ARoleName: String): Boolean; overload;
+    procedure AssignPermission(const APermission: IModelClassPermission);
+    function Can(const APermission: IModelClassPermission): Boolean; overload;
+    function Can(const APermissionName: String): Boolean; overload;
+
+    procedure UpdateFromDataSet; override;
+    procedure UpdateInDataSet; override;
+    function ToJSON: TJSONObject; override;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+{ TModelClassUser }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassUser.GetPassword: String;
+begin
+  Result := FPassword;
+end;
+
+procedure TModelClassUser.SetPassword(const AValue: String);
+begin
+  FPassword := AValue;
+end;
+
+function TModelClassUser.GetRoles: IModelClassRoles;
+var
+  LRoleUser: IModelClassBaseObject;
+begin
+  Result := CreateModelClassRoles;
+  for LRoleUser in G.RolesUsers.List do begin
+    if (LRoleUser as IModelClassRoleUser).UserGID = GID then begin
+      Result.List.Add(G.Roles.GetByGID((LRoleUser as IModelClassRoleUser).RoleGID));
+    end;
+  end;
+end;
+
+function TModelClassUser.GetPermissions: IModelClassPermissions;
+var
+  LRole: IModelClassBaseObject;
+  LPermissionRole: IModelClassBaseObject;
+begin
+  Result := CreateModelClassPermissions;
+  for LRole in Roles.List do begin
+    for LPermissionRole in G.PermissionsRoles.List do begin
+      if (LPermissionRole as IModelClassPermissionRole).RoleGID = (LRole as IModelClassRole).GID then begin
+        Result.List.Add(G.Permissions.GetByGID((LPermissionRole as IModelClassPermissionRole).PermissionGID));
+      end;
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+
+function TModelClassUser.HaveRole(const ARole: IModelClassRole): Boolean;
+begin
+  Result := Roles.List.Contains(ARole);
+end;
+
+function TModelClassUser.HaveRole(const ARoleName: String): Boolean;
+var
+  LRole: IModelClassRole;
+begin
+  LRole := G.Roles.GetByName(ARoleName) as IModelClassRole;
+  if not Assigned(LRole) then Exit(False);
+  Result := Roles.List.Contains(LRole);
+end;
+
+function TModelClassUser.Can(const APermission: IModelClassPermission): Boolean;
+begin
+  Result := Permissions.List.Contains(APermission);
+end;
+
+function TModelClassUser.Can(const APermissionName: String): Boolean;
+var
+  LPermission: IModelClassPermission;
+begin
+  LPermission := G.Permissions.GetByName(APermissionName) as IModelClassPermission;
+  if not Assigned(LPermission) then Exit(False);
+  Result := Permissions.List.Contains(LPermission);
+end;
+
+procedure TModelClassUser.UpdateFromDataSet;
+begin
+  inherited UpdateFromDataSet;
+  Password := DataSet.FieldByName('Password').Value;
+end;
+
+procedure TModelClassUser.UpdateInDataSet;
+begin
+  inherited UpdateInDataSet;
+
+  DataSet.Edit;
+  DataSet.FieldByName('Password').Value := Password;
+  DataSet.Post;
+end;
+
+function TModelClassUser.ToJSON: TJSONObject;
+begin
+  Result := inherited ToJSON;
+  Result.AddPair('Password', Password);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassUser.Create;
+begin
+  inherited Create;
+  GID := TGeneratorGIDs.NewGIDByName('UserGID').ToString;
+  Permissions := CreateModelClassPermissions;
+  Roles := CreateModelClassRoles;
+end;
+
+constructor TModelClassUser.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  inherited CreateFromJSON(AJSONObject);
+  Password := (AJSONObject.GetValue('Password') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassUser(const ADataSet: TFDDataSet);
+begin
+  TModelClassUser.AssignDataSet(ADataSet);
+end;
+
+function CreateModelClassUser: IModelClassUser;
+begin
+  Result := TModelClassUser.Create;
+end;
+
+function CreateFromJSONModelClassUser(const AJSONObject: TJSONObject): IModelClassUser;
+begin
+  Result := TModelClassUser.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassUser: IModelClassUser;
+begin
+  Result := TModelClassUser.CreateFromDataSet;
+end;
+
+end.

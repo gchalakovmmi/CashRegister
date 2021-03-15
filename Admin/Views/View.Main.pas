@@ -1,0 +1,327 @@
+unit View.Main;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Vcl.Menus,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Main, Vcl.ExtCtrls;
+
+type
+  TViewMain = class(TForm, IObserver)
+    StatusBar: TStatusBar;
+    MainMenu: TMainMenu;
+    MenuItemNomenclatures: TMenuItem;
+    MenuItemExit: TMenuItem;
+    MenuItemStores: TMenuItem;
+    MenuItemWorkstations: TMenuItem;
+    MenuItemFiscalDevices: TMenuItem;
+    MenuItemSeparator1: TMenuItem;
+    MenuItemActions: TMenuItem;
+    MenuItemPaymentTypes: TMenuItem;
+    MenuItemSeparator2: TMenuItem;
+    MenuItemPermissions: TMenuItem;
+    MenuItemRoles: TMenuItem;
+    MenuItemPermissionsRoles: TMenuItem;
+    MenuItemSeparator3: TMenuItem;
+    MenuItemUsers: TMenuItem;
+    MenuItemRolesUsers: TMenuItem;
+    MenuItemSeparator4: TMenuItem;
+    MenuItemClients: TMenuItem;
+    MenuItemItems: TMenuItem;
+    MenuItemMeasures: TMenuItem;
+    MenuItemSettings: TMenuItem;
+    MenuItemOperations: TMenuItem;
+    MenuItemSales: TMenuItem;
+    MenuItemReversals: TMenuItem;
+    MenuItemCancellations: TMenuItem;
+    MenuItemPayments: TMenuItem;
+    MenuItemLogs: TMenuItem;
+    TimerInitialize: TTimer;
+    MenuItemDetails: TMenuItem;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure MenuItemStoresClick(Sender: TObject);
+    procedure MenuItemWorkstationsClick(Sender: TObject);
+    procedure MenuItemFiscalDevicesClick(Sender: TObject);
+    procedure MenuItemActionsClick(Sender: TObject);
+    procedure MenuItemPaymentTypesClick(Sender: TObject);
+    procedure MenuItemPermissionsClick(Sender: TObject);
+    procedure MenuItemRolesClick(Sender: TObject);
+    procedure MenuItemPermissionsRolesClick(Sender: TObject);
+    procedure MenuItemUsersClick(Sender: TObject);
+    procedure MenuItemRolesUsersClick(Sender: TObject);
+    procedure MenuItemClientsClick(Sender: TObject);
+    procedure MenuItemItemsClick(Sender: TObject);
+    procedure MenuItemMeasuresClick(Sender: TObject);
+    procedure MenuItemExitClick(Sender: TObject);
+    procedure TimerInitializeTimer(Sender: TObject);
+    procedure MenuItemSalesClick(Sender: TObject);
+    procedure MenuItemDetailsClick(Sender: TObject);
+    procedure MenuItemCancellationsClick(Sender: TObject);
+    procedure MenuItemPaymentsClick(Sender: TObject);
+    procedure MenuItemReversalsClick(Sender: TObject);
+    procedure MenuItemLogsClick(Sender: TObject);
+    procedure MenuItemSettingsClick(Sender: TObject);
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelMain;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property Observer: IObserver read FObserver implements IObserver;
+    property ViewModel: IViewModelMain read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+var
+  ViewMain: TViewMain;
+
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.ViewModel.Login,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Main;
+
+{$REGION 'Published Methods'}
+
+procedure TViewMain.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelMain;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewMain.TimerInitializeTimer(Sender: TObject);
+begin
+  TimerInitialize.Enabled := False;
+  UpdateGUI;
+  ViewModel.Login;
+end;
+
+procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewMain.MenuItemStoresClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureStores;
+end;
+
+procedure TViewMain.MenuItemWorkstationsClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureWorkstations;
+end;
+
+procedure TViewMain.MenuItemFiscalDevicesClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureFiscalDevices;
+end;
+
+procedure TViewMain.MenuItemActionsClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureActions;
+end;
+
+procedure TViewMain.MenuItemPaymentTypesClick(Sender: TObject);
+begin
+  ViewModel.NomenclaturePaymentTypes;
+end;
+
+procedure TViewMain.MenuItemPermissionsClick(Sender: TObject);
+begin
+  ViewModel.NomenclaturePermissions;
+end;
+
+procedure TViewMain.MenuItemRolesClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureRoles;
+end;
+
+procedure TViewMain.MenuItemPermissionsRolesClick(Sender: TObject);
+begin
+  ViewModel.NomenclaturePermissionsRoles;
+end;
+
+procedure TViewMain.MenuItemUsersClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureUsers;
+end;
+
+procedure TViewMain.MenuItemRolesUsersClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureRolesUsers;
+end;
+
+procedure TViewMain.MenuItemClientsClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureClients;
+end;
+
+procedure TViewMain.MenuItemItemsClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureItems;
+end;
+
+procedure TViewMain.MenuItemMeasuresClick(Sender: TObject);
+begin
+  ViewModel.NomenclatureMeasures;
+end;
+
+
+procedure TViewMain.MenuItemSettingsClick(Sender: TObject);
+begin
+  ViewModel.Settings;
+end;
+
+
+procedure TViewMain.MenuItemSalesClick(Sender: TObject);
+begin
+  ViewModel.OperationSales;
+end;
+
+procedure TViewMain.MenuItemDetailsClick(Sender: TObject);
+begin
+  ViewModel.OperationDetails;
+end;
+
+procedure TViewMain.MenuItemCancellationsClick(Sender: TObject);
+begin
+  ViewModel.OperationCancellations;
+end;
+
+procedure TViewMain.MenuItemPaymentsClick(Sender: TObject);
+begin
+  ViewModel.OperationPayments;
+end;
+
+procedure TViewMain.MenuItemReversalsClick(Sender: TObject);
+begin
+  ViewModel.OperationReversals;
+end;
+
+
+procedure TViewMain.MenuItemLogsClick(Sender: TObject);
+begin
+  ViewModel.Logs;
+end;
+
+
+procedure TViewMain.MenuItemExitClick(Sender: TObject);
+begin
+  ViewModel.CloseApp;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewMain.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+end;
+
+procedure TViewMain.UpdateGUI;
+var
+  LGUIRecord: TViewMainGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+  StatusBar.Panels[0].Text := LGUIRecord.StoreName;
+  StatusBar.Panels[1].Text := LGUIRecord.WorkstationName;
+  StatusBar.Panels[2].Text := LGUIRecord.UserName;
+  StatusBar.Panels[3].Text := LGUIRecord.Time;
+
+  StatusBar.Panels[0].Width := (StatusBar.Width - 200) div 3;
+  StatusBar.Panels[1].Width := (StatusBar.Width - 200) div 3;
+  StatusBar.Panels[2].Width := (StatusBar.Width - 200) div 3;
+  StatusBar.Panels[3].Width := 200;
+
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

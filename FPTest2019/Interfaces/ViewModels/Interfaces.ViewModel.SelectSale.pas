@@ -24,6 +24,7 @@ type
 
     procedure ButtonExitClick;
     procedure ButtonReversalClick;
+    procedure ButtonAssignNewClientClick;
     procedure DatePickerChange(const ADate: TDate);
     procedure RefreshData;
   end;

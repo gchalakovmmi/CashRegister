@@ -3,13 +3,13 @@ object ViewLogin: TViewLogin
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = #1042#1098#1074#1077#1076#1077#1090#1077' '#1087#1072#1088#1086#1083#1072' '#1079#1072' '#1074#1087#1080#1089#1074#1072#1085#1077' (333 '#1079#1072' '#1080#1079#1093#1086#1076')'
-  ClientHeight = 45
-  ClientWidth = 317
+  Caption = #1042#1087#1080#1089#1074#1072#1085#1077
+  ClientHeight = 128
+  ClientWidth = 436
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -19
   Font.Name = 'Tahoma'
   Font.Style = []
   Icon.Data = {
@@ -136,10 +136,24 @@ object ViewLogin: TViewLogin
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 23
+  object LabelUser: TLabel
+    Left = 10
+    Top = 16
+    Width = 111
+    Height = 23
+    Caption = #1055#1086#1090#1088#1077#1073#1080#1090#1077#1083':'
+  end
+  object LabelPassword: TLabel
+    Left = 48
+    Top = 53
+    Width = 72
+    Height = 23
+    Caption = #1055#1072#1088#1086#1083#1072':'
+  end
   object EditPassword: TEdit
-    Left = 8
-    Top = 8
+    Left = 126
+    Top = 45
     Width = 301
     Height = 31
     Font.Charset = DEFAULT_CHARSET
@@ -151,7 +165,44 @@ object ViewLogin: TViewLogin
     PasswordChar = '*'
     TabOrder = 0
     Text = 'EditPassword'
-    OnExit = EditPasswordExit
     OnKeyPress = EditPasswordKeyPress
+  end
+  object ComboBoxUser: TComboBox
+    Left = 127
+    Top = 8
+    Width = 301
+    Height = 31
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ItemIndex = 0
+    ParentFont = False
+    TabOrder = 1
+    Text = #1050#1056#1040#1057#1048#1052#1048#1056#1040' '#1071#1053#1063#1045#1042#1040
+    Items.Strings = (
+      #1050#1056#1040#1057#1048#1052#1048#1056#1040' '#1071#1053#1063#1045#1042#1040
+      #1048#1042#1040#1053#1050#1040' '#1052#1048#1053#1050#1054#1042#1040)
+  end
+  object ButtonLogin: TButton
+    Left = 8
+    Top = 87
+    Width = 200
+    Height = 33
+    Caption = #1042#1087#1080#1089#1074#1072#1085#1077
+    ModalResult = 1
+    TabOrder = 2
+    OnClick = ButtonLoginClick
+  end
+  object ButtonCancel: TButton
+    Left = 228
+    Top = 87
+    Width = 200
+    Height = 33
+    Caption = #1054#1090#1082#1072#1079
+    ModalResult = 2
+    TabOrder = 3
+    OnClick = ButtonCancelClick
   end
 end

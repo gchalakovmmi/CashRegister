@@ -1,0 +1,248 @@
+﻿unit Model.Classes.Role;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Role;
+
+  function CreateModelClassRole: IModelClassRole;
+  function CreateFromJSONModelClassRole(const AJSONObject: TJSONObject): IModelClassRole;
+  function CreateFromDataSetModelClassRole: IModelClassRole;
+  procedure AssignDataSetModelClassRole(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  System.SysUtils,
+  Model.Generator.GIDs;
+
+type
+  ///<summary>Таблица - роли на потребителите (операторите)</summary>
+  TModelClassRole = class(TInterfacedObject, IModelClassRole)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FName: String;
+    FAttachedAt: String;
+    FModifiedAt: String;
+    FDetachedAt: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<summary>код в системата на ролята<summary>
+    property GID: String read GetGID write SetGID;
+    ///<summary>наименование на ролята<summary>
+    property Name: String read GetName write SetName;
+    ///<summary>дата и час на първоначално конфигуриране на ролята в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    ///<summary>дата и час на последна промяна на ролята<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    ///<summary>дата и час на извеждане на ролята от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassRole: IModelClassRole;
+begin
+  Result := TModelClassRole.Create;
+  Result.GID := TGeneratorGIDs.NewGIDByName('RoleGID').ToString;
+end;
+
+function CreateFromJSONModelClassRole(const AJSONObject: TJSONObject): IModelClassRole;
+begin
+  Result := TModelClassRole.CreateFromJSON(AJSONObject);
+end;
+
+function CreateFromDataSetModelClassRole: IModelClassRole;
+begin
+  Result := TModelClassRole.Create;
+  Result.UpdateFromDataSet;
+end;
+
+procedure AssignDataSetModelClassRole(const ADataSet: TFDDataSet);
+begin
+  TModelClassRole.DataSet := ADataSet;
+end;
+
+{ TModelClassRole }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassRole.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassRole.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassRole.GetName: String;
+begin
+  Result := FName;
+end;
+
+procedure TModelClassRole.SetName(const AValue: String);
+begin
+  FName := AValue;
+end;
+
+function TModelClassRole.GetAttachedAt: String;
+begin
+  Result := FAttachedAt;
+end;
+
+procedure TModelClassRole.SetAttachedAt(const AValue: String);
+begin
+  FAttachedAt := AValue;
+end;
+
+function TModelClassRole.GetModifiedAt: String;
+begin
+  Result := FModifiedAt;
+end;
+
+procedure TModelClassRole.SetModifiedAt(const AValue: String);
+begin
+  FModifiedAt := AValue;
+end;
+
+function TModelClassRole.GetDetachedAt: String;
+begin
+  Result := FDetachedAt;
+end;
+
+procedure TModelClassRole.SetDetachedAt(const AValue: String);
+begin
+  FDetachedAt := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassRole.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').Value;
+  Name := DataSet.FieldByName('Name').Value;
+  AttachedAt := DataSet.FieldByName('AttachedAt').Value;
+  ModifiedAt := DataSet.FieldByName('ModifiedAt').Value;
+  DetachedAt := DataSet.FieldByName('DetachedAt').Value;
+end;
+
+procedure TModelClassRole.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').Value := GID;
+  DataSet.FieldByName('Name').Value := Name;
+  DataSet.FieldByName('AttachedAt').Value := AttachedAt;
+  DataSet.FieldByName('ModifiedAt').Value := ModifiedAt;
+  DataSet.FieldByName('DetachedAt').Value := DetachedAt;
+
+  DataSet.Post;
+end;
+
+function TModelClassRole.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('Name', Name);
+  Result.AddPair('AttachedAt', AttachedAt);
+  Result.AddPair('ModifiedAt', ModifiedAt);
+  Result.AddPair('DetachedAt', DetachedAt);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassRole.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID = (AJSONObject.GetValue('GID') as TJSONString).Value;
+  Name = (AJSONObject.GetValue('Name') as TJSONString).Value;
+  AttachedAt = (AJSONObject.GetValue('AttachedAt') as TJSONString).Value;
+  ModifiedAt = (AJSONObject.GetValue('ModifiedAt') as TJSONString).Value;
+  DetachedAt = (AJSONObject.GetValue('DetachedAt') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.

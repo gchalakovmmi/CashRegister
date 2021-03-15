@@ -1,0 +1,124 @@
+unit Model.Login;
+
+interface
+
+uses
+  Interfaces.Model.Login;
+
+  function CreateModelLogin: IModelLogin;
+
+implementation
+
+uses
+  System.SysUtils,
+  Globals,
+  Interfaces.Model.Classes.User;
+
+type
+  TModelLogin = class(TInterfacedObject, IModelLogin)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetIsLoggedIn: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property IsLoggedIn: Boolean read GetIsLoggedIn;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure Logout;
+    procedure TryLogin(const ARoleName, APassword: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelLogin: IModelLogin;
+begin
+  Result := TModelLogin.Create;
+end;
+
+{ TModelLogin }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelLogin.GetIsLoggedIn: Boolean;
+begin
+  Result := G.IsLoggedUser;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelLogin.Logout;
+begin
+  G.IsLoggedUser := False;
+end;
+
+procedure TModelLogin.TryLogin(const ARoleName, APassword: String);
+var
+  LUser: IModelClassUser;
+begin
+  Logout;
+
+  LUser := G.Users.GetByRoleAndPassword(ARoleName, APassword);
+  if Assigned(LUser) then begin
+    G.IsLoggedUser := True;
+    G.UserGID := LUser.GID.ToInteger;
+    G.UserName := LUser.Name;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,200 @@
+unit View.Nomenclature.Stores;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Data.DB,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Nomenclature.Stores;
+
+type
+  TViewNomenclatureStores = class(TForm)
+    Panel: TPanel;
+      SpeedButtonAttach: TSpeedButton;
+      SpeedButtonModify: TSpeedButton;
+      SpeedButtonDetach: TSpeedButton;
+      SpeedButtonExit: TSpeedButton;
+    DBGrid: TDBGrid;
+    SpeedButtonExport: TSpeedButton;
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
+    procedure SpeedButtonAttachClick(Sender: TObject);
+    procedure SpeedButtonModifyClick(Sender: TObject);
+    procedure SpeedButtonDetachClick(Sender: TObject);
+    procedure SpeedButtonExitClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelNomenclatureStores;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+//    property Observer: IObserver read FObserver;
+    property ViewModel: IViewModelNomenclatureStores read FViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewNomenclatureStores;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Model.Pattern.Observer.Observer,
+  ViewModel.Nomenclature.Stores,
+  DataModule.Stores;
+
+{$REGION 'Published Methods'}
+
+procedure TViewNomenclatureStores.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelNomenclatureStores;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewNomenclatureStores.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewNomenclatureStores.FormResize(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
+procedure TViewNomenclatureStores.SpeedButtonAttachClick(Sender: TObject);
+begin
+  ViewModel.Attach;
+end;
+
+procedure TViewNomenclatureStores.SpeedButtonModifyClick(Sender: TObject);
+begin
+  ViewModel.Modify;
+end;
+
+procedure TViewNomenclatureStores.SpeedButtonDetachClick(Sender: TObject);
+begin
+  ViewModel.Detach;
+end;
+
+procedure TViewNomenclatureStores.SpeedButtonExitClick(Sender: TObject);
+begin
+  Close;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewNomenclatureStores.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewNomenclatureStores.UpdateGUI;
+var
+  LGUIRecord: TViewNomenclatureStoresGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord(ClientWidth);
+
+  DBGrid.Columns[0].Width := LGUIRecord.DBGridColumns0Width;
+  DBGrid.Columns[1].Width := LGUIRecord.DBGridColumns1Width;
+  DBGrid.Columns[2].Width := LGUIRecord.DBGridColumns2Width;
+  DBGrid.Columns[3].Width := LGUIRecord.DBGridColumns3Width;
+  DBGrid.Columns[4].Width := LGUIRecord.DBGridColumns4Width;
+  DBGrid.Columns[5].Width := LGUIRecord.DBGridColumns5Width;
+
+  ActiveControl := DBGrid;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewNomenclatureStores;
+var
+  LViewNomenclatureStores: TViewNomenclatureStores;
+begin
+  LViewNomenclatureStores := TViewNomenclatureStores.Create(Application.MainForm);
+  LViewNomenclatureStores.Show;
+end;
+
+end.

@@ -1,0 +1,134 @@
+﻿unit Model.Classes.Stores;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Stores;
+
+  procedure AssignFileNameModelClassStores(const AFileName: String);
+  procedure AssignDataSetModelClassStores(const ADataSet: TFDDataSet);
+  function CreateModelClassStores: IModelClassStores;
+  function CreateFromJSONModelClassStores(const AJSONArray: TJSONArray): IModelClassStores;
+  function CreateFromFileModelClassStores: IModelClassStores; overload;
+  function CreateFromFileModelClassStores(const AFileName: String): IModelClassStores; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes.Store;
+
+type
+  ///<summary>Таблица - търговски обекти</summary>
+  TModelClassStores = class(TModelClassBaseCollection<IModelClassStore>, IModelClassStores)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure SaveToFile; override;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+{ TModelClassStores }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassStores.SaveToFile;
+begin
+  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure AssignDataSetModelClassStores(const ADataSet: TFDDataSet);
+begin
+  TModelClassStores.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassStores(const AFileName: String);
+begin
+  TModelClassStores.FileName := AFileName;
+end;
+
+function CreateModelClassStores: IModelClassStores;
+begin
+  Result := TModelClassStores.Create;
+end;
+
+function CreateFromJSONModelClassStores(const AJSONArray: TJSONArray): IModelClassStores;
+begin
+  Result := TModelClassStores.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassStores: IModelClassStores;
+begin
+  Result := TModelClassStores.CreateFromFile(TModelClassStores.FileName);
+end;
+
+function CreateFromFileModelClassStores(const AFileName: String): IModelClassStores;
+begin
+  Result := TModelClassStores.CreateFromFile(AFileName);
+end;
+
+end.

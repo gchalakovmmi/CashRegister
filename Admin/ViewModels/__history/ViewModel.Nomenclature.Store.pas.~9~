@@ -1,0 +1,187 @@
+unit ViewModel.Nomenclature.Store;
+
+interface
+
+uses
+  Interfaces.ViewModel.Nomenclature.Store;
+
+  function CreateViewModelNomenclatureStore: IViewModelNomenclatureStore;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Pattern.Observer.Observer,
+  Model.Notification,
+
+  Interfaces.Model.Nomenclature.Store,
+
+  Model.Nomenclature.Store;
+
+type
+  TViewModelNomenclatureStore = class(TInterfacedObject, IViewModelNomenclatureStore)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FModel: IModelNomenclatureStore;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetModel: IModelNomenclatureStore;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver;
+    property Observable: IObservable read GetObservable;
+    property Model: IModelNomenclatureStore read GetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewNomenclatureStoreGUIRecord;
+
+    procedure SetAction(const AAction: TAMDAction);
+
+    procedure Confirm;
+    procedure Cancel;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelNomenclatureStores }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelNomenclatureStore.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//
+end;
+
+procedure TViewModelNomenclatureStore.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelNomenclatureStore.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelNomenclatureStore.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelNomenclatureStore.GetModel: IModelNomenclatureStore;
+begin
+  Result := FModel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelNomenclatureStore.GetGUIRecord: TViewNomenclatureStoreGUIRecord;
+begin
+//
+end;
+
+procedure TViewModelNomenclatureStore.SetActionAndModel(const AAction: TAMDAction; const AModel: IModelClassStore);
+begin
+  Model.SetActionAndModel(AAction, AModel);
+end;
+
+procedure TViewModelNomenclatureStore.Confirm;
+begin
+  Model.Confirm;
+  SendNotification([actCloseForm]);
+end;
+
+procedure TViewModelNomenclatureStore.Cancel;
+begin
+  SendNotification([actCloseForm]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelNomenclatureStore.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FModel := CreateModelNomenclatureStore;
+end;
+
+destructor TViewModelNomenclatureStore.Destroy;
+begin
+//
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelNomenclatureStore: IViewModelNomenclatureStore;
+begin
+  Result := TViewModelNomenclatureStore.Create;
+end;
+
+end.

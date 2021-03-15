@@ -10,6 +10,7 @@ uses
 implementation
 
 uses
+  System.Classes,
   System.SysUtils,
   Globals,
   Interfaces.Enums,
@@ -62,8 +63,9 @@ type
 
   {$REGION 'Interfaced Methods'}
   public
+    function GetUsers: TStrings;
     procedure Logout;
-    procedure TryLogin(APassword: String);
+    procedure TryLogin(const AUserName, APassword: String);
   {$ENDREGION}
 
   {$REGION 'Constructors/Destructors'}
@@ -123,18 +125,23 @@ end;
 
 {$REGION 'Interfaced Methods'}
 
+function TViewModelLogin.GetUsers: TStrings;
+begin
+  Result := Model.GetUsers;
+end;
+
 procedure TViewModelLogin.Logout;
 begin
   Model.Logout;
 end;
 
-procedure TViewModelLogin.TryLogin(APassword: String);
+procedure TViewModelLogin.TryLogin(const AUserName, APassword: String);
 begin
   Model.Logout;
   if APassword = '333' then begin
     SendNotification([actCloseApp, actCloseForm]);
   end else begin
-    Model.TryLogin(APassword);
+    Model.TryLogin(AUserName, APassword);
     if Model.IsLoggedIn then begin
       SendNotification([actLoginSuccess, actCloseForm]);
     end else begin

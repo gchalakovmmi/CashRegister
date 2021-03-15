@@ -31,13 +31,13 @@ type
     procedure CashIn;
     procedure CashOut;
     procedure Reversal;
+    procedure Admin;
 
     procedure SelectPrinter;
     procedure XReport;
     procedure PReport;
     procedure ZReport;
     procedure CheckItem;
-
     procedure Audit;
   end;
 

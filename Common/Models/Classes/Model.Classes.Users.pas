@@ -1,0 +1,208 @@
+﻿unit Model.Classes.Users;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Users;
+
+  procedure AssignDataSetModelClassUsers(const ADataSet: TFDDataSet);
+  procedure AssignFileNameModelClassUsers(const AFileName: String);
+  function CreateModelClassUsers: IModelClassUsers;
+  function CreateFromJSONModelClassUsers(const AJSONArray: TJSONArray): IModelClassUsers;
+  function CreateFromFileModelClassUsers: IModelClassUsers; overload;
+  function CreateFromFileModelClassUsers(const AFileName: String): IModelClassUsers; overload;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections,
+  Model.Classes.BaseCollection,
+  Interfaces.Model.Classes,
+  Interfaces.Model.Classes.User,
+  Interfaces.Model.Classes.RolesUsers,
+  Interfaces.Model.Classes.RoleUser,
+  Interfaces.Model.Classes.Roles,
+  Interfaces.Model.Classes.Role,
+  Interfaces.Model.Classes.PermissionsRoles,
+  Interfaces.Model.Classes.PermissionRole,
+  Interfaces.Model.Classes.Permissions,
+  Interfaces.Model.Classes.Permission,
+  Model.Classes.RolesUsers,
+  Model.Classes.Roles,
+  Model.Classes.PermissionsRoles,
+  Model.Classes.Permissions;
+
+type
+  ///<summary>Таблица - потребители (оператори)</summary>
+  TModelClassUsers = class(TModelClassBaseCollection<IModelClassUser>, IModelClassUsers)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FFileName: String;
+  public
+    class property FileName: String read FFileName write FFileName;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure AssignRolesAndPermissions;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+//    procedure SaveToFile; override;
+
+    function GetByRoleAndPassword(const ARole, APassword: String): IModelClassUser;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromFile; override;
+  {$ENDREGION}
+  end;
+
+{ TModelClassUsers }
+
+{$REGION 'Private Methods'}
+
+procedure TModelClassUsers.AssignRolesAndPermissions;
+var
+  LUser: IModelClassUser;
+  LRolesUsers: IModelClassRolesUsers;
+  LRoleUser: IModelClassRoleUser;
+  LRoles: IModelClassRoles;
+  LRole: IModelClassRole;
+  LPermissionsRoles: IModelClassPermissionsRoles;
+  LPermissionRole: IModelClassPermissionRole;
+  LPermissions: IModelClassPermissions;
+  LPermission: IModelClassPermission;
+begin
+  LRolesUsers := CreateFromFileModelClassRolesUsers;
+  LRoles := CreateFromFileModelClassRoles;
+  LPermissionsRoles := CreateFromFileModelClassPermissionsRoles;
+  LPermissions := CreateFromFileModelClassPermissions;
+
+  for LUser in List do begin
+    for LRoleUser in LRolesUsers.List do begin
+      if LRoleUser.UserGID = LUser.GID then begin
+        LRole := LRoles.GetByGID(LRoleUser.RoleGID);
+        LUser.AssignRole(LRole);
+        for LPermissionRole in LPermissionsRoles.List do begin
+          if LPermissionRole.RoleGID = LRole.GID then begin
+            LPermission := LPermissions.GetByGID(LPermissionRole.PermissionGID);
+            LUser.AssignPermission(LPermission);
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+//procedure TModelClassUsers.SaveToFile;
+//begin
+//  TFile.WriteAllText(FileName, ToJSON.ToString, TEncoding.UTF8);
+//end;
+
+function TModelClassUsers.GetByRoleAndPassword(const ARole, APassword: String): IModelClassUser;
+var
+  LUser: IModelClassUser;
+begin
+  Result := nil;
+  for LUser in List do begin
+    if LUser.Password = APassword then begin
+      if LUser.HaveRole(ARole) then begin
+        Result := LUser;
+      end;
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassUsers.CreateFromFile;
+begin
+  inherited;
+  AssignRolesAndPermissions;
+end;
+
+{$ENDREGION}
+
+
+procedure AssignDataSetModelClassUsers(const ADataSet: TFDDataSet);
+begin
+  TModelClassUsers.AssignDataSet(ADataSet);
+end;
+
+procedure AssignFileNameModelClassUsers(const AFileName: String);
+begin
+  TModelClassUsers.FileName := AFileName;
+end;
+
+function CreateModelClassUsers: IModelClassUsers;
+begin
+  Result := TModelClassUsers.Create;
+end;
+
+function CreateFromJSONModelClassUsers(const AJSONArray: TJSONArray): IModelClassUsers;
+begin
+  Result := TModelClassUsers.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassUsers: IModelClassUsers;
+begin
+  Result := TModelClassUsers.CreateFromFile;
+end;
+
+function CreateFromFileModelClassUsers(const AFileName: String): IModelClassUsers;
+begin
+  Result := TModelClassUsers.CreateFromFile(AFileName);
+end;
+
+end.

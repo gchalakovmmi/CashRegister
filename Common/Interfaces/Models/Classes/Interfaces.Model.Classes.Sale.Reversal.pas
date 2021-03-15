@@ -11,7 +11,7 @@ type
   ['{88125E39-997A-44BF-B9E8-A8885798D29A}']
     function GetGID: String;
     procedure SetGID(const Value: String);
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на сторнирането, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
 
     function GetParentGID: String;

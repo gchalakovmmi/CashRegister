@@ -1,0 +1,48 @@
+﻿unit Interfaces.Model.Classes.Store;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassStore = interface
+  ['{58B6AEFF-E9C7-4A07-93CB-AD9963EC9237}']
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на търговския обект<summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование на търговския обект<summary>
+    property Name: String read GetName write SetName;
+
+    function GetAddress: String;
+    procedure SetAddress(const AValue: String);
+    ///<summary>местонахождение на търговския обект<summary>
+    property Address: String read GetAddress write SetAddress;
+
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на търговския обект в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна промяна на търговския обект<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на търговския обект от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

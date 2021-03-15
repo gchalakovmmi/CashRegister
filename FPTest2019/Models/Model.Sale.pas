@@ -12,6 +12,7 @@ implementation
 uses
   System.SysUtils,
   System.IOUtils,
+  Vcl.Dialogs,
   Globals,
   Helper.MyFuncs,
   Device.FP700X,
@@ -82,7 +83,6 @@ type
     procedure DuplicateReceipt;
 
     // Sale's Payments Updates
-    procedure UpdateSaleDue(const ADueDelta: String);
     procedure UpdateSaleCashPayment(const ACashPayment: String);
     procedure UpdateSaleVoucherPayment(const AVoucherPayment: String);
     procedure UpdateSaleCardPayment(const ACardPayment: String);
@@ -121,7 +121,8 @@ function TModelSale.ItemIsValidForCancellation(const ASaleCancellation: IModelCl
 begin
   Result := False;
 
-  if not (ASaleCancellation.Price.ToDouble < 0) then begin
+  if not (ASaleCancellation.Quantity.ToDouble < 0) then begin
+    ViewMessage.ShowBadMessagePlus('КОЛИЧЕСТВОТО ТРЯБВА ДА Е ОТРИЦАТЕЛНО ЧИСЛО! ('+ASaleCancellation.Quantity+')');
     Exit;
   end;
 
@@ -159,6 +160,21 @@ end;
 procedure TModelSale.SetupSale;
 var
   LLastSaleFileName: String;
+  LLastReceiptID: String;
+  LOpenReceiptNumber: WideString;
+  LOpenReceiptMissingPayment: WideString;
+
+  procedure SetupNewSale;
+  begin
+    FSale := CreateModelClassSale;
+
+    FSale.SetupSale;
+
+    DeviceFP700X.SetupSale(FSale);
+
+    DataModuleSale.SetupSale(FSale);
+  end;
+
 begin
 
   if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) or TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
@@ -183,12 +199,269 @@ begin
 
   LLastSaleFileName := TAppSettings.GetSetting('LastSaleFileName');
   if LLastSaleFileName = '' then begin
-    // No open sale in database
-
+    FSale := CreateModelClassSale;
   end else begin
-    // Open sale in database
-
+    ViewMessage.ShowBadMessage('Зарежда данни за неприключена продажба . . .');
+    FSale := CreateFromFileModelClassSale(LLastSaleFileName);
   end;
+  LLastReceiptID := TAppSettings.GetSetting('LastReceiptID');
+
+  if (LLastSaleFileName = '') and DeviceFP700X.ReceiptIsClosed then begin
+    // No open sale in database. No open receipt in fiscal device
+    SetupNewSale;
+    Exit;
+  end;
+
+  if Assigned(FSale) then begin
+    if FSale.Stage = 'подготвена' then begin
+      if DeviceFP700X.ReceiptIsClosed then begin
+        SetupNewSale;
+        Exit;
+      end else begin
+        raise Exception.Create('Има подготвена продажба, но има и отворена бележка!');
+      end;
+    end;
+    if FSale.Stage = 'отворена' then begin
+      if not DeviceFP700X.ReceiptIsClosed then begin
+        if DeviceFP700X.FiscalReceiptIsOpen then begin
+          if not DeviceFP700X.OpenReceiptWithoutItems then begin
+            if FSale.ReceiptID = DeviceFP700X.OpenReceiptNumber then begin
+              Exit;
+            end else begin
+              raise Exception.Create('Има отворена продажба и започната бележка, но са с различни номера!');
+            end;
+          end else begin
+            raise Exception.Create('Има отворена продажба, но има бележка с продажби!');
+          end;
+        end else begin
+          raise Exception.Create('Има отворена продажба, но отворената бележка не е фискална!');
+        end;
+      end else begin
+        raise Exception.Create('Има отворена продажба, но няма отворена бележка!');
+      end;
+    end;
+    if FSale.Stage = 'налични продажби' then begin
+      if not DeviceFP700X.ReceiptIsClosed then begin
+        if DeviceFP700X.FiscalReceiptIsOpen then begin
+          if FSale.ReceiptID = DeviceFP700X.OpenReceiptNumber then begin
+            if (FSale.Details.List.Count - FSale.Cancellations.List.Count).ToString = DeviceFP700X.OpenReceiptItems then begin
+              if FSale.Due = DeviceFP700X.OpenReceiptAmount then begin
+                if DeviceFP700X.OpenReceiptWithNoPayment then begin
+                  DataModuleSale.ReloadSale(FSale);
+                  Exit;
+                end else begin
+                  ViewMessage.ShowBadMessagePlus('Открите е започната продажба с частично плащане. Ще бъде автоматично приключена!');
+                  DataModuleSale.ReloadSale(FSale);
+                  Totals;
+                  CloseSale;
+                  SetupNewSale;
+                  Exit;
+//                  raise Exception.Create('Има продажба с налични продажби, но бележката е с направени плащания!');
+                end;
+              end else begin
+                raise Exception.Create('Има продажба с налични продажби, но бележката е с различна сума!');
+              end;
+            end else begin
+              raise Exception.Create('Има продажба с налични продажби, но бележката е с различен брой продажби!');
+            end;
+          end else begin
+            raise Exception.Create('Има продажба с налични продажби и започната бележка, но са с различни номера!');
+          end;
+        end else begin
+          raise Exception.Create('Има продажба с налични продажби, но отворената бележка не е фискална!');
+        end;
+      end else begin
+        raise Exception.Create('Има продажба с налични продажби, но няма отворена бележка!');
+      end;
+    end;
+    if FSale.Stage = 'налични плащания' then begin
+      if not DeviceFP700X.ReceiptIsClosed then begin
+        if DeviceFP700X.FiscalReceiptIsOpen then begin
+          if FSale.ReceiptID = DeviceFP700X.OpenReceiptNumber then begin
+            if (FSale.Details.List.Count - FSale.Cancellations.List.Count).ToString = DeviceFP700X.OpenReceiptItems then begin
+              if FSale.Due = DeviceFP700X.OpenReceiptAmount then begin
+                ViewMessage.ShowBadMessagePlus('Открите е започната продажба с частично плащане. Ще бъде автоматично приключена!');
+                DataModuleSale.ReloadSale(FSale);
+                Totals;
+                CloseSale;
+                SetupNewSale;
+                Exit;
+              end else begin
+                raise Exception.Create('Има продажба с налични плащания, но бележката е с различна сума!');
+              end;
+            end else begin
+              raise Exception.Create('Има продажба с налични плащания, но бележката е с различен брой продажби!');
+            end;
+          end else begin
+            raise Exception.Create('Има продажба с налични плащания и започната бележка, но са с различни номера!');
+          end;
+        end else begin
+          raise Exception.Create('Има продажба с налични плащания, но отворената бележка не е фискална!');
+        end;
+      end else begin
+        raise Exception.Create('Има продажба с налични плащания, но няма отворена бележка!');
+      end;
+    end;
+    if FSale.Stage = 'приключена' then begin
+      if DeviceFP700X.ReceiptIsClosed then begin
+        SetupNewSale;
+        Exit;
+      end else begin
+        raise Exception.Create('Има приключена продажба, но има и отворена бележка!');
+      end;
+    end;
+  end;
+
+
+  if DeviceFP700X.FiscalReceiptIsOpen then begin
+    if DeviceFP700X.OpenReceiptWithFullPayment then begin
+      DeviceFP700X.CloseSale(nil);
+      SetupNewSale;
+      Exit;
+    end;
+    if DeviceFP700X.OpenReceiptWithPartialPayment then begin
+      DeviceFP700X.CloseSale(nil);
+      SetupNewSale;
+      Exit;
+    end;
+  end;
+
+
+//  if LLastSaleFileName = '' then begin
+//    if DeviceFP700X.NonFiscalReceiptIsOpen then begin
+//      // No open sale in database. Non fiscal receipt is open
+//      DeviceFP700X.CloseNonFiscalReceipt;
+//
+//      FSale := CreateModelClassSale;
+//
+//      FSale.SetupSale;
+//
+//      DeviceFP700X.SetupSale(FSale);
+//
+//      DataModuleSale.SetupSale(FSale);
+//
+//      Exit;
+//    end;
+//  end;
+//
+//  if LLastSaleFileName = '' then begin
+//    if DeviceFP700X.OpenReceiptWithoutDue then begin
+//      // No open sale in database. Fiscal/reversal receipt is open without due
+//
+//      {TODO -oOwner -cGeneral : ActionItem}
+//
+//      Exit;
+//    end;
+//  end;
+//
+//  if LLastSaleFileName = '' then begin
+//    if DeviceFP700X.OpenReceiptWithNoPayment then begin
+//      // No open sale in database. Fiscal/reversal receipt is open with no payment
+//
+//      {TODO -oOwner -cGeneral : ActionItem}
+//
+//      Exit;
+//    end;
+//  end;
+//
+//  if LLastSaleFileName = '' then begin
+//    if DeviceFP700X.OpenReceiptWithPartialPayment then begin
+//      // No open sale in database. Fiscal/reversal receipt is open with partial payment
+//
+//      {TODO -oOwner -cGeneral : ActionItem}
+//
+//      Exit;
+//    end;
+//  end;
+//
+//  if LLastSaleFileName = '' then begin
+//    if DeviceFP700X.OpenReceiptWithFullPayment then begin
+//      // No open sale in database. Fiscal/reversal receipt is open with full payment
+//
+//      {TODO -oOwner -cGeneral : ActionItem}
+//
+//      Exit;
+//    end;
+//  end;
+//
+//
+//
+//  FSale := CreateFromFileModelClassSale(LLastSaleFileName);
+//
+//  if DeviceFP700X.ReceiptIsClosed then begin
+//    // Open sale in database. No open receipt in fiscal device
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+//
+//  if DeviceFP700X.NonFiscalReceiptIsOpen then begin
+//    // Open sale in database. Non fiscal receipt is open
+//    DeviceFP700X.CloseNonFiscalReceipt;
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+//
+//  if DeviceFP700X.OpenReceiptWithoutDue then begin
+//    // Open sale in database. Fiscal/reversal receipt is open without due
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+//
+//  if DeviceFP700X.OpenReceiptWithNoPayment then begin
+//    // Open sale in database. Fiscal/reversal receipt is open with no payment
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+//
+//  if DeviceFP700X.OpenReceiptWithPartialPayment then begin
+//    // Open sale in database. Fiscal/reversal receipt is open with partial payment
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+//
+//  if DeviceFP700X.OpenReceiptWithFullPayment then begin
+//    // Open sale in database. Fiscal/reversal receipt is open with full payment
+//
+//    {TODO -oOwner -cGeneral : ActionItem}
+//
+//    Exit;
+//  end;
+
+
+//      if LLastSaleFileName = '' then begin
+//        if DeviceFP700X.OpenReceiptWithFullPayment then begin
+//          // No open sale in database. Fiscal/reversal receipt is open with payment
+//
+//          LOpenReceiptNumber := DeviceFP700X.OpenReceiptNumber;
+//          LOpenReceiptMissingPayment := DeviceFP700X.OpenReceiptMissingPayment;
+//          FSale := CreateModelClassSale;
+//
+//
+//        end else begin
+//          // No open sale in database. Fiscal/reversal receipt is open without payment
+//
+//        end;
+//
+//
+//      end;
+//
+//    end;
+//
+//
+//  end else begin
+//    // Open sale in database
+//
+//  end;
 
 
   FSale := CreateModelClassSale;
@@ -225,13 +498,13 @@ end;
 procedure TModelSale.OpenSale;
 begin
   // Open Fiscal Receipt
-  DeviceFP700X.OpenSale(Sale);
-
-  // Open in MemTable
-  DataModuleSale.OpenSale(FSale);
+  DeviceFP700X.OpenSale(FSale);
 
   // Open in Model
   FSale.OpenSale;
+
+  // Open in MemTable
+  DataModuleSale.OpenSale(FSale);
 end;
 
 procedure TModelSale.RegistrationOfSale;
@@ -249,6 +522,7 @@ begin
     FormatFloat('0.0000', _Round(DataModuleItems.SelectedVENDORPRICE*DataModuleItems.SelectedCOEFF, 0.0001)),
     FormatFloat('0.00', _Round(DataModuleItems.SelectedCLIENTPRICE*DataModuleItems.SelectedCOEFF, 0.01)),
     DataModuleItems.SelectedDISCOUNT.ToString,
+    DataModuleItems.SelectedLOT,
     FSale.GID,
     FSale.SaleUniqueID,
     FSale.CreatedDate,
@@ -258,25 +532,16 @@ begin
   );
 
   if ItemIsValidForSale(LSaleDetail) then begin
-    if LSaleDetail.Quantity.ToDouble < 0 then begin
-      LSaleDetail.Quantity := FormatFloat('0.000', -LSaleDetail.Quantity.ToDouble);
-      LSaleDetail.ClientPrice := FormatFloat('0.00', -LSaleDetail.ClientPrice.ToDouble);
-      LSaleDetail.ClientPriceBase := FormatFloat('0.00', -LSaleDetail.ClientPriceBase.ToDouble);
-      LSaleDetail.Price := FormatFloat('0.00', -LSaleDetail.Price.ToDouble);
-      LSaleDetail.DiscountValue := FormatFloat('0.00', -LSaleDetail.DiscountValue.ToDouble);
-    end;
-
     // Fiscalization
     DeviceFP700X.RegistrationOfSale(LSaleDetail);
 
-     // Update Due
-    UpdateSaleDue(LSaleDetail.Total);
-
-    // Store in MemTable
-    DataModuleSale.RegistrationOfSale(LSaleDetail);
-
     // Store in Model
     FSale.RegistrationOfSale(LSaleDetail);
+
+    // Store in MemTable
+    DataModuleSale.UpdateSalePayments(FSale);
+    DataModuleSale.RegistrationOfSale(LSaleDetail);
+
   end;
 end;
 
@@ -295,16 +560,14 @@ begin
     // Fiscalization
     DeviceFP700X.RegistrationOfCancelation(LSaleCancellation);
 
-    // Update Due
-    UpdateSaleDue(LSaleCancellation.Total);
-
-    // Store in MemTable
-    DataModuleSale.RegistrationOfCancelation(LSaleCancellation);
-
     // Store in Model
     LCurrentSaleDetail.IsCancelled := 'да';
     LCurrentSaleDetail.UpdateInDataSet;
     FSale.RegistrationOfCancelation(LSaleCancellation);
+
+    // Store in MemTable
+    DataModuleSale.UpdateSalePayments(FSale);
+    DataModuleSale.RegistrationOfCancelation(LSaleCancellation);
 
     DataModuleSale.FDMemTableSaleDetails.Last;
   end;
@@ -312,14 +575,28 @@ end;
 
 procedure TModelSale.Totals;
 begin
-  // Fiscalization
-  DeviceFP700X.Totals(FSale);
+  if FSale.VoucherPayment.ToDouble > 0 then begin
+    if not FSale.Payments.Include('voucher', FSale.VoucherPayment) then begin
+      DeviceFP700X.VoucherTotal(FSale);
+      FSale.VoucherTotal;
+    end;
+  end;
 
-  // Store in MemTable
+  if FSale.CardPayment.ToDouble > 0 then begin
+    if not FSale.Payments.Include('card', FSale.CardPayment) then begin
+      DeviceFP700X.CardTotal(FSale);
+      FSale.CardTotal;
+    end;
+  end;
+
+  if FSale.CashPayment.ToDouble > 0 then begin
+    if not FSale.Payments.Include('cash', FSale.CashPayment) then begin
+      DeviceFP700X.CashTotal(FSale);
+      FSale.CashTotal;
+    end;
+  end;
+
   DataModuleSale.Totals(FSale);
-
-  // Store in Model
-  FSale.Totals;
 end;
 
 procedure TModelSale.CloseSale;
@@ -354,13 +631,6 @@ end;
 
 
 // Sale's Payments Updates
-
-procedure TModelSale.UpdateSaleDue(const ADueDelta: String);
-begin
-  FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble + ADueDelta.ToDouble, 0.01));
-  FSale.Returned := (FSale.CashPayment.ToDouble + FSale.VoucherPayment.ToDouble + FSale.CardPayment.ToDouble - FSale.Due.ToDouble).ToString;
-  DataModuleSale.UpdateSalePayments(FSale);
-end;
 
 procedure TModelSale.UpdateSaleCashPayment(const ACashPayment: String);
 begin

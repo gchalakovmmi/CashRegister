@@ -21,12 +21,18 @@ uses
 type
   TViewLogin = class(TForm, IObserver, IObservable)
     EditPassword: TEdit;
+    ComboBoxUser: TComboBox;
+    LabelUser: TLabel;
+    LabelPassword: TLabel;
+    ButtonLogin: TButton;
+    ButtonCancel: TButton;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditPasswordKeyPress(Sender: TObject; var Key: Char);
-    procedure EditPasswordExit(Sender: TObject);
+    procedure ButtonLoginClick(Sender: TObject);
+    procedure ButtonCancelClick(Sender: TObject);
   {$ENDREGION}
 
   {$REGION 'Private Methods'}
@@ -103,19 +109,26 @@ end;
 
 procedure TViewLogin.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  if not ViewModel.Model.IsLoggedIn then Halt(1);
+
   Action := caFree;
 end;
 
 procedure TViewLogin.EditPasswordKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #$0D then begin
-    ViewModel.TryLogin(EditPassword.Text);
+    ViewModel.TryLogin(ComboBoxUser.Items[ComboBoxUser.ItemIndex], EditPassword.Text);
   end;
 end;
 
-procedure TViewLogin.EditPasswordExit(Sender: TObject);
+procedure TViewLogin.ButtonLoginClick(Sender: TObject);
 begin
-  ActiveControl := EditPassword;
+  ViewModel.TryLogin(ComboBoxUser.Items[ComboBoxUser.ItemIndex], EditPassword.Text);
+end;
+
+procedure TViewLogin.ButtonCancelClick(Sender: TObject);
+begin
+  if not ViewModel.Model.IsLoggedIn then Halt(1);
 end;
 
 {$ENDREGION}
@@ -132,7 +145,7 @@ begin
     Close;
   end;
   if actCloseApp in AModelNotification.Actions then begin
-    Halt;
+    Halt(1);
   end;
 end;
 
@@ -140,6 +153,8 @@ procedure TViewLogin.ResetGUI;
 begin
   ViewModel.Logout;
   EditPassword.Text := '';
+  ComboBoxUser.Items.Assign(ViewModel.GetUsers);
+  ComboBoxUser.ItemIndex := 0;
   ActiveControl := EditPassword;
 end;
 

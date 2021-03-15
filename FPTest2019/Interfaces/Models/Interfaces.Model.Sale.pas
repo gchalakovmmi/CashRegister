@@ -29,7 +29,7 @@ type
     procedure DuplicateReceipt;
 
     // Sale's Payments Updates
-    procedure UpdateSaleDue(const ADueDelta: String);
+//    procedure UpdateSaleDue(const ADueDelta: String);
     procedure UpdateSaleCashPayment(const ACashPayment: String);
     procedure UpdateSaleVoucherPayment(const AVoucherPayment: String);
     procedure UpdateSaleCardPayment(const ACardPayment: String);

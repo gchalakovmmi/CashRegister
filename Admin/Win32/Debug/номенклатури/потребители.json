@@ -1,0 +1,20 @@
+﻿[
+	{
+		"GID":"1",
+		"Name":"СИСТЕМЕН АДМИНИСТРАТОР",
+		"AttachedAt":"17.11.2019 01:28:32",
+		"ModifiedAt":"17.11.2019 01:28:32",
+		"DetachedAt":"",
+		"Position":"СИСТЕМЕН АДМИНИСТРАТОР",
+		"Password":"961655a06d46a2c4f6c5303a5bc6890e472d0fcc2e9cdd1f2af7bc46b70092c2"
+	},
+	{
+		"GID":"2",
+		"Name":"ОДИТОР",
+		"AttachedAt":"17.11.2019 01:28:32",
+		"ModifiedAt":"17.11.2019 01:28:32",
+		"DetachedAt":"",
+		"Position":"ОДИТОР",
+		"Password":"97be00c61ca6019a3ed901999a6b2dffbeae7a5baef4589ebcd3da1e434400ee"
+	}
+]

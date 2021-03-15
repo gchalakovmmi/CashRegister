@@ -40,6 +40,7 @@ type
     FUserID: String;
     FCreatedDate: String;
     FCompletedDate: String;
+    FDue: String;
     FPaymentDate: String;
     FPaymentType: String;
     FPaymentBase: String;
@@ -76,6 +77,8 @@ type
     procedure SetCreatedDate(const AValue: String);
     function GetCompletedDate: String;
     procedure SetCompletedDate(const AValue: String);
+    function GetDue: String;
+    procedure SetDue(const AValue: String);
     function GetPaymentDate: String;
     procedure SetPaymentDate(const AValue: String);
     function GetPaymentType: String;
@@ -91,7 +94,7 @@ type
 
   {$REGION 'Interfaced Properties'}
   public
-    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    ///<sumarry>системен номер на плащането, присвоен от софтуера</summary>
     property GID: String read GetGID write SetGID;
     ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
     property ParentGID: String read GetParentGID write SetParentGID;
@@ -105,6 +108,8 @@ type
     property CreatedDate: String read GetCreatedDate write SetCreatedDate;
     ///<sumarry>дата на приключване на продажбата</summary>
     property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    property Due: String read GetDue write SetDue;
     ///<sumarry>дата на плащане</summary>
     property PaymentDate: String read GetPaymentDate write SetPaymentDate;
     ///<sumarry>вид на плащането</summary>
@@ -237,6 +242,16 @@ begin
   FCompletedDate := AValue;
 end;
 
+function TModelClassSalePayment.GetDue: String;
+begin
+  Result := FDue;
+end;
+
+procedure TModelClassSalePayment.SetDue(const AValue: String);
+begin
+  FDue := AValue;
+end;
+
 function TModelClassSalePayment.GetPaymentDate: String;
 begin
   Result := FPaymentDate;
@@ -301,6 +316,7 @@ begin
   UserID := DataSet.FieldByName('UserID').AsString;
   CreatedDate := DataSet.FieldByName('CreatedDate').AsString;
   CompletedDate := DataSet.FieldByName('CompletedDate').AsString;
+  Due := DataSet.FieldByName('Due').AsString;
   PaymentDate := DataSet.FieldByName('PaymentDate').AsString;
   PaymentType := DataSet.FieldByName('PaymentType').AsString;
   PaymentBase := DataSet.FieldByName('PaymentBase').AsString;
@@ -323,6 +339,7 @@ begin
   DataSet.FieldByName('UserID').AsString := UserID;
   DataSet.FieldByName('CreatedDate').AsString := CreatedDate;
   DataSet.FieldByName('CompletedDate').AsString := CompletedDate;
+  DataSet.FieldByName('Due').AsString := Due;
   DataSet.FieldByName('PaymentDate').AsString := PaymentDate;
   DataSet.FieldByName('PaymentType').AsString := PaymentType;
   DataSet.FieldByName('PaymentBase').AsString := PaymentBase;
@@ -342,6 +359,7 @@ begin
   Result.AddPair('UserID', UserID);
   Result.AddPair('CreatedDate', CreatedDate);
   Result.AddPair('CompletedDate', CompletedDate);
+  Result.AddPair('Due', Due);
   Result.AddPair('PaymentDate', PaymentDate);
   Result.AddPair('PaymentType', PaymentType);
   Result.AddPair('PaymentBase', PaymentBase);
@@ -363,6 +381,7 @@ begin
   UserID := (AJSONObject.GetValue('UserID') as TJSONString).Value;
   CreatedDate := (AJSONObject.GetValue('CreatedDate') as TJSONString).Value;
   CompletedDate := (AJSONObject.GetValue('CompletedDate') as TJSONString).Value;
+  Due := (AJSONObject.GetValue('Due') as TJSONString).Value;
   PaymentDate := (AJSONObject.GetValue('PaymentDate') as TJSONString).Value;
   PaymentType := (AJSONObject.GetValue('PaymentType') as TJSONString).Value;
   PaymentBase := (AJSONObject.GetValue('PaymentBase') as TJSONString).Value;

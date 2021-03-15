@@ -164,7 +164,7 @@ end;
 
 class procedure TAppSettings.SetSetting(const ASetting, AValue: String);
 begin
-  SetSetting('setttings', ASetting, AValue);
+  SetSetting('Settings', ASetting, AValue);
 end;
 
 
@@ -205,7 +205,7 @@ end;
 
 class procedure TAppSettings.SetBoolSetting(const ASetting: String; const AValue: Boolean);
 begin
-  SetBoolSetting('Setttings', ASetting, AValue);
+  SetBoolSetting('Settings', ASetting, AValue);
 end;
 
 

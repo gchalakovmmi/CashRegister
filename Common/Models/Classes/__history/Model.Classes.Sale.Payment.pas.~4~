@@ -1,0 +1,394 @@
+unit Model.Classes.Sale.Payment;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Sale.Payment;
+
+  function CreateModelClassSalePayment: IModelClassSalePayment;
+  function CreateFromDataSetModelClassSalePayment: IModelClassSalePayment;
+  function CreateFromJSONModelClassSalePayment(const AJSONObject: TJSONObject): IModelClassSalePayment;
+  procedure AssignDataSetModelClassSalePayment(const ADataSet: TFDDataSet);
+
+implementation
+
+type
+  TModelClassSalePayment = class(TInterfacedObject, IModelClassSalePayment)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FGID: String;
+    FParentGID: String;
+    FSaleUniqueID: String;
+    FFiscalDeviceID: String;
+    FUserID: String;
+    FCreatedDate: String;
+    FCompletedDate: String;
+    FDue: String;
+    FPaymentDate: String;
+    FPaymentType: String;
+    FPaymentBase: String;
+    FPaymentVAT: String;
+    FPayment: String;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    function GetParentGID: String;
+    procedure SetParentGID(const AValue: String);
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    function GetFiscalDeviceID: String;
+    procedure SetFiscalDeviceID(const AValue: String);
+    function GetUserID: String;
+    procedure SetUserID(const AValue: String);
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    function GetCompletedDate: String;
+    procedure SetCompletedDate(const AValue: String);
+    function GetDue: String;
+    procedure SetDue(const AValue: String);
+    function GetPaymentDate: String;
+    procedure SetPaymentDate(const AValue: String);
+    function GetPaymentType: String;
+    procedure SetPaymentType(const AValue: String);
+    function GetPaymentBase: String;
+    procedure SetPaymentBase(const AValue: String);
+    function GetPaymentVAT: String;
+    procedure SetPaymentVAT(const AValue: String);
+    function GetPayment: String;
+    procedure SetPayment(const AValue: String);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    ///<sumarry>системен номер на плащането, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property ParentGID: String read GetParentGID write SetParentGID;
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+    ///<sumarry>номер на фискалното устройство</summary>
+    property FiscalDeviceID: String read GetFiscalDeviceID write SetFiscalDeviceID;
+    ///<sumarry>номер на оператор</summary>
+    property UserID: String read GetUserID write SetUserID;
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+    ///<sumarry>дата на приключване на продажбата</summary>
+    property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    property Due: String read GetDue write SetDue;
+    ///<sumarry>дата на плащане</summary>
+    property PaymentDate: String read GetPaymentDate write SetPaymentDate;
+    ///<sumarry>вид на плащането</summary>
+    property PaymentType: String read GetPaymentType write SetPaymentType;
+    ///<sumarry>платена сума без ДДС - в лв.</summary>
+    property PaymentBase: String read GetPaymentBase write SetPaymentBase;
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    property PaymentVAT: String read GetPaymentVAT write SetPaymentVAT;
+    ///<sumarry>платена сума с ДДС - в лв.</summary>
+    property Payment: String read GetPayment write SetPayment;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromJSON(const AJSONObject: TJSONObject);
+  {$ENDREGION}
+  end;
+
+function CreateModelClassSalePayment: IModelClassSalePayment;
+begin
+  Result := TModelClassSalePayment.Create;
+end;
+
+function CreateFromDataSetModelClassSalePayment: IModelClassSalePayment;
+begin
+  Result := TModelClassSalePayment.Create;
+  Result.UpdateFromDataSet;
+end;
+
+function CreateFromJSONModelClassSalePayment(const AJSONObject: TJSONObject): IModelClassSalePayment;
+begin
+  Result := TModelClassSalePayment.CreateFromJSON(AJSONObject);
+end;
+
+procedure AssignDataSetModelClassSalePayment(const ADataSet: TFDDataSet);
+begin
+  TModelClassSalePayment.DataSet := ADataSet;
+end;
+
+{ TModelClassSalePayment }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassSalePayment.GetGID: String;
+begin
+  Result := FGID;
+end;
+
+procedure TModelClassSalePayment.SetGID(const AValue: String);
+begin
+  FGID := AValue;
+end;
+
+function TModelClassSalePayment.GetParentGID: String;
+begin
+  Result := FParentGID;
+end;
+
+procedure TModelClassSalePayment.SetParentGID(const AValue: String);
+begin
+  FParentGID := AValue;
+end;
+
+function TModelClassSalePayment.GetSaleUniqueID: String;
+begin
+  Result := FSaleUniqueID;
+end;
+
+procedure TModelClassSalePayment.SetSaleUniqueID(const AValue: String);
+begin
+  FSaleUniqueID := AValue;
+end;
+
+function TModelClassSalePayment.GetFiscalDeviceID: String;
+begin
+  Result := FFiscalDeviceID;
+end;
+
+procedure TModelClassSalePayment.SetFiscalDeviceID(const AValue: String);
+begin
+  FFiscalDeviceID := AValue;
+end;
+
+function TModelClassSalePayment.GetUserID: String;
+begin
+  Result := FUserID;
+end;
+
+procedure TModelClassSalePayment.SetUserID(const AValue: String);
+begin
+  FUserID := AValue;
+end;
+
+function TModelClassSalePayment.GetCreatedDate: String;
+begin
+  Result := FCreatedDate;
+end;
+
+procedure TModelClassSalePayment.SetCreatedDate(const AValue: String);
+begin
+  FCreatedDate := AValue;
+end;
+
+function TModelClassSalePayment.GetCompletedDate: String;
+begin
+  Result := FCompletedDate;
+end;
+
+procedure TModelClassSalePayment.SetCompletedDate(const AValue: String);
+begin
+  FCompletedDate := AValue;
+end;
+
+function TModelClassSalePayment.GetDue: String;
+begin
+  Result := FDue;
+end;
+
+procedure TModelClassSalePayment.SetDue(const AValue: String);
+begin
+  FDue := AValue;
+end;
+
+function TModelClassSalePayment.GetPaymentDate: String;
+begin
+  Result := FPaymentDate;
+end;
+
+procedure TModelClassSalePayment.SetPaymentDate(const AValue: String);
+begin
+  FPaymentDate := AValue;
+end;
+
+function TModelClassSalePayment.GetPaymentType: String;
+begin
+  Result := FPaymentType;
+end;
+
+procedure TModelClassSalePayment.SetPaymentType(const AValue: String);
+begin
+  FPaymentType := AValue;
+end;
+
+function TModelClassSalePayment.GetPaymentBase: String;
+begin
+  Result := FPaymentBase;
+end;
+
+procedure TModelClassSalePayment.SetPaymentBase(const AValue: String);
+begin
+  FPaymentBase := AValue;
+end;
+
+function TModelClassSalePayment.GetPaymentVAT: String;
+begin
+  Result := FPaymentVAT;
+end;
+
+procedure TModelClassSalePayment.SetPaymentVAT(const AValue: String);
+begin
+  FPaymentVAT := AValue;
+end;
+
+function TModelClassSalePayment.GetPayment: String;
+begin
+  Result := FPayment;
+end;
+
+procedure TModelClassSalePayment.SetPayment(const AValue: String);
+begin
+  FPayment := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassSalePayment.UpdateFromDataSet;
+begin
+  GID := DataSet.FieldByName('GID').AsString;
+  ParentGID := DataSet.FieldByName('ParentGID').AsString;
+  SaleUniqueID := DataSet.FieldByName('SaleUniqueID').AsString;
+  FiscalDeviceID := DataSet.FieldByName('FiscalDeviceID').AsString;
+  UserID := DataSet.FieldByName('UserID').AsString;
+  CreatedDate := DataSet.FieldByName('CreatedDate').AsString;
+  CompletedDate := DataSet.FieldByName('CompletedDate').AsString;
+  Due := DataSet.FieldByName('Due').AsString;
+  PaymentDate := DataSet.FieldByName('PaymentDate').AsString;
+  PaymentType := DataSet.FieldByName('PaymentType').AsString;
+  PaymentBase := DataSet.FieldByName('PaymentBase').AsString;
+  PaymentVAT := DataSet.FieldByName('PaymentVAT').AsString;
+  Payment := DataSet.FieldByName('Payment').AsString;
+end;
+
+procedure TModelClassSalePayment.UpdateInDataSet;
+begin
+  if DataSet.Locate('GID', GID) then begin
+    DataSet.Edit;
+  end else begin
+    DataSet.Append;
+  end;
+
+  DataSet.FieldByName('GID').AsString := GID;
+  DataSet.FieldByName('ParentGID').AsString := ParentGID;
+  DataSet.FieldByName('SaleUniqueID').AsString := SaleUniqueID;
+  DataSet.FieldByName('FiscalDeviceID').AsString := FiscalDeviceID;
+  DataSet.FieldByName('UserID').AsString := UserID;
+  DataSet.FieldByName('CreatedDate').AsString := CreatedDate;
+  DataSet.FieldByName('CompletedDate').AsString := CompletedDate;
+  DataSet.FieldByName('Due').AsString := Due;
+  DataSet.FieldByName('PaymentDate').AsString := PaymentDate;
+  DataSet.FieldByName('PaymentType').AsString := PaymentType;
+  DataSet.FieldByName('PaymentBase').AsString := PaymentBase;
+  DataSet.FieldByName('PaymentVAT').AsString := PaymentVAT;
+  DataSet.FieldByName('Payment').AsString := Payment;
+
+  DataSet.Post;
+end;
+
+function TModelClassSalePayment.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  Result.AddPair('GID', GID);
+  Result.AddPair('ParentGID', ParentGID);
+  Result.AddPair('SaleUniqueID', SaleUniqueID);
+  Result.AddPair('FiscalDeviceID', FiscalDeviceID);
+  Result.AddPair('UserID', UserID);
+  Result.AddPair('CreatedDate', CreatedDate);
+  Result.AddPair('CompletedDate', CompletedDate);
+  Result.AddPair('Due', Due);
+  Result.AddPair('PaymentDate', PaymentDate);
+  Result.AddPair('PaymentType', PaymentType);
+  Result.AddPair('PaymentBase', PaymentBase);
+  Result.AddPair('PaymentVAT', PaymentVAT);
+  Result.AddPair('Payment', Payment);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassSalePayment.CreateFromJSON(const AJSONObject: TJSONObject);
+begin
+  GID := (AJSONObject.GetValue('GID') as TJSONString).Value;
+  ParentGID := (AJSONObject.GetValue('ParentGID') as TJSONString).Value;
+  SaleUniqueID := (AJSONObject.GetValue('SaleUniqueID') as TJSONString).Value;
+  FiscalDeviceID := (AJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value;
+  UserID := (AJSONObject.GetValue('UserID') as TJSONString).Value;
+  CreatedDate := (AJSONObject.GetValue('CreatedDate') as TJSONString).Value;
+  CompletedDate := (AJSONObject.GetValue('CompletedDate') as TJSONString).Value;
+  PaymentDate := (AJSONObject.GetValue('PaymentDate') as TJSONString).Value;
+  PaymentType := (AJSONObject.GetValue('PaymentType') as TJSONString).Value;
+  PaymentBase := (AJSONObject.GetValue('PaymentBase') as TJSONString).Value;
+  PaymentVAT := (AJSONObject.GetValue('PaymentVAT') as TJSONString).Value;
+  Payment := (AJSONObject.GetValue('Payment') as TJSONString).Value;
+end;
+
+{$ENDREGION}
+
+end.
+

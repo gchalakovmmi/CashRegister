@@ -74,7 +74,7 @@ type
   public
     function GetGUIRecord: TViewReportsGUIRecord;
 
-    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+    procedure PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
   {$ENDREGION}
 
   {$REGION 'Constructors/Destructors'}
@@ -147,9 +147,12 @@ begin
   Result.DatePickerPeriodFinishDate := DateOf(StartOfTheMonth(Date)-1);
 end;
 
-procedure TViewModelReports.PReport(const APeriodStart, APeriodFinish: TDate);
+procedure TViewModelReports.PReport(const APeriodStart, APeriodFinish: TDate; const AShort: Boolean);
 begin
-  Model.PReport(APeriodStart, APeriodFinish);
+  if MessageDlg('Потвърдете отпечатване на отчет за период.', mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then begin
+    Model.PReport(APeriodStart, APeriodFinish, AShort);
+    SendNotification([actCloseForm]);
+  end;
 end;
 
 {$ENDREGION}

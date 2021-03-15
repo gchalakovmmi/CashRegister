@@ -146,7 +146,7 @@ type
   end;
 
   TViewReversalGUIRecord = record
-
+    Caption: String;
   end;
 
   TViewSelectItemGUIRecord = record
@@ -159,10 +159,12 @@ type
   TViewSelectClientGUIRecord = record
     Top: Integer;
     Left: Integer;
+    Width: Integer;
     EditText: String;
   end;
 
   TViewCheckItemGUIRecord = record
+    Caption: String;
     LabelCodeCaption: String;
     LabelItemCaption: String;
     LabelMeasureCaption: String;

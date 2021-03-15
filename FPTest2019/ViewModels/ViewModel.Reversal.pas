@@ -253,7 +253,7 @@ end;
 
 function TViewModelReversal.GetGUIRecord: TViewReversalGUIRecord;
 begin
-//
+  Result.Caption := 'юмер 4 - опндюфах v ' + G.GetAppVersion + ' - [ярнпмн он ' + Model.Sale.SaleUniqueID + ']';
 end;
 
 

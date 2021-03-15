@@ -1,0 +1,20 @@
+﻿[
+  {
+    "GID": "1",
+    "RoleGID": "1",
+    "UserGID": "1",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": ""
+  },
+  {
+    "GID": "2",
+    "RoleGID": "2",
+    "UserGID": "2",
+    "Name": "",
+    "AttachedAt": "17.11.2019 01:28:32",
+    "ModifiedAt": "17.11.2019 01:28:32",
+    "DetachedAt": ""
+  }
+]

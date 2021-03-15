@@ -1,0 +1,38 @@
+﻿unit Interfaces.Model.Classes.Action;
+
+interface
+
+uses
+  System.JSON;
+
+type
+  IModelClassAction = interface
+    function GetGID: String;
+    procedure SetGID(const AValue: String);
+    ///<summary>код в системата на действието/операцията<summary>
+    property GID: String read GetGID write SetGID;
+    function GetName: String;
+    procedure SetName(const AValue: String);
+    ///<summary>наименование на действието/операцията<summary>
+    property Name: String read GetName write SetName;
+    function GetAttachedAt: String;
+    procedure SetAttachedAt(const AValue: String);
+    ///<summary>дата и час на първоначално конфигуриране на действието/операцията в системата<summary>
+    property AttachedAt: String read GetAttachedAt write SetAttachedAt;
+    function GetModifiedAt: String;
+    procedure SetModifiedAt(const AValue: String);
+    ///<summary>дата и час на последна промяна на действието/операцията<summary>
+    property ModifiedAt: String read GetModifiedAt write SetModifiedAt;
+    function GetDetachedAt: String;
+    procedure SetDetachedAt(const AValue: String);
+    ///<summary>дата и час на извеждане на действието/операцията от употреба<summary>
+    property DetachedAt: String read GetDetachedAt write SetDetachedAt;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONObject;
+  end;
+
+implementation
+
+end.

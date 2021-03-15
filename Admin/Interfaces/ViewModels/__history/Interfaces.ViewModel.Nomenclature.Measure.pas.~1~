@@ -1,0 +1,32 @@
+unit Interfaces.ViewModel.Nomenclature.Measure;
+
+interface
+
+uses
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.Model.Pattern.Observer;
+
+type
+  IViewModelNomenclatureMeasure = interface
+  ['{F2CEB691-2A1E-46FC-AC71-E7C81684BB0C}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetGUIRecord: TViewNomenclatureMeasureGUIRecord;
+
+    function Can(const AAction: TAMDAction): Boolean;
+
+    procedure SetAction(const AAction: TAMDAction);
+
+    procedure Confirm;
+    procedure Cancel;
+  end;
+
+implementation
+
+end.

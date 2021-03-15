@@ -1,0 +1,24 @@
+unit View.Nomenclature.Roles;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TViewNomenclatureRoles = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewNomenclatureRoles: TViewNomenclatureRoles;
+
+implementation
+
+{$R *.dfm}
+
+end.

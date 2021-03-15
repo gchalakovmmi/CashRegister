@@ -1,0 +1,225 @@
+﻿unit Model.Classes.Items;
+
+interface
+
+uses
+  System.JSON,
+  FireDAC.Comp.DataSet,
+  Interfaces.Model.Classes.Items;
+
+  function CreateModelClassItems: IModelClassItems;
+  function CreateFromJSONModelClassItems(const AJSONArray: TJSONArray): IModelClassItems;
+  function CreateFromFileModelClassItems(const AFileName: String): IModelClassItems;
+  procedure AssignDataSetModelClassItems(const ADataSet: TFDDataSet);
+
+implementation
+
+uses
+  Globals,
+  System.IOUtils,
+  System.SysUtils,
+  System.Generics.Collections,
+  Interfaces.Model.Classes.Item,
+  Model.Classes.Item;
+
+type
+  ///<summary>Таблица - стоки/услуги</summary>
+  TModelClassItems = class(TInterfacedObject, IModelClassItems)
+
+  {$REGION 'Class Properties'}
+  private class var
+    FDataSet: TFDDataSet;
+  public
+    class property DataSet: TFDDataSet read FDataSet write FDataSet;
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SaveToFile;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FList: TList<IModelClassItem>;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetList: TList<IModelClassItem>;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property List: TList<IModelClassItem> read GetList;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+    function ToJSON: TJSONArray;
+
+    procedure Add(const AItem: IModelClassItem);
+    function GetByGID(const AGID: String): IModelClassItem;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    constructor CreateFromJSON(const AJSONArray: TJSONArray);
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelClassItems: IModelClassItems;
+begin
+  Result := TModelClassItems.Create;
+end;
+
+function CreateFromJSONModelClassItems(const AJSONArray: TJSONArray): IModelClassItems;
+begin
+  Result := TModelClassItems.CreateFromJSON(AJSONArray);
+end;
+
+function CreateFromFileModelClassItems(const AFileName: String): IModelClassItems;
+var
+  LText: String;
+begin
+  if not TFile.Exists(AFileName) then Exit(nil);
+
+  LText := TFile.ReadAllText(AFileName, TEncoding.UTF8);
+  Result := CreateFromJSONModelClassItems(TJSONObject.ParseJSONValue(LText) as TJSONArray);
+end;
+
+procedure AssignDataSetModelClassItems(const ADataSet: TFDDataSet);
+begin
+  TModelClassItems.DataSet := ADataSet;
+end;
+
+{ TModelClassItems }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelClassItems.GetList: TList<IModelClassItem>;
+begin
+  Result := FList;
+end;
+
+{$ENDREGION}
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelClassItems.UpdateFromDataSet;
+var
+  LItem: IModelClassItem;
+  LFound: Boolean;
+begin
+  DataSet.First;
+  while not DataSet.Eof do begin
+    LFound := False;
+    for LItem in List do begin
+      if LItem.GID = DataSet.FieldByName('gid').Value then begin
+        LItem.UpdateFromDataSet;
+        LFound := True;
+        Break;
+      end;
+    end;
+    if not LFound then begin
+      LItem := CreateFromDataSetModelClassItem;
+      List.Add(LItem);
+    end;
+    DataSet.Next;
+  end;
+end;
+
+procedure TModelClassItems.UpdateInDataSet;
+var
+  LItem: IModelClassItem;
+begin
+  for LItem in List do begin
+    LItem.UpdateInDataSet;
+  end;
+end;
+
+function TModelClassItems.ToJSON: TJSONArray;
+var
+  LItem: IModelClassItem;
+begin
+  Result := TJSONArray.Create;
+  for LItem in List do begin
+    Result.Add(LItem.ToJSON);
+  end;
+end;
+
+procedure TModelClassItems.Add(const AItem: IModelClassItem);
+begin
+  List.Add(AItem);
+  SaveToFile;
+end;
+
+function TModelClassItems.GetByGID(const AGID: String): IModelClassItem;
+var
+  LItem: IModelClassItem;
+begin
+  Result := nil;
+  for LItem in List do begin
+    if LItem.GID = AGID then begin
+      Result := LItem;
+    end;
+  end;
+end;
+
+procedure TModelClassItems.SaveToFile;
+begin
+  TFile.WriteAllText(G.ItemsFileName, ToJSON.ToString, TEncoding.UTF8);
+end;
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelClassItems.Create;
+begin
+  inherited;
+  FList := TList<IModelClassItem>.Create;
+end;
+
+constructor TModelClassItems.CreateFromJSON(const AJSONArray: TJSONArray);
+var
+  LJSONValue: TJSONValue;
+begin
+  inherited;
+  FList := TList<IModelClassItem>.Create;
+
+  for LJSONValue in AJSONArray do begin
+    Add(CreateFromJSONModelClassItem(LJSONValue as TJSONObject));
+  end;
+end;
+
+destructor TModelClassItems.Destroy;
+begin
+  FList.DisposeOf;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

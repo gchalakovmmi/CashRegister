@@ -1,0 +1,193 @@
+unit ViewModel.Nomenclature.Stores;
+
+interface
+
+uses
+  Interfaces.ViewModel.Nomenclature.Stores;
+
+  function CreateViewModelNomenclatureStores: IViewModelNomenclatureStores;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Pattern.Observer.Observer,
+  Model.Notification,
+
+  View.Nomenclature.Store,
+  DataModule.Stores;
+
+type
+  TViewModelNomenclatureStores = class(TInterfacedObject, IViewModelNomenclatureStores)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver;
+    property Observable: IObservable read GetObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord(const AWidth: Integer): TViewNomenclatureStoresGUIRecord;
+
+    procedure Attach;
+    procedure Modify;
+    procedure Detach;
+
+    procedure CloseForm;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelNomenclatureStores }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelNomenclatureStores.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//
+end;
+
+procedure TViewModelNomenclatureStores.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelNomenclatureStores.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelNomenclatureStores.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelNomenclatureStores.GetGUIRecord(const AWidth: Integer): TViewNomenclatureStoresGUIRecord;
+var
+  LSpaces: Integer;
+begin
+  LSpaces := 3 + 16 + 7 * 2 + 3;
+  Result.DBGridColumns0Width := (AWidth - LSpaces)*10 div 100;
+  Result.DBGridColumns1Width := (AWidth - LSpaces)*30 div 100;
+  Result.DBGridColumns2Width := (AWidth - LSpaces)*30 div 100;
+  Result.DBGridColumns3Width := (AWidth - LSpaces)*10 div 100;
+  Result.DBGridColumns4Width := (AWidth - LSpaces)*10 div 100;
+  Result.DBGridColumns5Width := (AWidth - LSpaces)*10 div 100;
+end;
+
+procedure TViewModelNomenclatureStores.Attach;
+begin
+  ShowViewNomenclatureStore(amdAttach);
+  SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelNomenclatureStores.Modify;
+begin
+  ShowViewNomenclatureStore(amdModify);
+  SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelNomenclatureStores.Detach;
+begin
+  ShowViewNomenclatureStore(amdDetach);
+  SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelNomenclatureStores.CloseForm;
+begin
+  SendNotification([actCloseForm]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelNomenclatureStores.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  DataModuleStores.LoadFromFile;
+end;
+
+destructor TViewModelNomenclatureStores.Destroy;
+begin
+//
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelNomenclatureStores: IViewModelNomenclatureStores;
+begin
+  Result := TViewModelNomenclatureStores.Create;
+end;
+
+end.
