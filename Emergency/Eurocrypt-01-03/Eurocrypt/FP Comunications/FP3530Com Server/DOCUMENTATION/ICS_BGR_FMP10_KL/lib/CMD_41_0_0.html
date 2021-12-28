@@ -1,0 +1,115 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_41_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>29H (41)	ЗАПОМНЯНЕ НА НАСТРОЙКИТЕ И КЛЮЧЕТАТА ВЪВ FLASH-ПАМЕТТА
+
+	Data field:	
+		Switches
+	Response:	
+		Няма данни
+
+	Switches		8 байта със стойност '0' или '1' - конфигурационните "ключета".
+
+Забележка:
+
+Принтерът няма хардуерни ключета и използува за целта област във флаш-паметта. 
+Установяването им става с тази команда. 
+
+ВНИМАНИЕ! Номерацията започва от най-младшия бит.
+
+Командата запомня следните дании в енергонезависимата (flash) памет:
+	-	Header и footer (от команда 43).
+	-	Текстът на допълнителните типове плащане (от команда 85).
+	-	Графичното лого (от команда 115).
+	-	Опциите за печат (от команда 43).
+	-	Конфигурационните ключета.
+	
+След RAM ресет стойностите им се възстановяват от тези във флаша.
+
+Switch
+	1	Задава скоростта на предаване на серийния порт    
+	2	Задава скоростта на предаване на серийния порт    
+	3	Задава скоростта на предаване на серийния порт    
+	4	- Не се използва
+	5	- Не се използва
+	6	- Не се използва
+	7	- Не се използва
+	8
+		Изключено	- Bluetooth е в режим DISCOVERABLE
+		Включено	- Bluetooth е в режим NON DISCOVERABLE
+
+
+
+
+
+	**********************************************
+	Ключе 1	Ключе 2	Ключе 3		Скорост 
+	**********************************************
+	     0	     0	     0		1200 bps
+	     1	     0	     0		2400 bps
+	     0	     1	     0		4800 bps
+	     1	     1	     0		9600 bps
+	     0	     0	     1		19200 bps
+	     1	     0	     1		38400 bps
+	     0	     1	     1		57600 bps
+	     1	     1	     1		115200 bps
+	**********************************************
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Switches</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Switches		8 байта със стойност '0' или '1' - конфигурационните "ключета".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong data length.</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

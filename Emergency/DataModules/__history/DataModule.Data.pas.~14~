@@ -1,0 +1,397 @@
+unit DataModule.Data;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Data.DB,
+  Interfaces.SaleRecords,
+  Bde.DBTables, Bde.DBTables;
+
+
+type
+  TDataModuleData = class(TDataModule)
+    Table1: TTable;
+    Database1: TDatabase;
+
+  {$REGION 'Published Methods'}
+  published
+
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    function GenerateItemSQL(AOperationID, ADocNumber, AClientID: Integer; AClientVIP: String; AClientMarkUp: Double; AItemID: Integer; AItemBarcode, AItemName, AItemMeasure: String; ACoeff, AQuantity, AClientPrice, ADiscount, AVendorPrice, ATotal: Double; ATyped: String): String;
+    function GenerateVoucherPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+    function GenerateCardPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+    function GenerateCashPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+    function SubTotal(AOperationID: Integer): Double;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure OpenSale;
+    procedure RegistrationOfSale;
+    procedure RegistrationOfCancelation;
+    procedure CloseSale(const AOperationRecord: TOperationRecord);
+    procedure DiscardSale(const AOperationRecord: TOperationRecord);
+
+    procedure StoreItem(AOperationID, ADocNumber, AClientID: Integer; AClientVIP: String; AClientMarkUp: Double; AItemID: Integer; AItemBarcode, AItemName, AItemMeasure: String; ACoeff, AQuantity, AClientPrice, ADiscount, AVendorPrice, ATotal, ATotalToBe: Double; ATyped: String);
+    procedure StoreVoucherPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+    procedure StoreCardPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+    procedure StoreCashPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+
+  end;
+
+var
+  DataModuleData: TDataModuleData;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+function TDataModuleData.GenerateItemSQL(
+  AOperationID,
+  ADocNumber,
+  AClientID: Integer;
+  AClientVIP: String;
+  AClientMarkUp: Double;
+  AItemID: Integer;
+  AItemBarcode,
+  AItemName,
+  AItemMeasure: String;
+  ACoeff,
+  AQuantity,
+  AClientPrice,
+  ADiscount,
+  AVendorPrice,
+  ATotal: Double;
+  ATyped: String
+): String;
+begin
+//  Result := '';
+//  Result := Result + IntToStr(AOperationID)+', ''';
+//  Result := Result + IntToStr(ADocNumber)+''', ''';
+//  Result := Result + DateToStr(Date)+''', ''';
+//  Result := Result + TimeToStr(TimeOf(Now))+''', ';
+//  Result := Result + '2001, ';
+//  Result := Result + '3002, ';
+//  Result := Result + IntToStr(dmMain.ServerID)+', ';
+//  Result := Result + IntToStr(AClientID)+', ''';
+//  Result := Result + AClientVIP+''', ';
+//  Result := Result + FormatFloat('0.00', AClientMarkUp)+', ';
+//  Result := Result + IntToStr(AItemID)+', ''';
+//  Result := Result + AItemBarcode+''', ''';
+//  Result := Result + AItemName+''', ''';
+//  Result := Result + AItemMeasure+''', ';
+//  Result := Result + FormatFloat('0.000', ACoeff)+', ';
+//  Result := Result + FormatFloat('0.000', AQuantity)+', ';
+//  Result := Result + FormatFloat('0.000', _Round(AQuantity * ACoeff, 0.001))+', ';
+//  Result := Result + FormatFloat('0.00', AClientPrice)+', ';
+//  Result := Result + FormatFloat('0.00', ADiscount)+', ';
+//  Result := Result + FormatFloat('0.0000', AVendorPrice)+', ';
+//  Result := Result + FormatFloat('0.00', _Round(ATotal, 0.01))+', ';
+//  Result := Result + '''*'', ';
+//  Result := Result + IntToStr(dmMain.UserID)+', ';
+//  Result := Result + IntToStr(dmMain.MachineID)+', ''';
+//  Result := Result + ATyped+'''';
+end;
+
+function TDataModuleData.SubTotal(AOperationID: Integer): Double;
+//var
+//  q : TQuery;
+begin
+//  q := TQuery.Create(Self);
+//  q.DatabaseName := dmMain.folder[3002];
+//  q.SQL.Add('SELECT SUM(TOTAL) T FROM "'+FormatDateTime('yyyy.mm', Date)+'.DB" WHERE OPERATIONID = '+InttoStr(AOperationID));
+//  q.Open;
+//  Result := q.FieldByName('T').AsFloat;
+//  q.Free;
+end;
+
+function TDataModuleData.GenerateVoucherPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+begin
+//  Result := '';
+//  Result := Result + IntToStr(AOperationID)+', ''';
+//  Result := Result + IntToStr(ADocNumber)+''', ''';
+//  Result := Result + DateToStr(Date)+''', ''';
+//  Result := Result + TimeToStr(TimeOf(Now))+''', ';
+//  Result := Result + '2001, ';
+//  Result := Result + '3098, ';
+//  Result := Result + IntToStr(dmMain.ServerID)+', ';
+//  Result := Result + IntToStr(AClientID)+', ';
+//  Result := Result + '1000'+', ''';
+//  Result := Result + ''+''', ''';
+//  Result := Result + 'ВАУЧЕР'+''', ''';
+//  Result := Result + 'ЛЕВА'+''', ';
+//  Result := Result + '1, ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '''*'', ';
+//  Result := Result + IntToStr(dmMain.UserID)+', ';
+//  Result := Result + IntToStr(dmMain.MachineID)+', ''';
+//  Result := Result + ' '+'''';
+end;
+
+function TDataModuleData.GenerateCardPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+begin
+//  Result := '';
+//  Result := Result + IntToStr(AOperationID)+', ''';
+//  Result := Result + IntToStr(ADocNumber)+''', ''';
+//  Result := Result + DateToStr(Date)+''', ''';
+//  Result := Result + TimeToStr(TimeOf(Now))+''', ';
+//  Result := Result + '2001, ';
+//  Result := Result + '3099, ';
+//  Result := Result + IntToStr(dmMain.ServerID)+', ';
+//  Result := Result + IntToStr(AClientID)+', ';
+//  Result := Result + '1000'+', ''';
+//  Result := Result + ''+''', ''';
+//  Result := Result + 'ПАРИ ПО СМЕТКА'+''', ''';
+//  Result := Result + 'ЛЕВА'+''', ';
+//  Result := Result + '1, ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '''*'', ';
+//  Result := Result + IntToStr(dmMain.UserID)+', ';
+//  Result := Result + IntToStr(dmMain.MachineID)+', ''';
+//  Result := Result + ' '+'''';
+end;
+
+function TDataModuleData.GenerateCashPaymentSQL(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency): String;
+begin
+//  Result := '';
+//  Result := Result + IntToStr(AOperationID)+', ''';
+//  Result := Result + IntToStr(ADocNumber)+''', ''';
+//  Result := Result + DateToStr(Date)+''', ''';
+//  Result := Result + TimeToStr(TimeOf(Now))+''', ';
+//  Result := Result + '2001, ';
+//  Result := Result + '3009, ';
+//  Result := Result + IntToStr(dmMain.ServerID)+', ';
+//  Result := Result + IntToStr(AClientID)+', ';
+//  Result := Result + '1000'+', ''';
+//  Result := Result + ''+''', ''';
+//  Result := Result + 'ПАРИ В БРОЙ'+''', ''';
+//  Result := Result + 'ЛЕВА'+''', ';
+//  Result := Result + '1, ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + '1'+', ';
+//  Result := Result + FormatFloat('0.00', AAmount)+', ';
+//  Result := Result + '''*'', ';
+//  Result := Result + IntToStr(dmMain.UserID)+', ';
+//  Result := Result + IntToStr(dmMain.MachineID)+', ''';
+//  Result := Result + ' '+'''';
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TDataModuleData.OpenSale;
+begin
+
+end;
+
+procedure TDataModuleData.RegistrationOfSale;
+begin
+
+end;
+
+procedure TDataModuleData.RegistrationOfCancelation;
+begin
+
+end;
+
+procedure TDataModuleData.CloseSale(const AOperationRecord: TOperationRecord);
+begin
+  // Store Voucher Payment
+  StoreVoucherPayment(AOperationRecord);
+
+  // Store Card Payment
+  StoreCardPayment(AOperationRecord);
+
+  // Store Cash Payment
+  StoreCashPayment(AOperationRecord);
+end;
+
+procedure TDataModuleData.DiscardSale(const AOperationRecord: TOperationRecord);
+begin
+
+end;
+
+
+
+
+
+procedure TDataModuleData.StoreItem(
+  AOperationID,
+  ADocNumber,
+  AClientID: Integer;
+  AClientVIP: String;
+  AClientMarkUp: Double;
+  AItemID: Integer;
+  AItemBarcode,
+  AItemName,
+  AItemMeasure: String;
+  ACoeff,
+  AQuantity,
+  AClientPrice,
+  ADiscount,
+  AVendorPrice,
+  ATotal,
+  ATotalToBe: Double;
+  ATyped: String
+);
+//var
+//  sSQL: String;
+//  D: TDateTime;
+//  LSubTotal: Double;
+begin
+//  sSQL := GenerateItemSQL(
+//    AOperationID,
+//    ADocNumber,
+//    AClientID,
+//    AClientVIP,
+//    AClientMarkUp,
+//    AItemID,
+//    AItemBarcode,
+//    AItemName,
+//    AItemMeasure,
+//    ACoeff,
+//    AQuantity,
+//    AClientPrice,
+//    ADiscount,
+//    AVendorPrice,
+//    ATotal,
+//    ATyped
+//  );
+//
+//  sSQL := 'INSERT INTO "'+FormatDateTime('yyyy.mm', Date)+'.DB" (OPERATIONID,OPNUMBER,ONDATE,ONTIME,OPGROUP,OPTYPE,FROMCONTRAGENTID,TOCONTRAGENTID,VIP,MARKUP,ITEMID,BARCODE,DESCRIPTION,MEASURE,COEFF,QUANTITY,TOTALQUANTITY,PRICE,DISCOUNT,VENDORPRICE,TOTAL,ACT,USERID,MACHINEID,TYPED) VALUES ('+sSQL+')';
+//
+//  if not FileExists(dmMain.folder[3002]+'\'+FormatDateTime('yyyy.mm', Date)+'.db') then begin
+//    CopyFileTo(dmMain.folder[3002]+'\empty.db', dmMain.folder[3002]+'\'+FormatDateTime('yyyy.mm', Date)+'.db');
+//  end;
+//
+//  // Store to Database
+//  repeat
+//    D := Now;
+//    dmMain.DOSQL(sSQL, 3002);
+//    fmOpSell.StatusBar.Panels[0].Text := FormatFloat('0ms', MillisecondsBetween(Now, D));
+//    LSubTotal := SubTotal(AOperationID);
+//    if Abs(LSubTotal - ATotalToBe) > 0.001 then fmMessage.ShowBadMessagePlus('Продажбата не е записана в базата . . .'+FloatToStr(LSubTotal)+'<>'+FloatToStr(ATotalToBe));
+//  until Abs(LSubTotal - ATotalToBe) < 0.001;
+end;
+
+procedure TDataModuleData.StoreVoucherPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  if not FileExists(dmMain.folder[3098]+'\'+FormatDateTime('yyyy.mm', Date)+'.db') then begin
+//    CopyFileTo(dmMain.folder[3098]+'\empty.db', dmMain.folder[3098]+'\'+FormatDateTime('yyyy.mm', Date)+'.db');
+//  end;
+//  sSQL := ModelOpSell.GenerateCardPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "'+FormatDateTime('yyyy.mm', Date)+'.DB" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOSQL(sSQL, 3098);
+end;
+
+procedure TDataModuleData.StoreCardPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  if not FileExists(dmMain.folder[3099]+'\'+FormatDateTime('yyyy.mm', Date)+'.db') then begin
+//    CopyFileTo(dmMain.folder[3099]+'\empty.db', dmMain.folder[3099]+'\'+FormatDateTime('yyyy.mm', Date)+'.db');
+//  end;
+//  sSQL := ModelOpSell.GenerateCardPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "'+FormatDateTime('yyyy.mm', Date)+'.DB" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOSQL(sSQL, 3099);
+end;
+
+procedure TDataModuleData.StoreCashPayment(AOperationID, ADocNumber, AClientID: Integer; AAmount: Currency);
+//var
+//  sSQL: String;
+begin
+//  if not FileExists(dmMain.folder[3009]+'\'+FormatDateTime('yyyy.mm', Date)+'.db') then begin
+//    CopyFileTo(dmMain.folder[3009]+'\empty.db', dmMain.folder[3009]+'\'+FormatDateTime('yyyy.mm', Date)+'.db');
+//  end;
+//  sSQL := ModelOpSell.GenerateCashPaymentSQL(AOperationID, ADocNumber, AClientID, AAmount);
+//  sSQL := 'INSERT INTO "'+FormatDateTime('yyyy.mm', Date)+'.DB" (OPERATIONID, OPNUMBER, ONDATE, ONTIME, OPGROUP, OPTYPE, FROMCONTRAGENTID, TOCONTRAGENTID, ITEMID, BARCODE, DESCRIPTION, MEASURE, COEFF, QUANTITY, TOTALQUANTITY, PRICE, VENDORPRICE, TOTAL, ACT, USERID, MACHINEID, TYPED) VALUES ('+sSQL+')';
+//  dmMain.DOSQL(sSQL, 3009);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

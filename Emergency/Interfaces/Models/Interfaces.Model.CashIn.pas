@@ -1,0 +1,26 @@
+unit Interfaces.Model.CashIn;
+
+interface
+
+uses
+  Interfaces.Model.Pattern.Observer;
+
+type
+  IModelCashIn = interface
+  ['{D7284F28-B5AB-4C9C-B9EA-23B5A3FDEB60}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetCash: Double;
+		property Cash: Double read GetCash;
+
+    procedure CashCheck;
+    procedure CashIn(const AAmount: WideString);
+  end;
+
+implementation
+
+end.

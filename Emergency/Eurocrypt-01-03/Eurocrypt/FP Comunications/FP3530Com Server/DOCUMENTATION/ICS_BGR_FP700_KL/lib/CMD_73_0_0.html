@@ -1,0 +1,111 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_73_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>49h (73) 	ОТПЕЧАТВАНЕ НА ФИСКАЛНАТА ПАМЕТ ПО НОМЕР НА БЛОК
+
+	Област за данни:	
+		StartRec
+		EndRec
+	Отговор:	
+		Няма
+
+
+	StartRec	Номер на началния фискален блок. 4 байта.
+	EndRec	Номер на крайния фискален блок. 4 байта.
+
+Тази команда води до отпечатване на пълен отчет на фискалната памет от даден номер до друг. 
+Ако няма входни данни, приема се целия перод на експлоатация.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">StartRec</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>StartRec	The number of the starting fiscal entry - 4 bytes</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10510</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">EndRec</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>EndRec	The number of the ending fiscal entry - 4 bytes</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10510</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

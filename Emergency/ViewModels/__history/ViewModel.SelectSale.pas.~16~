@@ -1,0 +1,210 @@
+unit ViewModel.SelectSale;
+
+interface
+
+uses
+  Interfaces.ViewModel.SelectSale;
+
+  function CreateViewModelSelectSale: IViewModelSelectSale;
+
+implementation
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+
+  Interfaces.Model.SelectSale,
+  Model.SelectSale,
+  DataModule.Sale,
+  View.Reversal,
+  DataModule.Clients,
+  View.SelectClient,
+  Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale;
+
+type
+  TViewModelSelectSale = class(TInterfacedObject, IViewModelSelectSale, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModel: IModelSelectSale;
+    FObservable: IObservable;
+    FDate: TDate;
+    FSale: IModelClassSale;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObservable: IObservable;
+    function GetModel: IModelSelectSale;
+    procedure SetModel(const Value: IModelSelectSale);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelSelectSale read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewSelectSaleGUIRecord;
+
+    procedure RefreshData;
+
+    procedure ButtonExitClick;
+    procedure ButtonReversalClick;
+    procedure ButtonAssignNewClientClick;
+    procedure DatePickerChange(const ADate: TDate);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateViewModelSelectSale: IViewModelSelectSale;
+begin
+  Result := TViewModelSelectSale.Create;
+end;
+
+{ TViewModelSelectSale }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelSelectSale.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelSelectSale.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelSelectSale.GetModel: IModelSelectSale;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelSelectSale.SetModel(const Value: IModelSelectSale);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelSelectSale.GetGUIRecord: TViewSelectSaleGUIRecord;
+begin
+//
+end;
+
+procedure TViewModelSelectSale.RefreshData;
+begin
+  DataModuleSale.RefreshData(FDate);
+end;
+
+procedure TViewModelSelectSale.ButtonExitClick;
+begin
+  SendNotification([actCloseForm]);
+end;
+
+procedure TViewModelSelectSale.ButtonReversalClick;
+begin
+  ShowViewReversal;
+  DataModuleSale.RefreshData(FDate);
+  SendNotification([actUpdateGUI]);
+end;
+
+procedure TViewModelSelectSale.ButtonAssignNewClientClick;
+begin
+  SelectClient('!');
+  if DataModuleClients.SelectedID > 0 then begin
+    FSale := CreateFromFileModelClassSale(DataModuleSale.FDMemTableSaleGID.AsString, DataModuleSale.FDMemTableSaleCreatedDate.AsString);
+    FSale.ClientGID := DataModuleClients.SelectedID.ToString;
+    FSale.ClientName := DataModuleClients.SelectedNAME;
+    FSale.ClientTaxNumberType := '0';
+    FSale.ClientTaxNumber := DataModuleClients.SelectedTAXNUMBER;
+    FSale.ClientAddress := '';
+    FSale.ClientReceiver := '';
+    FSale.ClientBuyer := '';
+    FSale.ClientVIPStatus := ''; if DataModuleClients.SelectedVIP then FSale.ClientVIPStatus := '*';
+    FSale.ClientSurcharge := FormatFloat('0.00', DataModuleClients.SelectedMARKUP);
+  end;
+end;
+
+procedure TViewModelSelectSale.DatePickerChange(const ADate: TDate);
+begin
+  FDate := ADate;
+  RefreshData;
+  SendNotification([actUpdateGUI]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelSelectSale.Create;
+begin
+  inherited;
+  FObservable := CreateObservableClass;
+  FModel := CreateModelSelectSale;
+  FDate := Date;
+end;
+
+destructor TViewModelSelectSale.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

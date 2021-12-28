@@ -1,0 +1,110 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_79_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>4Fh (79)	НАТРУПАНИ СУМИ ОТ ФИСКАЛНАТА ПАМЕТ ЗА ДАДЕН ПЕРИОД
+
+Област за данни:
+		StartDate
+		EndDate
+Отговор:	
+		Няма данни
+
+StartDate		Начална дата - 6 байта (DDMMYY)
+EndDate		Крайна дата - 6 байта (DDMMYY)
+
+Командата води до изчисляване и отпечатване на съкратен отчет на фискалната памет.
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">StartDate</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>StartDate		Начална дата - 6 байта (DDMMYY)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">EndDate</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>EndDate		Крайна дата - 6 байта (DDMMYY)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

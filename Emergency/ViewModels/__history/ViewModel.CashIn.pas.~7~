@@ -1,0 +1,207 @@
+unit ViewModel.CashIn;
+
+interface
+
+uses
+  Interfaces.ViewModel.CashIn;
+
+  function CreateViewModelCashIn: IViewModelCashIn;
+
+implementation
+
+uses
+  System.SysUtils,
+  System.UITypes,
+  Vcl.Dialogs,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+
+  Interfaces.Model.Notification,
+  Model.Notification,
+
+  Interfaces.Model.CashIn,
+  Model.CashIn;
+
+type
+  TViewModelCashIn = class(TInterfacedObject, IViewModelCashIn, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FModel: IModelCashIn;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetModel: IModelCashIn;
+    procedure SetModel(const Value: IModelCashIn);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelCashIn read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewCashInGUIRecord;
+    procedure CashCheck;
+    procedure CashIn(const AAmount: WideString);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelCashIn }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelCashIn.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if (actFiscalDeviceAfterCashCheck in AModelNotification.Actions) then begin
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+procedure TViewModelCashIn.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelCashIn.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelCashIn.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelCashIn.GetModel: IModelCashIn;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelCashIn.SetModel(const Value: IModelCashIn);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelCashIn.GetGUIRecord: TViewCashInGUIRecord;
+begin
+  Result.Cash := Format('Сума до момента: %.2fлв.', [Model.Cash]);
+end;
+
+procedure TViewModelCashIn.CashCheck;
+begin
+  Model.CashCheck;
+end;
+
+procedure TViewModelCashIn.CashIn(const AAmount: WideString);
+var
+  LFloatAmount: Double;
+  LAmount: WideString;
+begin
+  if TryStrToFloat(AAmount, LFloatAmount) then begin
+    if LFloatAmount > 0 then begin
+      LAmount := FormatFloat('0.00', LFloatAmount);
+      Model.CashCheck;
+      if
+        MessageDlg(
+          Format('Натрупана сума до момента: %.2fлв.' + sLineBreak + ' Потвърдете въвеждане на %.2fлв.', [Model.Cash, LAmount]),
+          mtConfirmation,
+          [mbYes, mbNo],
+          0,
+          mbYes
+        ) = mrYes
+      then begin
+        Model.CashIn(LAmount);
+      end;
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelCashIn.Create;
+begin
+  inherited;
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FModel := CreateModelCashIn;
+  FModel.Observable.Subscribe(FObserver);
+end;
+
+destructor TViewModelCashIn.Destroy;
+begin
+  FModel.Observable.UnSubscribe(FObserver);
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelCashIn: IViewModelCashIn;
+begin
+  Result := TViewModelCashIn.Create;
+end;
+
+end.

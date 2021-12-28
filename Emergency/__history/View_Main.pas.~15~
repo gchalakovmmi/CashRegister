@@ -1,0 +1,323 @@
+unit View_Main;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  Vcl.StdCtrls,
+  Vcl.OleServer,
+	FP3530_TLB;
+
+const
+	caption_None                                   = '.....';
+	Hex_Digits                                     = 16;
+	Hex_Digit: array [0 .. Hex_Digits - 1] of Char = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+	en_Message_NoDriver                            = 'The program can not detect the driver. ' + sLineBreak + 'Please install "FP3530 - COMServer" or call the support team! ';
+
+type
+	TAfterCase = (             //
+	  ac_AfterStart_Program,   // After start of the program
+	  ac_AfterStart_Server,    //
+	  ac_AfterOpenConnection,  // After open connection to the device
+	  ac_AfterCloseConnection, // After close connection to the device
+	  ac_AfterStopServer,      //
+	  ac_AfterSettingsChange   // After changes from other client application
+	  );
+
+	TOldValues = record
+		Active_OnAfterCloseConnection: Boolean;
+		Active_OnAfterOpenConnection: Boolean;
+		Active_OnAfterSettingsChange: Boolean;
+		RegisterActiveObject: Boolean;
+		Save_Settings_AfterOpenConnection: Boolean;
+	end;
+
+  TViewMain = class(TForm)
+    fd: TCFD_BGR;
+    ButtonStartCOMServer: TButton;
+    ButtonOpenConnection: TButton;
+    ButtonGetCash: TButton;
+    ButtonCashIn: TButton;
+    ButtonCashOut: TButton;
+    ButtonCloseConnection: TButton;
+    ButtonStopCOMServer: TButton;
+    procedure ButtonStartCOMServerClick(Sender: TObject);
+    procedure ButtonOpenConnectionClick(Sender: TObject);
+    procedure ButtonGetCashClick(Sender: TObject);
+    procedure ButtonCashInClick(Sender: TObject);
+    procedure ButtonCashOutClick(Sender: TObject);
+    procedure ButtonCloseConnectionClick(Sender: TObject);
+    procedure ButtonStopCOMServerClick(Sender: TObject);
+  private
+//		fWeHaveWaitEvent  : Boolean;
+//		fSYNCount         : Byte;
+//		fAppMessCount     : Byte;
+//		fTransportProtocol: TTransportProtocol;
+//		fComPort          : Integer;
+//		fBaudRate         : Integer;
+//		fLastError_Code   : Integer;
+//		fLastError_Message: WideString;
+//		fOldDudeInstance  : Variant;
+		fAfterCase        : TAfterCase;
+		fMyAfterCaseFlag  : Boolean;
+		fCanRefreshValues : Boolean;
+//		fErrorCode        : WideString;
+    function TryToStartCOMServer: Boolean;
+    procedure SetAfterCase(const Value: TAfterCase);
+    function SetTransportProtocol: Integer;
+  public
+		error_Code: Integer;
+		property afterCase: TAfterCase read fAfterCase write SetAfterCase;
+  end;
+
+var
+  ViewMain: TViewMain;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Model_FP700X;
+
+function TViewMain.TryToStartCOMServer: Boolean;
+begin
+	try
+		fd.RemoteMachineName := '';
+		fd.Connect;
+		Result := True;
+	except
+		Result := False;
+	end;
+end;
+
+procedure TViewMain.SetAfterCase(const Value: TAfterCase);
+begin
+	fCanRefreshValues := False;
+
+	fAfterCase := Value;
+
+//	set_Other(Value);
+//	set_CheckBoxes(Value);
+//	set_LabelValues(Value);
+//	set_EditBoxes(Value);
+//	set_ComboBoxValues(Value);
+//	set_TabVisibility(Value);
+//	set_Buttons(Value);
+end;
+
+function TViewMain.SetTransportProtocol: Integer;
+begin
+	Result := -1;
+	fMyAfterCaseFlag := True;
+	try
+		try
+      Result := fd.set_TransportType(ctc_RS232);
+      if Result <> 0 then Exit;
+
+      Result := fd.set_RS232(3, 111500);
+      if Result <> 0 then Exit;
+			Result := 0;
+		except
+			On E: Exception do ShowMessage(E.Message);
+		end;
+	finally
+		fMyAfterCaseFlag := False;
+		afterCase := ac_AfterSettingsChange;
+	end;
+end;
+
+
+procedure TViewMain.ButtonStartCOMServerClick(Sender: TObject);
+begin
+	ButtonStartCOMServer.Enabled := False;
+	if not TryToStartCOMServer then
+	begin
+		ShowMessage(en_Message_NoDriver);
+		ButtonStartCOMServer.Enabled := True;
+		Exit;
+	end;
+	try
+		try
+			afterCase := ac_AfterStart_Server;
+		except
+			On E: Exception do ShowMessage(E.Message);
+		end;
+	finally
+		if fd.connected_ToDevice then afterCase := ac_AfterOpenConnection;
+	end;
+end;
+
+procedure TViewMain.ButtonOpenConnectionClick(Sender: TObject);
+begin
+	error_Code := 0;
+	ButtonOpenConnection.Enabled := False;
+	try
+		if not fd.connected_ToDevice then begin
+			error_Code := SetTransportProtocol;
+			if error_Code <> 0 then Exit;
+
+			error_Code := fd.open_Connection;
+			if error_Code <> 0 then Exit;
+		end;
+		// show_DeviceModel;
+	finally
+		if error_Code <> 0 then begin
+			ShowMessage(fd.lastError_Message);
+			ButtonOpenConnection.Enabled := True;
+		end else begin
+			if fd.connected_ToDevice then begin
+				if not fd.Active_OnAfterOpenConnection then begin
+          afterCase := ac_AfterOpenConnection;
+        end;
+      end;
+		end;
+		Self.Update;
+	end;
+end;
+
+procedure TViewMain.ButtonGetCashClick(Sender: TObject);
+var
+	tmp       : WideString;
+	ErrorCode : WideString; //
+	CashSum   : WideString; //
+	ServIn    : WideString; //
+	ServOut   : WideString; //
+	AmountType: WideString; //
+	Amount    : WideString; //
+begin
+	ButtonGetCash.Enabled := False;
+	try
+    AmountType := '0';                                     //
+    Amount := '0';                                         // If Amount=0,the only Answer is returned, and receipt does not print.
+    if
+      Model_FP700X.execute_070_info_Get_CashIn_CashOut( //
+      fd,                                                  //
+      AmountType,                                          //
+      Amount,                                              //
+      ErrorCode,                                           //
+      CashSum,                                             //
+      ServIn,                                              //
+      ServOut) <> 0
+    then begin
+      ShowMessage(fd.get_ErrorMessageByCode(StrToInt(ErrorCode)))
+    end else begin
+      tmp := 'ErrorCode: ' + ErrorCode + sLineBreak;
+      tmp := tmp + 'CashSum: ' + CashSum + sLineBreak;
+      tmp := tmp + 'ServIn: ' + ServIn + sLineBreak;
+      tmp := tmp + 'ServOut: ' + ServOut + sLineBreak;
+      ShowMessage(tmp);
+    end;
+	finally
+		ButtonGetCash.Enabled := True;
+	end;
+end;
+
+procedure TViewMain.ButtonCashInClick(Sender: TObject);
+var
+	tmp       : string;
+	ErrorCode : WideString; //
+	CashSum   : WideString; //
+	ServIn    : WideString; //
+	ServOut   : WideString; //
+	AmountType: WideString; //
+	Amount    : WideString; //
+begin
+	ButtonCashIn.Enabled := False;
+	try
+    AmountType := '0'; //
+    Amount := '0.01';
+    if
+      Model_FP700X.execute_070_receipt_CashIn_CashOut( //
+      fd,                                              //
+      AmountType,                                      //
+      Amount,                                          //
+      ErrorCode,                                       //
+      CashSum,                                         //
+      ServIn,                                          //
+      ServOut) <> 0
+    then begin
+      ShowMessage(fd.get_ErrorMessageByCode(StrToInt(ErrorCode)))
+    end else begin
+      tmp := 'ErrorCode: ' + ErrorCode + sLineBreak;
+      tmp := tmp + 'CashSum: ' + CashSum + sLineBreak;
+      tmp := tmp + 'ServIn: ' + ServIn + sLineBreak;
+      tmp := tmp + 'ServOut: ' + ServOut + sLineBreak;
+      ShowMessage(tmp);
+    end;
+	finally
+		ButtonCashIn.Enabled := True;
+	end;
+end;
+
+procedure TViewMain.ButtonCashOutClick(Sender: TObject);
+var
+	tmp       : string;
+	ErrorCode : WideString; //
+	CashSum   : WideString; //
+	ServIn    : WideString; //
+	ServOut   : WideString; //
+	AmountType: WideString; //
+	Amount    : WideString; //
+begin
+	ButtonCashOut.Enabled := False;
+	try
+    AmountType := '1'; //
+    Amount := '0.01';
+    if
+      Model_FP700X.execute_070_receipt_CashIn_CashOut( //
+      fd,                                              //
+      AmountType,                                      //
+      Amount,                                          //
+      ErrorCode,                                       //
+      CashSum,                                         //
+      ServIn,                                          //
+      ServOut) <> 0
+    then begin
+      ShowMessage(fd.get_ErrorMessageByCode(StrToInt(ErrorCode)))
+    end else begin
+      tmp := 'ErrorCode: ' + ErrorCode + sLineBreak;
+      tmp := tmp + 'CashSum: ' + CashSum + sLineBreak;
+      tmp := tmp + 'ServIn: ' + ServIn + sLineBreak;
+      tmp := tmp + 'ServOut: ' + ServOut + sLineBreak;
+      ShowMessage(tmp);
+    end;
+	finally
+		ButtonCashOut.Enabled := True;
+	end;
+end;
+
+procedure TViewMain.ButtonCloseConnectionClick(Sender: TObject);
+begin
+	error_Code := fd.close_Connection;
+	if error_Code <> 0 then begin
+    ShowMessage(fd.lastError_Message);
+  end;
+	if not fd.Active_OnAfterCloseConnection then begin
+    afterCase := ac_AfterCloseConnection;
+  end;
+end;
+
+procedure TViewMain.ButtonStopCOMServerClick(Sender: TObject);
+begin
+	ButtonStopCOMServer.Enabled := False;
+	try
+		try
+			fd.Disconnect;
+		except
+			ButtonStopCOMServer.Enabled := True;
+		end;
+	finally
+		afterCase := ac_AfterStopServer;
+	end;
+end;
+
+end.

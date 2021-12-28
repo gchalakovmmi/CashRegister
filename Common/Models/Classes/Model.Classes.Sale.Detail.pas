@@ -320,7 +320,7 @@ begin
 
   Result.ParentGID := ASaleGID;
   Result.SaleUniqueID := ASaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := ASaleCreatedDate;
   Result.CreatedTime := ASaleCreatedTime;
 
@@ -913,7 +913,7 @@ begin
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleDetailGID').ToString;
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := CreatedDate;
   Result.CreatedTime := CreatedTime;
   Result.SaleDate := FormatDateTime('dd-mm-yy', Date);
@@ -958,7 +958,7 @@ begin
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleCancellationGID').ToString;
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := CreatedDate;
   Result.CreatedTime := CreatedTime;
   Result.CancellationDate := FormatDateTime('dd-mm-yy', Date);
@@ -991,7 +991,7 @@ begin
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
   Result.FiscalDeviceID := '';
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CompletedDate := '';
   Result.CompletedTime := '';
   Result.ReversalDate := FormatDateTime('dd-mm-yy', Date);

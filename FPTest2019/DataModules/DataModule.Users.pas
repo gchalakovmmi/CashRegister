@@ -92,12 +92,16 @@ begin
     q.SQL.Add('ORDER BY ID');
     q.Open;
     if q.RecordCount > 0 then begin
-      G.UserGID := q.FieldByName('GID').AsInteger;
-      G.UserName := q.FieldByName('NAME').AsString;
+//      G.UserID := q.FieldByName('ID').AsInteger;
+//      G.UserName := q.FieldByName('NAME').AsString;
+      G.UserGID := q.FieldByName('NAME').AsString.Split(['.'])[0].ToInteger;
+      G.UserID := q.FieldByName('ID').AsInteger;
+      G.UserName := q.FieldByName('NAME').AsString.Split(['.'])[1];
       G.IsLoggedUser := True;
     end;
     if not G.IsLoggedUser and (APassword = '9999') then begin
       G.UserGID := 28;
+      G.UserID := 28;
       G.UserName := ' ¿—»≈–';
       G.IsLoggedUser := True;
     end;

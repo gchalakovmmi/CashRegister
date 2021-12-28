@@ -1,0 +1,31 @@
+unit Interfaces.ViewModel.CashIn;
+
+interface
+
+uses
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.GUIRecords,
+  Interfaces.Model.CashIn;
+
+type
+  IViewModelCashIn = interface
+  ['{1929225C-798B-42DE-A754-B4ACE79A2A0D}']
+    function GetObserver: IObserver;
+    property Observer: IObserver read GetObserver;
+
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelCashIn;
+    procedure SetModel(const Value: IModelCashIn);
+    property Model: IModelCashIn read GetModel write SetModel;
+
+    function GetGUIRecord: TViewCashInGUIRecord;
+
+    procedure CashCheck;
+    procedure CashIn;
+  end;
+
+implementation
+
+end.

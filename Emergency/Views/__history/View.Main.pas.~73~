@@ -1,0 +1,254 @@
+unit View.Main;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  Vcl.StdCtrls,
+  Vcl.OleServer,
+  Vcl.ComCtrls,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.GUIRecords,
+  Interfaces.ViewModel.Main,
+  Interfaces.View.Main,
+  Vcl.ExtCtrls,
+  ButtonWithColor;
+
+type
+  TViewMain = class(TForm, IViewModelMain, IObserver)
+    ButtonSale: TBitBtnWithColor;
+    ButtonLogin: TBitBtnWithColor;
+    ButtonCashIn: TBitBtnWithColor;
+    ButtonCashOut: TBitBtnWithColor;
+    ButtonReversal: TBitBtnWithColor;
+    ButtonAdmin: TBitBtnWithColor;
+    ButtonXReport: TBitBtnWithColor;
+    ButtonPReport: TBitBtnWithColor;
+    ButtonZReport: TBitBtnWithColor;
+    ButtonItemCheck: TBitBtnWithColor;
+    ButtonAudit: TBitBtnWithColor;
+
+    StatusBar: TStatusBar;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure ButtonSaleClick(Sender: TObject);
+    procedure ButtonLoginClick(Sender: TObject);
+    procedure ButtonCashInClick(Sender: TObject);
+    procedure ButtonCashOutClick(Sender: TObject);
+    procedure ButtonReversalClick(Sender: TObject);
+    procedure ButtonAdminClick(Sender: TObject);
+
+    procedure ButtonSelectPrinterClick(Sender: TObject);
+    procedure ButtonXReportClick(Sender: TObject);
+    procedure ButtonPReportClick(Sender: TObject);
+    procedure ButtonZReportClick(Sender: TObject);
+    procedure ButtonItemCheckClick(Sender: TObject);
+    procedure ButtonAuditClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FViewModel: IViewModelMain;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property Observer: IObserver read FObserver implements IObserver;
+    property ViewModel: IViewModelMain read FViewModel implements IViewModelMain;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+var
+  ViewMain: TViewMain;
+
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Globals,
+  Interfaces.Enums,
+
+  Interfaces.ViewModel.Login,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Main;
+
+{$REGION 'Published Methods'}
+
+procedure TViewMain.FormCreate(Sender: TObject);
+begin
+  G := TGlobal.Create;
+
+  Initialize;
+
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FViewModel := CreateViewModelMain;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+
+  ViewModel.Login;
+end;
+
+procedure TViewMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  G.Free;
+  Action := caFree;
+end;
+
+procedure TViewMain.ButtonSaleClick(Sender: TObject);
+begin
+  ViewModel.Sale;
+end;
+
+procedure TViewMain.ButtonLoginClick(Sender: TObject);
+begin
+  ViewModel.Login;
+end;
+
+procedure TViewMain.ButtonCashInClick(Sender: TObject);
+begin
+  ViewModel.CashIn;
+end;
+
+procedure TViewMain.ButtonCashOutClick(Sender: TObject);
+begin
+  ViewModel.CashOut;
+end;
+
+procedure TViewMain.ButtonReversalClick(Sender: TObject);
+begin
+  ViewModel.Reversal;
+end;
+
+procedure TViewMain.ButtonAdminClick(Sender: TObject);
+begin
+  ViewModel.Admin;
+end;
+
+
+procedure TViewMain.ButtonSelectPrinterClick(Sender: TObject);
+begin
+  ViewModel.SelectPrinter;
+end;
+
+procedure TViewMain.ButtonXReportClick(Sender: TObject);
+begin
+  ViewModel.XReport;
+end;
+
+procedure TViewMain.ButtonPReportClick(Sender: TObject);
+begin
+  ViewModel.PReport;
+end;
+
+procedure TViewMain.ButtonZReportClick(Sender: TObject);
+begin
+  ViewModel.ZReport;
+end;
+
+procedure TViewMain.ButtonItemCheckClick(Sender: TObject);
+begin
+  ViewModel.CheckItem;
+end;
+
+procedure TViewMain.ButtonAuditClick(Sender: TObject);
+begin
+  ViewModel.Audit;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewMain.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actCheckItem in AModelNotification.Actions then begin
+    ViewModel.CheckItem;
+    ViewModel.Sale;
+  end;
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+end;
+
+procedure TViewMain.UpdateGUI;
+var
+  LGUIRecord: TViewMainGUIRecord;
+begin
+  LGUIRecord := ViewModel.GetGUIRecord;
+
+  Caption := LGUIRecord.Caption;
+  StatusBar.Panels[0].Text := LGUIRecord.StoreName;
+  StatusBar.Panels[1].Text := LGUIRecord.WorkstationName;
+  StatusBar.Panels[2].Text := LGUIRecord.UserName;
+  StatusBar.Panels[3].Text := LGUIRecord.Time;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

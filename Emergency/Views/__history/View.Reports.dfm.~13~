@@ -1,0 +1,83 @@
+object ViewReports: TViewReports
+  Left = 276
+  Top = 110
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  BorderWidth = 1
+  Caption = #1054#1058#1063#1045#1058' '#1047#1040' '#1055#1045#1056#1048#1054#1044
+  ClientHeight = 427
+  ClientWidth = 368
+  Color = 16764354
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 25
+  object LabelPeriodFinish: TLabel
+    Left = 10
+    Top = 81
+    Width = 217
+    Height = 25
+    Caption = #1050#1056#1040#1049' '#1053#1040' '#1055#1045#1056#1048#1054#1044#1040':'
+  end
+  object LabelPeriodStart: TLabel
+    Left = 9
+    Top = 9
+    Width = 250
+    Height = 25
+    Caption = #1053#1040#1063#1040#1051#1054' '#1053#1040' '#1055#1045#1056#1048#1054#1044#1040':'
+  end
+  object DatePickerPeriodFinish: TDatePicker
+    Left = 9
+    Top = 112
+    Width = 351
+    Color = 16764354
+    Date = 43654.000000000000000000
+    DateFormat = 'd/M/yyyy'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    TabOrder = 0
+  end
+  object DatePickerPeriodStart: TDatePicker
+    Left = 8
+    Top = 40
+    Width = 352
+    Color = 16764354
+    Date = 43654.000000000000000000
+    DateFormat = 'd/M/yyyy'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    TabOrder = 1
+  end
+  object ButtonPeriodReportDetailed: TButton
+    Left = 8
+    Top = 299
+    Width = 352
+    Height = 120
+    Caption = #1055#1054#1044#1056#1054#1041#1045#1053' '#1054#1058#1063#1045#1058' '#1047#1040' '#1055#1045#1056#1048#1054#1044
+    TabOrder = 2
+    OnClick = ButtonPeriodReportDetailedClick
+  end
+  object ButtonPeriodReportShort: TBitBtnWithColor
+    Left = 8
+    Top = 162
+    Width = 345
+    Height = 120
+    Caption = #1050#1056#1040#1058#1066#1050' '#1054#1058#1063#1045#1058' '#1047#1040' '#1055#1045#1056#1048#1054#1044
+    TabOrder = 3
+    OnClick = ButtonPeriodReportShortClick
+    Color = 16764354
+  end
+end

@@ -1,0 +1,128 @@
+unit Model.CashInOut;
+
+interface
+
+uses
+  Interfaces.Model.CashInOut;
+
+  function CreateModelCashInOut: IModelCashInOut;
+
+implementation
+
+uses
+  Device.FP700X,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Notification;
+
+type
+  TModelCashInOut = class(TInterfacedObject, IModelCashInOut)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FCash: Double;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetCash: Double;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+
+		property Cash: Double read GetCash;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure CashCheck;
+    procedure CashIn;
+    procedure CashOut;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelCashInOut: IModelCashInOut;
+begin
+  Result := TModelCashInOut.Create;
+end;
+
+{ TModelCashInOut }
+
+{$REGION 'Private Methods'}
+
+procedure TModelCashInOut.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelCashInOut.GetCash: Double;
+begin
+  Result := FCash;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,3315 @@
+unit uMainForm;
+
+interface
+
+uses
+	Windows,
+	Messages,
+	SysUtils,
+	Variants,
+	Classes,
+	Graphics,
+	Controls,
+	Forms,
+	Dialogs,
+	ComCtrls,
+	FP3530_TLB,
+	StdCtrls,
+	Buttons,
+	ExtCtrls,
+	AppEvnts,
+	DateUtils;
+
+const
+	cNewLine   = #13#10;
+	MY_CAPTION = 'COM Server - Example';
+
+type
+	TDatecsFDevice = (    //
+		dt_Unknown,      //
+		dt_DP500PLUS_KL, //
+		dt_DP55_KL,      //
+		dt_MP55_KL,      //
+		dt_DP_50_KL,     //
+		dt_FP_1000_KL,   //
+		dt_FP_550_KL,    //
+		dt_FMP10_KL,     //
+		dt_FP60_KL,      //
+		dt_FP1000_DV,    //
+		dt_FP300_DV,     //
+		dt_FP550_DV,     //
+		dt_FP60_DV,      //
+		dt_FP2000_KL,    //
+		dt_FP_550D_KL,   //
+		dt_SK_31F_KL,    //
+		dt_FP_750_KL,    //
+		dt_WP500_KL      //
+		);
+
+	TfmMainForm = class(TForm)
+		PageControl1: TPageControl;
+		tsInit: TTabSheet;
+		ts_DEVICE_STATUS: TTabSheet;
+		btn_INIT_EX1: TButton;
+		lb_COMPORT: TLabel;
+		lb_Baudrate: TLabel;
+		cbx_Baudrate: TComboBox;
+		cbx_COMPORT: TComboBox;
+		GroupBox13: TGroupBox;
+		chbx_S0_7: TCheckBox;
+		chbx_S0_6: TCheckBox;
+		chbx_S0_5: TCheckBox;
+		chbx_S0_4: TCheckBox;
+		chbx_S0_3: TCheckBox;
+		chbx_S0_2: TCheckBox;
+		chbx_S0_1: TCheckBox;
+		chbx_S0_0: TCheckBox;
+		GroupBox15: TGroupBox;
+		chbx_S3_7: TCheckBox;
+		chbx_S3_6: TCheckBox;
+		chbx_S3_5: TCheckBox;
+		chbx_S3_4: TCheckBox;
+		chbx_S3_3: TCheckBox;
+		chbx_S3_2: TCheckBox;
+		chbx_S3_1: TCheckBox;
+		chbx_S3_0: TCheckBox;
+		GroupBox21: TGroupBox;
+		chbx_S1_7: TCheckBox;
+		chbx_S1_6: TCheckBox;
+		chbx_S1_5: TCheckBox;
+		chbx_S1_4: TCheckBox;
+		chbx_S1_3: TCheckBox;
+		chbx_S1_2: TCheckBox;
+		chbx_S1_1: TCheckBox;
+		chbx_S1_0: TCheckBox;
+		GroupBox22: TGroupBox;
+		chbx_S4_7: TCheckBox;
+		chbx_S4_6: TCheckBox;
+		chbx_S4_5: TCheckBox;
+		chbx_S4_4: TCheckBox;
+		chbx_S4_3: TCheckBox;
+		chbx_S4_2: TCheckBox;
+		chbx_S4_1: TCheckBox;
+		chbx_S4_0: TCheckBox;
+		GroupBox23: TGroupBox;
+		chbx_S2_7: TCheckBox;
+		chbx_S2_6: TCheckBox;
+		chbx_S2_5: TCheckBox;
+		chbx_S2_4: TCheckBox;
+		chbx_S2_3: TCheckBox;
+		chbx_S2_2: TCheckBox;
+		chbx_S2_1: TCheckBox;
+		chbx_S2_0: TCheckBox;
+		GroupBox24: TGroupBox;
+		chbx_S5_7: TCheckBox;
+		chbx_S5_6: TCheckBox;
+		chbx_S5_5: TCheckBox;
+		chbx_S5_4: TCheckBox;
+		chbx_S5_3: TCheckBox;
+		chbx_S5_2: TCheckBox;
+		chbx_S5_1: TCheckBox;
+		chbx_S5_0: TCheckBox;
+		cbx_TRGT_METHOD: TComboBox;
+		btn_EXECUTE_THIS: TBitBtn;
+		Label1: TLabel;
+		Panel1: TPanel;
+		mem_LOG: TMemo;
+		ApplicationEvents1: TApplicationEvents;
+		Label2: TLabel;
+		cbx_PrinterModel: TComboBox;
+		lb_IPADDR: TLabel;
+		ed_IPADDR: TEdit;
+		lb_PORT: TLabel;
+		ed_PORT: TEdit;
+		ts_KLEN: TTabSheet;
+		cbx_KLENCommands: TComboBox;
+		btn_KLENSUPPORT: TBitBtn;
+		mem_KLEN: TMemo;
+		lb_KLEN_D1: TLabel;
+		ed_KLEN_D1: TEdit;
+		lb_KLEN_D2: TLabel;
+		ed_KLEN_D2: TEdit;
+		lb_KLEN_dtD1: TLabel;
+		dtp_KLEN_D1_Date: TDateTimePicker;
+		dtp_KLEN_D1_Time: TDateTimePicker;
+		lb_KLEN_dtD2: TLabel;
+		dtp_KLEN_D2_Date: TDateTimePicker;
+		dtp_KLEN_D2_Time: TDateTimePicker;
+		lb_KLEN_DocumentType: TLabel;
+		cbx_KLEN_DocumentType: TComboBox;
+		procedure btn_INIT_EX1Click(Sender: TObject);
+		procedure FormCreate(Sender: TObject);
+		procedure btn_EXECUTE_THISClick(Sender: TObject);
+		procedure ApplicationEvents1SettingChange(Sender: TObject; Flag: Integer; const Section: String; var Result: Integer);
+		procedure cbx_PrinterModelChange(Sender: TObject);
+		procedure btn_KLENSUPPORTClick(Sender: TObject);
+	private
+		TRANSTAT_MSG            : String;
+		FBON_OPENED, SBON_OPENED: Boolean;
+		CURRENT_TENDER          : WideString;
+		LAST_AMOUNT             : WideString;
+		CURRENT_SALESCOUNT      : WideString;
+
+		function GET_COM_EX: TStringList;
+		function CALC_COMNUM: Integer;
+		function GetParam(src: WideString; INDX: Byte; MySep: Char = ';'): WideString;
+
+		procedure SHOW_MYINFO(TRGT_MESSAGE: String);
+		procedure SHOW_MYALERT(TRGT_MESSAGE: String);
+		function SHOW_MYQUESTION(TRGT_QUESTION: string): Integer;
+
+		procedure ADD_LOG(TRGT_LOG: String);
+		function GET_MY_DEVICE: TDatecsFDevice;
+
+		// SAMPLES -BEGIN
+
+		// ERROR HANDLING
+		procedure ERROR_HANDLING;
+		function CHECK_AND_RESOLVE: Boolean;
+		function CAN_OPEN: Boolean;
+		function EMERGENSY_SITUATION: Boolean;
+		function FEMERGENSY_SITUATION: Boolean;
+		function SEMERGENSY_SITUATION: Boolean;
+		function CHECK_ASSIGNED: Boolean;
+		function CALC_ERROR(TRGT_ERRCODE: Integer): String;
+
+		// STATUS OF THE FISCAL DEVICE
+		procedure CALC_SWITCHES;
+		function REFRESH_SWITCHES: Boolean;
+		procedure INIT_SWITCHES_EX(TRGT_LANG: Integer);
+
+		// FISCAL TRANSACTIONS
+		function OPEN_FISCAL_BON: Boolean;
+		function SELL_SOMETHING: Boolean;
+		function SELL_CMD_49(MAJOR_VERS, MINOR_VERS: Integer; MY_PARAMS: WideString): Boolean;
+		function CMD_49_0(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_1(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_2(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_3(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_4(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_5(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+		function CMD_49_5_0: Boolean;
+
+		function PRINT_DELIMITER: Boolean;
+		function MAKE_SUBTOTAL(TRGT_PERCENT: Real): Boolean;
+		function MAKE_TOTAL: Boolean;
+		function GET_LAST_DOCNUM: Boolean;
+		function CLOSE_FISCAL_BON: Boolean;
+		function PRINT_FISCAL_TEXT(TRGT_TEXT: WideString): Boolean;
+		function MAKE_FISCAL_TRANSACTION: Boolean;
+		function CMD_70_0_0(Amount: WideString): Integer;
+		function CMD_88_0_0: Boolean;
+
+		function CMD_71_0_0: Boolean;
+		function CMD_119_0_0: Boolean;
+		function CMD_119_20_30: Boolean;
+		function CMD_119_23_30: Boolean;
+
+		// NONFISCAL TRANSACTIONS
+		function OPEN_NONFISCAL: Boolean;
+		function PRINT_NONFISCAL_TEXT(TRGT_TEXT: WideString): Boolean;
+		function CLOSE_NONFISCAL_BON: Boolean;
+		function MAKE_NONFISCAL_TRANSACTION: Boolean;
+
+		// REPORTS
+		function ZX_REPORT(TRGT_OPTION: WideString): Boolean;
+		function ZXDEP_REPORT(TRGT_OPTION: WideString): Boolean;
+
+		// SAMPLES - END
+	public
+		ErrorCode   : Integer;
+		tmp_WAnswer1: WideString;
+		tmp_WAnswer2: WideString;
+		tmp_WAnswer3: WideString;
+		tmp_WAnswer4: WideString;
+		tmp_WAnswer5: WideString;
+		out_Subtotal: WideString;
+		tax1_Sum    : WideString;
+		tax2_Sum    : WideString;
+		tax3_Sum    : WideString;
+		tax4_Sum    : WideString;
+		tax5_Sum    : WideString;
+		tax6_Sum    : WideString;
+		tax7_Sum    : WideString;
+		tax8_Sum    : WideString;
+
+		tmp_IAnswer1: Integer;
+		tmp_IAnswer2: Integer;
+		tmp_IAnswer3: Integer;
+		tmp_IAnswer4: Integer;
+		tmp_IAnswer5: Integer;
+
+		MyFiscDevice: TDatecsFDevice;
+		// ...
+		FPDP55_KL: ICS_BGR_DP55_KL;
+		FP2000_KL: ICS_BGR_FP2000_KL;
+		FP60_KL  : ICS_BGR_FP60_KL;
+		FP550_KL : ICS_BGR_FP550_KL;
+		FP550D_KL: ICS_BGR_FP550_D_KL;
+		SK_31F_KL: ICS_BGR_SK1_31F_KL;
+		FP1000_KL: ICS_BGR_FP1000_KL;
+		FMP10_KL : ICS_BGR_FMP10_KL;
+		// ...
+		FP_705_KL: ICS_BGR_FP705_KL;
+		WP_500_KL: ICS_BGR_WP500_KL;
+	end;
+
+var
+	fmMainForm: TfmMainForm;
+
+	tmp_Bol: Boolean;
+	tmp_Str: string;
+	tmp_Int: Integer;
+	tmp_Ext: Extended;
+
+	S0, S1, S2, S3, S4, S5: WideString;
+
+implementation
+
+{$R *.dfm}
+
+function TfmMainForm.GetParam(src: WideString; INDX: Byte; MySep: Char): WideString;
+var
+	i, ParEnd: Byte;
+	tmpS     : WideString;
+begin
+	tmpS := src;
+	for i := 0 to INDX - 1 do
+	begin
+		ParEnd := pos(MySep, tmpS);
+		if ParEnd = 0 then
+		begin
+			Result := '';
+			Exit;
+		end;
+		Result := Copy(tmpS, 1, ParEnd - 1);
+		Delete(tmpS, 1, ParEnd);
+	end;
+end;
+
+function TfmMainForm.SHOW_MYQUESTION(TRGT_QUESTION: string): Integer;
+begin
+	Result := MessageBox(fmMainForm.Handle, PChar(TRGT_QUESTION), PChar(MY_CAPTION), $124);
+	ADD_LOG(tmp_Str);
+end;
+
+procedure TfmMainForm.SHOW_MYALERT(TRGT_MESSAGE: string);
+begin
+	MessageBox(fmMainForm.Handle, PChar(TRGT_MESSAGE), PChar(MY_CAPTION), $30);
+	ADD_LOG(tmp_Str);
+end;
+
+procedure TfmMainForm.SHOW_MYINFO(TRGT_MESSAGE: String);
+begin
+	MessageBox(fmMainForm.Handle, PChar(TRGT_MESSAGE), PChar(MY_CAPTION), $40);
+	ADD_LOG(tmp_Str);
+end;
+
+function TfmMainForm.GET_MY_DEVICE: TDatecsFDevice;
+begin
+	Result := dt_Unknown;
+	try
+		// GET FROM YOUR PROGRAM SETTINGS the type of used device
+		// from registry or ini files or ...
+		case cbx_PrinterModel.ItemIndex of
+			0: Result := dt_DP55_KL; // for example
+			1: Result := dt_FP2000_KL;
+			2: Result := dt_FP2000_KL;
+			3: Result := dt_FP60_KL;
+			4: Result := dt_FP_550_KL;
+			5: Result := dt_FP_550D_KL;
+			6: Result := dt_SK_31F_KL; // SK-31F KL
+			7: Result := dt_FP_1000_KL;
+			8: Result := dt_FMP10_KL; // FMP-10 KL
+			9: Result := dt_FP_750_KL;
+			10: Result := dt_WP500_KL;
+		end;
+	except
+		Result := dt_Unknown;
+	end;
+end;
+
+procedure TfmMainForm.btn_INIT_EX1Click(Sender: TObject);
+
+	function INITIALISATION_OF_DEVICE_SITUATION: Boolean;
+	var
+		NewInstanceCreated: Boolean;
+	begin
+		NewInstanceCreated := False;
+		try
+			MyFiscDevice := GET_MY_DEVICE;
+			case MyFiscDevice of
+				dt_DP500PLUS_KL, dt_DP55_KL, dt_MP55_KL, dt_DP_50_KL:
+					begin
+						// CREATE INSTANCE OF ICS_BGR_DP55_KL
+
+						// written on Delphi this is something like:
+						if FPDP55_KL <> nil then FPDP55_KL := nil;
+						FPDP55_KL := CoCS_BGR_DP55_KL.Create;
+						FPDP55_KL.INIT_Ex1(CALC_COMNUM, StrToInt(cbx_Baudrate.Text));
+						NewInstanceCreated := (FPDP55_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_DP55_KL"';
+						end;
+					end;
+				dt_FP_1000_KL:
+					begin
+						// CREATE INSTANCE OF ICS_BGR_FP1000_KL
+
+						// written on Delphi this is something like:
+						if FP1000_KL <> nil then FP1000_KL := nil;
+						FP1000_KL := CoCS_BGR_FP1000_KL.Create;
+						FP1000_KL.INIT_EX3(               //
+							CALC_COMNUM,                 // :
+							StrToInt(cbx_Baudrate.Text), // :
+							3000,                        // :ReadIntervalTimeout
+							0,                           // :ReadTotalTimeoutMultiplier
+							3200,                        // :ReadTotalTimeoutConstant
+							3000,                        // :WriteTotalTimeoutMultiplier
+							3000,                        // :WriteTotalTimeoutConstant
+							8,                           // : REPEAT_COUNT
+							False,                       // :MoreInstances
+							False,                       // :WithInputCheck
+							True,                        // :WithOutpCheck
+							True,                        // :AlwaysGetOutput
+							True                         // :AutoCutText
+							);
+						NewInstanceCreated := (FP1000_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP550_KL"';
+						end;
+					end;
+				dt_FP_550_KL:
+					begin
+						// CREATE INSTANCE OF ICS_BGR_FP550_KL
+
+						// written on Delphi this is something like:
+						if FP550_KL <> nil then FP550_KL := nil;
+						FP550_KL := CoCS_BGR_FP550_KL.Create;
+						FP550_KL.INIT_EX3(                //
+							CALC_COMNUM,                 // :
+							StrToInt(cbx_Baudrate.Text), // :
+							3000,                        // :ReadIntervalTimeout
+							0,                           // :ReadTotalTimeoutMultiplier
+							3200,                        // :ReadTotalTimeoutConstant
+							3000,                        // :WriteTotalTimeoutMultiplier
+							3000,                        // :WriteTotalTimeoutConstant
+							8,                           // : REPEAT_COUNT
+							False,                       // :MoreInstances
+							False,                       // :WithInputCheck
+							True,                        // :WithOutpCheck
+							True,                        // :AlwaysGetOutput
+							True                         // :AutoCutText
+							);
+						NewInstanceCreated := (FP550_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP550_KL"';
+						end;
+					end;
+				dt_FMP10_KL:
+					begin
+						// CREATE INSTANCE OF ICS_BGR_FMP10_KL
+						if FMP10_KL <> nil then FMP10_KL := nil;
+						FMP10_KL := CoCS_BGR_FMP10_KL.Create;
+						FMP10_KL.INIT_Ex1(CALC_COMNUM, StrToInt(cbx_Baudrate.Text));
+						// CALC_COMNUM, // :
+						// StrToInt(cbx_Baudrate.Text), // :
+						// 3000,  // :ReadIntervalTimeout
+						// 0,     // :ReadTotalTimeoutMultiplier
+						// 3200,  // :ReadTotalTimeoutConstant
+						// 3000,  // :WriteTotalTimeoutMultiplier
+						// 3000,  // :WriteTotalTimeoutConstant
+						// 8,     // : REPEAT_COUNT
+						// false, // :MoreInstances
+						// false, // :WithInputCheck
+						// True,  // :WithOutpCheck
+						// True,  // :AlwaysGetOutput
+						// True   // :AutoCutText
+						// );
+						NewInstanceCreated := (FMP10_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FMP10_KL"';
+						end;
+					end;
+				dt_FP1000_DV, dt_FP300_DV, dt_FP550_DV, dt_FP60_DV:
+					begin
+						// CREATE INSTANCE OF ICSFP3530
+					end;
+				dt_FP60_KL:
+					begin
+						// CREATE INSTANCE OF ICS...
+
+						// written on Delphi this is something like:
+						if FP60_KL <> nil then FP60_KL := nil;
+						FP60_KL := CoCS_BGR_FP60_KL.Create;
+						FP60_KL.INIT_EX3(                 //
+							CALC_COMNUM,                 // :
+							StrToInt(cbx_Baudrate.Text), // :
+							3000,                        // :ReadIntervalTimeout
+							0,                           // :ReadTotalTimeoutMultiplier
+							3200,                        // :ReadTotalTimeoutConstant
+							3000,                        // :WriteTotalTimeoutMultiplier
+							3000,                        // :WriteTotalTimeoutConstant
+							8,                           // : REPEAT_COUNT
+							False,                       // :MoreInstances
+							False,                       // :WithInputCheck
+							True,                        // :WithOutpCheck
+							True,                        // :AlwaysGetOutput
+							True                         // :AutoCutText
+							);
+						NewInstanceCreated := (FP60_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP60_KL"';
+						end;
+
+					end;
+				dt_FP2000_KL:
+					begin
+						// CREATE INSTANCE OF ICS...
+
+						// written on Delphi this is something like:
+						case cbx_PrinterModel.ItemIndex of
+							1:
+								begin
+									if FP2000_KL <> nil then FP2000_KL := nil;
+									FP2000_KL := CoCS_BGR_FP2000_KL.Create;
+									// FP2000_KL.INIT_Ex1(CALC_COMNUM, StrToInt(cbx_Baudrate.Text));
+									FP2000_KL.INIT_EX3(               //
+										CALC_COMNUM,                 // :
+										StrToInt(cbx_Baudrate.Text), // :
+										3000,                        // :ReadIntervalTimeout
+										0,                           // :ReadTotalTimeoutMultiplier
+										3200,                        // :ReadTotalTimeoutConstant
+										3000,                        // :WriteTotalTimeoutMultiplier
+										3000,                        // :WriteTotalTimeoutConstant
+										8,                           // : REPEAT_COUNT
+										False,                       // :MoreInstances
+										False,                       // :WithInputCheck
+										True,                        // :WithOutpCheck
+										True,                        // :AlwaysGetOutput
+										True                         // :AutoCutText
+										);
+									NewInstanceCreated := (FP2000_KL <> nil);
+									if NewInstanceCreated then
+									begin
+										fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP2000_KL"';
+									end;
+								end;
+							2:
+								begin
+									if FP2000_KL <> nil then FP2000_KL := nil;
+									FP2000_KL := CoCS_BGR_FP2000_KL.Create;
+									tmp_Str := FP2000_KL.INIT_Ex2(Trim(ed_IPADDR.Text), Trim(ed_PORT.Text));
+									NewInstanceCreated := (FP2000_KL <> nil);
+									if NewInstanceCreated then
+									begin
+										fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP2000_KL"(TCP/IP)';
+										// ShowMessage(tmp_Str);
+									end;
+								end;
+						end;
+					end;
+				dt_FP_550D_KL:
+					begin
+						// CREATE INSTANCE OF ICS_BGR_FP550_D_KL
+
+						// written on Delphi this is something like:
+						if FP550D_KL <> nil then FP550D_KL := nil;
+						FP550D_KL := CoCS_BGR_FP550_D_KL.Create;
+						FP550D_KL.INIT_EX3(               //
+							CALC_COMNUM,                 // :
+							StrToInt(cbx_Baudrate.Text), // :
+							3000,                        // :ReadIntervalTimeout
+							0,                           // :ReadTotalTimeoutMultiplier
+							3200,                        // :ReadTotalTimeoutConstant
+							3000,                        // :WriteTotalTimeoutMultiplier
+							3000,                        // :WriteTotalTimeoutConstant
+							8,                           // : REPEAT_COUNT
+							False,                       // :MoreInstances uses the same COM port
+							False,                       // :WithInputCheck
+							True,                        // :WithOutpCheck
+							True,                        // :AlwaysGetOutput
+							True                         // :AutoCutText
+							);
+						NewInstanceCreated := (FP550D_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							// fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP550_KL"';
+							fmMainForm.Caption := '"ICS_BGR_FP550_D_KL" usage - example';
+						end;
+					end;
+				dt_SK_31F_KL:
+					begin
+						// CREATE INSTANCE OF SK_31F_KL
+
+						// written on Delphi this is something like:
+						if SK_31F_KL <> nil then SK_31F_KL := nil;
+						SK_31F_KL := CoCS_BGR_SK1_31F_KL.Create;
+
+						// SK_31F_KL.INIT_EX3( //
+						// CALC_COMNUM,   // :
+						// StrToInt(cbx_Baudrate.Text), // :
+						// 100,   // :ReadIntervalTimeout
+						// 0,     // :ReadTotalTimeoutMultiplier
+						// 100,   // :ReadTotalTimeoutConstant
+						// 100,   // :WriteTotalTimeoutMultiplier
+						// 100,   // :WriteTotalTimeoutConstant
+						// 2,     // : REPEAT_COUNT
+						// false, // :More Instances of the COM server uses the same COM port.
+						// If it is True - each instance open and close COM port for any of the commands.false, // :WithInputCheck
+						// True, // :WithOutpCheck
+						// True, // :AlwaysGetOutput
+						// True  // :AutoCutText
+						// );
+
+						SK_31F_KL.INIT_Ex1(CALC_COMNUM, StrToInt(cbx_Baudrate.Text));
+						NewInstanceCreated := (SK_31F_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP550_KL"';
+							fmMainForm.Caption := '"ICS_BGR_SK1_31F_KL" usage - example';
+							SK_31F_KL.defaultTimeOut := 3000;
+							SK_31F_KL.debugMode := True;
+							SK_31F_KL.debugFolder := 'G:\TESTS';
+						end;
+					end;
+				dt_FP_750_KL:
+					begin
+						// CREATE INSTANCE OF FP_705_KL
+
+						// written on Delphi this is something like:
+						if FP_705_KL <> nil then FP_705_KL := nil;
+						FP_705_KL := CoCS_BGR_FP705_KL.Create;
+
+						// SK_31F_KL.INIT_EX3( //
+						// CALC_COMNUM,   // :
+						// StrToInt(cbx_Baudrate.Text), // :
+						// 100,   // :ReadIntervalTimeout
+						// 0,     // :ReadTotalTimeoutMultiplier
+						// 100,   // :ReadTotalTimeoutConstant
+						// 100,   // :WriteTotalTimeoutMultiplier
+						// 100,   // :WriteTotalTimeoutConstant
+						// 2,     // : REPEAT_COUNT
+						// false, // :More Instances of the COM server uses the same COM port.
+						// If it is True - each instance open and close COM port for any of the commands.false, // :WithInputCheck
+						// True, // :WithOutpCheck
+						// True, // :AlwaysGetOutput
+						// True  // :AutoCutText
+						// );
+
+						FP_705_KL.set_CommunicationRS232Values(CALC_COMNUM, StrToInt(cbx_Baudrate.Text), 2);
+						tmp_Int := FP_705_KL.open_Connection;
+						if tmp_Int <> 0 then
+						begin
+							SHOW_MYALERT(FP_705_KL.last_ErrorMessage);
+							Exit;
+						end;
+						NewInstanceCreated := (FP_705_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							// fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP705_KL"';
+							fmMainForm.Caption := '"ICS_BGR_FP705_KL" usage - example';
+							// FP_705_KL.set_DebugMode(True);
+							// FP_705_KL. logValue_Path := 'G:\TESTS\';
+							// FP_705_KL.logValue_FileName:='testLogFile_FP705KL.txt';
+						end;
+					end;
+				dt_WP500_KL:
+					begin
+						// CREATE INSTANCE OF WP_500_KL
+						// written on Delphi this is something like:
+						if WP_500_KL <> nil then WP_500_KL := nil;
+						WP_500_KL := CoCS_BGR_WP500_KL.Create;
+						WP_500_KL.set_CommunicationRS232Values(CALC_COMNUM, StrToInt(cbx_Baudrate.Text), 2);
+						tmp_Int := WP_500_KL.open_Connection;
+						if tmp_Int <> 0 then
+						begin
+							SHOW_MYALERT(WP_500_KL.last_ErrorMessage);
+							Exit;
+						end;
+						NewInstanceCreated := (WP_500_KL <> nil);
+						if NewInstanceCreated then
+						begin
+							// fmMainForm.Caption := 'Пример за употребата на "ICS_BGR_FP705_KL"';
+							fmMainForm.Caption := '"ICS_BGR_WP500_KL" usage - example';
+						end;
+					end;
+			end;
+			Result := (MyFiscDevice <> dt_Unknown) and (NewInstanceCreated);
+		except
+			Result := False;
+		end;
+	end;
+
+	function CHECK_SOME_: Boolean;
+	begin
+		Result := False;
+		try
+			case cbx_PrinterModel.ItemIndex of
+				- 1:
+					begin
+						ShowMessage('Please set device model first !');
+						PageControl1.ActivePage := tsInit;
+						if cbx_PrinterModel.Enabled then cbx_PrinterModel.SetFocus;
+						Exit;
+					end;
+				2:
+					begin
+						if cbx_PrinterModel.ItemIndex = 2 then
+						begin
+							if (Trim(ed_IPADDR.Text) = '') then
+							begin
+								ShowMessage('Please set ip address !');
+								PageControl1.ActivePage := tsInit;
+								if ed_IPADDR.Enabled then ed_IPADDR.SetFocus;
+								Exit;
+							end;
+							if (Trim(ed_PORT.Text) = '') then
+							begin
+								ShowMessage('Please set port number !');
+								PageControl1.ActivePage := tsInit;
+								if ed_PORT.Enabled then ed_PORT.SetFocus;
+								Exit;
+							end;
+						end;
+					end
+				else
+					begin
+						if cbx_COMPORT.ItemIndex = -1 then
+						begin
+							ShowMessage('Please set comport!');
+							PageControl1.ActivePage := tsInit;
+							if cbx_COMPORT.Enabled then cbx_COMPORT.SetFocus;
+							Exit;
+						end;
+					end;
+			end;
+			// ...
+			Result := True;
+		except
+			Result := False;
+		end;
+	end;
+
+begin
+	if not CHECK_SOME_ then Exit;
+	try
+		try
+			if INITIALISATION_OF_DEVICE_SITUATION then INIT_SWITCHES_EX(0);
+		except
+			ShowMessage('TfmMainForm.btn_INIT_EX1Click - Exception');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+procedure TfmMainForm.FormCreate(Sender: TObject);
+
+	procedure ADD_COMPORTS;
+	var
+		i: Integer;
+	begin
+		try
+			try
+				cbx_COMPORT.Items.Clear;
+				cbx_COMPORT.Items := GET_COM_EX;
+			except
+				//
+			end;
+		finally
+			if cbx_COMPORT.Items.Count = 0 then
+				for i := 1 to 28 do cbx_COMPORT.Items.Add('COM ' + IntToStr(i));
+		end;
+	end;
+
+begin
+	ADD_COMPORTS;
+
+	FormatSettings.DateSeparator := '.';
+	FormatSettings.TimeSeparator := ':';
+	FormatSettings.DecimalSeparator := '.';
+	FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
+	FormatSettings.ShortTimeFormat := 'hh:mm:ss';
+	ts_DEVICE_STATUS.TabVisible := False;
+	ts_KLEN.TabVisible := False;
+	PageControl1.ActivePage := tsInit;
+end;
+
+function TfmMainForm.GET_COM_EX: TStringList;
+var
+	ComLst : TStringList;
+	max, i : Integer;
+	tempStr: string;
+	VerInfo: TOSVersioninfo;
+
+	procedure EnumerateDosDevices(List: TStrings);
+	var
+		Buffer: PChar;
+		BufLen: Cardinal;
+		len   : Cardinal;
+		p     : PChar;
+		sl    : TStringList;
+	begin
+		Assert(Assigned(List));
+		BufLen := High(Word);
+		Buffer := AllocMem(BufLen);
+		try
+			repeat
+				len := QueryDosDevice(nil, Buffer, BufLen - 1);
+				if len = ERROR_INSUFFICIENT_BUFFER then
+				begin
+					BufLen := BufLen * 2;
+					ReAllocMem(Buffer, BufLen);
+				end;
+			until len <> ERROR_INSUFFICIENT_BUFFER;
+			Buffer[len] := #0;
+			sl := TStringList.Create;
+			try
+				p := Buffer;
+				while p < @Buffer[len] do
+				begin
+					sl.Add(p);
+					p := StrEnd(p) + 1;
+				end;
+				sl.Sorted := True;
+				List.Assign(sl);
+			finally
+				sl.Free;
+			end; { finally }
+		finally
+			FreeMem(Buffer);
+		end; { finally }
+	end;
+
+	function FillCommList(List: TStrings): Integer;
+	var
+		Temp    : TStringList;
+		i, index: Integer;
+	begin
+		try
+			Assert(Assigned(List));
+			List.Clear;
+			Temp := TStringList.Create;
+			try
+				EnumerateDosDevices(Temp);
+				i := 1;
+				while i < 256 do
+				begin
+					if (Temp.Find('COM' + IntToStr(i), index)) then
+					begin
+						List.Add('COM ' + IntToStr(i));
+					end;
+					inc(i);
+				end;
+			finally
+				Temp.Free;
+			end; { finally }
+			Result := List.Count;
+
+		except
+			on E: Exception do raise Exception.Create('Exception in method "FillCommList":' + E.Message);
+		end;
+
+	end;
+
+	function GET_WIN98_SERIAL(List: TStrings): Boolean;
+	var
+		i      : Integer;
+		portStr: String;
+		portHND: THandle;
+	begin
+		Assert(Assigned(List));
+		List.Clear;
+		Result := False;
+		try
+			for i := 1 to 256 do
+			begin
+				portStr := Format('\\.\COM%d', [i]);
+				portHND := CreateFile(PChar(portStr), GENERIC_READ or GENERIC_WRITE, 0, nil, OPEN_EXISTING, 0, 0);
+				if portHND = INVALID_HANDLE_VALUE then
+				begin
+					// Error := GetLastError;
+					// if (Error = ERROR_ACCESS_DENIED) or (Error = ERROR_ACCESS_DENIED)  then
+					// Result:=1;
+					CloseHandle(portHND);
+				end
+				else
+				begin
+					Result := True;
+					CloseHandle(portHND);
+					List.Add('COM ' + IntToStr(i));
+				end;
+			end;
+		except
+			Result := False;
+		end;
+
+	end;
+
+begin
+	ComLst := TStringList.Create;
+	Result := TStringList.Create;
+	try
+		try
+			// dm_.JvCIE_.OS.OSVersion
+			VerInfo.dwOSVersionInfoSize := SizeOf(TOSVersioninfo);
+			GetVersionEx(VerInfo);
+
+			if (VerInfo.dwPlatformId = VER_PLATFORM_WIN32_NT) then
+			begin
+				max := FillCommList(ComLst);
+				if max > 0 then
+					for i := 0 to max - 1 do
+					begin
+						tempStr := ComLst.Strings[i];
+						// Delete(tempStr, 1, 3);
+						Result.Add(tempStr);
+					end;
+			end
+			else GET_WIN98_SERIAL(Result);
+		except
+			on E: Exception do raise Exception.Create('Exception in method "Get_COM_EX":' + E.Message);
+		end;
+	finally
+		ComLst.Free;
+	end;
+end;
+
+function TfmMainForm.REFRESH_SWITCHES: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			ADD_LOG('[CMD_74_0_1]: ПОЛУЧАВАНЕ НА СТАТУСИТЕ'); // Get status bytes
+			case MyFiscDevice of
+				dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_74_0_1(S0, S1, S2, S3, S4, S5);
+				dt_FP_750_KL: tmp_Int := FP_705_KL.command_Variant4(74);
+				dt_WP500_KL: tmp_Int := WP_500_KL.command_Variant4(74);
+			end;
+
+			if tmp_Int <> 0 then
+			begin
+				// TODO : Exception handler
+				SHOW_MYALERT('Get status error... ');
+				if (tmp_Int = -4) or (tmp_Int = -5) then
+				begin
+					SHOW_MYALERT('Check connection!');
+					Exit;
+				end;
+				tmp_Str := CALC_ERROR(tmp_Int);
+				ShowMessage(tmp_Str);
+			end
+			else CALC_SWITCHES;
+			Result := True;
+		except
+			// TODO : Exception handler
+			Result := False;
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.OPEN_FISCAL_BON: Boolean;
+var
+	AllReceipt, FiscReceipt, OpCode, OpPwd, TillNmb: WideString;
+
+	procedure INIT;
+	begin
+		AllReceipt := '';
+		FiscReceipt := '';
+	end;
+
+	function SET_PARAMS_FROM_DB: Boolean;
+	begin
+		try
+			// GET THIS FROM YOUR DATABASE
+			case MyFiscDevice of
+				dt_DP55_KL:
+					begin
+						// This is default values for our ECR's
+						OpCode := '1';
+						OpPwd := '1';
+						TillNmb := '1';
+					end;
+				dt_FP2000_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FMP10_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FP60_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FP_550_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FP_1000_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FP_550D_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_SK_31F_KL:
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+				dt_FP_750_KL:
+					begin
+						OpCode := '1';
+						OpPwd := '0000';
+						TillNmb := '1';
+					end;
+				dt_WP500_KL:
+					begin
+						OpCode := '1';
+						OpPwd := '0000';
+						TillNmb := '1';
+					end
+				else
+					begin
+						// This is default values for our printers
+						OpCode := '1';
+						OpPwd := '0000';
+						// OpPwd:='0001'; For error example
+						TillNmb := '1';
+					end;
+			end;
+			Result := True;
+		except
+			Result := False;
+		end;
+	end;
+
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			INIT;
+			if not SET_PARAMS_FROM_DB then Exit;
+			ADD_LOG('[CMD_48_0_0]: ОТВАРЯНЕ НА СЛУЖЕБЕН БОН');
+			case MyFiscDevice of
+				dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_48_0_0(OpCode, OpPwd, TillNmb, AllReceipt, FiscReceipt);
+				dt_FP_750_KL: tmp_Int := FP_705_KL.command_048(1, '0000', 1, '', ErrorCode, tmp_IAnswer1);
+				dt_WP500_KL: tmp_Int := WP_500_KL.command_048(1, '0000', 1, '', ErrorCode, tmp_IAnswer1);
+			end;
+
+			if tmp_Int <> 0 then
+			begin
+				tmp_Str := CALC_ERROR(tmp_Int);
+				SHOW_MYALERT(tmp_Str);
+				// 1. Analize this...
+				// 2. status bytes or/and CMD_76_0_0
+				// 3. programatically do something or...
+				// 4. ...call of administrator
+				// ...
+			end
+			else Result := True;
+		except
+			Result := False;
+		end;
+	finally
+		CALC_SWITCHES;
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.SELL_CMD_49(MAJOR_VERS, MINOR_VERS: Integer; MY_PARAMS: WideString): Boolean;
+begin
+	Result := False;
+	try
+		case MAJOR_VERS of
+			0: tmp_Int := CMD_49_0(MINOR_VERS, MY_PARAMS);
+			1: tmp_Int := CMD_49_1(MINOR_VERS, MY_PARAMS);
+			2: tmp_Int := CMD_49_2(MINOR_VERS, MY_PARAMS);
+			3: tmp_Int := CMD_49_3(MINOR_VERS, MY_PARAMS);
+			4: tmp_Int := CMD_49_4(MINOR_VERS, MY_PARAMS);
+			5: tmp_Int := CMD_49_5(MINOR_VERS, MY_PARAMS);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this ...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+			Exit;
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.PRINT_DELIMITER: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_92_0_0]: ПЕЧАТ НА РАЗДЕЛИТЕЛНА ЛИНИЯ');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_92_0_0('1');
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_92_0_0('1');
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_92_0_0('1');
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_092(1, ErrorCode);
+			dt_WP500_KL: tmp_Int := WP_500_KL.command_092(1, ErrorCode);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_92_0_0('1');
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_92_0_0('1');
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_92_0_0('1');
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_92_0_0('1');
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_92_0_0('1');
+		end;
+
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			Exit;
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.SELL_SOMETHING: Boolean;
+var
+	MyInput: WideString;
+
+	function GET_SELL_DATA(TRGT_EXAMPLE: Integer): WideString;
+	var
+		TaxCd, Price, Qwan, Perc, L1, L2: WideString;
+	begin
+		Result := '';
+		case TRGT_EXAMPLE of
+			0:
+				begin
+					// Get this data from your database
+					L1 := 'Тест на продажба:ред 1';
+					// L2:='Тест на продажба:ред 2';
+					L2 := '1234567890 1234567890 1234567890 1234567890 1234567890 1234567890';
+					Price := FormatFloat('0.00', 0.10);
+					Qwan := FormatFloat('0.000', 1.543);
+					Perc := FormatFloat('0.00', 10.00); //
+					TaxCd := 'Б';
+					Result := L1 + ';' + L2 + ';' + TaxCd + ';' + Price + ';' + Qwan + ';' + Perc + ';';
+				end;
+			1:
+				begin
+					// Get this data from your database
+					L1 := 'Тест на продажба:ред 1';
+					Price := FormatFloat('0.00', 0.20);
+					Qwan := FormatFloat('0.000', 3.000);
+					// Price := FormatFloat('0.00', 0.00);
+					// Qwan := FormatFloat('0.000', 0.000);
+					TaxCd := 'Б';
+					Result := L1 + ';' + TaxCd + ';' + Price + ';' + Qwan + ';';
+				end;
+			2:
+				begin
+					// Get this data from your database
+					L1 := 'Тест на продажба:ред 1';
+					// L2:='Тест на продажба:ред 2';
+					L2 := '1234567890 1234567890 1234567890 1234567890 1234567890 1234567890';
+					Price := FormatFloat('0.00', -0.10);
+					Qwan := FormatFloat('0.000', 1.543);
+					Perc := FormatFloat('0.00', 10.00);
+					TaxCd := 'Б';
+					Result := L1 + ';' + L2 + ';' + TaxCd + ';' + Price + ';' + Qwan + ';' + Perc + ';';
+				end;
+		end;
+	end;
+
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		MyInput := GET_SELL_DATA(0);
+		if not SELL_CMD_49(0, 0, MyInput) then Exit;
+
+		MyInput := GET_SELL_DATA(1);
+		if not SELL_CMD_49(2, 1, MyInput) then Exit;
+
+		MyInput := GET_SELL_DATA(2);
+		if not SELL_CMD_49(0, 0, MyInput) then Exit;
+
+		Result := True;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CHECK_ASSIGNED: Boolean;
+begin
+	Result := False;
+	try
+		case MyFiscDevice of
+			dt_DP55_KL: Result := Assigned(FPDP55_KL);
+			dt_FP2000_KL: Result := Assigned(FP2000_KL);
+			dt_FP60_KL: Result := Assigned(FP60_KL);
+			dt_FP_550_KL: Result := Assigned(FP550_KL);
+			dt_FP_550D_KL: Result := Assigned(FP550D_KL);
+			dt_SK_31F_KL: Result := Assigned(SK_31F_KL);
+			dt_FP_1000_KL: Result := Assigned(FP1000_KL);
+			dt_FMP10_KL: Result := Assigned(FMP10_KL);
+			dt_FP_750_KL: Result := Assigned(FP_705_KL);
+			dt_WP500_KL: Result := Assigned(WP_500_KL);
+		end;
+		if not Result then
+		begin
+			SHOW_MYALERT('Not assigned - check for new tlb file!');
+			PageControl1.ActivePage := tsInit;
+			btn_INIT_EX1.SetFocus;
+			Exit;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_119_0_0: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		case MyFiscDevice of
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_119_0_0;
+			else Exit;
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			CALC_SWITCHES;
+			Result := True;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_119_20_30: Boolean;
+var
+	startDocNum, endDocNum: Integer;
+	D1                    : WideString;
+	D2                    : WideString;
+	F_RESULT              : WideString;
+	THE_TEXT              : WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		mem_KLEN.Clear;
+		if not TryStrToInt(ed_KLEN_D1.Text, startDocNum) then
+		begin
+			tmp_Str := 'Моля въведете валиден стартов номер на документ!';
+			SHOW_MYALERT(tmp_Str);
+			ed_KLEN_D1.SetFocus;
+			Exit;
+		end
+		else D1 := Trim(ed_KLEN_D1.Text);
+		if not TryStrToInt(ed_KLEN_D2.Text, endDocNum) then
+		begin
+			tmp_Str := 'Моля въведете валиден краен номер на документ!';
+			SHOW_MYALERT(tmp_Str);
+			ed_KLEN_D2.SetFocus;
+			Exit;
+		end
+		else D2 := Trim(ed_KLEN_D2.Text);
+		if endDocNum < startDocNum then
+		begin
+			tmp_Str := 'Моля въведете валиден интервал за търсене!';
+			SHOW_MYALERT(tmp_Str);
+			ed_KLEN_D2.SetFocus;
+			Exit;
+		end;
+		F_RESULT := '';
+		THE_TEXT := '';
+
+		case MyFiscDevice of
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_119_2_0(D1, D2, F_RESULT, THE_TEXT);
+			else Exit;
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			Exit;
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			CALC_SWITCHES;
+			if F_RESULT = 'F' then
+			begin
+				tmp_Str := 'Няма данни в КЛЕН за това търсене.';
+				SHOW_MYALERT(tmp_Str);
+			end
+			else
+				if (F_RESULT = '*') then mem_KLEN.Lines.Add('')
+				else
+					if (F_RESULT = 'P') then mem_KLEN.Lines.Add(THE_TEXT);
+
+			repeat
+				tmp_Int := FMP10_KL.CMD_119_3_0(F_RESULT, THE_TEXT);
+				if tmp_Int <> 0 then
+				begin
+					tmp_Str := CALC_ERROR(tmp_Int);
+					SHOW_MYALERT(tmp_Str);
+					Break;
+				end;
+				if (F_RESULT = '*') then mem_KLEN.Lines.Add('')
+				else
+					if (F_RESULT = 'P') then mem_KLEN.Lines.Add(THE_TEXT)
+					else Break;
+			until (F_RESULT = 'F');
+
+			Result := True;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_119_23_30: Boolean;
+var
+	d1Year, d1Month, d1Day      : Word;
+	d1Hour, d1Min, d1Sec, d1MSec: Word;
+
+	d2Year, d2Month, d2Day      : Word;
+	d2Hour, d2Min, d2Sec, d2MSec: Word;
+
+	startDT, endDT: TDateTime;
+
+	Flg: WideString;
+	DT1: WideString;
+	DT2: WideString;
+
+	F_RESULT: WideString;
+	THE_TEXT: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+
+		mem_KLEN.Clear;
+
+		DecodeDate(dtp_KLEN_D1_Date.DateTime, d1Year, d1Month, d1Day);
+		DecodeTime(dtp_KLEN_D1_Time.DateTime, d1Hour, d1Min, d1Sec, d1MSec);
+
+		DecodeDate(dtp_KLEN_D2_Date.DateTime, d2Year, d2Month, d2Day);
+		DecodeTime(dtp_KLEN_D2_Time.DateTime, d2Hour, d2Min, d2Sec, d2MSec);
+
+		startDT := EncodeDateTime(d1Year, d1Month, d1Day, d1Hour, d1Min, d1Sec, d1MSec);
+		endDT := EncodeDateTime(d2Year, d2Month, d2Day, d2Hour, d2Min, d2Sec, d2MSec);
+
+		case CompareDateTime(startDT, endDT) of
+			- 1: // The first value is less than the second value - this is ok
+				begin
+					if d1Day <= 9 then DT1 := '0' + IntToStr(d1Day)
+					else DT1 := IntToStr(d1Day);
+					if d1Month <= 9 then DT1 := DT1 + '0' + IntToStr(d1Month)
+					else DT1 := DT1 + IntToStr(d1Month);
+					if d1Year > 2000 then d1Year := d1Year - 2000;
+					DT1 := DT1 + IntToStr(d1Year);
+
+					if d1Hour <= 9 then DT1 := DT1 + '0' + IntToStr(d1Hour)
+					else DT1 := DT1 + IntToStr(d1Hour);
+					if d1Min <= 9 then DT1 := DT1 + '0' + IntToStr(d1Min)
+					else DT1 := DT1 + IntToStr(d1Min);
+					if d1Sec <= 9 then DT1 := DT1 + '0' + IntToStr(d1Sec)
+					else DT1 := DT1 + IntToStr(d1Sec);
+
+					if d2Day <= 9 then DT2 := '0' + IntToStr(d2Day)
+					else DT2 := IntToStr(d2Day);
+					if d2Month <= 9 then DT2 := DT2 + '0' + IntToStr(d2Month)
+					else DT2 := DT2 + IntToStr(d2Month);
+					if d2Year > 2000 then d2Year := d2Year - 2000;
+					DT2 := DT2 + IntToStr(d2Year);
+
+					if d2Hour <= 9 then DT2 := DT2 + '0' + IntToStr(d2Hour)
+					else DT2 := DT2 + IntToStr(d2Hour);
+					if d2Min <= 9 then DT2 := DT2 + '0' + IntToStr(d2Min)
+					else DT2 := DT2 + IntToStr(d2Min);
+					if d2Sec <= 9 then DT2 := DT2 + '0' + IntToStr(d2Sec)
+					else DT2 := DT2 + IntToStr(d2Sec);
+				end;
+			0: // The two values are equal.
+				begin
+					tmp_Str := 'Моля въведете валиден интервал за търсене! - (The two values are equal)';
+					SHOW_MYALERT(tmp_Str);
+					dtp_KLEN_D2_Date.SetFocus;
+					Exit;
+				end;
+			1: // The first value is greater than the second value.
+				begin
+					tmp_Str := 'Моля въведете валиден интервал за търсене! - (The first value is greater than the second value.)';
+					SHOW_MYALERT(tmp_Str);
+					dtp_KLEN_D2_Date.SetFocus;
+					Exit;
+				end;
+		end;
+		case cbx_KLEN_DocumentType.ItemIndex of
+			0: Flg := 'A'; // : Всички видове документи.
+			1: Flg := 'F'; // : Фискални (клиентски) бонове.
+			2: Flg := 'N'; // : Служебни бонове.
+			3: Flg := 'R'; // : Служебни бонове със завъртян на 90 градуса печат.
+			4: Flg := 'S'; // : Бонове от сервизни операции.
+			5: Flg := 'X'; // : X-отчети.
+			6: Flg := 'Z'; // : Z-отчети.
+		end;
+
+		F_RESULT := '';
+		THE_TEXT := '';
+
+		case MyFiscDevice of
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_119_2_3(Flg, DT1, DT2, F_RESULT, THE_TEXT);
+			else Exit;
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			Exit;
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			CALC_SWITCHES;
+			if F_RESULT = 'F' then
+			begin
+				tmp_Str := 'Няма данни в КЛЕН за това търсене.';
+				SHOW_MYALERT(tmp_Str);
+			end
+			else
+				if (F_RESULT = '*') then mem_KLEN.Lines.Add('')
+				else
+					if (F_RESULT = 'P') then mem_KLEN.Lines.Add(THE_TEXT);
+
+			repeat
+				tmp_Int := FMP10_KL.CMD_119_3_0(F_RESULT, THE_TEXT);
+				if tmp_Int <> 0 then
+				begin
+					tmp_Str := CALC_ERROR(tmp_Int);
+					SHOW_MYALERT(tmp_Str);
+					Break;
+				end;
+				if (F_RESULT = '*') then mem_KLEN.Lines.Add('')
+				else
+					if (F_RESULT = 'P') then mem_KLEN.Lines.Add(THE_TEXT)
+					else Break;
+			until (F_RESULT = 'F');
+
+			Result := True;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_49_0(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_0_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_0_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_0_0( //
+								GetParam(MY_PARAMS, 1),             //
+								GetParam(MY_PARAMS, 2),             //
+								GetParam(MY_PARAMS, 3),             //
+								GetParam(MY_PARAMS, 4),             //
+								GetParam(MY_PARAMS, 5),             //
+								GetParam(MY_PARAMS, 6));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_0_0( //
+								GetParam(MY_PARAMS, 1),           //
+								GetParam(MY_PARAMS, 2),           //
+								GetParam(MY_PARAMS, 3),           //
+								GetParam(MY_PARAMS, 4),           //
+								GetParam(MY_PARAMS, 5),           //
+								GetParam(MY_PARAMS, 6));          //
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_0_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_0_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_0_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_0_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_0 method');
+	end;
+end;
+
+function TfmMainForm.CMD_49_1(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_1_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_1_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_1_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_1_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_1_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_1_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_1 method');
+	end;
+end;
+
+function TfmMainForm.CMD_49_2(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_2_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_2_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_2_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_2_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_2_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_2_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_2 method');
+	end;
+end;
+
+function TfmMainForm.CMD_49_3(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_3_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_3_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_3_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_3_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_3_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_3_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_3 method');
+	end;
+end;
+
+function TfmMainForm.CMD_49_4(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_4_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_4_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5), GetParam(MY_PARAMS, 6));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_4_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_4_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_4_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_4_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_4 method');
+	end;
+end;
+
+function TfmMainForm.CMD_49_5(MINOR_VERS: Integer; MY_PARAMS: WideString): Integer;
+begin
+	Result := -4;
+	try
+		case MINOR_VERS of
+			0:
+				begin
+					ADD_LOG('[CMD_49_5_0]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_5_0(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4), GetParam(MY_PARAMS, 5));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			1:
+				begin
+					ADD_LOG('[CMD_49_5_1]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_5_1(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+			2:
+				begin
+					ADD_LOG('[CMD_49_5_2]: РЕГИСТРИРАНЕ (ПРОДАЖБА) НА СТОКА');
+					case MyFiscDevice of
+						dt_DP55_KL: Result := FPDP55_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP2000_KL: Result := FP2000_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP60_KL: Result := FP60_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550_KL: Result := FP550_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_550D_KL: Result := FP550D_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_SK_31F_KL: Result := SK_31F_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FMP10_KL: Result := FMP10_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_1000_KL: Result := FP1000_KL.CMD_49_5_2(GetParam(MY_PARAMS, 1), GetParam(MY_PARAMS, 2), GetParam(MY_PARAMS, 3), GetParam(MY_PARAMS, 4));
+						dt_FP_750_KL: Result := FP_705_KL.command_049('Plu name', 2, '0.10', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+						dt_WP500_KL: Result := WP_500_KL.command_049('Plu name', 2, '0.10', '', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+					end;
+				end;
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_49_5 method');
+	end;
+end;
+
+function TfmMainForm.MAKE_SUBTOTAL(TRGT_PERCENT: Real): Boolean;
+var
+	Perc                                                                        : WideString;
+	ToPrint, ToDisplay, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH: WideString;
+
+	procedure INIT;
+	begin
+		ToPrint := '1';
+		ToDisplay := '0';
+		Perc := FormatFloat('0.00', TRGT_PERCENT);
+	end;
+
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		INIT;
+		if not TryStrToFloat(Perc, tmp_Ext) then Exit;
+		if TRGT_PERCENT > 0.00 then
+		begin
+			ADD_LOG('[CMD_51_0_1]: МЕЖДИННА СУМА - НАДБАВКА');
+			case MyFiscDevice of
+				dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_51_0_1(Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_750_KL: tmp_Int := FP_705_KL.command_051(1, 1, 1, '1.00', ErrorCode, tmp_IAnswer1, out_Subtotal, tax1_Sum, tax2_Sum, tax3_Sum, tax4_Sum, tax5_Sum, tax6_Sum, tax7_Sum, tax8_Sum);
+				dt_WP500_KL: tmp_Int := WP_500_KL.command_051(1, 1, 1, '1.00', ErrorCode, tmp_IAnswer1, out_Subtotal, tax1_Sum, tax2_Sum, tax3_Sum, tax4_Sum, tax5_Sum, tax6_Sum, tax7_Sum, tax8_Sum);
+			end;
+		end
+		else
+		begin
+			ADD_LOG('[CMD_51_0_0]: МЕЖДИННА СУМА - ОТСТЪПКА');
+			case MyFiscDevice of
+				dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_51_0_1(Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_51_0_1(ToPrint, ToDisplay, Perc, SubTotal, TaxA, TaxB, TaxC, TaxD, TaxE, TaxF, TaxG, TaxH);
+				dt_FP_750_KL: tmp_Int := FP_705_KL.command_051(1, 1, 2, '98.00', ErrorCode, tmp_IAnswer1, out_Subtotal, tax1_Sum, tax2_Sum, tax3_Sum, tax4_Sum, tax5_Sum, tax6_Sum, tax7_Sum, tax8_Sum);
+				dt_WP500_KL: tmp_Int := WP_500_KL.command_051(1, 1, 2, '98.00', ErrorCode, tmp_IAnswer1, out_Subtotal, tax1_Sum, tax2_Sum, tax3_Sum, tax4_Sum, tax5_Sum, tax6_Sum, tax7_Sum, tax8_Sum);
+			end;
+		end;
+
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.MAKE_TOTAL: Boolean;
+var
+	L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		L1 := 'Текст след тотал:1';
+		L2 := 'Текст след тотал:2';
+		PaidMode := 'P';
+		Amount_In := FormatFloat('0.00', 10.00);
+		ADD_LOG('[CMD_53_0_0]: ИЗЧИСЛЯВАНЕ НА СБОР (ТОТАЛ)');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_53_0_0(L1, L2, PaidMode, Amount_In, PaidCode, Amount_Out);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_053_v001(0, '10.00', ErrorCode, tmp_WAnswer1, tmp_WAnswer2);
+			dt_WP500_KL: tmp_Int := WP_500_KL.command_053_v001(0, '10.00', ErrorCode, tmp_WAnswer1, tmp_WAnswer2);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CLOSE_FISCAL_BON: Boolean;
+var
+	AllReceipt, FiscReceipt: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_56_0_0]: ЗАТВАРЯНЕ (ПРИКЛЮЧВАНЕ) НА ФИСКАЛЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_56_0_0(AllReceipt, FiscReceipt);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_056(ErrorCode, tmp_IAnswer1);
+			dt_WP500_KL: tmp_Int := WP_500_KL.command_056(ErrorCode, tmp_IAnswer1);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.PRINT_FISCAL_TEXT(TRGT_TEXT: WideString): Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_54_0_0]: ПЕЧАТАНЕ НА ФИСКАЛЕН СВОБОДЕН ТЕКСТ');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_54_0_0(TRGT_TEXT);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_054(TRGT_TEXT, ErrorCode);
+			dt_WP500_KL: tmp_Int := WP_500_KL.command_054(TRGT_TEXT, ErrorCode);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CALC_COMNUM: Integer;
+var
+	i: Integer;
+begin
+	Result := -1;
+	try
+		if Trim(cbx_COMPORT.Text) = '' then Exit;
+		tmp_Str := cbx_COMPORT.Text;
+		i := pos('COM ', tmp_Str);
+		if i > 0 then
+		begin
+			i := i + 4;
+			tmp_Str := Copy(tmp_Str, i, length(tmp_Str));
+			TryStrToInt(tmp_Str, Result);
+		end
+		else
+		begin
+			i := pos('COM', tmp_Str);
+			if i > 0 then
+			begin
+				i := i + 3;
+				tmp_Str := Copy(tmp_Str, i, length(tmp_Str));
+				TryStrToInt(tmp_Str, Result);
+			end
+			else
+			begin
+				TryStrToInt(tmp_Str, Result);
+			end;
+		end;
+	except
+		Result := -1;
+	end;
+end;
+
+procedure TfmMainForm.CALC_SWITCHES;
+var
+	i, j: Integer;
+
+	function GET_THIS: Boolean;
+	begin
+		Result := False;
+		try
+			case MyFiscDevice of
+				dt_DP55_KL: Result := FPDP55_KL.GET_BIT_STATE(i, j);
+				dt_FP2000_KL: Result := FP2000_KL.GET_BIT_STATE(i, j);
+				dt_FP60_KL: Result := FP60_KL.GET_BIT_STATE(i, j);
+				dt_FP_550_KL: Result := FP550_KL.GET_BIT_STATE(i, j);
+				dt_FP_550D_KL: Result := FP550D_KL.GET_BIT_STATE(i, j);
+				dt_SK_31F_KL: Result := SK_31F_KL.GET_BIT_STATE(i, j);
+				dt_FMP10_KL: Result := FMP10_KL.GET_BIT_STATE(i, j);
+				dt_FP_1000_KL: Result := FP1000_KL.GET_BIT_STATE(i, j);
+				dt_FP_750_KL: Result := FP_705_KL.get_StatusBitState(i, j);
+				dt_WP500_KL: Result := WP_500_KL.get_StatusBitState(i, j);
+			end;
+		except
+			Result := False;
+		end;
+	end;
+
+begin
+	ADD_LOG('Калкулиране на статус битовете.');
+	for i := 0 to 5 do
+	begin
+		case i of
+			0: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S0_0.Checked := tmp_Bol;
+						1: chbx_S0_1.Checked := tmp_Bol;
+						2: chbx_S0_2.Checked := tmp_Bol;
+						3: chbx_S0_3.Checked := tmp_Bol;
+						4: chbx_S0_4.Checked := tmp_Bol;
+						5: chbx_S0_5.Checked := tmp_Bol;
+						6: chbx_S0_6.Checked := tmp_Bol;
+						7: chbx_S0_7.Checked := tmp_Bol;
+					end;
+				end;
+			1: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S1_0.Checked := tmp_Bol;
+						1: chbx_S1_1.Checked := tmp_Bol;
+						2: chbx_S1_2.Checked := tmp_Bol;
+						3: chbx_S1_3.Checked := tmp_Bol;
+						4: chbx_S1_4.Checked := tmp_Bol;
+						5: chbx_S1_5.Checked := tmp_Bol;
+						6: chbx_S1_6.Checked := tmp_Bol;
+						7: chbx_S1_7.Checked := tmp_Bol;
+					end;
+				end;
+			2: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S2_0.Checked := tmp_Bol;
+						1: chbx_S2_1.Checked := tmp_Bol;
+						2: chbx_S2_2.Checked := tmp_Bol;
+						3: chbx_S2_3.Checked := tmp_Bol;
+						4: chbx_S2_4.Checked := tmp_Bol;
+						5: chbx_S2_5.Checked := tmp_Bol;
+						6: chbx_S2_6.Checked := tmp_Bol;
+						7: chbx_S2_7.Checked := tmp_Bol;
+					end;
+				end;
+			3: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S3_0.Checked := tmp_Bol;
+						1: chbx_S3_1.Checked := tmp_Bol;
+						2: chbx_S3_2.Checked := tmp_Bol;
+						3: chbx_S3_3.Checked := tmp_Bol;
+						4: chbx_S3_4.Checked := tmp_Bol;
+						5: chbx_S3_5.Checked := tmp_Bol;
+						6: chbx_S3_6.Checked := tmp_Bol;
+						7: chbx_S3_7.Checked := tmp_Bol;
+					end;
+				end;
+			4: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S4_0.Checked := tmp_Bol;
+						1: chbx_S4_1.Checked := tmp_Bol;
+						2: chbx_S4_2.Checked := tmp_Bol;
+						3: chbx_S4_3.Checked := tmp_Bol;
+						4: chbx_S4_4.Checked := tmp_Bol;
+						5: chbx_S4_5.Checked := tmp_Bol;
+						6: chbx_S4_6.Checked := tmp_Bol;
+						7: chbx_S4_7.Checked := tmp_Bol;
+					end;
+				end;
+			5: for j := 0 to 7 do
+				begin
+					tmp_Bol := GET_THIS;
+					case j of
+						0: chbx_S5_0.Checked := tmp_Bol;
+						1: chbx_S5_1.Checked := tmp_Bol;
+						2: chbx_S5_2.Checked := tmp_Bol;
+						3: chbx_S5_3.Checked := tmp_Bol;
+						4: chbx_S5_4.Checked := tmp_Bol;
+						5: chbx_S5_5.Checked := tmp_Bol;
+						6: chbx_S5_6.Checked := tmp_Bol;
+						7: chbx_S5_7.Checked := tmp_Bol;
+					end;
+				end;
+		end;
+	end;
+	case MyFiscDevice of
+		dt_DP55_KL:
+			begin
+				FBON_OPENED := FPDP55_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FPDP55_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP2000_KL:
+			begin
+				FBON_OPENED := FP2000_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP2000_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP60_KL:
+			begin
+				FBON_OPENED := FP60_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP60_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP_550_KL:
+			begin
+				FBON_OPENED := FP550_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP550_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP_550D_KL:
+			begin
+				FBON_OPENED := FP550D_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP550D_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_SK_31F_KL:
+			begin
+				FBON_OPENED := SK_31F_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := SK_31F_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FMP10_KL:
+			begin
+				FBON_OPENED := FMP10_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FMP10_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP_1000_KL:
+			begin
+				FBON_OPENED := FP1000_KL.GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP1000_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_FP_750_KL:
+			begin
+				FBON_OPENED := FP_705_KL.iSBit_OpenedReceipt_Fiscal;    // GET_BIT_STATE(2, 3);
+				SBON_OPENED := FP_705_KL.iSBit_OpenedReceipt_NonFiscal; // FMP10_KL.GET_BIT_STATE(2, 5);
+			end;
+		dt_WP500_KL:
+			begin
+				FBON_OPENED := WP_500_KL.iSBit_OpenedReceipt_Fiscal;    // GET_BIT_STATE(2, 3);
+				SBON_OPENED := WP_500_KL.iSBit_OpenedReceipt_NonFiscal; // FMP10_KL.GET_BIT_STATE(2, 5);
+			end;
+	end;
+end;
+
+function TfmMainForm.CALC_ERROR(TRGT_ERRCODE: Integer): String;
+begin
+	try
+		Result := 'Last error code: ' + IntToStr(TRGT_ERRCODE) + cNewLine;
+		Result := Result + 'Last error: ';
+		case MyFiscDevice of
+			dt_DP55_KL: Result := Result + FPDP55_KL.GET_LASTERROR(0);
+			dt_FP2000_KL: Result := Result + FP2000_KL.GET_LASTERROR(0);
+			dt_FP60_KL: Result := Result + FP60_KL.GET_LASTERROR(0);
+			dt_FP_550_KL: Result := Result + FP550_KL.GET_LASTERROR(0);
+			dt_FP_1000_KL: Result := Result + FP1000_KL.GET_LASTERROR(0);
+			dt_FP_550D_KL: Result := Result + FP550D_KL.GET_LASTERROR(0);
+			dt_SK_31F_KL: Result := Result + SK_31F_KL.GET_LASTERROR(0);
+			dt_FMP10_KL: Result := Result + FMP10_KL.GET_LASTERROR(0);
+			dt_FP_750_KL: Result := Result + FP_705_KL.last_ErrorMessage;
+			dt_WP500_KL: Result := Result + WP_500_KL.last_ErrorMessage;
+		end;
+		PageControl1.ActivePage := ts_DEVICE_STATUS;
+	finally
+		CALC_SWITCHES;
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.CAN_OPEN: Boolean;
+var
+	FT_Opened: WideString;
+begin
+	Result := False;
+	TRANSTAT_MSG := '';
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			ADD_LOG('[CMD_76_0_0]: Проверка на статуса на транзакцията');
+			case MyFiscDevice of
+				dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_FP_750_KL: tmp_Int := 0; // FP_705_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+				dt_WP500_KL: tmp_Int := 0;  // FP_705_KL.CMD_76_0_0(FT_Opened, CURRENT_SALESCOUNT, LAST_AMOUNT, CURRENT_TENDER);
+			end;
+			if tmp_Int <> 0 then
+			begin
+				tmp_Str := CALC_ERROR(tmp_Int);
+				SHOW_MYALERT(tmp_Str);
+				if tmp_Int = -5 then Exit;
+			end
+			else
+			begin
+				case MyFiscDevice of
+					dt_FP_750_KL, //
+						dt_WP500_KL:
+						begin
+							case MyFiscDevice of
+								dt_FP_750_KL:
+									begin
+										FBON_OPENED := FP_705_KL.iSBit_OpenedReceipt_Fiscal;
+										SBON_OPENED := FP_705_KL.iSBit_OpenedReceipt_NonFiscal;
+									end;
+								dt_WP500_KL:
+									begin
+										FBON_OPENED := WP_500_KL.iSBit_OpenedReceipt_Fiscal;
+										SBON_OPENED := WP_500_KL.iSBit_OpenedReceipt_NonFiscal;
+									end;
+							end;
+
+							if (FBON_OPENED) or (SBON_OPENED) then
+							begin
+								TRANSTAT_MSG := '1. Има отворен бон и той е ';
+								if FBON_OPENED then TRANSTAT_MSG := TRANSTAT_MSG + 'фискален.' + cNewLine + cNewLine;
+								if SBON_OPENED then TRANSTAT_MSG := TRANSTAT_MSG + 'нефискален.' + cNewLine + cNewLine;
+							end
+							else
+							begin
+								Result := True;
+								TRANSTAT_MSG := 'Няма отворен бон.' + cNewLine;
+							end;
+						end;
+					else
+						begin
+							tmp_Int := StrToInt(FT_Opened);
+
+							CALC_SWITCHES;
+							case tmp_Int of
+								0:
+									begin
+										Result := True;
+										TRANSTAT_MSG := 'Няма отворен бон.' + cNewLine;
+									end;
+								1:
+									begin
+										TRANSTAT_MSG := '1. Има отворен бон и той е ';
+										if FBON_OPENED then TRANSTAT_MSG := TRANSTAT_MSG + 'фискален.' + cNewLine + cNewLine;
+										if SBON_OPENED then TRANSTAT_MSG := TRANSTAT_MSG + 'нефискален.' + cNewLine + cNewLine;
+									end;
+							end;
+							TRANSTAT_MSG := TRANSTAT_MSG + '2. Броят на продажбите регистрирани на текущия или на последния фискален бон: ' + cNewLine;
+							TRANSTAT_MSG := TRANSTAT_MSG + CURRENT_SALESCOUNT + cNewLine + cNewLine;
+							TRANSTAT_MSG := TRANSTAT_MSG + '3. Сумата от последния фискален бон: ' + cNewLine;
+							TRANSTAT_MSG := TRANSTAT_MSG + LAST_AMOUNT + cNewLine + cNewLine;
+							TRANSTAT_MSG := TRANSTAT_MSG + '4. Сумата платена на поредния или последен бон: ' + cNewLine;
+							TRANSTAT_MSG := TRANSTAT_MSG + CURRENT_TENDER + cNewLine;
+						end;
+				end;
+
+			end;
+		except
+			ShowMessage('TfmMainForm.CAN_OPEN:');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.EMERGENSY_SITUATION: Boolean;
+begin
+	Result := False;
+	try
+		if FBON_OPENED then Result := FEMERGENSY_SITUATION;
+		if SBON_OPENED then Result := SEMERGENSY_SITUATION;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.FEMERGENSY_SITUATION: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_60_0_0]: ОПИТ ЗА ОТКАЗВАНЕ(ПРЕКРАТЯВАНЕ) НА ФИСКАЛЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_60_0_0;
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_60_0_0;
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_60_0_0;
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_60_0_0;
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_60_0_0;
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_60_0_0;
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_60_0_0;
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_060(ErrorCode);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			// CURRENT_TENDER : WideString;
+			// LAST_AMOUNT : WideString;
+			// CURRENT_SALESCOUNT : WideString;
+			SHOW_MYALERT('CURRENT_TENDER: ' + CURRENT_TENDER);
+			SHOW_MYALERT('LAST_AMOUNT: ' + LAST_AMOUNT);
+			SHOW_MYALERT('CURRENT_SALESCOUNT: ' + CURRENT_SALESCOUNT);
+
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+		end
+		else
+		begin
+			Result := CAN_OPEN;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.SEMERGENSY_SITUATION: Boolean;
+var
+	AllReceipt: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_39_0_0]: ЗАТВАРЯНЕ НА СЛУЖЕБЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_39_0_0(AllReceipt);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_39_0_0(AllReceipt);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_39_0_0(AllReceipt);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_39_0_0(AllReceipt);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_039(ErrorCode, tmp_IAnswer1);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+		end
+		else
+		begin
+			Result := CAN_OPEN;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+procedure TfmMainForm.ADD_LOG(TRGT_LOG: String);
+begin
+	mem_LOG.Lines.Add(TRGT_LOG);
+end;
+
+function TfmMainForm.CHECK_AND_RESOLVE: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		if not CAN_OPEN then
+		begin
+			if TRANSTAT_MSG <> '' then
+			begin
+				tmp_Str := 'Внимание!' + cNewLine;
+				tmp_Str := tmp_Str + 'Статуса на фискалната транзакция е даден по-долу:' + cNewLine + cNewLine;
+				tmp_Str := tmp_Str + TRANSTAT_MSG;
+				SHOW_MYALERT(tmp_Str);
+			end;
+			tmp_Str := 'Желаете ли програмата да се опита да разреши ситуацията?';
+			if SHOW_MYQUESTION(tmp_Str) = IDYES then
+			begin
+				Result := EMERGENSY_SITUATION;
+				if not Result then
+				begin
+					tmp_Str := 'Фискалното устройство се намира в състояние, което тази програма не успява да разреши.';
+					SHOW_MYALERT(tmp_Str);
+					Exit;
+				end;
+			end
+			else Exit;
+		end
+		else Result := True;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.OPEN_NONFISCAL: Boolean;
+var
+	AllReceipt, ErrCode: WideString;
+begin
+	Result := False;
+	try
+		ADD_LOG('[CMD_38_0_0]: ОТВАРЯНЕ НА СЛУЖЕБЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_38_0_0(AllReceipt, ErrCode);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_38_0_0(AllReceipt);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_038(ErrorCode, tmp_IAnswer1);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else Result := True;
+	except
+		Result := False;
+	end;
+end;
+
+procedure TfmMainForm.ERROR_HANDLING;
+begin
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			mem_LOG.Clear;
+			if not CHECK_AND_RESOLVE then Exit;
+			if not OPEN_NONFISCAL then Exit;
+
+			tmp_Str := '';
+			tmp_Str := tmp_Str + 'Внимание!' + cNewLine;
+			tmp_Str := tmp_Str + 'Нарочно се опитваме да отворим нефискалния бон отново - целта ни е ';
+			tmp_Str := tmp_Str + 'да предизвикаме грешка.';
+			ADD_LOG(tmp_Str);
+			SHOW_MYINFO(tmp_Str);
+
+			if not OPEN_NONFISCAL then
+			begin
+				CHECK_AND_RESOLVE;
+			end;
+		except
+			SHOW_MYALERT('Exception in method TfmMainForm.ERROR_HANDLING.');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+procedure TfmMainForm.btn_EXECUTE_THISClick(Sender: TObject);
+begin
+	try
+		try
+			btn_EXECUTE_THIS.Enabled := False;
+			case cbx_TRGT_METHOD.ItemIndex of
+				0: REFRESH_SWITCHES;           // Опресняване на статуса
+				1: MAKE_FISCAL_TRANSACTION;    // Фискална бележка
+				2: MAKE_NONFISCAL_TRANSACTION; // Нефискална бележка
+				3: ERROR_HANDLING;             // Демонстриране на обработване на грешка
+				4: CHECK_AND_RESOLVE;          // Проверка на статуса на транзакцията и аварийно затваряне
+				5: INIT_SWITCHES_EX(1);        // Get status bytes and switches initialisation(Englis)
+				6: INIT_SWITCHES_EX(0);        // Получаване на статус байтовете и нициализация на информацията за състоянието им (Bulgarian)
+				7: ZX_REPORT('0');             // Z-отчет
+				8: ZX_REPORT('2');             // X-отчет
+				9: ZXDEP_REPORT('0');          // Z-отчет ДНЕВЕН ФИНАНСОВ ОТЧЕТ С ПЕЧАТ НА ДАННИ ПО ДЕПАРТАМЕНТИ
+				10: ZXDEP_REPORT('2');         // X-отчет ДНЕВЕН ФИНАНСОВ ОТЧЕТ С ПЕЧАТ НА ДАННИ ПО ДЕПАРТАМЕНТИ
+				11: CMD_70_0_0('1.00');        // Служебен внос
+				12: CMD_70_0_0('-1.00');       // Служебен износ
+				13: CMD_88_0_0;                // Получаване на информация за департамент
+				14: CMD_49_5_0;                // Продажба в департамент
+				15: CMD_71_0_0;                // Печат на диагностична информация
+			end;
+		except
+			SHOW_MYALERT('Exception in method TfmMainForm.btn_EXECUTE_THISClick.');
+		end;
+	finally
+		btn_EXECUTE_THIS.Enabled := True;
+	end;
+end;
+
+procedure TfmMainForm.ApplicationEvents1SettingChange(Sender: TObject; Flag: Integer; const Section: String; var Result: Integer);
+begin
+	FormatSettings.DateSeparator := '.';
+	FormatSettings.TimeSeparator := ':';
+	FormatSettings.DecimalSeparator := '.';
+	FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
+	FormatSettings.ShortTimeFormat := 'hh:mm:ss';
+end;
+
+procedure TfmMainForm.btn_KLENSUPPORTClick(Sender: TObject);
+begin
+	try
+		try
+			btn_KLENSUPPORT.Enabled := False;
+			case cbx_KLENCommands.ItemIndex of
+				0: CMD_119_0_0;   // Отпечатва отчет за валидността на всички SHA-1 контролни суми за Z-отчети, намерени в КЛЕН.
+				1: CMD_119_20_30; // Четене на КЛЕН от номер до номер (CMD_119_2_0 + CMD_119_3_0)
+				2: CMD_119_23_30; // Четене на КЛЕН от дата до дата (CMD_119_2_3 + CMD_119_3_0)
+				// 15: CMD_71_0_0;                // Печат на диагностична информация
+			end;
+		except
+			SHOW_MYALERT('Exception in method TfmMainForm.btn_KLENSUPPORTClick.');
+		end;
+	finally
+		btn_KLENSUPPORT.Enabled := True;
+	end;
+end;
+
+function TfmMainForm.MAKE_FISCAL_TRANSACTION: Boolean;
+
+begin
+	Result := False;
+	try
+		try
+			mem_LOG.Clear;
+
+			if not CHECK_AND_RESOLVE then Exit;
+			if not OPEN_FISCAL_BON then Exit;
+			if not SELL_SOMETHING then Exit;
+			if not PRINT_DELIMITER then Exit;
+
+			if not PRINT_FISCAL_TEXT('За нас е удоволствие, че') then Exit;
+			if not PRINT_FISCAL_TEXT('сте наш клиент и поради това') then Exit;
+			if not PRINT_FISCAL_TEXT('Ви правим отстъпка 98% :)') then Exit;
+			if not MAKE_SUBTOTAL(-98.00) then Exit;
+
+			if not PRINT_DELIMITER then Exit;
+			if not MAKE_TOTAL then Exit;
+
+			Result := CLOSE_FISCAL_BON;
+
+			if Result then
+			begin
+				if GET_LAST_DOCNUM then
+				begin
+					// for example:
+					// SAVE TO DATABASE
+				end;
+			end
+			else
+			begin
+				// for example:
+				// Do some interactive actions
+			end;
+		except
+			Result := False;
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.PRINT_NONFISCAL_TEXT(TRGT_TEXT: WideString): Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_42_0_0]: ПЕЧАТАНЕ НА СВОБОДЕН ТЕКСТ В СЛУЖЕБЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_42_0_0(TRGT_TEXT);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_042(TRGT_TEXT, ErrorCode);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CLOSE_NONFISCAL_BON: Boolean;
+var
+	AllReceipt: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_39_0_0]: ЗАТВАРЯНЕ НА СЛУЖЕБЕН БОН');
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_39_0_0(AllReceipt);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_39_0_0(AllReceipt);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_39_0_0(AllReceipt);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_39_0_0(AllReceipt);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_39_0_0(AllReceipt);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_039(ErrorCode, tmp_IAnswer1);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.MAKE_NONFISCAL_TRANSACTION: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			mem_LOG.Lines.Clear;
+			if not OPEN_NONFISCAL then Exit;
+			if not PRINT_NONFISCAL_TEXT('Пример за нефискален текст: [1]') then Exit;
+			if not PRINT_NONFISCAL_TEXT('Пример за нефискален текст: [2]') then Exit;
+			if not PRINT_NONFISCAL_TEXT('Пример за нефискален текст: [3]') then Exit;
+			if not CLOSE_NONFISCAL_BON then Exit;
+		except
+			SHOW_MYALERT('TfmMainForm.MAKE_NONFISCAL_TRANSACTION');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+procedure TfmMainForm.INIT_SWITCHES_EX(TRGT_LANG: Integer);
+
+	procedure SetNew_ChbxCaption(New_Caption: String; TRGT_CheckBox: TCheckBox);
+	var
+		CaptionWidth: Integer;
+	begin
+		try
+			try
+				if Canvas.Font <> TRGT_CheckBox.Font then Canvas.Font := TRGT_CheckBox.Font;
+				TRGT_CheckBox.Caption := New_Caption;
+				CaptionWidth := Canvas.TextWidth(TRGT_CheckBox.Caption);
+				TRGT_CheckBox.Width := CaptionWidth + 24;
+			except
+				// TODO : Exception handler
+			end;
+		finally
+			TRGT_CheckBox.Update;
+		end;
+	end;
+
+	procedure GET_DESCRIPTIONS;
+	var
+		i, j: Integer;
+
+		function GET_STAT_DESCR: String;
+		begin
+			case MyFiscDevice of
+				dt_DP55_KL: Result := FPDP55_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP2000_KL: Result := FP2000_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP60_KL: Result := FP60_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP_550_KL: Result := FP550_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP_550D_KL: Result := FP550D_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_SK_31F_KL: Result := SK_31F_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP_1000_KL: Result := FP1000_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FMP10_KL: Result := FMP10_KL.GET_STATUS_DESCRIPTIONEX(i, j, TRGT_LANG);
+				dt_FP_750_KL: Result := FP_705_KL.get_StatusBitDescription(i, j);
+			end;
+		end;
+
+		function GET_STAT_VALUE: Boolean;
+		begin
+			Result := False;
+			try
+				case MyFiscDevice of
+					dt_DP55_KL: Result := FPDP55_KL.GET_BIT_STATE(i, j);
+					dt_FP2000_KL: Result := FP2000_KL.GET_BIT_STATE(i, j);
+					dt_FP60_KL: Result := FP60_KL.GET_BIT_STATE(i, j);
+					dt_FP_550_KL: Result := FP550_KL.GET_BIT_STATE(i, j);
+					dt_FP_550D_KL: Result := FP550D_KL.GET_BIT_STATE(i, j);
+					dt_SK_31F_KL: Result := SK_31F_KL.GET_BIT_STATE(i, j);
+					dt_FP_1000_KL: Result := FP1000_KL.GET_BIT_STATE(i, j);
+					dt_FMP10_KL: Result := FMP10_KL.GET_BIT_STATE(i, j);
+					dt_FP_750_KL: Result := FP_705_KL.get_StatusBitState(i, j);
+				end;
+			except
+				Result := False;
+			end;
+		end;
+
+	begin
+		for i := 0 to 5 do
+		begin
+			case i of
+				0: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S0_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S0_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S0_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S0_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S0_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S0_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S0_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S0_7);
+						end;
+					end;
+				1: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S1_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S1_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S1_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S1_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S1_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S1_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S1_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S1_7);
+						end;
+					end;
+				2: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S2_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S2_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S2_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S2_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S2_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S2_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S2_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S2_7);
+						end;
+					end;
+				3: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S3_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S3_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S3_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S3_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S3_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S3_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S3_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S3_7);
+						end;
+					end;
+				4: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S4_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S4_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S4_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S4_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S4_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S4_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S4_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S4_7);
+						end;
+					end;
+				5: for j := 0 to 7 do
+					begin
+						tmp_Str := GET_STAT_DESCR;
+						tmp_Bol := GET_STAT_VALUE;
+						case j of
+							0: SetNew_ChbxCaption(tmp_Str, chbx_S5_0);
+							1: SetNew_ChbxCaption(tmp_Str, chbx_S5_1);
+							2: SetNew_ChbxCaption(tmp_Str, chbx_S5_2);
+							3: SetNew_ChbxCaption(tmp_Str, chbx_S5_3);
+							4: SetNew_ChbxCaption(tmp_Str, chbx_S5_4);
+							5: SetNew_ChbxCaption(tmp_Str, chbx_S5_5);
+							6: SetNew_ChbxCaption(tmp_Str, chbx_S5_6);
+							7: SetNew_ChbxCaption(tmp_Str, chbx_S5_7);
+						end;
+					end;
+			end;
+		end;
+	end;
+
+begin
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			GET_DESCRIPTIONS;
+			if not REFRESH_SWITCHES then Exit;
+
+			CHECK_AND_RESOLVE;
+
+			PageControl1.ActivePage := ts_DEVICE_STATUS;
+			ts_DEVICE_STATUS.TabVisible := True;
+			if MyFiscDevice = dt_FMP10_KL then ts_KLEN.TabVisible := True;
+
+		except
+			// TODO : Exception handler
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.ZX_REPORT(TRGT_OPTION: WideString): Boolean;
+var
+	Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			Option := TRGT_OPTION;
+			N := '';
+			// Наличието на този символ забранява изчистването на натрупаните данни по
+			// оператори при отчет с нулиране.
+			// N:='N';
+
+			mem_LOG.Lines.Clear;
+			ADD_LOG('[CMD_69_0_0]: Z-ОТЧЕТ');
+			case MyFiscDevice of
+				dt_DP500PLUS_KL, dt_DP55_KL, dt_MP55_KL, dt_DP_50_KL: tmp_Int := FPDP55_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP1000_DV, dt_FP300_DV, dt_FP550_DV, dt_FP60_DV:
+					begin
+						//
+					end;
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_69_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_750_KL: tmp_Int := FP_705_KL.command_069(Option, ErrorCode, tmp_IAnswer1, tax1_Sum, tax2_Sum, tax3_Sum, tax4_Sum, tax5_Sum, tax6_Sum, tax7_Sum, tax8_Sum);
+			end;
+
+			if tmp_Int <> 0 then
+			begin
+				tmp_Str := CALC_ERROR(tmp_Int);
+				SHOW_MYALERT(tmp_Str);
+			end
+		except
+			SHOW_MYALERT('TfmMainForm.ZX_REPORT');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.ZXDEP_REPORT(TRGT_OPTION: WideString): Boolean;
+var
+	Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		try
+			Option := TRGT_OPTION;
+			N := '';
+			// Наличието на този символ забранява изчистването на натрупаните данни по
+			// оператори при отчет с нулиране.
+			// N:='N';
+
+			mem_LOG.Lines.Clear;
+			ADD_LOG('[CMD_117_0_0]: Z-ОТЧЕТ');
+			case MyFiscDevice of
+				dt_DP500PLUS_KL, dt_DP55_KL, dt_MP55_KL, dt_DP_50_KL: tmp_Int := FPDP55_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+
+				dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_550_KL: tmp_Int := FP550_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP60_KL: tmp_Int := FP60_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_FP1000_DV, dt_FP300_DV, dt_FP550_DV, dt_FP60_DV:
+					begin
+						//
+					end;
+				dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+				dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_117_0_0(Option, N, Closure, FM_Total, TotA, TotB, TotC, TotD, TotE, TotF, TotG, TotH);
+			end;
+
+			if tmp_Int <> 0 then
+			begin
+				tmp_Str := CALC_ERROR(tmp_Int);
+				SHOW_MYALERT(tmp_Str);
+			end
+		except
+			SHOW_MYALERT('TfmMainForm.ZXDEP_REPORT');
+		end;
+	finally
+		fmMainForm.Update;
+	end;
+end;
+
+function TfmMainForm.CMD_70_0_0(Amount: WideString): Integer;
+var
+	ExitCode: WideString;
+	CashSum : WideString;
+	ServIn  : WideString;
+	ServOut : WideString;
+begin
+	ExitCode := '';
+	CashSum := '';
+	ServIn := '';
+	ServOut := '';
+	Result := -4;
+	try
+		if StrToFloat(Amount) > 0.00 then ADD_LOG('[CMD_70_0_0]: СЛУЖЕБЕН ВНОС НА ПАРИ: ' + Amount)
+		else ADD_LOG('[CMD_70_0_0]: СЛУЖЕБЕН ИЗНОС НА ПАРИ: ' + Amount);
+		case MyFiscDevice of
+			dt_DP55_KL: Result := FPDP55_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FP2000_KL: Result := FP2000_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FP60_KL: Result := FP60_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FP_550_KL: Result := FP550_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FP_550D_KL: Result := FP550D_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_SK_31F_KL: Result := SK_31F_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FMP10_KL: Result := FMP10_KL.CMD_70_0_0(Amount, ExitCode, CashSum, ServIn, ServOut);
+			dt_FP_750_KL:
+				begin
+					tmp_Int := FP_705_KL.command_070(0, '0.01', ErrorCode, tmp_WAnswer1, tmp_WAnswer2, tmp_WAnswer3);
+				end;
+		end;
+		tmp_Str := '';
+		if Result = 0 then
+		begin
+			tmp_Str := '';
+			tmp_Str := tmp_Str + 'Сумата за регистриране:' + Amount + cNewLine;
+			if ExitCode = 'P' then
+			begin
+				tmp_Str := tmp_Str + 'Заявката е изпълнена. ' + cNewLine;
+				tmp_Str := tmp_Str + 'Ако заявената сума е ненулева, принтерът отпечатва ';
+				tmp_Str := tmp_Str + 'служебен бон за регистриране на операцията.' + cNewLine;
+			end;
+			tmp_Str := tmp_Str + '' + cNewLine;
+			tmp_Str := tmp_Str + 'Касова наличност: ' + CashSum + cNewLine;
+			tmp_Str := tmp_Str + 'Освен от тази команда сумата нараства и при всяко плащане в брой.' + cNewLine;
+			tmp_Str := tmp_Str + '' + cNewLine;
+			tmp_Str := tmp_Str + 'Сумата от всички команди "Служебен внос":' + ServIn + cNewLine;
+			tmp_Str := tmp_Str + '' + cNewLine;
+			tmp_Str := tmp_Str + 'Сумата от всички команди "Служебен износ":' + ServOut + cNewLine;
+			tmp_Str := tmp_Str + '' + cNewLine;
+			SHOW_MYINFO(tmp_Str);
+		end;
+	except
+		SHOW_MYALERT('Exception in CMD_70_0_0 method');
+	end;
+end;
+
+function TfmMainForm.CMD_71_0_0: Boolean;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_71_0_0;
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_71_0_0;
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_71_0_0;
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_71_0_0;
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_71_0_0;
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_71_0_0;
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_71_0_0;
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_071(0, ErrorCode);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			CALC_SWITCHES;
+			Result := True;
+
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+procedure TfmMainForm.cbx_PrinterModelChange(Sender: TObject);
+begin
+	case cbx_PrinterModel.ItemIndex of
+		2:
+			begin
+				lb_PORT.Enabled := True;
+				ed_PORT.Enabled := True;
+				lb_IPADDR.Enabled := True;
+				ed_IPADDR.Enabled := True;
+
+				lb_COMPORT.Enabled := False;
+				cbx_COMPORT.Enabled := False;
+				lb_Baudrate.Enabled := False;
+				cbx_Baudrate.Enabled := False;
+			end;
+		else
+			begin
+				lb_PORT.Enabled := False;
+				ed_PORT.Enabled := False;
+				lb_IPADDR.Enabled := False;
+				ed_IPADDR.Enabled := False;
+
+				lb_COMPORT.Enabled := True;
+				cbx_COMPORT.Enabled := True;
+				lb_Baudrate.Enabled := True;
+				cbx_Baudrate.Enabled := True;
+			end;
+	end;
+end;
+
+function TfmMainForm.GET_LAST_DOCNUM: Boolean;
+var
+	DocNum: WideString;
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_113_0_0]: ПОЛУЧАВАНЕ НОМЕРА НА ПОСЛЕДНИЯ ОТПЕЧАТАН ДОКУМЕНТ');
+		DocNum := '';
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_113_0_0(DocNum);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_113_0_0(DocNum);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_113_0_0(DocNum);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_113_0_0(DocNum);
+			dt_FP_1000_KL: tmp_Int := FP1000_KL.CMD_113_0_0(DocNum);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_113_0_0(DocNum);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_113_0_0(DocNum);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_113_0_0(DocNum);
+
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			ADD_LOG('НОМЕРА НА ПОСЛЕДНИЯ ОТПЕЧАТАН ДОКУМЕНТ: ' + DocNum);
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_88_0_0: Boolean;
+var
+	Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2: WideString;
+begin
+	// Dept		Номер на департамент. Цяло число от 1 до 60.
+	// При стойност 0 на департамента се връщат данните за продабите, извършени без посочване на департамент.
+	// В този случай липсва данъчната група.
+	// ExitCode	Един байт с възможни стойности:
+	// 'P'		Департаментът е програмиран. Следват описаните по-долу данни за него.
+	// 'F'		Департаментът не е програмиран. Няма данни за него.
+	// TaxGr		Данъчна група на департамента.
+	// RecSales	Брой продажби за департамента в бона.
+	// RecSum		Натрупана сума за текущия или последния фискален бон за съответния департамент.
+	// Плаващо число с два десетични знака.
+	// TotSales	Брой продажби за департамента за деня.
+	// TotSum		Натрупана сума за деня за съответния департамент. Плаващо число с два десетични знака.
+	// Line1		Име или поясняващ текст за департамента. До 28 символа.
+	// Line2		Име или поясняващ текст за департамента - втори ред. До 34 символа.
+
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		ADD_LOG('[CMD_88_0_0]: ПОЛУЧАВАНЕ ДАННИ ЗА НАТРУПАНИТЕ СУМИ ЗА ДЕПАРТАМЕНТ');
+
+		if MyFiscDevice = dt_FP_550D_KL then Dept := '1200'
+		else Dept := '1';
+
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_88_0_0(Dept, ExitCode, TaxGr, RecSales, RecSum, TotSales, TotSum, Line1, Line2);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_088(ErrorCode, tmp_WAnswer1, tmp_WAnswer2, tmp_WAnswer3, tmp_WAnswer4, tmp_WAnswer5);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			tmp_Str := '';
+			tmp_Str := tmp_Str + 'Номер на департамент: ' + Dept + cNewLine;
+			tmp_Str := tmp_Str + 'ExitCode: ' + ExitCode + cNewLine;
+			if ExitCode = 'F' then
+			begin
+				tmp_Str := tmp_Str + 'Департаментът не е програмиран. Няма данни за него.' + cNewLine;
+			end
+			else
+			begin
+				tmp_Str := tmp_Str + 'Данъчна група на департамента: ' + TaxGr + cNewLine;
+				tmp_Str := tmp_Str + 'Брой продажби за департамента в бона: ' + RecSales + cNewLine;
+				tmp_Str := tmp_Str + 'Натрупана сума за текущия или последния фискален бон за съответния департамент: ' + RecSum + cNewLine;
+				tmp_Str := tmp_Str + 'Брой продажби за департамента за деня: ' + TotSales + cNewLine;
+				tmp_Str := tmp_Str + 'Натрупана сума за деня за съответния департамент: ' + TotSum + cNewLine;
+				tmp_Str := tmp_Str + 'Име или поясняващ текст за департамента(Line1): ' + Line1 + cNewLine;
+				tmp_Str := tmp_Str + 'Име или поясняващ текст за департамента(Line2): ' + Line2 + cNewLine;
+			end;
+			ShowMessage(tmp_Str);
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+function TfmMainForm.CMD_49_5_0: Boolean;
+var
+	L1   : WideString;
+	L2   : WideString;
+	Dept : WideString;
+	Price: WideString;
+	Qwan : WideString;
+
+begin
+	Result := False;
+	if not CHECK_ASSIGNED then Exit;
+	try
+		if not OPEN_FISCAL_BON then Exit;
+
+		if not PRINT_FISCAL_TEXT('Касиер:') then Exit;
+		if not PRINT_FISCAL_TEXT('1 : АДМИН') then Exit;
+		if not PRINT_FISCAL_TEXT('АБ.НОМЕР 5094636') then Exit;
+		if not PRINT_FISCAL_TEXT('ВАСИЛ ГРИГОРОВ АЛЕКСИЕВ') then Exit;
+
+		ADD_LOG('[CMD_49_5_0]: ПРОДАЖБА В ДЕПАРТАМЕНТ');
+		L1 := 'Вода;';
+		L2 := 'Софийска вода АД';
+		Dept := '8';
+		Price := '0.7';
+		Qwan := '1';
+
+		case MyFiscDevice of
+			dt_DP55_KL: tmp_Int := FPDP55_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FP2000_KL: tmp_Int := FP2000_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FP60_KL: tmp_Int := FP60_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FP_550_KL: tmp_Int := FP550_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FP_550D_KL: tmp_Int := FP550D_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_SK_31F_KL: tmp_Int := SK_31F_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FMP10_KL: tmp_Int := FMP10_KL.CMD_49_5_0(L1, L2, Dept, Price, Qwan);
+			dt_FP_750_KL: tmp_Int := FP_705_KL.command_049('Plu name', 2, '0.01', '1.245', 0, '0.00', 0, ErrorCode, tmp_IAnswer1);
+		end;
+		if tmp_Int <> 0 then
+		begin
+			tmp_Str := CALC_ERROR(tmp_Int);
+			SHOW_MYALERT(tmp_Str);
+			// 1. Analize this...
+			// 2. status bytes or/and CMD_76_0_0
+			// 3. programatically do something or...
+			// 4. ...call of administrator
+			// ...
+		end
+		else
+		begin
+			if not MAKE_SUBTOTAL(-99.00) then Exit;
+			if not MAKE_TOTAL then Exit;
+			if not CLOSE_FISCAL_BON then Exit;
+
+			Result := True;
+			CALC_SWITCHES;
+		end;
+	except
+		Result := False;
+	end;
+end;
+
+end.

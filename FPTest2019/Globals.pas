@@ -23,6 +23,7 @@ type
 
     FIsLoggedUser: Boolean;
     FUserGID: Integer;
+    FUserID: Integer;
     FUserName: String;
     FUserPassword: String;
 
@@ -101,6 +102,7 @@ type
     property FiscalDeviceLineWidth: Integer read FFiscalDeviceLineWidth write FFiscalDeviceLineWidth;
 
     property IsLoggedUser: Boolean read FIsLoggedUser write FIsLoggedUser;
+    property UserID: Integer read FUserID write FUserID;
     property UserGID: Integer read FUserGID write FUserGID;
     property UserName: String read FUserName write FUserName;
     property UserPassword: String read FUserPassword write FUserPassword;
@@ -520,6 +522,7 @@ begin
 
   FIsLoggedUser := False;
   FUserGID := 1;
+  FUserID := 1;
   FUserName := ' ¿—»≈– 1';
   FUserPassword := '0000';
 

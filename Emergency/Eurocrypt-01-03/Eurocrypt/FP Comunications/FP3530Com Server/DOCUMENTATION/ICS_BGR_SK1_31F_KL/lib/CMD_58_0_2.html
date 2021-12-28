@@ -1,0 +1,221 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_58_0_2</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>3Ah (58)	РЕГИСТРИРАНЕ (ПРОДАЖБА) НА АРТИКУЛ
+
+
+	Област за данни:	
+			Sign
+			PLU
+			Dept
+			Qwan
+	Отговор:	
+			Няма данни
+
+	Продажбата става с показване на клиентския дисплей. 
+	Ако дължината на името на артикула е повече от 20, символите след 20-я се отрязват.
+
+	Sign	Незадължителен параметър - един байт със стойност '-'.
+	PLU	Това е номер на артикула. Цяло число от 1 до 999999999 (до 9 цифри).
+	Dept	Номер на департамент. Цяло число от 1 до 60 включително. 
+	Qwan	Количеството на стоката. Дължина до 8 значещи цифри (не повече от 3 след десетичната точка). 
+		Произведението (Единична цена)*Qwan се закръгля от принтера до зададения брой десетични знаци и също не трябва да надхвърля 8 значещи цифри.
+
+
+
+	ФП извършва следните действия:
+	•	Прочита се от таблицата с артикулите името, цената и данъчната група на стоката.
+	•	Ако продажбата е по департамент и е разрешено с команда 43, подкоманда 'N', отпечатва се името на департамента.
+	•	Отпечатва името на артикула, посоченото количество и единичната цена. 
+		На втори ред се отпечатва получената цена заедно с буквата, определяща данъчната група. 
+		Актуализират се регистрите за натрупани суми и количества на артикули. 
+		Ако с команда 43h е зададено форматиране на текста тип фактура, то името на стоката, единичната цена, количеството и цената се отпечатват 
+		на отделни редове.
+	•	Цената на стоката се прибавя към натрупаните суми в регистрите в оперативната памет. 
+		В случай на препълване се установяват съответните битове от статус полето. 
+	•	Ако има отстъпка или надбавка, тя се отпечатва на отделен ред и се добавя в предвидени за това регистри на принтера. 
+		Стойностите за целия ден се отпечатват при дневния финансов отчет.
+	•	Ако е указан департамент, натрупаната стойност се прибавя към него. Надбавките и отстъпките, ако има такива, се отчитат.
+
+	Командата няма да бъде изпълнена успешно, ако:
+	•	Не програмиран артикул с посочения номер.
+	•	Не е отворен фискален бон.
+	•	Вече са направени максималния брой продажби за един бон (512).
+	•	Командата (35h) е изпълнена успешно.
+	•	Сумата по някоя от данъчните групи става отрицателна.
+	•	Сумата от надбавки или отстъпки в рамките на бона става отрицателна.
+	•	КЛЕН е пълна.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Sign</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Sign	Незадължителен параметър - един байт със стойност '-'.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">PLU</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>PLU	Това е номер на артикула. Цяло число от 1 до 999999999 (до 9 цифри).</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10510</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10512</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10511</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Dept</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Dept	Номер на департамент. Цяло число от 1 до 60 включително. </pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10510</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10512</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10511</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Qwan</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Qwan
+
+Количеството на стоката. Дължина до 8 значещи цифри (не повече от 3 след десетичната точка). 
+Произведението (Единична цена)*Qwan се закръгля от принтера до зададения брой десетични 
+знаци и също не трябва да надхвърля 8 значещи цифри.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10505</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

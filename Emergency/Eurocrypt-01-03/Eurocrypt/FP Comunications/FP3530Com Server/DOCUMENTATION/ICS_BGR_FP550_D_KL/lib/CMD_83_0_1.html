@@ -1,0 +1,417 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_83_0_1</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>53h (83)	УСТАНОВЯВАНЕ НА ДЕСЕТИЧНИ ЗНАЦИ, ВАЛУТА И ДАНЪЧНИТЕ СТАВКИ
+
+	Област за данни:	Няма.
+	Отговор:	
+			OUTPUT_Multiplier
+			OUTPUT_Decimals
+			OUTPUT_Currency
+			OUTPUT_EnabledT
+			OUTPUT_TaxA
+			OUTPUT_TaxB
+			OUTPUT_TaxC
+			OUTPUT_TaxD
+			OUTPUT_TaxE
+			OUTPUT_TaxF
+			OUTPUT_TaxG
+			OUTPUT_TaxH
+
+	Multiplier		Множител - между 0 и 3 и показва степента на 10 преди да се умножи с входното или изходното число. 
+			В момента е деактивиран и не се използува.
+	Decimals		Това е един байт със стойност между 0 и 2 и показва мястото където да се сложи десетичната запетая.
+	Currency		Името на валутата. До 6 байта.
+	EnabledT		8 байта със възможна стойност '0' или '1', определящи дали съответната данъчна група е забранена ('0') или разрешена ('1').
+	TaxX		Стойността на данъчните ставки.
+
+Ако един от параметрите трябва да бъде указан, то тогава и останалите трябва да се зададат.
+Установяването на нови данъчни ставки е разрешено само преди издаването на първия клиентски фискален бон за деня.
+Преди фискализация данните от командата се пазят само в оперативната памет и могат да се променят неограничен брой пъти.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">OUTPUT_Multiplier</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_Multiplier	
+
+Множител - между 0 и 3 и показва степента на 10 преди да се умножи с входното или изходното число. 
+В момента е деактивиран и не се използува.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10515</td>
+				<td class="VerificationType">Проверка дали изходния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_Decimals</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_Decimals
+
+Това е един байт със стойност между 0 и 2 и показва мястото където да се сложи десетичната запетая.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10515</td>
+				<td class="VerificationType">Проверка дали изходния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_Currency</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_Currency
+
+Името на валутата. До 6 байта.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_EnabledT</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_EnabledT
+
+8 байта със възможна стойност '0' или '1', определящи дали съответната данъчна група е забранена ('0') или разрешена ('1').</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxA</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxA	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxB</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxB	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxC</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxC	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxD</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxD	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxE</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxE	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxF</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxF	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxG</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxG	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OUTPUT_TaxH</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OUTPUT_TaxH	Стойността на данъчната ставка.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

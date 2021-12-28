@@ -1,0 +1,376 @@
+unit Interfaces.SaleRecords;
+
+interface
+
+type
+  TSaleRecord = record
+    ///<sumarry>номер на фискалното устройство</summary>
+    FiscalDeviceID: String;
+
+    ///<sumarry>номер на оператор</summary>
+    UserID: String;
+
+    ///<sumarry>пореден номер на продажбата</summary>
+    SaleID: String;
+
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    SaleUniqueID: String;
+
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    OperationID: String;
+
+    ///<sumarry>код на търговски обект</summary>
+    StoreID: String;
+
+    ///<sumarry>наименование на търговски обект</summary>
+    StoreName: String;
+
+    ///<sumarry>дата на откриване на продажбата</summary>
+    CreatedDate: String;
+
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    CreatedTime: String;
+
+    ///<sumarry>код на работно място</summary>
+    WorkstationID: String;
+
+    ///<sumarry>обща сума на продажбата - без ДДС, в лв.</summary>
+    TotalBase: String;
+
+    ///<summary>отстъпка - в лв.</summary>
+    Discount: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    TotalVAT: String;
+
+    ///<summary>дължима сума по продажбата - в лв.</summary>
+    Due: String;
+
+    ///<sumarry>сума платена в брой в лв.</summary>
+    CashPayment: String;
+
+    ///<sumarry>сума платена с ваучер в лв.</summary>
+    VoucherPayment: String;
+
+    ///<sumarry>сума платена с карта в лв.</summary>
+    CardPayment: String;
+
+    ///<sumarry>върнато ресто в лв.</summary>
+    Returned: String;
+
+    ///<sumarry>фактура за продажбата - номер (ако е издадена фактура и в софтуера е налична информация)</summary>
+    InvoiceID: String;
+
+    ///<sumarry>фактура за продажбата - дата (ако е издадена фактура и в софтуера е налична информация)</summary>
+    InvoiceDate: String;
+
+    ///<sumarry>дата на приключване на продажбата</summary>
+    CompletedDate: String;
+
+    ///<sumarry>време на приключване на продажбата (час, минута, секунда)</summary>
+    CompletedTime: String;
+
+    ///<sumarry>клиент код (при наличие на въведена информация)</summary>
+    ClientID: String;
+
+    ///<sumarry>клиент име (при наличие на въведена информация)</summary>
+    ClientName: String;
+
+    ///<sumarry>клиент VIP статус (при наличие на въведена информация)</summary>
+    ClientVIPStatus: String;
+
+    ///<sumarry>клиент надценка над доставни цени</summary>
+    ClientSurcharge: String;
+
+    ///<sumarry>етап на обработка на продажбата</summary>
+    Stage: String;
+  end;
+
+  ///<sumarry>Таблица - Данни за плащанията по продажбите</summary>
+  TSalePaymentRecord = record
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    SaleUniqueID: String;
+
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    OperationID: String;
+
+    ///<sumarry>дата на откриване на продажбата</summary>
+    CreatedDate: String;
+
+    ///<sumarry>дата на приключване на продажбата</summary>
+    CompletedDate: String;
+
+    ///<sumarry>дата на плащане</summary>
+    PaymentDate: String;
+
+    ///<sumarry>номер на оператор</summary>
+    UserID: String;
+
+    ///<sumarry>номер на фискалното устройство</summary>
+    FiscalDeviceID: String;
+
+    ///<sumarry>-	платена сума без ДДС - в лв.</summary>
+    PaymentBase: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    PaymentVAT: String;
+
+    ///<sumarry>-	вид на плащането</summary>
+    PaymentType: String;
+  end;
+
+  ///<sumarry>Таблица - Детайлни данни за продажбите</summary>
+  TSaleDetailRecord = record
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    SaleUniqueID: String;
+
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    OperationID: String;
+
+    ///<sumarry>дата на откриване на продажбата</summary>
+    CreatedDate: String;
+
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    CreatedTime: String;
+
+    ///<sumarry>дата на продажбата</summary>
+    SaleDate: String;
+
+    ///<sumarry>време на продажбата (час, минута, секунда)</summary>
+    SaleTime: String;
+
+    ///<sumarry>номер на оператор</summary>
+    UserID: String;
+
+    ///<sumarry>въведен текст за откриване на стоката/услугата</summary>
+    Typed: String;
+
+    ///<sumarry>код на стоката/услугата</summary>
+    ItemID: Integer;
+
+    ///<sumarry>баркод на стоката/услугата</summary>
+    BarCode: String;
+
+    ///<sumarry>основно наименование на стоката/услугата</summary>
+    BaseItemName: String;
+
+    ///<sumarry>коефициент количество за групажни стоки</summary>
+    PackCoeff: Double;
+
+    ///<sumarry>наименование на стоката/услугата</summary>
+    ItemName: String;
+
+    ///<sumarry>мярка</summary>
+    Measure: String;
+
+    ///<sumarry>количество</summary>
+    Quantity: Double;
+
+    ///<sumarry>доставна цена - с ДДС в лв.</summary>
+    VendorPrice: Double;
+
+    ///<sumarry>процент надценка над доставната цена (за VIP клиенти)</summary>
+    ClientSurcharge: Double;
+
+    ///<sumarry>клиентска цена - с ДДС в лв.</summary>
+    ClientPrice: Double;
+
+    ///<sumarry>процент отстъпка за групажни стоки</summary>
+    PackDiscount: Double;
+
+    ///<sumarry>единична цена (без отстъпка) - без ДДС, в лв.</summary>
+    ClientPriceBase: Double;
+
+    ///<sumarry>продажна цена (с отстъпка) - с ДДС, в лв.</summary>
+    Price: Double;
+
+    ///<sumarry>отстъпка (сума) - в лв.</summary>
+    DiscountValue: Double;
+
+    ///<sumarry>вид изменение на основната цена (0 - няма, 4 - отстъпка сума)</summary>
+    DiscountType: String;
+
+    ///<sumarry>ДДС ставка</summary>
+    VATRate: Double;
+
+    ///<sumarry>обща сума - без ДДС, в лв.</summary>
+    TotalBase: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    TotalVAT: String;
+
+    ///<sumarry>обща сума - в лв.</summary>
+    Total: String;
+
+    ///<sumarry>дали продажбата на тази стока е вече анулирана</summary>
+    IsCancelled: String;
+  end;
+
+  ///<sumarry>Таблица - Анулирани продажби</summary>
+  TSaleCancellationRecord = record
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    SaleUniqueID: String;
+
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    OperationID: String;
+
+    ///<sumarry>дата на откриване на продажбата</summary>
+    CreatedDate: String;
+
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    CreatedTime: String;
+
+    ///<sumarry>дата на анулирането на продажбата на стока/услуга</summary>
+    CancellationDate: String;
+
+    ///<sumarry>време на анулирането на продажбата  на стока/услуга (час, минута, секунда)</summary>
+    CancellationTime: String;
+
+    ///<sumarry>номер на оператор</summary>
+    UserID: String;
+
+    ///<sumarry>код на анулираната стока/услуга</summary>
+    ItemID: Integer;
+
+    ///<sumarry>баркод на анулираната стока/услуга</summary>
+    BarCode: String;
+
+    ///<sumarry>основно наименование на анулираната стока/услуга</summary>
+    BaseItemName: String;
+
+    ///<sumarry>коефициент количество за групажни стоки</summary>
+    PackCoeff: Double;
+
+    ///<sumarry>наименование на анулираната стока/услуга</summary>
+    ItemName: String;
+
+    ///<sumarry>мярка</summary>
+    Measure: String;
+
+    ///<sumarry>количество</summary>
+    Quantity: Double;
+
+    ///<sumarry>доставна цена - с ДДС в лв.</summary>
+    VendorPrice: Double;
+
+    ///<sumarry>процент надценка над доставната цена (за VIP клиенти)</summary>
+    ClientSurcharge: Double;
+
+    ///<sumarry>клиентска цена - с ДДС в лв.</summary>
+    ClientPrice: Double;
+
+    ///<sumarry>процент отстъпка за групажни стоки</summary>
+    PackDiscount: Double;
+
+    ///<sumarry>единична цена (без отстъпка) - без ДДС, в лв.</summary>
+    ClientPriceBase: Double;
+
+    ///<sumarry>продажна цена (с отстъпка) - с ДДС, в лв.</summary>
+    Price: Double;
+
+    ///<sumarry>отстъпка (сума) - в лв.</summary>
+    DiscountValue: Double;
+
+    ///<sumarry>вид изменение на основната цена (0 - няма, 4 - отстъпка сума)</summary>
+    DiscountType: String;
+
+    ///<sumarry>ДДС ставка</summary>
+    VATRate: Double;
+
+    ///<sumarry>обща сума - без ДДС, в лв.</summary>
+    TotalBase: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    TotalVAT: String;
+
+    ///<sumarry>обща сума - в лв.</summary>
+    Total: String;
+  end;
+
+  ///<sumarry>Таблица - Сторнирани продажби</summary>
+  TSaleReversalRecord = record
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    SaleUniqueID: String;
+
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    OperationID: String;
+
+    ///<sumarry>дата на приключване на продажбата</summary>
+    CompletedDate: String;
+
+    ///<sumarry>време на приключване на продажбата (час, минута, секунда)</summary>
+    CompletedTime: String;
+
+    ///<sumarry>дата на сторниране на продажбата</summary>
+    ReversalDate: String;
+
+    ///<sumarry>време на сторниране на продажбата (час, минута, секунда)</summary>
+    ReversalTime: String;
+
+    ///<sumarry>номер на оператор, извършил сторнирането.</summary>
+    UserID: String;
+
+    ///<sumarry>номер на фискалното устройство, на което е издаден Сторно-ФБ</summary>
+    FiscalDeviceID: String;
+
+    ///<sumarry>код на анулираната стока/услуга</summary>
+    ItemID: Integer;
+
+    ///<sumarry>баркод на анулираната стока/услуга</summary>
+    BarCode: String;
+
+    ///<sumarry>основно наименование на анулираната стока/услуга</summary>
+    BaseItemName: String;
+
+    ///<sumarry>коефициент количество за групажни стоки</summary>
+    PackCoeff: Double;
+
+    ///<sumarry>наименование на анулираната стока/услуга</summary>
+    ItemName: String;
+
+    ///<sumarry>мярка</summary>
+    Measure: String;
+
+    ///<sumarry>количество</summary>
+    Quantity: Double;
+
+    ///<sumarry>доставна цена - с ДДС в лв.</summary>
+    VendorPrice: Double;
+
+    ///<sumarry>процент надценка над доставната цена (за VIP клиенти)</summary>
+    ClientSurcharge: Double;
+
+    ///<sumarry>клиентска цена - с ДДС в лв.</summary>
+    ClientPrice: Double;
+
+    ///<sumarry>процент отстъпка за групажни стоки</summary>
+    PackDiscount: Double;
+
+    ///<sumarry>единична цена (без отстъпка) - без ДДС, в лв.</summary>
+    ClientPriceBase: Double;
+
+    ///<sumarry>продажна цена (с отстъпка) - с ДДС, в лв.</summary>
+    Price: Double;
+
+    ///<sumarry>отстъпка (сума) - в лв.</summary>
+    DiscountValue: Double;
+
+    ///<sumarry>вид изменение на основната цена (0 - няма, 4 - отстъпка сума)</summary>
+    DiscountType: String;
+
+    ///<sumarry>ДДС ставка</summary>
+    VATRate: Double;
+
+    ///<sumarry>обща сума - без ДДС, в лв.</summary>
+    TotalBase: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    TotalVAT: String;
+
+    ///<sumarry>обща сума - в лв.</summary>
+    Total: String;
+  end;
+
+implementation
+
+end.

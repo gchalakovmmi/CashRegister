@@ -1,0 +1,417 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_107_5_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>6Bh (107)	ДЕФИНИРАНЕ И ЧЕТЕНЕ НА АРТИКУЛИ
+
+
+
+	Входни данни:	
+			PLU
+	Отговор:	
+			ErrorCode
+			PLU
+			TaxGr
+			Group
+			SPrice
+			Total
+			Sold
+			Available
+			ItemName
+
+
+
+	ErrorCode	Един байт, показващ резултата от операцията, със значение:
+			•	'P	Командата е успешна.
+			•	'F'	Командата е неуспешна.
+
+	ANSWER_PLU	Номер на артикула. Между 1 и 999999999.
+	TaxGr		Данъчна група. Един байт.
+	Group		Стокова група. От 1 до 99.
+	SPrice		Единична цена. 
+			Плаващо число с десетични знаци текущите за принтера.
+	Total		Натрупана сума за дадения артикул.
+	Sold		Продадено количество. Плаващо число с 3 десетични знака.
+	Available		Налично количество. Плаващо число с 3 десетични знака.
+	ItemName		Име на артикула. До 36 байта.
+
+
+Забележка:
+
+Reading Item data
+При ненамерен артикул се връща един байт 'F'.
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">PLU</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>PLU	Номер на артикула. Между 1 и 999999999.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10510</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10511</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10512</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ErrorCode</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ErrorCode
+
+Един байт, показващ резултата от операцията, със значение:
+	•	'P	Командата е успешна.
+	•	'F'	Командата е неуспешна.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10515</td>
+				<td class="VerificationType">Проверка дали изходния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ANSWER_PLU</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ANSWER_PLU	Номер на артикула. Между 1 и 999999999.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10522</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TaxGr</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TaxGr		Данъчна група. Един байт.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Group</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Group		Стокова група. От 1 до 99.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10514</td>
+				<td class="VerificationType">Проверка за превишаване на долна граница на дължината на изходния параметър.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10522</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">SPrice</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>SPrice		
+
+Единична цена. 
+Плаващо число с десетични знаци текущите за принтера.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Total</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Total		Натрупана сума за дадения артикул.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Sold</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Sold		Продадено количество. Плаващо число с 3 десетични знака.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Available</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Available		Налично количество. Плаващо число с 3 десетични знака.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ItemName</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ItemName		Име на артикула. До 36 байта.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

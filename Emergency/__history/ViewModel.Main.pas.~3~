@@ -1,0 +1,207 @@
+﻿unit ViewModel.Main;
+
+interface
+
+uses
+  Interfaces.ViewModel.Main;
+
+  function CreateViewModelMain: IViewModelMain;
+
+implementation
+
+uses
+  System.SysUtils,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+
+  Interfaces.Model.Main,
+  Model.Main;
+
+type
+  TViewModelMain = class(TInterfacedObject, IViewModelMain)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure OnTimer(Sender: TObject);
+
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModel: IModelMain;
+    FObserver: IObserver;
+    FObservable: IObservable;
+
+    FTimer: TTimer;
+    FUpdateGUITimeOut: Integer;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetModel: IModelMain;
+    procedure SetModel(const Value: IModelMain);
+
+    function GetObserver: IObserver;
+    procedure SetObserver(const Value: IObserver);
+    function GetObservable: IObservable;
+    procedure SetObservable(const Value: IObservable);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Model: IModelMain read GetModel write SetModel;
+
+    property Observer: IObserver read GetObserver write SetObserver;
+    property Observable: IObservable read GetObservable write SetObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewMainGUIRecord;
+    procedure UpdateData;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateViewModelMain: IViewModelMain;
+begin
+  Result := TViewModelMain.Create;
+end;
+
+{ TViewModelDeskMain }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelDeskMain.OnTimer(Sender: TObject);
+begin
+  FTimer.Enabled := False;
+
+  if FUpdateGUITimeOut > 0 then begin
+    FUpdateGUITimeOut := FUpdateGUITimeOut - 1;
+    if FUpdateGUITimeOut = 0 then begin
+      FUpdateGUITimeOut := 10;
+      SendNotification([actUpdateGUI]);
+    end;
+  end;
+
+  FTimer.Enabled := True;
+end;
+
+procedure TViewModelMain.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//
+end;
+
+procedure TViewModelMain.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelMain.GetModel: IModelMain;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelMain.SetModel(const Value: IModelMain);
+begin
+  FModel := Value;
+end;
+
+
+function TViewModelMain.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+procedure TViewModelMain.SetObserver(const Value: IObserver);
+begin
+  FObserver := Value;
+end;
+
+function TViewModelMain.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+procedure TViewModelMain.SetObservable(const Value: IObservable);
+begin
+  FObservable := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelMain.GetGUIRecord: TViewMainGUIRecord;
+begin
+//
+end;
+
+procedure TViewModelMain.UpdateData;
+begin
+//
+end;
+
+
+{$ENDREGION}
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelMain.Create;
+begin
+  inherited;
+  FModel := CreateModelMain;
+  Observer := CreateObserverClass;
+  Observer.SetUpdateObserverMethod(ProcessNotification);
+end;
+
+destructor TViewModelMain.Destroy;
+begin
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

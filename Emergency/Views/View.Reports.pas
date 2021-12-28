@@ -1,0 +1,206 @@
+unit View.Reports;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.WinXPickers,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Interfaces.ViewModel.Reports, ButtonWithColor;
+
+type
+  TViewReports = class(TForm, IObserver, IObservable)
+      LabelPeriodStart: TLabel;
+      DatePickerPeriodStart: TDatePicker;
+      LabelPeriodFinish: TLabel;
+      DatePickerPeriodFinish: TDatePicker;
+    ButtonPeriodReportShort: TBitBtnWithColor;
+    ButtonPeriodReportDetailed: TBitBtnWithColor;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonPeriodReportShortClick(Sender: TObject);
+    procedure ButtonPeriodReportDetailedClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FViewModel: IViewModelReports;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+    function GetViewModel: IViewModelReports;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+    property ViewModel: IViewModelReports read GetViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewReports;
+
+implementation
+
+uses
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.Reports;
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+procedure TViewReports.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelReports;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  UpdateGUI;
+end;
+
+procedure TViewReports.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewReports.ButtonPeriodReportShortClick(Sender: TObject);
+begin
+  ViewModel.PReport(DatePickerPeriodStart.Date, DatePickerPeriodFinish.Date, True);
+end;
+
+procedure TViewReports.ButtonPeriodReportDetailedClick(Sender: TObject);
+begin
+  ViewModel.PReport(DatePickerPeriodStart.Date, DatePickerPeriodFinish.Date, False);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewReports.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Self.Close;
+  end;
+end;
+
+procedure TViewReports.UpdateGUI;
+var
+  LViewReportsGUIRecord: TViewReportsGUIRecord;
+begin
+  LViewReportsGUIRecord := ViewModel.GetGUIRecord;
+  DatePickerPeriodStart.Date := LViewReportsGUIRecord.DatePickerPeriodStartDate;
+  DatePickerPeriodFinish.Date := LViewReportsGUIRecord.DatePickerPeriodFinishDate;
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewReports.GetViewModel: IViewModelReports;
+begin
+  if not Assigned(FViewModel) then begin
+    FViewModel := CreateViewModelReports;
+  end;
+  Result := FViewModel;
+end;
+
+function TViewReports.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewReports.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewReports;
+var
+  LViewReports: TViewReports;
+begin
+  LViewReports := TViewReports.Create(nil);
+  try
+    LViewReports.ShowModal;
+  finally
+    LViewReports.Free;
+  end;
+end;
+
+end.

@@ -1,0 +1,25 @@
+object DeviceFP700X: TDeviceFP700X
+  Left = 0
+  Top = 0
+  Caption = 'DeviceFP700X'
+  ClientHeight = 90
+  ClientWidth = 229
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object FP700X: TCFD_BGR
+    AutoConnect = False
+    ConnectKind = ckRunningOrNew
+    OnError = FP700XError
+    Left = 96
+    Top = 32
+  end
+end

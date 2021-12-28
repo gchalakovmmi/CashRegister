@@ -1,0 +1,179 @@
+unit Model.CashIn;
+
+interface
+
+uses
+  Interfaces.Model.CashIn;
+
+  function CreateModelCashIn: IModelCashIn;
+
+implementation
+
+uses
+  Device.FP700X,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable;
+
+type
+  TModelCashIn = class(TInterfacedObject, IModelCashIn, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FCash: Double;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetCash: Double;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+
+		property Cash: Double read GetCash;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure CashCheck;
+    procedure CashIn(const AAmount: WideString);
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelCashIn: IModelCashIn;
+begin
+  Result := TModelCashIn.Create;
+end;
+
+{ TModelCashIn }
+
+{$REGION 'Private Methods'}
+
+procedure TModelCashIn.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if
+    (actFiscalDeviceAfterCashCheck in AModelNotification.Actions) or
+    (actFiscalDeviceAfterCashIn in AModelNotification.Actions) or
+    (actFiscalDeviceAfterCashOut in AModelNotification.Actions)
+  then begin
+    FCash := DeviceFP700X.Cash;
+    SendNotification([actFiscalDeviceAfterCashCheck]);
+  end;
+end;
+
+procedure TModelCashIn.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelCashIn.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TModelCashIn.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TModelCashIn.GetCash: Double;
+begin
+  Result := FCash;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelCashIn.CashCheck;
+begin
+  DeviceFP700X.CashCheck;
+end;
+
+procedure TModelCashIn.CashIn(const AAmount: WideString);
+begin
+  DeviceFP700X.CashIn(const AAmount: WideString);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelCashIn.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  DeviceFP700X.Observable.Subscribe(FObserver);
+end;
+
+destructor TModelCashIn.Destroy;
+begin
+  DeviceFP700X.Observable.Unsubscribe(FObserver);
+
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

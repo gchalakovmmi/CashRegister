@@ -1,0 +1,206 @@
+unit View.CashIn;
+
+interface
+
+uses
+  System.Classes,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  ButtonWithColor,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.ViewModel.CashIn;
+
+type
+  TViewCashIn = class(TForm, IObserver, IObservable)
+    LabelCash: TLabel;
+    EditCash: TEdit;
+    ButtonCashIn: TBitBtnWithColor;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCashInClick(Sender: TObject);
+    procedure EditCashKeyPress(Sender: TObject; var Key: Char);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure UpdateGUI;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FViewModel: IViewModelCashIn;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetViewModel: IViewModelCashIn;
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property ViewModel: IViewModelCashIn read GetViewModel;
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewCashIn;
+
+implementation
+
+uses
+  Interfaces.GUIRecords,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.CashIn;
+
+{$R *.dfm}
+
+{$REGION 'Published Methods'}
+
+procedure TViewCashIn.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelCashIn;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  ViewModel.CashCheck;
+end;
+
+procedure TViewCashIn.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewCashIn.EditCashKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #$0D then begin
+    ViewModel.CashIn(EditCash.Text);
+  end;
+end;
+
+procedure TViewCashIn.ButtonCashInClick(Sender: TObject);
+begin
+  ViewModel.CashIn(EditCash.Text);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewCashIn.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Self.Close;
+  end;
+end;
+
+procedure TViewCashIn.UpdateGUI;
+var
+  LViewCashInGUIRecord: TViewCashInGUIRecord;
+begin
+  LViewCashInGUIRecord := ViewModel.GetGUIRecord;
+  LabelCash.Caption := LViewCashInGUIRecord.Cash;
+  EditCash.SelectAll;
+  ActiveControl := EditCash;
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewCashIn.GetViewModel: IViewModelCashIn;
+begin
+  if not Assigned(FViewModel) then begin
+    FViewModel := CreateViewModelCashIn;
+  end;
+  Result := FViewModel;
+end;
+
+function TViewCashIn.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewCashIn.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewCashIn;
+var
+  LViewCashIn: TViewCashIn;
+begin
+  LViewCashIn := TViewCashIn.Create(nil);
+  try
+    LViewCashIn.ShowModal;
+  finally
+    LViewCashIn.Free;
+  end;
+end;
+
+end.

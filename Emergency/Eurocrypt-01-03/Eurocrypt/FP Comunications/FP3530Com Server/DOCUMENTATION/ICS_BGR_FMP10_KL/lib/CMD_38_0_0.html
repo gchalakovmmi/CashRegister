@@ -1,0 +1,89 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_38_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>26h (38) 	ОТВАРЯНЕ НА СЛУЖЕБЕН БОН
+
+	Област за данни: 	
+		Няма данни
+	Отговор:	
+		Allreceipt
+
+	Allreceipt		Броят на всички издадени бонове (фискални и служебни) от последното приключване на деня до момента /4 байта/.
+
+Забележка:
+
+ФП извършва следните действия:
+•	Отпечатва се HEADER.
+•	Отпечатва се ЕИК на продавача.
+•	Връща се отговор, съдържащ Allreceipt.
+Командата не може да се изпълни, ако:
+•	Фискалната памет не е форматирана.
+•	Има отворен фискален бон.
+•	Вече е отворен служебен бон.
+•	Часовникът не е сверен.
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Allreceipt</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Allreceipt		Броят на всички издадени бонове (фискални и служебни) от последното приключване на деня до момента /4 байта/.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

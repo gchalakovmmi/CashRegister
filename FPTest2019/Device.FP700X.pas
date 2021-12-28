@@ -152,6 +152,8 @@ type
     procedure VoucherTotal(const ASale: IModelClassSale);
     procedure CardTotal(const ASale: IModelClassSale);
     procedure CashTotal(const ASale: IModelClassSale);
+    procedure CompleteTotal(const ASale: IModelClassSale);
+    procedure TopUpTotal;
     procedure CloseSale(const ASale: IModelClassSale);
     procedure DiscardSale(const ASale: IModelClassSale);
     procedure DuplicateReceipt;
@@ -1137,6 +1139,42 @@ begin
   end;
 end;
 
+procedure TDeviceFP700X.CompleteTotal(const ASale: IModelClassSale);
+var
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  ASale.Due := OpenReceiptAmount;
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if OpenReceiptAmount.ToDouble > (ASale.CashPayment.ToDouble + OpenReceiptPayed.ToDouble) then begin
+      ASale.CashPayment := FormatFloat('0.00', OpenReceiptAmount.ToDouble - OpenReceiptPayed.ToDouble);
+    end;
+  end;
+  if OpenReceiptAmount.ToDouble = OpenReceiptPayed.ToDouble then begin
+    ASale.CashPayment := '0.00';
+  end;
+  ASale.Returned := FormatFloat('0.00', ASale.VoucherPayment.ToDouble + ASale.CardPayment.ToDouble + ASale.CashPayment.ToDouble - ASale.Due.ToDouble);
+  ASale.UpdateInDataSet;
+
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if ASale.CashPayment <> '0.00' then begin
+      Total('0', ASale.CashPayment, LStatus, LAmount);
+    end;
+  end;
+end;
+
+procedure TDeviceFP700X.TopUpTotal;
+var
+  LSubTotal: WideString;
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  LSubTotal := OpenReceiptAmount;
+  Total('0', LSubTotal, LStatus, LAmount);
+end;
+
+
+
 procedure TDeviceFP700X.CloseSale(const ASale: IModelClassSale);
 begin
   DrawerKickOut;
@@ -1322,14 +1360,14 @@ end;
 
 function TDeviceFP700X.OpenReceiptWithPartialPayment: Boolean;
 begin
-  ShowMessage('101');
+//  ShowMessage('101');
   CheckTheStatusOfTheFiscalTransaction;
-  ShowMessage('102');
+//  ShowMessage('102');
   Result :=
     (FTransactionIsOpen <> '0') and
     (FTransactionAmount <> FTransactionPayed) and
     (FTransactionPayed <> '0.00');
-  ShowMessage('103');
+//  ShowMessage('103');
 end;
 
 function TDeviceFP700X.OpenReceiptWithFullPayment: Boolean;

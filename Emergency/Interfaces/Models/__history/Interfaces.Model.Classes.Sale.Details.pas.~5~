@@ -1,0 +1,183 @@
+unit Interfaces.Model.Classes.Sale.Details;
+
+interface
+
+type
+  IModelClassSaleDetails = interface
+  ['{CC229733-D7CA-418A-89A4-6CF527E06EB3}']
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetParentGID: Integer;
+    procedure SetParentGID(const Value: Integer);
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property ParentGID: StrINg read GetParentGID write SetParentGID;
+
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+
+    function GetUserID: String;
+    procedure SetUserID(const AValue: String);
+    ///<sumarry>номер на оператор</summary>
+    property UserID: String read GetUserID write SetUserID;
+
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>време на откриване на продажбата (час, минута, секунда)</summary>
+    property CreatedTime: String read GetCreatedTime write SetCreatedTime;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>дата на продажбата</summary>
+    SaleDate: String;
+    property SaleDate: StrINg read GetSaleDate write SetSaleDate;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>време на продажбата (час, минута, секунда)</summary>
+    SaleTime: String;
+    property SaleTime: StRIng read GetSaleTime write SetSaleTime;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>въведен текст за откриване на стоката/услугата</summary>
+    Typed: String;
+    property Typed: StRing read GetTyped write SetTyped;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>код на стоката/услугата</summary>
+    ItemGID: Integer;
+    property ItemGID: StrINg read GetItemGID write SetItemGID;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>баркод на стоката/услугата</summary>
+    BarCode: String;
+    property BarCode: StrIng read GetBarCode write SetBarCode;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>основно наименование на стоката/услугата</summary>
+    BaseItemName: String;
+    property BaseItemName: StRIng read GetBaseItemName write SetBaseItemName;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>коефициент количество за групажни стоки</summary>
+    PackCoeff: Double;
+    property PackCoeff: StrIng read GetPackCoeff write SetPackCoeff;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>наименование на стоката/услугата</summary>
+    ItemName: String;
+    property ItemName: StrIng read GetItemName write SetItemName;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>мярка</summary>
+    Measure: String;
+    property Measure: StrINg read GetMeasure write SetMeasure;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>количество</summary>
+    Quantity: Double;
+    property Quantity: StrINg read GetQuantity write SetQuantity;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>доставна цена - с ДДС в лв.</summary>
+    VendorPrice: Double;
+    property VendorPrice: StrINg read GetVendorPrice write SetVendorPrice;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>процент надценка над доставната цена (за VIP клиенти)</summary>
+    ClientSurcharge: Double;
+    property ClientSurcharge: StrINg read GetClientSurcharge write SetClientSurcharge;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>клиентска цена - с ДДС в лв.</summary>
+    ClientPrice: Double;
+    property ClientPrice: StRIng read GetClientPrice write SetClientPrice;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>процент отстъпка за групажни стоки</summary>
+    PackDiscount: Double;
+    property PackDiscount: StrIng read GetPackDiscount write SetPackDiscount;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>единична цена (без отстъпка) - без ДДС, в лв.</summary>
+    ClientPriceBase: Double;
+    property ClientPriceBase: StrINg read GetClientPriceBase write SetClientPriceBase;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>продажна цена (с отстъпка) - с ДДС, в лв.</summary>
+    Price: Double;
+    property Price: StrINg read GetPrice write SetPrice;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>отстъпка (сума) - в лв.</summary>
+    DiscountValue: Double;
+    property DiscountValue: StrINg read GetDiscountValue write SetDiscountValue;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>вид изменение на основната цена (0 - няма, 4 - отстъпка сума)</summary>
+    DiscountType: String;
+    property DiscountType: StrINg read GetDiscountType write SetDiscountType;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>обща сума - без ДДС, в лв.</summary>
+    TotalBase: String;
+    property TotalBase: StrIng read GetTotalBase write SetTotalBase;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>ДДС ставка</summary>
+    VATRate: Double;
+    property VATRate: StrINg read GetVATRate write SetVATRate;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    TotalVAT: String;
+    property TotalVAT: StrINg read GetTotalVAT write SetTotalVAT;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>обща сума - в лв.</summary>
+    Total: String;
+    property Total: StrINg read GetTotal write SetTotal;
+
+    function GetCreatedTime: String;
+    procedure SetCreatedTime(const AValue: String);
+    ///<sumarry>дали продажбата на тази стока е вече анулирана</summary>
+    IsCancelled: String;
+    property IsCancelled: StrINg read GetIsCancelled write SetIsCancelled;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+  end;
+
+implementation
+
+end.
+

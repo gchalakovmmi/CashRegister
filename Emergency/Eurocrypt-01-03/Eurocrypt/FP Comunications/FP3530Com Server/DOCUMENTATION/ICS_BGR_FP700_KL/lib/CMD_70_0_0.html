@@ -1,0 +1,212 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_70_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>46h (70)	СЛУЖЕБЕН ВНОС И ИЗНОС НА ПАРИ 
+
+	Област за данни:	
+			Amount
+	Отговор:	
+			ExitCode
+			CashSum
+			ServIn
+			ServOut
+
+	Amount		Сумата за регистриране (до 10 значещи цифри). 
+			В зависимост от знака на числото тя се интерпретира като внос или износ. 
+	ExitCode	
+			'P'	Заявката е изпълнена. Ако заявената сума е ненулева, принтерът отпечатва служебен бон за 
+				регистриране на операцията.
+			'F'	Заявката е отказана. 
+			Това става, ако:
+			•	Касовата наличност е по-малка от заявения служебен износ.
+			•	Има отворен фискален или служебен бон.
+
+	CashSum		Касова наличност. Освен от тази команда сумата нараства и при всяко плащане в брой.
+	ServIn		Сумата от всички команди "Служебен внос".
+	ServOut		Сумата от всички команди "Служебен износ".
+
+Променя съдържанието на регистъра за касова наличност. 
+В зависимост от знака на посочената сума тя се натрупва в регистъра за служебен внос или износ. 
+Информацията не се записва във фискалната памет и е достъпна до момента на приключване на деня. 
+Разпечатва се при команда 69 (45h) и при предизвикване на дневен финансов отчет без нулиране от самия принтер. 
+При успешно изпълнение на командата с параметър се генерира импулс за отваряне на чекмедже, ако това е разрешено с 
+подкоманда 'X' на команда 43.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Amount</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Amount
+
+Сумата за регистриране (до 10 значещи цифри). 
+В зависимост от знака на числото тя се интерпретира като внос или износ. </pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10505</td>
+				<td class="VerificationType">Проверка за това дали входния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ExitCode</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ExitCode	
+
+	'P'	Заявката е изпълнена. Ако заявената сума е ненулева, принтерът отпечатва служебен бон за регистриране на операцията.
+	'F'	Заявката е отказана. 
+	Това става, ако:
+		•	Касовата наличност е по-малка от заявения служебен износ.
+		•	Има отворен фискален или служебен бон.
+</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10515</td>
+				<td class="VerificationType">Проверка дали изходния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">CashSum</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>CashSum		Касова наличност. Освен от тази команда сумата нараства и при всяко плащане в брой.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ServIn</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ServIn		Сумата от всички команди "Служебен внос".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ServOut</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ServOut		Сумата от всички команди "Служебен износ".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

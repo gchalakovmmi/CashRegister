@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.091,D:\SOFT_SVN\EXAMPLES\COM SERVERS\CS_FDP55KL_BGR\SOURCE\uMainForm.dfm=D:\SOFT_SVN\PROJECTS\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.739,=D:\SOFT_SVN\PROJECTS\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.738,=D:\SOFT_SVN\PROJECTS\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.173,D:\SOFT_SVN\EXAMPLES\COM SERVERS\CS_FDP55KL_BGR\SOURCE\FPBGR_DP55KL.dproj=D:\SOFT_SVN\PROJECTS\Project2.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.108,=D:\SOFT_SVN\COMMUNICATIONS\COM SERVERS\FP3530 COMServer\SOURCE\FP3530_TLB.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.091,D:\SOFT_SVN\EXAMPLES\COM SERVERS\CS_FDP55KL_BGR\SOURCE\uMainForm.pas=D:\SOFT_SVN\PROJECTS\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

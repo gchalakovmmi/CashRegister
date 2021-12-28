@@ -1,0 +1,354 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_108_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>6Ch (108)	РАЗШИРЕН ДНЕВЕН ФИНАНСОВ ОТЧЕТ
+
+
+В началото на дневния отчет се отпечатва и списъка на артикулите с PLU по-малко или равно на 10, по които има 
+продажби за деня.
+
+
+	Област за данни:
+			Option
+			N
+	Response:
+			Closure
+			FM_Total
+			TotA
+			TotB
+			TotC
+			TotD
+			TotE
+			TotF
+			TotG
+			TotH
+
+	Option		Параметър, управляващ вида на генерирания отчет:
+			'0'	Отпечатва се Z-отчет. Разпечатката завършва с надпис "ФИСКАЛЕН БОН". 
+			 '2'	Прави се дневен финансов отчет без нулиране (т. е. не се извършва запис във 
+				фискалната памет и нулиране на регистрите). 
+				Разпечатката завършва с лого "СЛУЖЕБЕН БОН". 
+
+	N		Наличието на този символ забранява изчистването на натрупаните данни по оператори 
+			при отчет с нулиране.
+	
+	Closure		Номер на фискалния запис - 4 байта.
+	FM_Total		Сумата от всички продажби без ДДС - 12 байта със знак
+	TotX		Сумите по всяка от данъчните групи 'А', 'Б', 'В', : - 12 байта със знак.
+
+В началото на дневния отчет се отпечатва и списък на артикулите с PLU по-малко или равно на 100, по които има продажби за деня. 
+Командата нулира и натрупаните данни по департаменти.</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Option</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Option
+
+Параметър, управляващ вида на генерирания отчет:
+	'0'	Отпечатва се Z-отчет. Разпечатката завършва с надпис "ФИСКАЛЕН БОН". 
+	 '2'	Прави се дневен финансов отчет без нулиране 
+		(т. е. не се извършва запис във фискалната памет и нулиране на регистрите). 
+		Разпечатката завършва с лого "СЛУЖЕБЕН БОН". </pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10504</td>
+				<td class="VerificationType">Проверка дали входния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">N</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Наличието на този символ забранява изчистването на натрупаните данни по оператори при отчет с нулиране.</pre>
+
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Closure</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Closure		Номер на фискалния запис - 4 байта.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">FM_Total</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>FM_Total		Сумата от всички продажби без ДДС - 12 байта със знак</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotA</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotA	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotB</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotB	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotC</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotC	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotD</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotD	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotE</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotE	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotF</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotF	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotG</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotG	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TotH</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TotH	The total under tax category - 12 bytes with a sign.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

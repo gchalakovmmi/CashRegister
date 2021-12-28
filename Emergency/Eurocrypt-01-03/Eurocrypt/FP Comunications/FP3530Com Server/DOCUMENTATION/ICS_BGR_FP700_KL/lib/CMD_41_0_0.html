@@ -1,0 +1,69 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_41_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>29H (41)	ЗАПОМНЯНЕ НА НАСТРОЙКИТЕ И КЛЮЧЕТАТА ВЪВ FLASH-ПАМЕТТА
+
+Принтерът няма хардуерни ключета и използува за целта област във флаш-паметта. 
+Установяването им става с тази команда. 
+
+	Data field:		Switches
+	Response:		Няма данни
+
+
+	Switches		8 байта със стойност '0' или '1' - конфигурационните "ключета".
+
+
+Освен това командата записва във флаш-паметта и графичното лого, височината на баркода, плътността на печат и 
+дължината на импулса за отваряне на чекмедже. След RAM ресет стойностите им се възстановяват от тези във флаша.
+Ако командата се изпълни без наличие на данни, то се запазват старите стойности на "ключетата" и се записват останалите данни.
+
+Командата запомня следните дании в енергонезависимата (flash) памет:
+	- Header и footer (от команда 43).
+	- Текстът на допълнителните типове плащане (от команда 85).
+	- Графичното лого (от команда 115).
+	- Опциите за печат (от команда 43).
+
+След RAM ресет стойностите им се възстановяват от тези във флаша.</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Switches</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Switches		8 байта със стойност '0' или '1' - конфигурационните "ключета".</pre>
+
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

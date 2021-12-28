@@ -1,0 +1,30 @@
+unit Interfaces.ViewModel.CheckItem;
+
+interface
+
+uses
+  System.Classes,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.CheckItem;
+
+type
+  IViewModelCheckItem = interface
+  ['{66A18497-C61C-4087-990D-35C94571EE63}']
+    // Properties
+    function GetObservable: IObservable;
+    property Observable: IObservable read GetObservable;
+
+    function GetModel: IModelCheckItem;
+    procedure SetModel(const Value: IModelCheckItem);
+    property Model: IModelCheckItem read GetModel write SetModel;
+
+    // Methods
+    function GetGUIRecord(const AWidth, AHeight: Integer): TViewCheckItemGUIRecord;
+    procedure GridKeyDown(var Key: Word; Shift: TShiftState);
+    procedure GridKeyPressed(Key: Char);
+  end;
+
+implementation
+
+end.

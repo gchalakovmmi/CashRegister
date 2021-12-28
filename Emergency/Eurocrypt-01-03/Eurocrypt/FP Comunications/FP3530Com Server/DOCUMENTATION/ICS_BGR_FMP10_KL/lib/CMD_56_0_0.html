@@ -1,0 +1,103 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_56_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>38h (56)	ЗАТВАРЯНЕ (ПРИКЛЮЧВАНЕ) НА ФИСКАЛЕН БОН
+
+	Област за данни:	
+			Няма данни
+	Отговор:	
+			Allreceipt
+			FiscReceipt
+
+	Allreceipt		Всички издадени бележки от последното приключване на деня до момента.
+	FiscReceipt	Всички издадени фискални бележки от последното приключване на деня до момента.
+
+
+Забележка:
+Натрупаните суми от фискалния бон се прибавят към дневните суми в регистрите на оперативната памет.
+Командата няма да бъде изпълнена успешно, ако:
+•	Не е отворен фискален бон.
+•	Команда 53 (35h) не е изпълнена успешно.
+•	Платената сума по команда 53 е по-малка от общата сума на фискалния бон.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Allreceipt</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Allreceipt		Всички издадени бележки от последното приключване на деня до момента.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">FiscReceipt</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>FiscReceipt	Всички издадени фискални бележки от последното приключване на деня до момента.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

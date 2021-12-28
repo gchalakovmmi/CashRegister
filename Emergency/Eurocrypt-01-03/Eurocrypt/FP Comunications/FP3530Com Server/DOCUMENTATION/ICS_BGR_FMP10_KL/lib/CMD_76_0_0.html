@@ -1,0 +1,181 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_76_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>4Ch (76)	СТАТУС НА ФИСКАЛНАТА ТРАНЗАКЦИЯ
+
+	Област за данни:	Няма
+	Отговор:	
+			FT_Opened
+			Items
+			Amount
+			Tender
+
+
+	FT_Opened	Един байт, който е:
+				'1' ако е отворен фискален или служебен бон (какъв точно може да се разбере по статус битовете);
+				'0' ако няма отворен бон.
+	Sales_Num	Броят на продажбите регистрирани на текущия или на последния фискален бон. 4 байта.
+	Amount		Сумата от последния фискален бон - 9 байта със знак.
+	Tender		Сумата платена на поредния или последен бон. 9 байта със знак.
+
+
+Забележка:
+	
+Тази команда дава възможност на приложението в PC да установи статуса, а ако е нужно и да възстанови и завърши фискална операция.
+Например при изключване на ел. захранване. 
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">FT_Opened</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>FT_Opened
+
+Един байт, който е:
+	'1' 	ако е отворен фискален или служебен бон (какъв точно може да се разбере по статус битовете);
+	'0' 	ако няма отворен бон.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Sales_Num</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Sales_Num	Броят на продажбите регистрирани на текущия или на последния фискален бон. 4 байта.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Amount</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Amount		Сумата от последния фискален бон - 9 байта със знак.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Tender</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Tender		Сумата платена на поредния или последен бон. 9 байта със знак.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10516</td>
+				<td class="VerificationType">Проверка за това дали изходния параметър е реално число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

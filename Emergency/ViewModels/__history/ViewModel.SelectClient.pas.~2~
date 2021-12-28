@@ -1,0 +1,232 @@
+unit ViewModel.SelectClient;
+
+interface
+
+uses
+  Interfaces.ViewModel.SelectClient;
+
+  function CreateViewModelSelectClient: IViewModelSelectClient;
+
+implementation
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.ExtCtrls,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+
+  Interfaces.Model.SelectClient,
+  DataModule.Clients,
+  Model.SelectClient;
+
+type
+  TViewModelSelectClient = class(TInterfacedObject, IViewModelSelectClient, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure OnTimer(Sender: TObject);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FModel: IModelSelectClient;
+    FObservable: IObservable;
+    FTimer: TTimer;
+    FIsQuick: Boolean;
+    FIsChanged: Boolean;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObservable: IObservable;
+    function GetModel: IModelSelectClient;
+    procedure SetModel(const Value: IModelSelectClient);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelSelectClient read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord(const AWidth, AHeight: Integer): TViewSelectClientGUIRecord;
+    procedure GridKeyDown(var Key: Word; Shift: TShiftState);
+    procedure GridKeyPressed(Key: Char);
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateViewModelSelectClient: IViewModelSelectClient;
+begin
+  Result := TViewModelSelectClient.Create;
+end;
+
+{ TViewModelSelectClient }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelSelectClient.OnTimer(Sender: TObject);
+begin
+  FIsQuick := False;
+  If FIsChanged then begin
+    DataModuleClients.Refilter;
+    FIsChanged := False;
+  end;
+  FTimer.Enabled := False;
+end;
+
+procedure TfmSelectClient.KeyTimerTimer(Sender: TObject);
+var
+  _ID : Integer;
+  _LOYALTYCARDNUMBER : String;
+begin
+  IsQuick := False;
+  If IsChanged then begin
+    _ID := dsSelect.DataSet.FieldByName('ID').AsInteger;
+    _LOYALTYCARDNUMBER := dsSelect.DataSet.FieldByName('LOYALTYCARDNUMBER').AsString;
+    dsSelect.DataSet.DisableControls;
+    dsSelect.DataSet.Filtered := False;
+    dsSelect.DataSet.Filtered := True;
+    dsSelect.DataSet.Locate('ID;LOYALTYCARDNUMBER', VarArrayOf([_ID, _LOYALTYCARDNUMBER]), []);
+    dsSelect.DataSet.EnableControls;
+    IsChanged := False;
+  end;
+  KeyTimer.Enabled := False;
+end;
+
+
+procedure TViewModelSelectClient.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelSelectClient.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelSelectClient.GetModel: IModelSelectClient;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelSelectClient.SetModel(const Value: IModelSelectClient);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelSelectClient.GetGUIRecord(const AWidth, AHeight: Integer): TViewSelectClientGUIRecord;
+begin
+  Result.Top := AHeight - 300;
+  Result.Left := 8;
+  Result.EditText := DataModuleItems.KeyWord;
+end;
+
+procedure TViewModelSelectClient.GridKeyDown(var Key: Word; Shift: TShiftState);
+begin
+  FIsQuick := True;
+  FTimer.Enabled := False;
+  FTimer.Enabled := True;
+  case Key of
+    VK_BACK : begin
+      DataModuleItems.KeyWord := Copy(DataModuleItems.KeyWord, 1, Length(DataModuleItems.KeyWord)-1);
+      FIsChanged := True;
+      SendNotification([actUpdateGUI]);
+    end;
+    VK_ESCAPE: begin
+      DataModuleItems.ClearSelected;
+      SendNotification([actCloseForm]);
+    end;
+    VK_RETURN : begin
+      If FIsQuick then begin
+        DataModuleItems.Refilter;
+      end;
+      DataModuleItems.Select;
+      SendNotification([actCloseForm]);
+    end;
+  else
+    FIsChanged := False;
+  end;
+end;
+
+procedure TViewModelSelectClient.GridKeyPressed(Key: Char);
+begin
+  if CharInSet(Key,[' '..'~', 'À'..'ÿ']) then begin
+    DataModuleItems.KeyWord := DataModuleItems.KeyWord + Key;
+    FIsChanged := True;
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelSelectClient.Create;
+begin
+  inherited;
+  FObservable := CreateObservableClass;
+  FModel := CreateModelSelectClient;
+  FTimer := TTimer.Create(nil);
+  FTimer.Enabled := False;
+  FTimer.Interval := 200;
+  FTimer.OnTimer := OnTimer;
+end;
+
+destructor TViewModelSelectClient.Destroy;
+begin
+  FTimer.Free;
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

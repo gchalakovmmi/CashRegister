@@ -1,0 +1,384 @@
+unit Model.FiscalDevice;
+
+interface
+
+uses
+  Interfaces.Model.FiscalDevice;
+
+  function CreateModelFiscalDevice: IModelFiscalDevice;
+
+implementation
+
+uses
+  Interfaces.Enums,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Model.Notification,
+	FP3530_TLB,
+  Model_FP700X;
+
+const
+	caption_None                                   = '.....';
+	Hex_Digits                                     = 16;
+	Hex_Digit: array [0 .. Hex_Digits - 1] of Char = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+
+  type
+	TAfterCase = (             //
+	  ac_AfterStart_Program,   // After start of the program
+	  ac_AfterStart_Server,    //
+	  ac_AfterOpenConnection,  // After open connection to the device
+	  ac_AfterCloseConnection, // After close connection to the device
+	  ac_AfterStopServer,      //
+	  ac_AfterSettingsChange   // After changes from other client application
+  );
+
+	TOldValues = record
+		Active_OnAfterCloseConnection: Boolean;
+		Active_OnAfterOpenConnection: Boolean;
+		Active_OnAfterSettingsChange: Boolean;
+		RegisterActiveObject: Boolean;
+		Save_Settings_AfterOpenConnection: Boolean;
+	end;
+
+  TModelFiscalDevice = class(TInterfacedObject, IModelFiscalDevice, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+
+    procedure StartCOMServer;
+    procedure OpenConnection;
+    procedure CashIn;
+    procedure CashOut;
+    procedure CloseConnection;
+    procedure StopCOMServer;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FObservable: IObservable;
+
+    FFiscalDevice: TCFD_BGR;
+
+    FErrorCode: Integer;
+		FAfterCase: TAfterCase;
+		FMyAfterCaseFlag: Boolean;
+//		FCanRefreshValues: Boolean;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observable: IObservable read GetObservable implements IObservable;
+
+		property ErrorCode: Integer read FErrorCode write FErrorCode;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TModelFiscalDevice }
+
+{$REGION 'Private Methods'}
+
+procedure TModelFiscalDevice.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+procedure TModelFiscalDevice.StartCOMServer;
+begin
+  try
+    try
+      FFiscalDevice.RemoteMachineName := '';
+      FFiscalDevice.Connect;
+      SendNotification([actFiscalDeviceAfterStartCOMServer]);
+    except
+      ShowMessage(en_Message_NoDriver);
+      SendNotification([actFiscalDeviceErrorStartCOMServer]);
+      Exit;
+    end;
+  finally
+    if FFiscalDevice.connected_ToDevice then begin
+      SendNotification([actFiscalDeviceAfterOpenConnection]);
+    end;
+  end;
+end;
+
+procedure TModelFiscalDevice.OpenConnection;
+begin
+	ErrorCode := 0;
+	try
+		if not FFiscalDevice.connected_ToDevice then begin
+      ErrorCode := -1;
+      try
+        try
+          ErrorCode := FFiscalDevice.set_TransportType(ctc_RS232);
+          if ErrorCode <> 0 then Exit;
+
+          ErrorCode := FFiscalDevice.set_RS232(3, 111500);
+          if ErrorCode <> 0 then Exit;
+          ErrorCode := 0;
+        except
+          On E: Exception do begin
+            ShowMessage(E.Message);
+            SendNotification([actFiscalDeviceErrorSettingsChange]);
+          end;
+        end;
+      finally
+        SendNotification([actFiscalDeviceAfterSettingsChange]);
+      end;
+
+			ErrorCode := FFiscalDevice.open_Connection;
+			if ErrorCode <> 0 then Exit;
+		end;
+	finally
+		if ErrorCode <> 0 then begin
+			ShowMessage(FFiscalDevice.lastError_Message);
+      SendNotification([actFiscalDeviceErrorOpenConnection]);
+		end else begin
+			if FFiscalDevice.connected_ToDevice then begin
+				if not FFiscalDevice.Active_OnAfterOpenConnection then begin
+          SendNotification([actFiscalDeviceAfterOpenConnection]);
+        end;
+      end;
+		end;
+	end;
+end;
+
+procedure TModelFiscalDevice.CashIn;
+var
+	tmp       : string;
+	ErrorCode : WideString; //
+	CashSum   : WideString; //
+	ServIn    : WideString; //
+	ServOut   : WideString; //
+	AmountType: WideString; //
+	Amount    : WideString; //
+begin
+  SendNotification([actFiscalDeviceBeforeCashIn]);
+	try
+    AmountType := '0'; //
+    Amount := '0.01';
+    if
+      Model_FP700X.execute_070_receipt_CashIn_CashOut(
+        FFiscalDevice,                                   //
+        AmountType,                                      //
+        Amount,                                          //
+        ErrorCode,                                       //
+        CashSum,                                         //
+        ServIn,                                          //
+        ServOut
+      ) <> 0
+    then begin
+      ShowMessage(FFiscalDevice.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+      SendNotification([actFiscalDeviceErrorCashIn]);
+    end else begin
+      ShowMessage(
+        'ErrorCode: ' + ErrorCode + sLineBreak +
+        'CashSum: ' + CashSum + sLineBreak +
+        'ServIn: ' + ServIn + sLineBreak +
+        'ServOut: ' + ServOut + sLineBreak
+      );
+    end;
+	finally
+    SendNotification([actFiscalDeviceAfterCashIn]);
+	end;
+end;
+
+procedure TModelFiscalDevice.CashOut;
+var
+	tmp       : string;
+	ErrorCode : WideString; //
+	CashSum   : WideString; //
+	ServIn    : WideString; //
+	ServOut   : WideString; //
+	AmountType: WideString; //
+	Amount    : WideString; //
+begin
+  SendNotification([actFiscalDeviceBeforeCashOut]);
+	try
+    AmountType := '1'; //
+    Amount := '0.01';
+    if
+      Model_FP700X.execute_070_receipt_CashIn_CashOut(
+        FFiscalDevice,                                   //
+        AmountType,                                      //
+        Amount,                                          //
+        ErrorCode,                                       //
+        CashSum,                                         //
+        ServIn,                                          //
+        ServOut
+      ) <> 0
+    then begin
+      ShowMessage(FFiscalDevice.get_ErrorMessageByCode(StrToInt(ErrorCode)));
+      SendNotification([actFiscalDeviceErrorCashOut]);
+    end else begin
+      ShowMessage(
+        'ErrorCode: ' + ErrorCode + sLineBreak +
+        'CashSum: ' + CashSum + sLineBreak +
+        'ServIn: ' + ServIn + sLineBreak +
+        'ServOut: ' + ServOut + sLineBreak
+      );
+    end;
+	finally
+    SendNotification([actFiscalDeviceAfterCashOut]);
+	end;
+end;
+
+procedure TModelFiscalDevice.CloseConnection;
+begin
+	ErrorCode := FFiscalDevice.close_Connection;
+	if ErrorCode <> 0 then begin
+    ShowMessage(FFiscalDevice.lastError_Message);
+    SendNotification([actFiscalDeviceErrorCloseConnection]);
+  end;
+	if not FFiscalDevice.Active_OnAfterCloseConnection then begin
+    SendNotification([actFiscalDeviceAfterCloseConnection]);
+  end;
+end;
+
+procedure TModelFiscalDevice.StopCOMServer;
+begin
+	try
+		try
+			FFiscalDevice.Disconnect;
+		except
+      SendNotification([actFiscalDeviceErrorStopCOMServer]);
+		end;
+	finally
+    SendNotification([actFiscalDeviceAfterStopCOMServer]);
+	end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelFiscalDevice.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+//procedure TViewMain.ButtonGetCashClick(Sender: TObject);
+//var
+//	tmp       : WideString;
+//	ErrorCode : WideString; //
+//	CashSum   : WideString; //
+//	ServIn    : WideString; //
+//	ServOut   : WideString; //
+//	AmountType: WideString; //
+//	Amount    : WideString; //
+//begin
+//	ButtonGetCash.Enabled := False;
+//	try
+//    AmountType := '0';                                     //
+//    Amount := '0';                                         // If Amount=0,the only Answer is returned, and receipt does not print.
+//    if
+//      Model_FP700X.execute_070_info_Get_CashIn_CashOut( //
+//      fd,                                                  //
+//      AmountType,                                          //
+//      Amount,                                              //
+//      ErrorCode,                                           //
+//      CashSum,                                             //
+//      ServIn,                                              //
+//      ServOut) <> 0
+//    then begin
+//      ShowMessage(fd.get_ErrorMessageByCode(StrToInt(ErrorCode)))
+//    end else begin
+//      tmp := 'ErrorCode: ' + ErrorCode + sLineBreak;
+//      tmp := tmp + 'CashSum: ' + CashSum + sLineBreak;
+//      tmp := tmp + 'ServIn: ' + ServIn + sLineBreak;
+//      tmp := tmp + 'ServOut: ' + ServOut + sLineBreak;
+//      ShowMessage(tmp);
+//    end;
+//	finally
+//		ButtonGetCash.Enabled := True;
+//	end;
+//end;
+//
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelFiscalDevice.Create;
+begin
+  inherited;
+
+//  FFiscalDevice := TCFD_BGR.Create(nil);
+//  StartCOMServer;
+//  OpenConnection;
+
+	FMyAfterCaseFlag := False;
+	FAfterCase := ac_AfterStart_Program;
+end;
+
+destructor TModelFiscalDevice.Destroy;
+begin
+
+  CloseConnection;
+  StopCOMServer;
+
+  FFiscalDevice.Free;
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateModelFiscalDevice: IModelFiscalDevice;
+begin
+  Result := TModelFiscalDevice.Create;
+end;
+
+end.

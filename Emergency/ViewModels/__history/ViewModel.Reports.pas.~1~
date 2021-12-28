@@ -1,0 +1,176 @@
+unit ViewModel.Reports;
+
+interface
+
+uses
+  Interfaces.ViewModel.Reports;
+
+  function CreateViewModelReports: IViewModelReports;
+
+implementation
+
+uses
+  System.SysUtils,
+  System.UITypes,
+  Vcl.Dialogs,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+
+  Interfaces.Model.Pattern.Observer,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+
+  Interfaces.Model.Notification,
+  Model.Notification,
+
+  Interfaces.Model.Reports,
+  Model.Reports;
+
+type
+  TViewModelReports = class(TInterfacedObject, IViewModelReports, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FModel: IModelReports;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetModel: IModelReports;
+    procedure SetModel(const Value: IModelReports);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelReports read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function GetGUIRecord: TViewReportsGUIRecord;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelReports }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelReports.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if (actFiscalDeviceAfterCashCheck in AModelNotification.Actions) then begin
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+procedure TViewModelReports.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelReports.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelReports.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelReports.GetModel: IModelReports;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelReports.SetModel(const Value: IModelReports);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+function TViewModelReports.GetGUIRecord: TViewReportsGUIRecord;
+begin
+//
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelReports.Create;
+begin
+  inherited;
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FModel := CreateModelReports;
+  FModel.Observable.Subscribe(FObserver);
+end;
+
+destructor TViewModelReports.Destroy;
+begin
+  FModel.Observable.UnSubscribe(FObserver);
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelReports: IViewModelReports;
+begin
+  Result := TViewModelReports.Create;
+end;
+
+end.

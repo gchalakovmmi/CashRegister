@@ -1,0 +1,223 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_34_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>22h (34) 	ИНФОРМАЦИЯ И ОТЧЕТ НА СЕРВИЗНИТЕ ДОГОВОРИ
+
+	Входни данни:	
+		ToPrint
+	Отговор:	
+		ShortEndDate
+		Left
+		RegDtTm
+		EIK
+		EndDate
+	или
+		F
+
+	ToPrint		При тойност "P" се печата отчет на всички регистрирани договори по данни от фискалната памет.
+
+	ShortEndDate	Дата на изтичане на новия сервизен договор във формат "DD-MM-YY".
+	Left		Цяло число - брой оставащи полета за регистрация на сервизен договор.
+	RegDtTm		Дата и час на регистрация на сервизен договор: "DD-MM-YYYY hh:mm:ss".
+	EndDate		Дата на изтичане на сервизен договор във формат "DD-MM-YYYY".
+	ЕИК		9 или 13 цифри - ЕИК на сервизната фирма.
+
+Командата връща или разпечатва информация засервизните договори. 
+Срокът на изтичане на текущия сервизен договор се печати в края на всеки дневен отчет с нулиране. 
+Връщат се данни за срока на последния регистриран договор (или "F" ако няма регистриран договор). 
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">ToPrint</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ToPrint		При тойност "P" се печата отчет на всички регистрирани договори по данни от фискалната памет.</pre>
+
+</td>
+			</tr>
+			<tr>
+				<td id="col1">ShortEndDate</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ShortEndDate	Дата на изтичане на новия сервизен договор във формат "DD-MM-YY".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10514</td>
+				<td class="VerificationType">Проверка за превишаване на долна граница на дължината на изходния параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Left</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Left		Цяло число - брой оставащи полета за регистрация на сервизен договор.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">RegDtTm</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>RegDtTm		Дата и час на регистрация на сервизен договор: "DD-MM-YYYY hh:mm:ss".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">EIK</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>ЕИК		9 или 13 цифри - ЕИК на сервизната фирма.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10514</td>
+				<td class="VerificationType">Проверка за превишаване на долна граница на дължината на изходния параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">EndDate</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>EndDate		Дата на изтичане на сервизен договор във формат "DD-MM-YYYY".</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10513</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината в изходящия параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10514</td>
+				<td class="VerificationType">Проверка за превишаване на долна граница на дължината на изходния параметър.</td>
+				<td class="ErrDescription">Wrong length - output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

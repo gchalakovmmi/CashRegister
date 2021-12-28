@@ -1,0 +1,93 @@
+unit View.Admin.Nomenclatures.Stores;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.WinXPickers,
+  Vcl.StdCtrls, Vcl.DBGrids, Vcl.ExtCtrls, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TViewAdminNomenclatureStores = class(TForm)
+    GridSales: TDBGrid;
+    Panel1: TPanel;
+    ComboBox4: TComboBox;
+    DatePicker2: TDatePicker;
+    Label7: TLabel;
+    DatePicker3: TDatePicker;
+    Label8: TLabel;
+    ComboBox6: TComboBox;
+    Label9: TLabel;
+    ComboBox7: TComboBox;
+    Label10: TLabel;
+    Label11: TLabel;
+    ComboBox8: TComboBox;
+    Label12: TLabel;
+    T: TFDMemTable;
+    DataSource1: TDataSource;
+    Button1: TButton;
+    Button2: TButton;
+    TGID: TStringField;
+    TName: TStringField;
+    TAddress: TStringField;
+    TAttachedAt: TStringField;
+    TModifiedAt: TStringField;
+    TDetachedAt: TStringField;
+    Panel2: TPanel;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    TFiscalDevice: TStringField;
+    TStore: TStringField;
+    TUser: TStringField;
+    TRole: TStringField;
+    TCreatedAt: TStringField;
+    TEventType: TStringField;
+    TSUID: TStringField;
+    TDescription: TStringField;
+    TWorkstation: TStringField;
+    TBrand: TStringField;
+    TModel: TStringField;
+  private
+    { Private declarations }
+  public
+    procedure Populate;
+  end;
+
+var
+  ViewAdminNomenclatureStores: TViewAdminNomenclatureStores;
+
+implementation
+
+{$R *.dfm}
+
+{ TViewAdminNomenclatureStores }
+
+procedure TViewAdminNomenclatureStores.Populate;
+begin
+  T.Close;
+  T.CreateDataSet;
+
+  T.Append;
+  T.FieldByName('GID').AsString := '1';
+//  T.FieldByName('Name').AsString := 'КАСА 1';
+//  T.FieldByName('Store').AsString := 'МАГАЗИН "АНЕТ 4 - SWEET"';
+//  T.FieldByName('Workstation').AsString := 'КАСА 1';
+//  T.FieldByName('User').AsString := 'ОДИТ';
+//  T.FieldByName('Role').AsString := 'ОДИТОР';
+//  T.FieldByName('CreatedAt').AsString := '27-07-2019 09:21:11';
+//  T.FieldByName('EventType').AsString := 'вписване';
+//  T.FieldByName('Description').AsString := 'вписване/регистриране (login) на потребител в системата';
+  T.FieldByName('Model').AsString := 'FP-700X';
+  T.FieldByName('FiscalDevice').AsString := 'DT652267';
+  T.FieldByName('Brand').AsString := 'Датекс';
+  T.FieldByName('AttachedAt').AsString := '01-08-2019';
+  T.FieldByName('ModifiedAt').AsString := '01-08-2019';
+  T.FieldByName('DetachedAt').AsString := '';
+  T.Post;
+end;
+
+end.

@@ -1,0 +1,18 @@
+unit Interfaces.Model.Login;
+
+interface
+
+type
+  IModelLogin = interface
+  ['{33D32696-917C-4F89-9C93-DD73BE8D2824}']
+    function GetIsLoggedIn: Boolean;
+    procedure SetIsLoggedIn(AValue: Boolean);
+    property IsLoggedIn: Boolean read GetIsLoggedIn write SetIsLoggedIn;
+
+    procedure Logout;
+    function TryLogin(APassword: String): Boolean;
+  end;
+
+implementation
+
+end.

@@ -295,6 +295,7 @@ type
     procedure VoucherTotal;
     procedure CardTotal;
     procedure CashTotal;
+    procedure CompleteTotal;
     procedure CloseSale;
     procedure DiscardSale;
 
@@ -1373,7 +1374,7 @@ begin
   StoreName := G.StoreName;
   WorkstationID := G.WorkstationID;
   FiscalDeviceID := G.FiscalDeviceID;
-  UserGID := G.UserGID.ToString;
+  UserGID := G.UserID.ToString;
   SaleID := TGeneratorGIDs.NextGIDByName('SaleID').ToString;
   SaleUniqueID := FiscalDeviceID + '-' + UserGID.PadLeft(4, '0') + '-' + SaleID.PadLeft(7, '0');
   ReceiptID := '';
@@ -1454,6 +1455,16 @@ end;
 
 procedure TModelClassSale.CashTotal;
 begin
+  AddPayment(GenerateCashPayment);
+  AddPayment(GenerateReturnedPayment);
+  Stage := 'налични плащания';
+  SaveToFile;
+end;
+
+procedure TModelClassSale.CompleteTotal;
+begin
+  CashPayment := FormatFloat('0.00', _Round(Due.ToDouble - VoucherPayment.ToDouble - CardPayment.ToDouble, 0.01));
+  Returned := (CashPayment.ToDouble + VoucherPayment.ToDouble + CardPayment.ToDouble - Due.ToDouble).ToString;
   AddPayment(GenerateCashPayment);
   AddPayment(GenerateReturnedPayment);
   Stage := 'налични плащания';

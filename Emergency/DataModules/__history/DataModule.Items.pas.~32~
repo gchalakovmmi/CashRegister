@@ -1,0 +1,487 @@
+unit DataModule.Items;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Data.DB,
+  Datasnap.DBClient,
+  Bde.DBTables,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.StorageBin,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TDataModuleItems = class(TDataModule)
+    DataSource: TDataSource;
+      FDMemTable: TFDMemTable;
+        FDMemTableID: TIntegerField;
+        FDMemTableCode: TStringField;
+        FDMemTableItem: TStringField;
+        FDMemTableVendorPrice: TCurrencyField;
+        FDMemTableClientPrice: TCurrencyField;
+        FDMemTableBarCode: TStringField;
+        FDMemTablePresent: TFloatField;
+        FDMemTableMeasure: TStringField;
+        FDMemTableCoeff: TFloatField;
+        FDMemTableMinimum: TFloatField;
+        FDMemTableFactor: TFloatField;
+        FDMemTableDiscount: TFloatField;
+        FDMemTableorgMeasure: TStringField;
+        FDMemTableorgVendorPrice: TFloatField;
+        FDMemTableorgClientPrice: TFloatField;
+
+  {$REGION 'Published Methods'}
+    procedure FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FKeyWord: String;
+    FQuantity: String;
+    FCode: String;
+
+    FSelectedID: integer;
+    FSelectedQUANTITY: Double;
+    FSelectedVENDORPRICE: Double;
+    FSelectedCLIENTPRICE: Double;
+    FSelectedCOEFF: Double;
+    FSelectedNAME: string;
+    FSelectedCODE: string;
+    FSelectedMEASURE: string;
+    FSelectedBARCODE: string;
+    FSelectedTYPED: string;
+    FSelectedDISCOUNT: Double;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    procedure SetKeyWord(const AValue: String);
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property KeyWord: String read FKeyWord write SetKeyWord;
+
+    property SelectedTYPED : string read FSelectedTYPED write FSelectedTYPED;
+    property SelectedID : integer read FSelectedID write FSelectedID;
+    property SelectedCODE : string read FSelectedCODE write FSelectedCODE;
+    property SelectedNAME : string read FSelectedNAME write FSelectedNAME;
+    property SelectedMEASURE : string read FSelectedMEASURE write FSelectedMEASURE;
+    property SelectedBARCODE : string read FSelectedBARCODE write FSelectedBARCODE;
+    property SelectedCOEFF: Double read FSelectedCOEFF write FSelectedCOEFF;
+    property SelectedDISCOUNT: Double read FSelectedDISCOUNT write FSelectedDISCOUNT;
+    property SelectedQUANTITY: Double read FSelectedQUANTITY write FSelectedQUANTITY;
+    property SelectedVENDORPRICE: Double read FSelectedVENDORPRICE write FSelectedVENDORPRICE;
+    property SelectedCLIENTPRICE: Double read FSelectedCLIENTPRICE write FSelectedCLIENTPRICE;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure RefreshData;
+    procedure Refilter;
+    procedure ClearSelected;
+    procedure Select;
+//    procedure Select1;
+//    procedure Select2;
+//    procedure Select3;
+//    procedure Select4;
+//    procedure Select5;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+
+  end;
+
+var
+  DataModuleItems: TDataModuleItems;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+uses
+  Winapi.Windows,
+  System.IOUtils,
+  System.Variants,
+  Globals,
+  Helper.MyFuncs,
+  View.Message;
+
+{ TDataModuleItems }
+
+{$REGION 'Published Methods'}
+
+procedure TDataModuleItems.FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+//var
+//  sQuantity, sCode : String;
+begin
+//  if Pos('*', KeyWord) > 0 then begin
+//    sQuantity := Copy(KeyWord, 1, Pos('*', KeyWord)-1);
+//    sCode := Copy(KeyWord, Pos('*', KeyWord)+1, 999);
+//  end else begin
+//    sQuantity := '';
+//    sCode := KeyWord;
+//  end;
+//  if Length(sCode) > 12 then begin
+//    if ((sCode[1] = '2') and (CharInSet(sCode[2], ['4'..'9']))) or (Copy(sCode,1,2) = '19')  or (Copy(sCode,1,2) = '99') then begin
+//      sQuantity := Copy(sCode, 8, 2)+'.'+Copy(sCode, 10, 3);
+//      if sQuantity = '.'  then sQuantity := '1';
+//      sCode := Copy(sCode, 1, 7);
+//    end;
+//  end;
+  if FCode <> '' then begin
+    if IsDigit(FCode) then begin
+      Accept := (FCode = DataSet.FieldByName('BARCODE').AsString) or
+                (FCode = DataSet.FieldByName('CODE').AsString)or
+                (TrimZero(FCode) = DataSet.FieldByName('CODE').AsString) or
+                (Equal(TrimZero(FCode), DataSet.FieldByName('BARCODE').AsString));
+    end else begin
+      Accept := (Match(AnsiUpperCase(FCode), AnsiUpperCase(DataSet.FieldByName('ITEM').AsString))) or
+                (FCode = DataSet.FieldByName('BARCODE').AsString) or
+                (FCode = DataSet.FieldByName('CODE').AsString) or
+                (TrimZero(FCode) = DataSet.FieldByName('CODE').AsString);
+    end;
+  end else begin
+    Accept := True;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+procedure TDataModuleItems.SetKeyWord(const AValue: String);
+begin
+  FKeyWord := AValue;
+  if Pos('*', KeyWord) > 0 then begin
+    FQuantity := Copy(FKeyWord, 1, Pos('*', FKeyWord)-1);
+    FCode := Copy(KeyWord, Pos('*', KeyWord) + 1, MaxInt);
+  end else begin
+    FQuantity := '';
+    FCode := KeyWord;
+  end;
+  if Length(FCode) > 12 then begin
+    if ((FCode[1] = '2') and (CharInSet(FCode[2], ['4'..'9']))) or (Copy(FCode,1,2) = '19')  or (Copy(FCode,1,2) = '99') then begin
+      FQuantity := Copy(FCode, 8, 2)+'.'+Copy(FCode, 10, 3);
+      if FQuantity = '.'  then FQuantity := '1';
+      FCode := Copy(FCode, 1, 7);
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TDataModuleItems.RefreshData;
+var
+  LQuery: TQuery;
+  LActive: Boolean;
+  LID: Integer;
+begin
+
+//  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'SelectItems.dat')) then begin
+//    FDMemTable.LoadFromFile(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
+//    TFile.Delete(TPath.Combine(G.ItemsFolder, 'SelectItems.dat'));
+//
+//    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
+//      TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
+//    end;
+//
+//    if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+//      TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
+//    end;
+//
+//    Exit;
+//  end;
+
+//  if not TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then Exit;
+
+  ViewMessage.ShowBadMessage('Обновяване на артикули и цени ...');
+  LID := 0;
+  LActive := DataSource.DataSet.Active;
+  if LActive then begin
+    LID := DataSource.DataSet.FieldByName('ID').AsInteger;
+  end;
+
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+    FDMemTable.DisableControls;
+    FDMemTable.Close;
+    FDMemTable.CreateDataSet;
+    FDMemTable.Filtered := False;
+
+    LQuery := TQuery.Create(Self);
+    try
+      LQuery.DatabaseName := G.ItemsFolder;
+      LQuery.SQL.Clear;
+      LQuery.SQL.Add('SELECT Items.ID,ITEMS.GroupType,Items.Code,Items.Item,Measures.Coeff,Measures.Measure,Measures.BarCode, Measures.Factor, Measures.Minimum,Measures.Discount,Items.VendorPrice,Items.ClientPrice,Items.ShortName FROM Items');
+      LQuery.SQL.Add('LEFT JOIN Measures ON (Items.ID = Measures.ItemID)');
+      LQuery.SQL.Add('WHERE (Items.Act = ''*'')');
+      LQuery.SQL.Add('ORDER BY ITEM, BARCODE, COEFF');
+
+      LQuery.Open;
+      while not LQuery.Eof do begin
+        FDMemTable.Append;
+        FDMemTable.FieldByName('ID').AsInteger := LQuery.FieldByName('ID').AsInteger;
+        FDMemTable.FieldByName('CODE').AsString := LQuery.FieldByName('CODE').AsString;
+        FDMemTable.FieldByName('ITEM').AsString := LQuery.FieldByName('ITEM').AsString;
+        if LQuery.FieldByName('COEFF').AsFloat <> 1 then begin
+          FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('COEFF').AsString + LQuery.FieldByName('MEASURE').AsString;
+        end else begin
+          FDMemTable.FieldByName('MEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
+        end;
+        FDMemTable.FieldByName('BARCODE').AsString := LQuery.FieldByName('BARCODE').AsString;
+        FDMemTable.FieldByName('COEFF').AsFloat := LQuery.FieldByName('COEFF').AsFloat;
+        FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
+        FDMemTable.FieldByName('DISCOUNT').AsFloat := LQuery.FieldByName('DISCOUNT').AsFloat;
+        FDMemTable.FieldByName('VENDORPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('VendorPrice').AsFloat, 0.01);
+        FDMemTable.FieldByName('CLIENTPRICE').AsFloat := _Round(LQuery.FieldByName('COEFF').AsFloat * LQuery.FieldByName('ClientPrice').AsFloat * (100-LQuery.FieldByName('DISCOUNT').AsFloat)/100, 0.01);
+        FDMemTable.FieldByName('FACTOR').AsFloat := LQuery.FieldByName('FACTOR').AsFloat;
+        FDMemTable.FieldByName('MINIMUM').AsFloat := LQuery.FieldByName('MINIMUM').AsFloat;
+        FDMemTable.FieldByName('orgMEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
+        FDMemTable.FieldByName('orgVENDORPRICE').AsFloat := LQuery.FieldByName('VendorPrice').AsFloat;
+        FDMemTable.FieldByName('orgCLIENTPRICE').AsFloat := LQuery.FieldByName('ClientPrice').AsFloat;
+
+        LQuery.Next;
+      end;
+    finally
+      LQuery.Close;
+      LQuery.Free;
+    end;
+
+    FDMemTable.Filtered := True;
+    FDMemTable.First;
+
+    if LActive then begin
+      FDMemTable.Locate('ID', LID, []);
+    end;
+    FDMemTable.EnableControls;
+  end;
+
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'new.txt')) then begin
+    TFile.Delete(TPath.Combine(G.ItemsFolder, 'new.txt'));
+  end;
+
+  if TFile.Exists(TPath.Combine(G.ItemsFolder, 'start.txt')) then begin
+    TFile.Delete(TPath.Combine(G.ItemsFolder, 'start.txt'));
+  end;
+
+  ViewMessage.Hide;
+end;
+
+procedure TDataModuleItems.Refilter;
+var
+  LID: Integer;
+  LBarCode: String;
+begin
+  LID := DataSource.DataSet.FieldByName('ID').AsInteger;
+  LBARCODE := DataSource.DataSet.FieldByName('BARCODE').AsString;
+  DataSource.DataSet.DisableControls;
+  DataSource.DataSet.Filtered := False;
+  DataSource.DataSet.Filtered := True;
+  DataSource.DataSet.Locate('ID;BARCODE', VarArrayOf([LID, LBarCode]), []);
+  DataSource.DataSet.EnableControls;
+end;
+
+procedure TDataModuleItems.ClearSelected;
+begin
+  SelectedTYPED := '';
+  SelectedID := 0;
+  SelectedBARCODE := '';
+  SelectedNAME := '';
+  SelectedMEASURE := '';
+  SelectedQUANTITY := 0;
+  SelectedCOEFF := 0;
+  SelectedDISCOUNT := 0;
+  SelectedVENDORPRICE := 0;
+  SelectedCLIENTPRICE := 0;
+end;
+
+procedure TDataModuleItems.Select;
+var
+  LFactor: Double;
+  LFraction: Double;
+begin
+  if DataSource.DataSet.RecordCount = 0 then begin
+    Beep(440, 500);
+    ViewMessage.ShowBadMessagePlus('НЕ Е ИЗБРАН АРТИКУЛ!');
+    DataModuleItems.ClearSelected;
+    Exit;
+  end;
+  SelectedTYPED := KeyWord;
+  SelectedID := DataSource.DataSet.FieldByName('ID').AsInteger;
+  SelectedBARCODE := DataSource.DataSet.FieldByName('BARCODE').AsString;
+  SelectedNAME := DataSource.DataSet.FieldByName('ITEM').AsString;
+  SelectedMEASURE := DataSource.DataSet.FieldByName('orgMEASURE').AsString;
+  SelectedCOEFF := DataSource.DataSet.FieldByName('COEFF').AsFloat;
+  SelectedDISCOUNT := DataSource.DataSet.FieldByName('DISCOUNT').AsFloat;
+  SelectedVENDORPRICE := DataSource.DataSet.FieldByName('orgVENDORPRICE').AsCurrency;
+  SelectedCLIENTPRICE := DataSource.DataSet.FieldByName('orgCLIENTPRICE').AsCurrency;
+  if FQuantity = '' then begin
+    SelectedQUANTITY := 1.00;
+  end else begin
+    try
+      SelectedQUANTITY := StrToFloat(FQuantity);
+    except
+      on EConvertError do begin
+        ViewMessage.ShowBadMessagePlus(FQuantity+' не е число!');
+        Exit;
+      end;
+    end;
+  end;
+  if SelectedNAME = '' then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока без име!');
+  end;
+  if SelectedMEASURE = '' then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока без мярка!');
+  end;
+  if SelectedCLIENTPRICE <= 0 then begin
+    ViewMessage.ShowBadMessagePlus('Избрана е стока с некоректна ед.цена!');
+  end;
+  if SelectedQUANTITY > 1000 then begin
+    ViewMessage.ShowBadMessagePlus('Твърде голямо количество!');
+    ClearSelected;
+    Exit;
+  end;
+  LFactor := DataSource.DataSet.FieldByName('FACTOR').AsFloat;
+  if (LFactor < 1) and (FQuantity = '') then begin
+    ViewMessage.ShowBadMessagePlus('Теглим артикул! Моля въведете количество.');
+    KeyWord := '';
+    ClearSelected;
+    Exit;
+  end;
+  LFraction := SelectedQUANTITY/LFactor;
+  if (Abs(LFraction - Int(LFraction))> 0.001) then begin
+    if (Abs(LFraction - Int(LFraction)-1)> 0.001) then begin
+      ViewMessage.ShowBadMessagePlus('Количеството ('+FQuantity+') трябва да е кратно на '+DataSource.DataSet.FieldByName('FACTOR').AsString);
+      ClearSelected;
+      Exit;
+    end;
+  end;
+  if (Abs(DataModuleItems.SelectedQUANTITY) < DataSource.DataSet.FieldByName('MINIMUM').AsFloat) then begin
+    ViewMessage.ShowBadMessagePlus('Количеството ('+FQuantity+') трябва да е по-голямо от '+DataSource.DataSet.FieldByName('MINIMUM').AsString);
+    ClearSelected;
+    Exit;
+  end;
+end;
+
+//procedure TDataModuleItems.Select1;
+//begin
+//  SelectedTYPED := '1';
+//  SelectedID := 1;
+//  SelectedBARCODE := '1';
+//  SelectedNAME := 'Стока 1';
+//  SelectedMEASURE := 'бр.';
+//  SelectedCOEFF := 1;
+//  SelectedDISCOUNT := 0;
+//  SelectedVENDORPRICE := 1.5;
+//  SelectedCLIENTPRICE := 1.8;
+//  SelectedQUANTITY := 1.00;
+//end;
+//
+//procedure TDataModuleItems.Select2;
+//begin
+//  SelectedTYPED := '2';
+//  SelectedID := 2;
+//  SelectedBARCODE := '2';
+//  SelectedNAME := 'Стока 2';
+//  SelectedMEASURE := 'бр.';
+//  SelectedCOEFF := 1;
+//  SelectedDISCOUNT := 0;
+//  SelectedVENDORPRICE := 2.5;
+//  SelectedCLIENTPRICE := 2.8;
+//  SelectedQUANTITY := 1.00;
+//end;
+//
+//procedure TDataModuleItems.Select3;
+//begin
+//  SelectedTYPED := '3';
+//  SelectedID := 2;
+//  SelectedBARCODE := '2';
+//  SelectedNAME := 'Стока 2';
+//  SelectedMEASURE := 'бр.';
+//  SelectedCOEFF := 5;
+//  SelectedDISCOUNT := 7;
+//  SelectedVENDORPRICE := 2.5;
+//  SelectedCLIENTPRICE := 2.8;
+//  SelectedQUANTITY := 1.00;
+//end;
+//
+//procedure TDataModuleItems.Select4;
+//begin
+//  SelectedTYPED := '4';
+//  SelectedID := 2;
+//  SelectedBARCODE := '2';
+//  SelectedNAME := 'Стока 2';
+//  SelectedMEASURE := 'бр.';
+//  SelectedCOEFF := 5;
+//  SelectedDISCOUNT := 7;
+//  SelectedVENDORPRICE := 2.5;
+//  SelectedCLIENTPRICE := 2.8;
+//  SelectedQUANTITY := 3.00;
+//end;
+//
+//procedure TDataModuleItems.Select5;
+//begin
+//  SelectedTYPED := '5';
+//  SelectedID := 3;
+//  SelectedBARCODE := '3';
+//  SelectedNAME := 'Върната Стока';
+//  SelectedMEASURE := 'бр.';
+//  SelectedCOEFF := 1;
+//  SelectedDISCOUNT := 0;
+//  SelectedVENDORPRICE := 2.5;
+//  SelectedCLIENTPRICE := 2.8;
+//  SelectedQUANTITY := -1.000;
+//end;
+//
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

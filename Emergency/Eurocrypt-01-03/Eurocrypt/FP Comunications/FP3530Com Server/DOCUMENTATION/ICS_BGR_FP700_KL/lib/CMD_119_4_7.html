@@ -1,0 +1,197 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_119_4_7</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>77h (119)	РАБОТА С КЛЕН
+
+
+Печат на данни от КЛЕН с 1/2 височина на шрифта. 
+Отпечатват се документите от дата и час DT1(включително) до дата и час DT2 (включително). 
+Има филтриране на документите, които са избрани, в зависимост от аргумента Flg. 
+
+	Област за данни:	
+			Flg
+			DT1
+			DT2
+	Отговор:
+			PrintedCount
+
+	Flg	Стринг от символи, задаващи тип на документ, който да се избере за четене. 
+		Възможни символи в стринга:
+			'A'	Всички видове документи.
+			'F'	Фискални (клиентски) бонове.
+			'N'	Служебни бонове.
+			'R'	Служебни бонове със завъртян на 90 градуса печат.
+			'S'	Бонове от сервизни операции.
+			'X'	X-отчети.
+			'Z'	Z-отчети.
+	DT1	Начални дата и час на справката във формат DDMMYY[hhmmss]. 
+		Ако се изпусне часа, то се подразбира "000000", т.е 00:00:00.
+	DT2	Крайни дата и час на справката във формат DDMMYY[hhmmss]. 
+		Ако се изпусне часа, то се подразбира "235959", т.е 23:59:59.
+
+	PrintedCount	Броя отпечатани документи като цяло число.
+
+Копието на документите от КЛЕН е почти идентично с оригиналните документи. 
+
+Разлики:
+1.	Копията никога нямат графично лого преди header-а.
+2.	В копията никъде не присъства графичното фискално лого.
+3.	Надписът "ФИСКАЛЕН БОН" с фискалното лого се заменя с надпис 
+	"ФИСКАЛЕН БОН - КОПИЕ" с шрифт с двойна ширина.
+
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Flg</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Flg	
+
+Стринг от символи, задаващи тип на документ, който да се избере за четене. 
+Възможни символи в стринга:
+	'A'	Всички видове документи.
+	'F'	Фискални (клиентски) бонове.
+	'N'	Служебни бонове.
+	'R'	Служебни бонове със завъртян на 90 градуса печат.
+	'S'	Бонове от сервизни операции.
+	'X'	X-отчети.
+	'Z'	Z-отчети.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10504</td>
+				<td class="VerificationType">Проверка дали входния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">DT1</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>DT1	
+
+Начални дата и час на справката във формат DDMMYY[hhmmss]. 
+Ако се изпусне часа, то се подразбира "000000", т.е 00:00:00.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">DT2</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>DT2
+
+Крайни дата и час на справката във формат DDMMYY[hhmmss]. 
+Ако се изпусне часа, то се подразбира "235959", т.е 23:59:59.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">PrintedCount</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>PrintedCount	Броя отпечатани документи като цяло число.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10524</td>
+				<td class="VerificationType">Проверка за наличие на изходящ параметър.</td>
+				<td class="ErrDescription">Missing output parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

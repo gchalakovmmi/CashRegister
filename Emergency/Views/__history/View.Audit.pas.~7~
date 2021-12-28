@@ -1,0 +1,148 @@
+unit View.Audit;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Vcl.StdCtrls,
+  ButtonWithColor,
+  Interfaces.ViewModel.Audit;
+
+type
+  TViewAudit = class(TForm)
+    ButtonNomenclaures: TBitBtnWithColor;
+    ButtonLogs: TBitBtnWithColor;
+    ButtonSales: TBitBtnWithColor;
+    ButtonReversals: TBitBtnWithColor;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure ButtonNomenclaturesClick(Sender: TObject);
+    procedure ButtonLogsClick(Sender: TObject);
+    procedure ButtonSalesClick(Sender: TObject);
+    procedure ButtonReversalsClick(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FViewModel: IViewModelAudit;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+    property ViewModel: IViewModelAudit read FViewModel implements IViewModelAudit;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+  end;
+
+var
+  ViewAudit: TViewAudit;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Globals,
+  Interfaces.Enums,
+
+  Interfaces.ViewModel.Login,
+
+  Model.Pattern.Observer.Observer,
+  ViewModel.Audit;
+
+{$REGION 'Published Methods'}
+
+procedure TViewAudit.FormCreate(Sender: TObject);
+begin
+  FViewModel := CreateViewModelAudit;
+end;
+
+procedure TViewAudit.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TViewAudit.ButtonNomenclaturesClick(Sender: TObject);
+begin
+  ViewModel.Nomenclatures;
+end;
+
+procedure TViewAudit.ButtonLogsClick(Sender: TObject);
+begin
+  ViewModel.Logs;
+end;
+
+procedure TViewAudit.ButtonSalesClick(Sender: TObject);
+begin
+  ViewModel.Sales;
+end;
+
+procedure TViewAudit.ButtonReversalsClick(Sender: TObject);
+begin
+  ViewModel.Reversals;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,299 @@
+unit Helper.StringMath;
+
+interface
+
+const
+  MAX_PRECISION = 18;
+
+type
+  INumber = interface
+    function GetValue: Int64;
+    procedure SetValue(const Value: Int64);
+    property Value: Int64 read GetValue write SetValue;
+
+    function GetPrecision: Integer;
+    procedure SetPrecision(const Value: Integer);
+    property Precision: Integer read GetPrecision write SetPrecision;
+
+    function Dublicate: INumber;
+    function ToString: string;
+    function Add(const ANumber: INumber): INumber;
+    function Subtract(const ANumber: INumber): INumber;
+    function Multiply(const ANumber: INumber): INumber;
+    function Divide(const ANumber: INumber): INumber;
+    function ToPrecision(const APrecision: Integer): INumber;
+  end;
+
+  TNumber = class(TInterfacedObject, INumber)
+
+  {$REGION 'Private Fields'}
+  private
+    FValue: Int64;
+    FPrecision: Integer;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Methods'}
+  private
+    function GetValue: Int64;
+    procedure SetValue(const Value: Int64);
+    function GetPrecision: Integer;
+    procedure SetPrecision(const Value: Integer);
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Value: Int64 read GetValue write SetValue;
+    property Precision: Integer read GetPrecision write SetPrecision;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    function Dublicate: INumber;
+    function ToString: String;
+    function Add(const ANumber: INumber): INumber;
+    function Subtract(const ANumber: INumber): INumber;
+    function Multiply(const ANumber: INumber): INumber;
+    function Divide(const ANumber: INumber): INumber;
+    function ToPrecision(const APrecision: Integer): INumber;
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor CreateFromInteger(const AValue: Integer);
+    constructor CreateFromFloat(const AValue: Extended; const APrecision: Integer);
+    constructor CreateFromString(const AValue: String; const APrecision: Integer);
+  {$ENDREGION}
+
+  end;
+
+implementation
+
+uses
+  System.Math,
+  System.SysUtils;
+
+{ TNumber }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TNumber.GetValue: Int64;
+begin
+  Result := FValue;
+end;
+
+procedure TNumber.SetValue(const Value: Int64);
+begin
+  FValue := Value;
+end;
+
+function TNumber.GetPrecision: Integer;
+begin
+  Result := FPrecision;
+end;
+
+procedure TNumber.SetPrecision(const Value: Integer);
+begin
+  FPrecision := Value;
+end;
+
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+
+function TNumber.Dublicate: INumber;
+begin
+  Result := TNumber.Create;
+  Result.Value := Value;
+  Result.Precision := Precision;
+end;
+
+function TNumber.Add(const ANumber: INumber): INumber;
+var
+  LPrecision: Integer;
+  LNumber: INumber;
+begin
+  LPrecision := Precision;
+
+  LNumber := ANumber.Dublicate.ToPrecision(Max(Precision, ANumber.Precision));
+  ToPrecision(Max(Precision, LNumber.Precision));
+
+  Value := Value + LNumber.Value;
+
+  ToPrecision(LPrecision);
+
+  Result := Self;
+end;
+
+function TNumber.Subtract(const ANumber: INumber): INumber;
+var
+  LNumber: INumber;
+begin
+  LNumber := ANumber.Dublicate;
+  LNumber.ToPrecision(Max(Precision, LNumber.Precision));
+  ToPrecision(Max(Precision, LNumber.Precision));
+  Value := Value - LNumber.Value;
+
+  Result := Self;
+end;
+
+function TNumber.Multiply(const ANumber: INumber): INumber;
+var
+  LPrecision: Integer;
+begin
+  LPrecision := Precision;
+  Value := Value * ANumber.Value;
+  Precision := Precision + ANumber.Precision;
+  ToPrecision(LPrecision);
+
+  Result := Self;
+end;
+
+function TNumber.Divide(const ANumber: INumber): INumber;
+var
+  LPrecision: Integer;
+begin
+  LPrecision := Precision;
+  ToPrecision(Precision + ANumber.Precision);
+
+  Value := Value * 10;
+  Value := Value div ANumber.Value;
+  if Value > 0 then begin
+    Value := Value + 5;
+  end else begin
+    Value := Value - 5;
+  end;
+  Value := Value div 10;
+
+  Precision := LPrecision;
+
+  Result := Self;
+end;
+
+function TNumber.ToPrecision(const APrecision: Integer): INumber;
+var
+  LPrecision: Integer;
+begin
+  if APrecision > MAX_PRECISION then Exit(nil);
+
+  if APrecision = Precision then Exit(Self);
+
+  if APrecision > FPrecision then begin
+    while FPrecision < APrecision do begin
+      FValue := FValue * 10;
+      FPrecision := FPrecision + 1;
+    end;
+  end else begin
+    while FPrecision > APrecision do begin
+      if FValue > 0 then begin
+        FValue := FValue + 5;
+      end else begin
+        FValue := FValue - 5;
+      end;
+      FValue := FValue div 10;
+      FPrecision := FPrecision - 1;
+    end;
+  end;
+
+  Result := Self;
+end;
+
+function TNumber.ToString: String;
+var
+  LResult: String;
+  LDelta: Integer;
+begin
+  LResult := Value.ToString;
+
+  LDelta := 0;
+  if Value < 0 then begin
+    LDelta := 1;
+  end;
+
+  while LResult.Length - LDelta <= Precision do begin
+    LResult := LResult.Insert(LDelta, '0');
+  end;
+
+  if Precision > 0 then begin
+    LResult := LResult.Insert(LResult.Length - Precision, '.');
+  end;
+
+  Result := LResult;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+
+constructor TNumber.CreateFromInteger(const AValue: Integer);
+begin
+  FValue := AValue;
+  FPrecision := 0;
+end;
+
+constructor TNumber.CreateFromFloat(const AValue: Extended; const APrecision: Integer);
+var
+  i: Integer;
+  LValue: Extended;
+begin
+  FPrecision := APrecision;
+
+  FValue := 1;
+  for i := 1 to APrecision do begin
+    FValue := FValue * 10;
+  end;
+
+  LValue := AValue * FValue * 10;
+  if AValue > 0 then begin
+    LValue := LValue + 5;
+  end;
+  if AValue < 0 then begin
+    LValue := LValue - 5;
+  end;
+
+  FValue := Trunc(LValue) div 10;
+end;
+
+constructor TNumber.CreateFromString(const AValue: String; const APrecision: Integer);
+begin
+  CreateFromFloat(AValue.ToExtended, APrecision);
+end;
+
+{$ENDREGION}
+
+end.

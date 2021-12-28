@@ -1,0 +1,172 @@
+unit ViewModel.Admin;
+
+interface
+
+uses
+  Interfaces.ViewModel.Admin;
+
+  function CreateViewModelAdmin: IViewModelAdmin;
+
+implementation
+
+uses
+  System.UITypes,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls
+//  ,
+//
+//  View.Admin.Sales,
+//  View.Admin.Logs,
+//  View.Admin.Reversals,
+//  View.Admin.Nomenclatures
+  ;
+
+type
+  TViewModelAdmin = class(TInterfacedObject, IViewModelAdmin)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure Stores;
+    procedure Workstations;
+    procedure FiscalDevices;
+    procedure Permissions;
+    procedure Roles;
+    procedure Users;
+    procedure PermissionsRoles;
+    procedure RolesUsers;
+    procedure Actions;
+    procedure PaymentTypes;
+    procedure Settings;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelAdmin }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TViewModelAdmin.Stores;
+begin
+//  ShowViewAdminStores;
+end;
+
+procedure TViewModelAdmin.Workstations;
+begin
+//  ShowViewAdminWorkstations;
+end;
+
+procedure TViewModelAdmin.FiscalDevices;
+begin
+//  ShowViewAdminFiscalDevices;
+end;
+
+procedure TViewModelAdmin.Permissions;
+begin
+//  ShowViewAdminPermissions;
+end;
+
+procedure TViewModelAdmin.Roles;
+begin
+//  ShowViewAdminRoles;
+end;
+
+procedure TViewModelAdmin.Users;
+begin
+//  ShowViewAdminUsers;
+end;
+
+procedure TViewModelAdmin.Permissions;
+begin
+//  ShowViewAdminPermissions;
+end;
+
+procedure TViewModelAdmin.Permissions;
+begin
+//  ShowViewAdminPermissions;
+end;
+
+procedure TViewModelAdmin.Permissions;
+begin
+//  ShowViewAdminPermissions;
+end;
+
+procedure TViewModelAdmin.Permissions;
+begin
+//  ShowViewAdminPermissions;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelAdmin.Create;
+begin
+  //
+end;
+
+destructor TViewModelAdmin.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelAdmin: IViewModelAdmin;
+begin
+  Result := TViewModelAdmin.Create;
+end;
+
+end.

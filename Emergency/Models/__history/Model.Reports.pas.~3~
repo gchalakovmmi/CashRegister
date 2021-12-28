@@ -1,0 +1,175 @@
+unit Model.Reports;
+
+interface
+
+uses
+  Interfaces.Model.Reports;
+
+  function CreateModelReports: IModelReports;
+
+implementation
+
+uses
+  Device.FP700X,
+  Interfaces.Enums,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable;
+
+type
+  TModelReports = class(TInterfacedObject, IModelReports, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+    procedure XReport;
+    procedure ZReport;
+    procedure PReport(const APeriodStart, APeriodFinish: TDate);
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+function CreateModelReports: IModelReports;
+begin
+  Result := TModelReports.Create;
+end;
+
+{ TModelReports }
+
+{$REGION 'Private Methods'}
+
+procedure TModelReports.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+//  if
+//    (actFiscalDeviceAfterCashCheck in AModelNotification.Actions) or
+//    (actFiscalDeviceAfterCashIn in AModelNotification.Actions) or
+//    (actFiscalDeviceAfterCashOut in AModelNotification.Actions)
+//  then begin
+//    FCash := DeviceFP700X.Cash;
+//    SendNotification([actFiscalDeviceAfterCashCheck]);
+//  end;
+end;
+
+procedure TModelReports.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelReports.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TModelReports.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelReports.XReport;
+begin
+  DeviceFP700X.XReport;
+end;
+
+procedure TModelReports.ZReport;
+begin
+  DeviceFP700X.ZReport;
+end;
+
+procedure TModelReports.PReport(const APeriodStart, APeriodFinish: TDate);
+begin
+  DeviceFP700X.PReport(APeriodStart, APeriodFinish);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TModelReports.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  DeviceFP700X.Observable.Subscribe(FObserver);
+end;
+
+destructor TModelReports.Destroy;
+begin
+  DeviceFP700X.Observable.Unsubscribe(FObserver);
+
+  inherited;
+end;
+
+{$ENDREGION}
+
+end.

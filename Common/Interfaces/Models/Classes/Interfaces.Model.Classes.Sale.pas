@@ -217,6 +217,7 @@ type
     procedure VoucherTotal;
     procedure CardTotal;
     procedure CashTotal;
+    procedure CompleteTotal;
     procedure CloseSale;
     procedure DiscardSale;
 

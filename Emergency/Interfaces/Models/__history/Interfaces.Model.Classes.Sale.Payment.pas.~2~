@@ -1,0 +1,66 @@
+unit Interfaces.Model.Classes.Sale.Payment;
+
+interface
+
+type
+  IModelClassSalePayment = interface
+  ['{8173499D-C803-42D2-9978-42311826E35F}']
+
+    function GetGID: Integer;
+    procedure SetGID(const Value: Integer);
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property GID: String read GetGID write SetGID;
+
+    function GetParentGID: Integer;
+    procedure SetParentGID(const Value: Integer);
+    ///<sumarry>системен номер на продажбата, присвоен от софтуера</summary>
+    property ParentGID: StrINg read GetParentGID write SetParentGID;
+
+    function GetSaleUniqueID: String;
+    procedure SetSaleUniqueID(const AValue: String);
+    ///<sumarry>уникален номер на продажба - съгласно т. 9</summary>
+    property SaleUniqueID: String read GetSaleUniqueID write SetSaleUniqueID;
+
+    function GetFiscalDeviceID: String;
+    procedure SetFiscalDeviceID(const AValue: String);
+    ///<sumarry>номер на фискалното устройство</summary>
+    property FiscalDeviceID: String read GetFiscalDeviceID write SetFiscalDeviceID;
+
+    function GetUserID: String;
+    procedure SetUserID(const AValue: String);
+    ///<sumarry>номер на оператор</summary>
+    property UserID: String read GetUserID write SetUserID;
+
+    function GetCreatedDate: String;
+    procedure SetCreatedDate(const AValue: String);
+    ///<sumarry>дата на откриване на продажбата</summary>
+    property CreatedDate: String read GetCreatedDate write SetCreatedDate;
+
+    function GetCompletedDate: String;
+    procedure SetCompletedDate(const AValue: String);
+    ///<sumarry>дата на приключване на продажбата</summary>
+    property CompletedDate: String read GetCompletedDate write SetCompletedDate;
+
+    ///<sumarry>дата на плащане</summary>
+    PaymentDate: String;
+
+    ///<sumarry>вид на плащането</summary>
+    PaymentType: String;
+
+    ///<sumarry>платена сума без ДДС - в лв.</summary>
+    PaymentBase: String;
+
+    ///<sumarry>ДДС - сума - в лв.</summary>
+    PaymentVAT: String;
+
+    ///<sumarry>платена сума с ДДС - в лв.</summary>
+    Payment: String;
+
+    procedure UpdateFromDataSet;
+    procedure UpdateInDataSet;
+  end;
+
+implementation
+
+end.
+

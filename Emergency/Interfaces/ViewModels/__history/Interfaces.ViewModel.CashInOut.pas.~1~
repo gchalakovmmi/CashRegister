@@ -1,0 +1,19 @@
+unit Interfaces.ViewModel.CashInOut;
+
+interface
+
+uses
+  Interfaces.Model.CashInOut;
+
+type
+  IViewModelCashInOut = interface
+  ['{29647EB4-611B-4EAE-9AA7-B613FFEF2216}']
+    function GetModel: IModelCashInOut;
+    procedure SetModel(const Value: IModelCashInOut);
+
+    property Model: IModelCashInOut read GetModel write SetModel;
+  end;
+
+implementation
+
+end.

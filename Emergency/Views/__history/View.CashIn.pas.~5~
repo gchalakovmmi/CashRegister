@@ -1,0 +1,43 @@
+unit View.CashIn;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TViewCashIn = class(TForm)
+    EditCash: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonCashInClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewCashIn: TViewCashIn;
+
+implementation
+
+{$R *.dfm}
+
+procedure TViewCashIn.ButtonCashInClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TViewCashIn.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//
+end;
+
+procedure TViewCashIn.FormCreate(Sender: TObject);
+begin
+//
+end;
+
+end.

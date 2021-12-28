@@ -1,0 +1,22 @@
+unit Interfaces.ViewModel.Audit;
+
+interface
+
+uses
+  Interfaces.Model.Audit;
+
+type
+  IViewModelAudit = interface
+  ['{B8657E99-F17E-46F5-9D5E-007C72621220}']
+    function GetModel: IModelAudit;
+    property Model: IModelAudit read GetModel;
+
+    procedure Nomenclatures;
+    procedure Logs;
+    procedure Sales;
+    procedure Reversals;
+  end;
+
+implementation
+
+end.

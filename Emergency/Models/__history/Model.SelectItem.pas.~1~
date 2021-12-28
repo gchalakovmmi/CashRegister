@@ -1,0 +1,114 @@
+unit Model.SelectItem;
+
+interface
+
+uses
+  Interfaces.Model.SelectItem;
+
+  function CreateModelSelectItem: IModelSelectItem;
+
+implementation
+
+type
+  TModelSelectItem = class(TInterfacedObject, IModelSelectItem)
+
+  {$REGION 'Private Methods'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Fields'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Properties'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+function CreateModelSelectItem: IModelSelectItem;
+begin
+  Result := TModelSelectItem.Create;
+end;
+
+{ TModelSelectItem }
+
+{$REGION 'Private Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TModelSelectItem.GetIsLoggedIn: Boolean;
+begin
+  Result := FIsLoggedIn;
+end;
+
+procedure TModelSelectItem.SetIsLoggedIn(AValue: Boolean);
+begin
+  FIsLoggedIn := AValue;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+procedure TModelSelectItem.Logout;
+begin
+  IsLoggedIn := False;
+end;
+
+procedure TModelSelectItem.TrySelectItem(APassword: String);
+begin
+  IsLoggedIn := APassword = '123';
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+end.

@@ -1,0 +1,224 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_48_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>30h (48)	ОТВАРЯНЕ НА ФИСКАЛЕН (КЛИЕНТСКИ) БОН
+
+	Област за данни:
+			OpCode
+			OpPwd
+			TillNmb
+	Отговор:	
+			Allreceipt
+			FiscReceipt
+
+	OpCode		Номер на оператор /1 до 16/
+	OpPwd		Операторска парола /4 до 8 цифри/
+	TillNmb		Номер на касово място /цяло число от 1 до 99999/
+
+	Allreceipt		Броят на всички издадени бонове (фискални и служебни) от последното приключване на деня до момента. /4 байта/ 
+	FiscReceipt	Броят на всички издадени фискални бонове от последното приключване на деня до момента. /4 байта/
+
+
+
+
+ФП извършва следните действия:
+•	Отпечатва се HEADER.
+•	Отпечатва се ЕИК.
+•	Отпечатва се номер и име на оператор и номер на касово място.
+•	Връщат се AllReceipt и FiscReceipt.
+
+Командата няма да бъде изпълнена успешно, ако:
+•	Има отворен фискален или служебен бон.
+•	Фискалната памет е пълна.
+•	Фискалната памет е повредена.
+•	Липсва код или парола на оператор, или номер на касово място.
+•	HEADER съдържа по-малко от 2 реда.
+•	Не е зададен ЕИК.
+•	Не е вярна операторската парола.
+•	Часовникът не е сверен.
+•	КЛЕН е пълна или не фунционира.
+•	Данъчният терминал не функционира, или информацията в него не съответствува на тази във фискалната памет
+
+При три грешни операторски пароли принтерът блокира и трябва да се изключи и включи за продължаване на работата.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">OpCode</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OpCode	Operator's number (1 to 16)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing parameter.</td>
+			</tr>
+			<tr>
+				<td class="col1">-10511</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.</td>
+			</tr>
+			<tr>
+				<td class="col1">-10512</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">OpPwd</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>OpPwd	Operator's password (4 to 8 digits)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing parameter.</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">TillNmb</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>TillNmb	Number of point of sale (a whole number of maximum 5 digits)</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing parameter.</td>
+			</tr>
+			<tr>
+				<td class="col1">-10511</td>
+				<td class="VerificationType">Проверка дали входния параметър превишава дадена горна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Allreceipt</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Allreceipt	 Броят на всички издадени бонове (фискални и служебни) от последното приключване на деня до момента. /4 байта/ </pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">FiscReceipt</td>
+				<td id="col2">[IN/OUT]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>FiscReceipt	Броят на всички издадени фискални бонове от последното приключване на деня до момента. /4 байта/</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10521</td>
+				<td class="VerificationType">Проверка за това дали изходящия параметър е цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10523</td>
+				<td class="VerificationType">Проверка дали изходния параметър превишава дадена долна граница със стойност от тип цяло число.</td>
+				<td class="ErrDescription">Wrong output data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

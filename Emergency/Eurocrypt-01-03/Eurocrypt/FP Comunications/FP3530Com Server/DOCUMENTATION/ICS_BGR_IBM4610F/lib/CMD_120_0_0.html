@@ -1,0 +1,157 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_120_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>78h (120) ПЕЧАТ НА РЕД В ДОКУМЕНТ ЗА МАТРИЧЕН ПЕЧАТ
+
+	Област за данни:	
+			Align
+			Attrib
+			Data
+
+	Отговор:
+			Няма данни
+
+С командата се отпечатва един ред на матричното печатащо устройство (с допълнителни атрибути).
+
+	Align		Един байт, указващ подравняването на текста. 
+
+	Възможни стойности:
+		'L'	Ляво подравняване.
+		'C'	Центриране.
+		'R'	Дясно подравняване.
+
+
+	Attrib		Атрибути на печат. 
+
+	До 3 байта със възможни стойности:
+		'W'	Печат с двойна ширина.
+		'H'	Печат с двойна височина.
+		'B'	Удебелен печат.
+
+	Data		Текстът за печат.
+
+Командата ще се отхвърли, ако не е отворен документ за матричен печат.
+Отпечатваният текст се дублира и върху контролната лента, но без атрибути височина, ширина и удебелено. 
+Ако при изпълнение на командата в матричното печатащо устройство няма хартия, индикацията за грешка на принтера ще започне 
+да мига, но данните ще бъдат приети за печат и ще чакат да се появи хартия. 
+
+ДАННИТЕ НЯМА КАК ДА СЕ АНУЛИРАТ И ТРЯБВА ДА БЪДАТ ОТПЕЧАТАНИ! 
+Ако сте започнали матричен печат, трябва да го завършите!
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">Align</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Align		Един байт, указващ подравняването на текста. 
+
+Възможни стойности:
+		'L'	Ляво подравняване.
+		'C'	Центриране.
+		'R'	Дясно подравняване.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10504</td>
+				<td class="VerificationType">Проверка дали входния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Attrib</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Attrib		Атрибути на печат. 
+
+До 3 байта със възможни стойности:
+		'W'	Печат с двойна ширина.
+		'H'	Печат с двойна височина.
+		'B'	Удебелен печат.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">Data</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>Data		Текстът за печат.</pre>
+
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

@@ -1,0 +1,59 @@
+object ViewAudit: TViewAudit
+  Left = 618
+  Top = 292
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
+  BorderWidth = 1
+  Caption = #1054#1044#1048#1058
+  ClientHeight = 186
+  ClientWidth = 721
+  Color = 16764354
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = 'Verdana'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  Scaled = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 25
+  object ButtonSales: TBitBtnWithColor
+    Left = 8
+    Top = 96
+    Width = 349
+    Height = 81
+    Caption = #1055#1056#1054#1044#1040#1046#1041#1048
+    TabOrder = 1
+    Color = 16751493
+  end
+  object ButtonReversals: TBitBtnWithColor
+    Left = 363
+    Top = 97
+    Width = 349
+    Height = 81
+    Caption = #1057#1058#1054#1056#1053#1048#1056#1040#1053#1045
+    TabOrder = 2
+    Color = 16751493
+  end
+  object ButtonNomenclaures: TBitBtnWithColor
+    Left = 8
+    Top = 8
+    Width = 349
+    Height = 81
+    Caption = #1053#1054#1052#1045#1053#1050#1051#1040#1058#1059#1056#1048
+    TabOrder = 3
+    Color = 16751493
+  end
+  object ButtonLogs: TBitBtnWithColor
+    Left = 364
+    Top = 8
+    Width = 349
+    Height = 81
+    Caption = #1044#1053#1045#1042#1053#1048#1062#1048
+    TabOrder = 0
+    Color = 16751493
+  end
+end

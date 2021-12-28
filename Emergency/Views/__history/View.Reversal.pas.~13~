@@ -1,0 +1,380 @@
+unit View.Reversal;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  System.Actions,
+  Data.DB,
+  Vcl.ExtCtrls,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ActnList,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Vcl.ComCtrls,
+  Interfaces.Model.Notification,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Classes.Sale,
+  Interfaces.ViewModel.Reversal,
+  DataModule.Reversal;
+
+type
+  TViewReversal = class(TForm, IObserver, IObservable)
+    ActionManager: TActionManager;
+      ActionExit: TAction;
+      ActionRemoveItem: TAction;
+      ActionCheckItem: TAction;
+      ActionSaveAndNew: TAction;
+      ActionDiscard: TAction;
+
+    TimerClose: TTimer;
+
+    PanelButtons: TPanel;
+      ButtonExit: TButton;
+      ButtonRemoveItem: TButton;
+      ButtonCheckItem: TButton;
+      ButtonSaveAndNew: TButton;
+      ButtonDiscard: TButton;
+
+    PanelShow: TPanel;
+      EditShow: TDBEdit;
+
+    PanelGrid: TPanel;
+      Grid: TDBGrid;
+
+    PanelPayment: TPanel;
+      LabelTotal: TLabel;
+      EditTotal: TDBEdit;
+
+    StatusBar: TStatusBar;
+
+  {$REGION 'Published Methods'}
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure ActionExitExecute(Sender: TObject);               // ESC
+    procedure ActionRemoveItemExecute(Sender: TObject);         // F8
+    procedure ActionCheckItemExecute(Sender: TObject);          // F9
+    procedure ActionSaveAndNewExecute(Sender: TObject);         // F10
+    procedure ActionDiscardExecute(Sender: TObject);            // Ctrl+F11
+
+    procedure EditShowEnter(Sender: TObject);
+    procedure GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure EditTotalEnter(Sender: TObject);
+  {$ENDREGION}
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+
+    procedure SetupGUI;
+    procedure UpdateGUI;
+    procedure DisableActions;
+    procedure EnableActions;
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FViewModel: IViewModelReversal;
+    FObserver: IObserver;
+    FObservable: IObservable;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+    function GetViewModel: IViewModelReversal;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read FObserver implements IObserver;
+    property Observable: IObservable read FObservable implements IObservable;
+    property ViewModel: IViewModelReversal read GetViewModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+
+  {$ENDREGION}
+  end;
+
+  procedure ShowViewReversal(const ASale: IModelClassSale);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  System.UITypes,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  ViewModel.Reversal;
+
+{$REGION 'Published Methods'}
+
+procedure TViewReversal.FormCreate(Sender: TObject);
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FViewModel := CreateViewModelReversal;
+  FViewModel.Observable.Subscribe(FObserver);
+
+  ViewModel.SetupReversal;
+end;
+
+procedure TViewReversal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  ViewModel.TeardownReversal;
+
+  FViewModel.Observable.UnSubscribe(FObserver);
+
+  Action := caFree;
+end;
+
+// Actions
+
+procedure TViewReversal.ActionExitExecute(Sender: TObject);
+begin
+  ViewModel.ActionExitExecute;
+end;
+
+procedure TViewReversal.ActionRemoveItemExecute(Sender: TObject);
+begin
+  ViewModel.ActionRemoveItemExecute;
+end;
+
+procedure TViewReversal.ActionCheckItemExecute(Sender: TObject);
+begin
+  ViewModel.ActionCheckItemExecute;
+end;
+
+procedure TViewReversal.ActionSaveAndNewExecute(Sender: TObject);
+begin
+  ViewModel.ActionSaveAndNewExecute;
+end;
+
+procedure TViewReversal.ActionDiscardExecute(Sender: TObject);
+begin
+  ViewModel.ActionDiscardExecute;
+end;
+
+
+// Edit Controls
+
+procedure TViewReversal.EditShowEnter(Sender: TObject);
+begin
+  ViewModel.EditShowEnter;
+end;
+
+procedure TViewReversal.GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  with (Sender as TDBGrid) do begin
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'ItemName') then begin
+      Canvas.Font.Style := [fsBold, fsStrikeOut];
+    end;
+    DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+end;
+
+procedure TViewReversal.EditTotalEnter(Sender: TObject);
+begin
+  ViewModel.EditTotalEnter;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Methods'}
+
+procedure TViewReversal.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if actSetupGUI in AModelNotification.Actions then begin
+    SetupGUI;
+  end;
+  if actUpdateGUI in AModelNotification.Actions then begin
+    UpdateGUI;
+  end;
+  if actReversalDisableActions in AModelNotification.Actions then begin
+    DisableActions;
+  end;
+  if actReversalActiveControlGrid in AModelNotification.Actions then begin
+    ActiveControl := Grid;
+  end;
+  if actReversalEnableActions in AModelNotification.Actions then begin
+    EnableActions;
+  end;
+  if actCloseForm in AModelNotification.Actions then begin
+    Close;
+  end;
+end;
+
+procedure TViewReversal.SetupGUI;
+var
+  LViewReversalGUISetupRecord: TViewReversalGUISetupRecord;
+begin
+  LViewReversalGUISetupRecord := ViewModel.GetGUISetupRecord(Screen.Width - 16, Screen.Height - 16);
+
+  Caption := LViewReversalGUISetupRecord.Caption;
+  Color := LViewReversalGUISetupRecord.Color;
+  Top := LViewReversalGUISetupRecord.Top;
+  Left := LViewReversalGUISetupRecord.Left;
+  Width := LViewReversalGUISetupRecord.Width;
+  Height := LViewReversalGUISetupRecord.Height;
+
+  // Panel Buttons
+  ButtonExit.Left := LViewReversalGUISetupRecord.ButtonExitLeft;
+  ButtonExit.Width := LViewReversalGUISetupRecord.ButtonExitWidth;
+
+  ButtonRemoveItem.Left := LViewReversalGUISetupRecord.ButtonRemoveItemLeft;
+  ButtonRemoveItem.Width := LViewReversalGUISetupRecord.ButtonRemoveItemWidth;
+
+  ButtonCheckItem.Left := LViewReversalGUISetupRecord.ButtonCheckItemLeft;
+  ButtonCheckItem.Width := LViewReversalGUISetupRecord.ButtonCheckItemWidth;
+
+  ButtonSaveAndNew.Left := LViewReversalGUISetupRecord.ButtonSaveAndNewLeft;
+  ButtonSaveAndNew.Width := LViewReversalGUISetupRecord.ButtonSaveAndNewWidth;
+
+  ButtonDiscard.Left := LViewReversalGUISetupRecord.ButtonDiscardLeft;
+  ButtonDiscard.Width := LViewReversalGUISetupRecord.ButtonDiscardWidth;
+
+  // Panel Show
+  EditShow.Left := LViewReversalGUISetupRecord.EditShowLeft;
+  EditShow.Width := LViewReversalGUISetupRecord.EditShowWidth;
+
+  // Panel Grid
+  PanelGrid.Width := LViewReversalGUISetupRecord.PanelGridWidth;
+  PanelGrid.Height := LViewReversalGUISetupRecord.PanelGridHeight;
+  Grid.Top := LViewReversalGUISetupRecord.GridTop;
+  Grid.Left := LViewReversalGUISetupRecord.GridLeft;
+  Grid.Height := LViewReversalGUISetupRecord.GridHeight;
+  Grid.Width := LViewReversalGUISetupRecord.GridWidth;
+  Grid.Columns[0].Width := LViewReversalGUISetupRecord.GridColumns0Width;
+  Grid.Columns[1].Width := LViewReversalGUISetupRecord.GridColumns1Width;
+  Grid.Columns[2].Width := LViewReversalGUISetupRecord.GridColumns2Width;
+  Grid.Columns[3].Width := LViewReversalGUISetupRecord.GridColumns3Width;
+  Grid.Columns[4].Width := LViewReversalGUISetupRecord.GridColumns4Width;
+  Grid.Columns[5].Width := LViewReversalGUISetupRecord.GridColumns5Width;
+
+  // Panel Payment
+  LabelTotal.Left := LViewReversalGUISetupRecord.LabelTotalLeft;
+  EditTotal.Left := LViewReversalGUISetupRecord.EditTotalLeft;
+
+  Self.Update;
+end;
+
+procedure TViewReversal.UpdateGUI;
+var
+  LViewReversalGUIRecord: TViewReversalGUIRecord;
+begin
+  LViewReversalGUIRecord := ViewModel.GetGUIRecord;
+
+  Self.Update;
+end;
+
+procedure TViewReversal.DisableActions;
+begin
+  ActionExit.Enabled := False;
+  ActionRemoveItem.Enabled := False;
+  ActionCheckItem.Enabled := False;
+  ActionSaveAndNew.Enabled := False;
+  ActionDiscard.Enabled := False;
+end;
+
+procedure TViewReversal.EnableActions;
+var
+  LViewReversalGUIActionsRecord: TViewReversalGUIActionsRecord;
+begin
+  LViewReversalGUIActionsRecord := ViewModel.GetGUIActionsRecord;
+
+  ActionExit.Enabled := LViewReversalGUIActionsRecord.ActionExitEnabled;
+  ActionRemoveItem.Enabled := LViewReversalGUIActionsRecord.ActionRemoveItemEnabled;
+  ActionCheckItem.Enabled := LViewReversalGUIActionsRecord.ActionCheckItemEnabled;
+  ActionSaveAndNew.Enabled := LViewReversalGUIActionsRecord.ActionSaveAndNewEnabled;
+  ActionDiscard.Enabled := LViewReversalGUIActionsRecord.ActionDiscardEnabled;
+
+  UpdateGUI;
+
+  Self.Update;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewReversal.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewReversal.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewReversal.GetViewModel: IViewModelReversal;
+begin
+  Result := FViewModel;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+{$ENDREGION}
+
+procedure ShowViewReversal(const ASale: IModelClassSale);
+var
+  LViewReversal: TViewReversal;
+begin
+  LViewReversal := TViewReversal.Create(nil);
+  LViewReversal.ViewModel.Model.Sale := ASale;
+  LViewReversal.ShowModal;
+end;
+
+end.

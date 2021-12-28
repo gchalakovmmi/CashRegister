@@ -1,0 +1,329 @@
+unit ViewModel.Reversal;
+
+interface
+
+uses
+  Interfaces.ViewModel.Reversal;
+
+  function CreateViewModelReversal: IViewModelReversal;
+
+implementation
+
+uses
+  System.IOUtils,
+  System.SysUtils,
+  System.UITypes,
+  Vcl.Graphics,
+  Vcl.Dialogs,
+  Helper.MyFuncs,
+  Globals,
+  Interfaces.Enums,
+  Interfaces.GUIRecords,
+  Interfaces.Model.Pattern.Observer,
+  Interfaces.Model.Notification,
+  Model.Pattern.Observer.Observer,
+  Model.Pattern.Observer.Observable,
+  Model.Notification,
+  Model.AppSettings,
+  View.Message,
+
+  Interfaces.Model.Reversal,
+  Model.Reversal,
+  View.SelectItem,
+  View.SelectClient,
+  DataModule.Items,
+  DataModule.Clients,
+  View.CheckItem;
+
+type
+  TViewModelReversal = class(TInterfacedObject, IViewModelReversal, IObserver, IObservable)
+
+  {$REGION 'Private Methods'}
+  private
+    procedure ProcessNotification(const AModelNotification: IModelNotification);
+    procedure SendNotification(const AInterfaceActions: TInterfaceActions);
+  {$ENDREGION}
+
+  {$REGION 'Private Fields'}
+  private
+    FObserver: IObserver;
+    FObservable: IObservable;
+    FModel: IModelReversal;
+  {$ENDREGION}
+
+  {$REGION 'Private Properties Getters/Setters'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Private Properties'}
+  private
+
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties Getters/Setters'}
+  public
+    function GetObserver: IObserver;
+    function GetObservable: IObservable;
+
+    function GetModel: IModelReversal;
+    procedure SetModel(const Value: IModelReversal);
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Properties'}
+  public
+    property Observer: IObserver read GetObserver implements IObserver;
+    property Observable: IObservable read GetObservable implements IObservable;
+    property Model: IModelReversal read GetModel write SetModel;
+  {$ENDREGION}
+
+  {$REGION 'Interfaced Methods'}
+  public
+    // Setup/Teardown
+    procedure SetupReversal;
+    procedure TeardownReversal;
+
+    // GUI Records
+    function GetGUISetupRecord(const AClientWidth, AClientHeight: Integer): TViewReversalGUISetupRecord;
+    function GetGUIActionsRecord: TViewReversalGUIActionsRecord;
+    function GetGUIRecord: TViewReversalGUIRecord;
+
+    // Actions
+    procedure ActionExitExecute;
+    procedure ActionReversalExecute;
+    procedure ActionReversalAllExecute;
+
+    // Edit Actions
+    procedure EditShowEnter;
+  {$ENDREGION}
+
+  {$REGION 'Constructors/Destructors'}
+  public
+    constructor Create;
+    destructor Destroy; override;
+  {$ENDREGION}
+  end;
+
+{ TViewModelReversal }
+
+{$REGION 'Private Methods'}
+
+procedure TViewModelReversal.ProcessNotification(const AModelNotification: IModelNotification);
+begin
+  if (actUpdateGUI in AModelNotification.Actions) then begin
+    SendNotification([actUpdateGUI]);
+  end;
+end;
+
+procedure TViewModelReversal.SendNotification(const AInterfaceActions: TInterfaceActions);
+var
+  LModelNotification: IModelNotification;
+begin
+  if Assigned(FObservable) then begin
+    LModelNotification := CreateNotificationClass;
+    LModelNotification.Actions := AInterfaceActions;
+    FObservable.NotifyObservers(LModelNotification);
+  end;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Private Properties Getters/Setters'}
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Properties Getters/Setters'}
+
+function TViewModelReversal.GetObserver: IObserver;
+begin
+  Result := FObserver;
+end;
+
+function TViewModelReversal.GetObservable: IObservable;
+begin
+  Result := FObservable;
+end;
+
+function TViewModelReversal.GetModel: IModelReversal;
+begin
+  Result := FModel;
+end;
+
+procedure TViewModelReversal.SetModel(const Value: IModelReversal);
+begin
+  FModel := Value;
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Interfaced Methods'}
+
+// Setup/Teardown
+
+procedure TViewModelReversal.SetupReversal;
+begin
+  SendNotification([actReversalDisableActions]);
+  Model.SetupReversal;
+  SendNotification([actReversalEnableActions]);
+  SendNotification([actSetupGUI]);
+  SendNotification([actUpdateGUI]);
+  SendNotification([actReversalActiveControlGrid]);
+end;
+
+procedure TViewModelReversal.TeardownReversal;
+begin
+  Model.TeardownReversal;
+end;
+
+
+// GUI Records
+
+function TViewModelReversal.GetGUISetupRecord(const AClientWidth, AClientHeight: Integer): TViewReversalGUISetupRecord;
+var
+  LWidth: Integer;
+  LButtonWidth: Integer;
+  LGapWidth: Integer;
+  LColumnWidthRatio: Integer;
+  LColumnWidthReminder: Integer;
+begin
+  Result.Caption := '—“Œ–ÕŒ';
+  Result.Color := $00BFBFFF;
+  Result.Top := 0;
+  Result.Left := 0;
+  Result.Width := AClientWidth + 16;
+  Result.Height := AClientHeight + 16;
+
+  // Panel Buttons
+  LWidth := AClientWidth - 16;
+  LGapWidth := 3;
+  repeat
+    LGapWidth := LGapWidth + 1;
+    LButtonWidth := (LWidth - 4 * LGapWidth) div 5;
+  until ((LButtonWidth * 5 + LGapWidth * 4) = LWidth);
+
+  Result.ButtonExitLeft := 8;
+  Result.ButtonExitWidth := LButtonWidth;
+
+  Result.ButtonRemoveItemLeft := Result.ButtonExitLeft + Result.ButtonExitWidth + LGapWidth;
+  Result.ButtonRemoveItemWidth := LButtonWidth;
+
+  Result.ButtonCheckItemLeft := Result.ButtonRemoveItemLeft + Result.ButtonRemoveItemWidth + LGapWidth;
+  Result.ButtonCheckItemWidth := LButtonWidth;
+
+  Result.ButtonSaveAndNewLeft := Result.ButtonCheckItemLeft + Result.ButtonCheckItemWidth + LGapWidth;
+  Result.ButtonSaveAndNewWidth := LButtonWidth;
+
+  Result.ButtonDiscardLeft := Result.ButtonSaveAndNewLeft + Result.ButtonSaveAndNewWidth + LGapWidth;
+  Result.ButtonDiscardWidth := LButtonWidth;
+
+  // Panel Show
+  Result.EditShowLeft := 8;
+  Result.EditShowWidth := AClientWidth - 16;
+
+  // Panel Grid
+  Result.PanelGridWidth := AClientWidth;
+  Result.PanelGridHeight := AClientHeight - 41 - 64 - 274;
+  Result.GridTop := 0;
+  Result.GridLeft := 8;
+  Result.GridHeight := Result.PanelGridHeight;
+  Result.GridWidth := Result.PanelGridWidth - 16;
+  LColumnWidthRatio := (Result.PanelGridWidth - 16 - 26) div 66;
+  LColumnWidthReminder := (Result.PanelGridWidth - 16 - 26) - LColumnWidthRatio * 66;
+  Result.GridColumns0Width := 13 * LColumnWidthRatio;
+  Result.GridColumns1Width := 25 * LColumnWidthRatio + LColumnWidthReminder;
+  Result.GridColumns2Width := 5 * LColumnWidthRatio;
+  Result.GridColumns3Width := 7 * LColumnWidthRatio;
+  Result.GridColumns4Width := 8 * LColumnWidthRatio;
+  Result.GridColumns5Width := 8 * LColumnWidthRatio;
+
+  // Panel Payment
+  Result.LabelTotalLeft := AClientWidth - 185 - 8;
+  Result.EditTotalLeft := Result.LabelTotalLeft;
+end;
+
+function TViewModelReversal.GetGUIActionsRecord: TViewReversalGUIActionsRecord;
+begin
+  Result.ActionExitEnabled := True;
+  Result.ActionReversalEnabled := True;
+  Result.ActionReversalAllEnabled := True;
+end;
+
+function TViewModelReversal.GetGUIRecord: TViewReversalGUIRecord;
+begin
+//
+end;
+
+
+// Actions
+
+procedure TViewModelReversal.ActionExitExecute;
+begin
+  SendNotification([actReversalDisableActions]);
+  SendNotification([actReversalActiveControlGrid]);
+  SendNotification([actReversalEnableActions]);
+  if not FInReversal then begin
+    SendNotification([actCloseForm]);
+  end;
+end;
+
+procedure TViewModelReversal.ActionReversalExecute;
+begin
+  SendNotification([actReversalDisableActions]);
+  if not FInReversal then begin
+    Model.OpenReversal;
+    FInReversal := True;
+  end;
+  Model.RegistrationOfReversal;
+  SendNotification([actReversalActiveControlGrid]);
+  SendNotification([actReversalEnableActions]);
+  SendNotification([actCloseForm]);
+end;
+
+procedure TViewModelReversal.ActionReversalAllExecute;
+begin
+  SendNotification([actReversalDisableActions]);
+  CheckItem;
+  SendNotification([actReversalActiveControlGrid]);
+  SendNotification([actReversalEnableActions]);
+end;
+
+
+// Edit Actions
+
+procedure TViewModelReversal.EditShowEnter;
+begin
+  SendNotification([actReversalActiveControlGrid]);
+end;
+
+{$ENDREGION}
+
+
+{$REGION 'Constructors/Destructors'}
+
+constructor TViewModelReversal.Create;
+begin
+  FObserver := CreateObserverClass;
+  FObserver.SetUpdateObserverMethod(ProcessNotification);
+
+  FObservable := CreateObservableClass;
+
+  FModel := CreateModelReversal;
+end;
+
+destructor TViewModelReversal.Destroy;
+begin
+  //
+  inherited;
+end;
+
+{$ENDREGION}
+
+function CreateViewModelReversal: IViewModelReversal;
+begin
+  Result := TViewModelReversal.Create;
+end;
+
+end.

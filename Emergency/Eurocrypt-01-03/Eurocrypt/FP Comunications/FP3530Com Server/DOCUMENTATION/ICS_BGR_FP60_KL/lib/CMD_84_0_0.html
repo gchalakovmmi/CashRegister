@@ -1,0 +1,153 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>int FunctionName(a, [b])</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td><h1>CMD_84_0_0</h1></td>
+	</tr>
+	<tr>
+	  <td id="descr">
+			<label><span>!</span> Description</label>
+			<h2><pre>54H (84)	ПЕЧАТ НА БАРКОД
+
+Област за данни:	
+		BC_Type
+		BC_Data
+Отговор:		Няма данни
+
+BC_Type		Тип на баркода. Един байт с допустима стойност:
+			'1'	EAN8. Данните съдържат само цифри и са 7 байта. Контролната сума се изчислява от принтера.
+
+			'2'	EAN13. Данните съдържат само цифри и са 12 байта. Контролната сума се изчислява от принтера.
+
+			'3'	Code 128. Данните са символи с ASCII кодове между 32 и 127. 
+				Дължината им е между 22 и 42 символа (зависи от съдържанието - максималната дължина се постига, ако 
+				всички символи са цифри). Контролната сума се изчислява от принтера.
+
+			'4'	ITF (Interleaved 2 of 5). Данните съдържат само цифри.
+
+			'5'	ITF (Interleaved 2 of 5). Данните съдържат само цифри. Принтерът автоматично генерира и отпечатва контролна сума.
+
+
+Командата отпечатва баркод. 
+Допустима е само в отворен фискален или служебен бон. 
+Баркодът се печати центриран. 
+Под баркода се печати информацията и в текстов вид. 
+Ако дължината на данните или съдържанието им е навалидно, вдига се статус бит "Синтактична грешка" и баркодът не се отпечатва.
+Височината на баркода се задава с команда 43.
+</pre></h2>
+		</td>
+	</tr>
+	<tr>
+	  <td id="param">
+			<label><span>!</span>Parameters</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th>Parameter</th>
+					<th>Parameter mode</th>
+					<th>Parameter type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td id="col1">BC_Type</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>BC_Type		Тип на баркода. 
+
+Един байт с допустима стойност:
+	'1'	EAN8. Данните съдържат само цифри и са 7 байта. Контролната сума се изчислява от принтера.
+
+	'2'	EAN13. Данните съдържат само цифри и са 12 байта. Контролната сума се изчислява от принтера.
+
+	'3'	Code 128. Данните са символи с ASCII кодове между 32 и 127. 
+		Дължината им е между 22 и 42 символа (зависи от съдържанието - максималната дължина се постига, ако всички символи са цифри). 
+		Контролната сума се изчислява от принтера.
+
+	'4'	ITF (Interleaved 2 of 5). Данните съдържат само цифри.
+
+	'5'	ITF (Interleaved 2 of 5). Данните съдържат само цифри. 
+		Принтерът автоматично генерира и отпечатва контролна сума.
+</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10504</td>
+				<td class="VerificationType">Проверка дали входния параметър е със стойност от даден изброен списък от стойности.</td>
+				<td class="ErrDescription">Wrong input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			<tr>
+				<td id="col1">BC_Data</td>
+				<td id="col2">[IN]</td>
+				<td id="col3">[STRING]</td>
+				<td id="def"><pre>BC_Data
+
+	- EAN8 bar code. Data contains only digits and is 7 bytes long. The check sum is automatically calculated and printed.
+	- EAN13 bar code. Data contains only digits and is 12 bytes long. The check sum is automatically calculated and printed.
+	- Code128 bar code. Data contains symbols with ASCII codes between 32 and 127. Data length is between 16 and 32 symbols 
+	  (depends on the content - the maximum length is if all symbol are digits). The check sum is automatically calculated and printed.
+	- Interleaved 2 of 5 bar code. Data contains only digits and is up to 28 bytes long. No check sum is calculated and printed.
+	- Interleaved 2 of 5 bar code. Data contains only digits and is up to 27 bytes long. The check sum is automatically calculated 
+	  and printed.</pre>
+
+				<label><span>!</span>Error support</label>
+				<div>			<table width="100%" border="1">
+				<tr>
+					<th>Error value</th>
+					<th>Verification type</th>
+					<th>Description</th>
+				</tr>
+			<tr>
+				<td class="col1">-10500</td>
+				<td class="VerificationType">Проверка за наличие на входящ параметър.</td>
+				<td class="ErrDescription">Missing input parameter.
+</td>
+			</tr>
+			<tr>
+				<td class="col1">-10502</td>
+				<td class="VerificationType">Проверка за превишаване на горна граница на дължината във входния параметър.</td>
+				<td class="ErrDescription">Wrong length - input data.
+</td>
+			</tr>
+			</table>
+</div>
+</td>
+			</tr>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<center>&copy; Copyright <a href="http://www.datecs.bg">DATECS</a> 2010 &reg;</center>
+</body>
+</html>

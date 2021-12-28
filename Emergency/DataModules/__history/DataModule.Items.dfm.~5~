@@ -1,0 +1,135 @@
+object DataModuleItems: TDataModuleItems
+  OldCreateOrder = False
+  Height = 150
+  Width = 215
+  object dsSelect: TDataSource
+    DataSet = cdsSelect
+    Left = 119
+    Top = 40
+  end
+  object cdsSelect: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Code'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'Item'
+        DataType = ftString
+        Size = 40
+      end
+      item
+        Name = 'VendorPrice'
+        DataType = ftCurrency
+      end
+      item
+        Name = 'ClientPrice'
+        DataType = ftCurrency
+      end
+      item
+        Name = 'BarCode'
+        DataType = ftString
+        Size = 15
+      end
+      item
+        Name = 'Present'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Measure'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'Coeff'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Minimum'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Factor'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Discount'
+        DataType = ftFloat
+      end
+      item
+        Name = 'orgMeasure'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'orgVendorPrice'
+        DataType = ftFloat
+      end
+      item
+        Name = 'orgClientPrice'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    OnFilterRecord = cdsSelectFilterRecord
+    Left = 39
+    Top = 40
+    object cdsSelectID: TIntegerField
+      FieldName = 'ID'
+    end
+    object cdsSelectCode: TStringField
+      FieldName = 'Code'
+      Size = 10
+    end
+    object cdsSelectItem: TStringField
+      FieldName = 'Item'
+      Size = 40
+    end
+    object cdsSelectVendorPrice: TCurrencyField
+      FieldName = 'VendorPrice'
+    end
+    object cdsSelectClientPrice: TCurrencyField
+      FieldName = 'ClientPrice'
+    end
+    object cdsSelectBarCode: TStringField
+      FieldName = 'BarCode'
+      Size = 15
+    end
+    object cdsSelectPresent: TFloatField
+      FieldName = 'Present'
+    end
+    object cdsSelectMeasure: TStringField
+      FieldName = 'Measure'
+      Size = 5
+    end
+    object cdsSelectCoeff: TFloatField
+      FieldName = 'Coeff'
+    end
+    object cdsSelectMinimum: TFloatField
+      FieldName = 'Minimum'
+    end
+    object cdsSelectFactor: TFloatField
+      FieldName = 'Factor'
+    end
+    object cdsSelectDiscount: TFloatField
+      FieldName = 'Discount'
+    end
+    object cdsSelectorgMeasure: TStringField
+      FieldName = 'orgMeasure'
+      Size = 5
+    end
+    object cdsSelectorgVendorPrice: TFloatField
+      FieldName = 'orgVendorPrice'
+    end
+    object cdsSelectorgClientPrice: TFloatField
+      FieldName = 'orgClientPrice'
+    end
+  end
+end

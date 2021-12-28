@@ -1,0 +1,25 @@
+unit DataModule.Reversal;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDataModuleReversal = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModuleReversal: TDataModuleReversal;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

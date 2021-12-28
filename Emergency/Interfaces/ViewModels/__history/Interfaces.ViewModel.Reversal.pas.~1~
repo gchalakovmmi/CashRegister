@@ -1,0 +1,19 @@
+unit Interfaces.ViewModel.Reversal;
+
+interface
+
+uses
+  Interfaces.Model.Reversal;
+
+type
+  IViewModelReversal = interface
+  ['{26250A25-100F-4E15-9316-92CFEC85941E}']
+    function GetModel: IModelReversal;
+    procedure SetModel(const Value: IModelReversal);
+
+    property Model: IModelReversal read GetModel write SetModel;
+  end;
+
+implementation
+
+end.

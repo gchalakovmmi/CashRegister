@@ -33,9 +33,9 @@
     <Transaction>1899.12.30 00:00:00.000.470,=Z:\!anet4\Sources\SaleJSON2DB\Views\View.Message.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.005,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Reversals.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.724,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Payment.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.498,=Z:\!anet4\Sources\Common\Models\Model.AppSettings.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.563,=Z:\!anet4\Sources\Common\Models\Model.Generator.GIDs.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.140,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.498,=Z:\!anet4\Sources\Common\Models\Model.AppSettings.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.164,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas</Transaction>
   </Transactions>
 </BorlandProject>

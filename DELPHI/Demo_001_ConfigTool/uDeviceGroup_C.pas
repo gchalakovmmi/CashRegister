@@ -1,0 +1,16802 @@
+unit uDeviceGroup_C;
+
+interface
+
+uses
+	System.SysUtils,
+	Vcl.Dialogs,
+	FP3530_TLB;
+
+function execute_033_display_Clear //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString      //
+ ) : Integer;                      //
+
+
+function execute_035_display_Show_LowerLine //
+ ( myFP: TCFD_BGR;                          //
+   const TextData : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_047_display_Show_UpperLine //
+ ( myFP: TCFD_BGR;                          //
+   const TextData : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_063_display_Show_DateTime //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var DateTime : WideString               //
+ ) : Integer;                              //
+
+
+function execute_038_receipt_NonFiscal_Open //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+function execute_039_receipt_NonFiscal_Close //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_042_receipt_NonFiscal_Text //
+ ( myFP: TCFD_BGR;                          //
+   const InputText : WideString;            //
+   const Bold : WideString;                 //
+   const Italic : WideString;               //
+   const Height : WideString;               //
+   const UnderLine : WideString;            //
+   const Alignment : WideString;            //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_042_receipt_PNonFiscal_Text //
+ ( myFP: TCFD_BGR;                           //
+   const InputText : WideString;             //
+   const Bold : WideString;                  //
+   const Italic : WideString;                //
+   const Height : WideString;                //
+   const UnderLine : WideString;             //
+   const Alignment : WideString;             //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C01  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C02  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C03  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C04  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C05  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_043_receipt_StornoOpen_C06  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+function execute_048_receipt_FiscalOpen_C01 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+function execute_048_receipt_FiscalOpen_C03 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const UNP : WideString;                  //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+function execute_048_receipt_Fiscal_Open //
+ ( myFP: TCFD_BGR;                       //
+   const OperatorNumber : WideString;    //
+   const OperatorPassword : WideString;  //
+   const UNP : WideString;               //
+   const TillNumber : WideString;        //
+   var ErrorCode : WideString;           //
+   var SlipNumber : WideString           //
+ ) : Integer;                            //
+
+
+function execute_056_receipt_Fiscal_Close //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var SlipNumber : WideString            //
+ ) : Integer;                             //
+
+
+function execute_048_receipt_FiscalOpen_C02 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+function execute_048_receipt_FiscalOpen_C04 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const UNP : WideString;                  //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+function execute_057_receipt_PrintClientInfo_15 //
+ ( myFP: TCFD_BGR;                              //
+   const SellerName : WideString;               //
+   const ReceiverName : WideString;             //
+   const ClientName : WideString;               //
+   const Address1 : WideString;                 //
+   const Address2 : WideString;                 //
+   const EIKType : WideString;                  //
+   const EIK : WideString;                      //
+   const TaxNo : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_049_receipt_Sale     //
+ ( myFP: TCFD_BGR;                    //
+   const TextRow1 : WideString;       //
+   const TaxGroup : WideString;       //
+   const SinglePrice : WideString;    //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   const Department : WideString;     //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+function execute_049_receipt_Sale_Un  //
+ ( myFP: TCFD_BGR;                    //
+   const TextRow1 : WideString;       //
+   const TaxGroup : WideString;       //
+   const SinglePrice : WideString;    //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   const Department : WideString;     //
+   const Measure : WideString;        //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+function execute_058_receipt_PLU_Sale //
+ ( myFP: TCFD_BGR;                    //
+   const Target_PLU : WideString;     //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+function execute_051_receipt_Subtotal //
+ ( myFP: TCFD_BGR;                    //
+   const ToPrint : WideString;        //
+   const ToDisplay : WideString;      //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString;       //
+   var Subtotal : WideString;         //
+   var TaxA : WideString;             //
+   var TaxB : WideString;             //
+   var TaxC : WideString;             //
+   var TaxD : WideString;             //
+   var TaxE : WideString;             //
+   var TaxF : WideString;             //
+   var TaxG : WideString;             //
+   var TaxH : WideString              //
+ ) : Integer;                         //
+
+
+function execute_053_receipt_Total     //
+ ( myFP: TCFD_BGR;                     //
+   const PaidMode : WideString;        //
+   const InputAmount : WideString;     //
+   const PinPad_PaidMode : WideString; //
+   var ErrorCode : WideString;         //
+   var AnswerField_01 : WideString;    //
+   var AnswerField_02 : WideString     //
+ ) : Integer;                          //
+
+
+function execute_053_receipt_Total_Currency //
+ ( myFP: TCFD_BGR;                          //
+   const PaidMode : WideString;             //
+   const InputAmount : WideString;          //
+   const CurrencyType : WideString;         //
+   var ErrorCode : WideString;              //
+   var AnswerField_01 : WideString;         //
+   var AnswerField_02 : WideString          //
+ ) : Integer;                               //
+
+
+function execute_044_receipt_Paper_Feed //
+ ( myFP: TCFD_BGR;                      //
+   const LinesCount : WideString;       //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+function execute_046_receipt_Paper_Cut //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_054_receipt_Fiscal_Text //
+ ( myFP: TCFD_BGR;                       //
+   const InputText : WideString;         //
+   const Bold : WideString;              //
+   const Italic : WideString;            //
+   const DoubleHeight : WideString;      //
+   const UnderLine : WideString;         //
+   const Alignment : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_054_receipt_PFiscal_Text //
+ ( myFP: TCFD_BGR;                        //
+   const InputText : WideString;          //
+   const Bold : WideString;               //
+   const Italic : WideString;             //
+   const Height : WideString;             //
+   const UnderLine : WideString;          //
+   const Alignment : WideString;          //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_060_receipt_Fiscal_Cancel //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_070_receipt_CashIn_CashOut //
+ ( myFP: TCFD_BGR;                          //
+   const AmountType : WideString;           //
+   const Amount : WideString;               //
+   var ErrorCode : WideString;              //
+   var CashSum : WideString;                //
+   var ServIn : WideString;                 //
+   var ServOut : WideString                 //
+ ) : Integer;                               //
+
+
+function execute_084_receipt_Print_Barcode //
+ ( myFP: TCFD_BGR;                         //
+   const BarcodeType : WideString;         //
+   const BarcodeData : WideString;         //
+   const QRCodeSize : WideString;          //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_092_receipt_Separating_Line //
+ ( myFP: TCFD_BGR;                           //
+   const LineType : WideString;              //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_103_receipt_Current_Info //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var TaxA : WideString;                 //
+   var TaxB : WideString;                 //
+   var TaxC : WideString;                 //
+   var TaxD : WideString;                 //
+   var TaxE : WideString;                 //
+   var TaxF : WideString;                 //
+   var TaxG : WideString;                 //
+   var TaxH : WideString;                 //
+   var Inv : WideString;                  //
+   var InvNmb : WideString;               //
+   var fStorno : WideString               //
+ ) : Integer;                             //
+
+
+function execute_106_receipt_Drawer_KickOut //
+ ( myFP: TCFD_BGR;                          //
+   const mSec : WideString;                 //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_109_receipt_Print_Duplicate //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_122_receipt_PVerticalFiscal_Text //
+ ( myFP: TCFD_BGR;                                //
+   const InputText : WideString;                  //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_127_receipt_Print_Stamp //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   const StampName : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_069_report_DailyClosure_01 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var nRep : WideString;                   //
+   var TotalSum_A : WideString;             //
+   var TotalSum_B : WideString;             //
+   var TotalSum_C : WideString;             //
+   var TotalSum_D : WideString;             //
+   var TotalSum_E : WideString;             //
+   var TotalSum_F : WideString;             //
+   var TotalSum_G : WideString;             //
+   var TotalSum_H : WideString;             //
+   var StornoSum_A : WideString;            //
+   var StornoSum_B : WideString;            //
+   var StornoSum_C : WideString;            //
+   var StornoSum_D : WideString;            //
+   var StornoSum_E : WideString;            //
+   var StornoSum_F : WideString;            //
+   var StornoSum_G : WideString;            //
+   var StornoSum_H : WideString             //
+ ) : Integer;                               //
+
+
+function execute_069_report_DailyClosure_02 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_087_report_Item_Groups //
+ ( myFP: TCFD_BGR;                      //
+   const ItemGroup : WideString;        //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+function execute_088_report_Department_Info //
+ ( myFP: TCFD_BGR;                          //
+   const DepartmentNumber : WideString;     //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_095_report_FMByNumRange //
+ ( myFP: TCFD_BGR;                       //
+   const ReportType : WideString;        //
+   const StartNumber : WideString;       //
+   const EndNumber : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_095_report_FMByNumRange_Short //
+ ( myFP: TCFD_BGR;                             //
+   const ReportType : WideString;              //
+   const StartNumber : WideString;             //
+   const EndNumber : WideString;               //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_105_report_Operators      //
+ ( myFP: TCFD_BGR;                         //
+   const OperatorsCode_Start : WideString; //
+   const OperatorsCode_End : WideString;   //
+   const ToClear : WideString;             //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_111_report_Items //
+ ( myFP: TCFD_BGR;                //
+   const Option : WideString;     //
+   const StartPLU : WideString;   //
+   const EndPLU : WideString;     //
+   var ErrorCode : WideString     //
+ ) : Integer;                     //
+
+
+function execute_107_items_Get_ItemsInformation //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   var ErrorCode : WideString;                  //
+   var Total : WideString;                      //
+   var Prog : WideString;                       //
+   var Len : WideString                         //
+ ) : Integer;                                   //
+
+
+function execute_107_items_Set_Item //
+ ( myFP: TCFD_BGR;                  //
+   const Option : WideString;       //
+   const Target_PLU : WideString;   //
+   const TaxGroup : WideString;     //
+   const Department : WideString;   //
+   const Group : WideString;        //
+   const PriceType : WideString;    //
+   const SinglePrice : WideString;  //
+   const AddQty : WideString;       //
+   const Quantity : WideString;     //
+   const Barcode_01 : WideString;   //
+   const Barcode_02 : WideString;   //
+   const Barcode_03 : WideString;   //
+   const Barcode_04 : WideString;   //
+   const ItemName : WideString;     //
+   var ErrorCode : WideString       //
+ ) : Integer;                       //
+
+
+function execute_107_items_Set_ItemUn  //
+ ( myFP: TCFD_BGR;                     //
+   const Option : WideString;          //
+   const Target_PLU : WideString;      //
+   const TaxGroup : WideString;        //
+   const Department : WideString;      //
+   const Group : WideString;           //
+   const PriceType : WideString;       //
+   const SinglePrice : WideString;     //
+   const AddQty : WideString;          //
+   const Quantity : WideString;        //
+   const Barcode_01 : WideString;      //
+   const Barcode_02 : WideString;      //
+   const Barcode_03 : WideString;      //
+   const Barcode_04 : WideString;      //
+   const ItemName : WideString;        //
+   const MeasurementUnit : WideString; //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_107_items_Set_ItemQuantity //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   const Quantity : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_107_items_Delete_Item //
+ ( myFP: TCFD_BGR;                     //
+   const Option : WideString;          //
+   const PLU_Start : WideString;       //
+   const PLU_End : WideString;         //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_107_items_Delete_ItemsInRange //
+ ( myFP: TCFD_BGR;                             //
+   const Option : WideString;                  //
+   const PLU_Start : WideString;               //
+   const PLU_End : WideString;                 //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_107_items_Delete_All_Items //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const DeleteAll : WideString;            //
+   const PLU_End : WideString;              //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_107_items_Get_Item //
+ ( myFP: TCFD_BGR;                  //
+   const Option : WideString;       //
+   const Target_PLU : WideString;   //
+   var ErrorCode : WideString;      //
+   var PLU : WideString;            //
+   var TaxGroup : WideString;       //
+   var Department : WideString;     //
+   var Group : WideString;          //
+   var PriceType : WideString;      //
+   var SinglePrice : WideString;    //
+   var Total : WideString;          //
+   var Sold : WideString;           //
+   var Available : WideString;      //
+   var Barcode_01 : WideString;     //
+   var Barcode_02 : WideString;     //
+   var Barcode_03 : WideString;     //
+   var Barcode_04 : WideString;     //
+   var ItemName : WideString;       //
+   var MeasurementUnit : WideString //
+ ) : Integer;                       //
+
+
+function execute_107_items_Get_FirstFoundItem //
+ ( myFP: TCFD_BGR;                            //
+   const Option : WideString;                 //
+   const Target_PLU : WideString;             //
+   var ErrorCode : WideString;                //
+   var PLU : WideString;                      //
+   var TaxGroup : WideString;                 //
+   var Department : WideString;               //
+   var Group : WideString;                    //
+   var PriceType : WideString;                //
+   var SinglePrice : WideString;              //
+   var Total : WideString;                    //
+   var Sold : WideString;                     //
+   var Available : WideString;                //
+   var Barcode_01 : WideString;               //
+   var Barcode_02 : WideString;               //
+   var Barcode_03 : WideString;               //
+   var Barcode_04 : WideString;               //
+   var ItemName : WideString;                 //
+   var MeasurementUnit : WideString           //
+ ) : Integer;                                 //
+
+
+function execute_107_items_Get_LastFoundItem //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const Target_PLU : WideString;            //
+   var ErrorCode : WideString;               //
+   var PLU : WideString;                     //
+   var TaxGroup : WideString;                //
+   var Department : WideString;              //
+   var Group : WideString;                   //
+   var PriceType : WideString;               //
+   var SinglePrice : WideString;             //
+   var Total : WideString;                   //
+   var Sold : WideString;                    //
+   var Available : WideString;               //
+   var Barcode_01 : WideString;              //
+   var Barcode_02 : WideString;              //
+   var Barcode_03 : WideString;              //
+   var Barcode_04 : WideString;              //
+   var ItemName : WideString;                //
+   var MeasurementUnit : WideString          //
+ ) : Integer;                                //
+
+
+function execute_107_items_Get_NextItem //
+ ( myFP: TCFD_BGR;                      //
+   const Option : WideString;           //
+   var ErrorCode : WideString;          //
+   var PLU : WideString;                //
+   var TaxGroup : WideString;           //
+   var Department : WideString;         //
+   var Group : WideString;              //
+   var PriceType : WideString;          //
+   var SinglePrice : WideString;        //
+   var Total : WideString;              //
+   var Sold : WideString;               //
+   var Available : WideString;          //
+   var Barcode_01 : WideString;         //
+   var Barcode_02 : WideString;         //
+   var Barcode_03 : WideString;         //
+   var Barcode_04 : WideString;         //
+   var ItemName : WideString;           //
+   var MeasurementUnit : WideString     //
+ ) : Integer;                           //
+
+
+function execute_107_items_Get_FirstSoldItem //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const Target_PLU : WideString;            //
+   var ErrorCode : WideString;               //
+   var PLU : WideString;                     //
+   var TaxGroup : WideString;                //
+   var Department : WideString;              //
+   var Group : WideString;                   //
+   var PriceType : WideString;               //
+   var SinglePrice : WideString;             //
+   var Total : WideString;                   //
+   var Sold : WideString;                    //
+   var Available : WideString;               //
+   var Barcode_01 : WideString;              //
+   var Barcode_02 : WideString;              //
+   var Barcode_03 : WideString;              //
+   var Barcode_04 : WideString;              //
+   var ItemName : WideString;                //
+   var MeasurementUnit : WideString          //
+ ) : Integer;                                //
+
+
+function execute_107_items_Get_LastSoldItem //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   var ErrorCode : WideString;              //
+   var PLU : WideString;                    //
+   var TaxGroup : WideString;               //
+   var Department : WideString;             //
+   var Group : WideString;                  //
+   var PriceType : WideString;              //
+   var SinglePrice : WideString;            //
+   var Total : WideString;                  //
+   var Sold : WideString;                   //
+   var Available : WideString;              //
+   var Barcode_01 : WideString;             //
+   var Barcode_02 : WideString;             //
+   var Barcode_03 : WideString;             //
+   var Barcode_04 : WideString;             //
+   var ItemName : WideString;               //
+   var MeasurementUnit : WideString         //
+ ) : Integer;                               //
+
+
+function execute_107_items_Get_NextSoldItem //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   var ErrorCode : WideString;              //
+   var PLU : WideString;                    //
+   var TaxGroup : WideString;               //
+   var Department : WideString;             //
+   var Group : WideString;                  //
+   var PriceType : WideString;              //
+   var SinglePrice : WideString;            //
+   var Total : WideString;                  //
+   var Sold : WideString;                   //
+   var Available : WideString;              //
+   var Barcode_01 : WideString;             //
+   var Barcode_02 : WideString;             //
+   var Barcode_03 : WideString;             //
+   var Barcode_04 : WideString;             //
+   var ItemName : WideString;               //
+   var MeasurementUnit : WideString         //
+ ) : Integer;                               //
+
+
+function execute_107_items_Get_FirstNotProgrammedItem //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   const Target_PLU : WideString;                     //
+   var ErrorCode : WideString;                        //
+   var PLU : WideString                               //
+ ) : Integer;                                         //
+
+
+function execute_107_items_Get_LastNotProgrammedItem //
+ ( myFP: TCFD_BGR;                                   //
+   const Option : WideString;                        //
+   const Target_PLU : WideString;                    //
+   var ErrorCode : WideString;                       //
+   var PLU : WideString                              //
+ ) : Integer;                                        //
+
+
+function execute_140_clients_Set_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Client_Number : WideString;        //
+   const Client_Name : WideString;          //
+   const Type_TAXN : WideString;            //
+   const TAX_Number : WideString;           //
+   const Reciever_Name : WideString;        //
+   const VAT_Number : WideString;           //
+   const Address_01 : WideString;           //
+   const Address_02 : WideString;           //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_140_clients_Del_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const First_ClientNumber : WideString;   //
+   const Last_ClientNumber : WideString;    //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_140_clients_Del_AllClientData //
+ ( myFP: TCFD_BGR;                             //
+   const Option : WideString;                  //
+   const First_ClientNumber : WideString;      //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_140_clients_Get_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Client_Number : WideString;        //
+   var ErrorCode : WideString;              //
+   var ClientNumber : WideString;           //
+   var ClientName : WideString;             //
+   var TypeTAXNumver : WideString;          //
+   var TAXNumber : WideString;              //
+   var RecieverName : WideString;           //
+   var VATNumber : WideString;              //
+   var Address_01 : WideString;             //
+   var Address_02 : WideString              //
+ ) : Integer;                               //
+
+
+function execute_140_clients_Get_FirstProgrammedClient //
+ ( myFP: TCFD_BGR;                                     //
+   const Option : WideString;                          //
+   const Client_Number : WideString;                   //
+   var ErrorCode : WideString;                         //
+   var ClientNumber : WideString;                      //
+   var ClientName : WideString;                        //
+   var TypeTAXNumver : WideString;                     //
+   var TAXNumber : WideString;                         //
+   var RecieverName : WideString;                      //
+   var VATNumber : WideString;                         //
+   var Address_01 : WideString;                        //
+   var Address_02 : WideString                         //
+ ) : Integer;                                          //
+
+
+function execute_140_clients_Get_LastProgrammedClient //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   const Client_Number : WideString;                  //
+   var ErrorCode : WideString;                        //
+   var ClientNumber : WideString;                     //
+   var ClientName : WideString;                       //
+   var TypeTAXNumver : WideString;                    //
+   var TAXNumber : WideString;                        //
+   var RecieverName : WideString;                     //
+   var VATNumber : WideString;                        //
+   var Address_01 : WideString;                       //
+   var Address_02 : WideString                        //
+ ) : Integer;                                         //
+
+
+function execute_140_clients_Get_NextProgrammedClient //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var ClientNumber : WideString;                     //
+   var ClientName : WideString;                       //
+   var TypeTAXNumver : WideString;                    //
+   var TAXNumber : WideString;                        //
+   var RecieverName : WideString;                     //
+   var VATNumber : WideString;                        //
+   var Address_01 : WideString;                       //
+   var Address_02 : WideString                        //
+ ) : Integer;                                         //
+
+
+function execute_140_clients_Get_ClientByTaxNumber //
+ ( myFP: TCFD_BGR;                                 //
+   const Option : WideString;                      //
+   const TAX_Number : WideString;                  //
+   var ErrorCode : WideString;                     //
+   var ClientNumber : WideString;                  //
+   var ClientName : WideString;                    //
+   var TypeTAXNumver : WideString;                 //
+   var TAXNumber : WideString;                     //
+   var RecieverName : WideString;                  //
+   var VATNumber : WideString;                     //
+   var Address_01 : WideString;                    //
+   var Address_02 : WideString                     //
+ ) : Integer;                                      //
+
+
+function execute_140_clients_Get_FirstNotProgrammed //
+ ( myFP: TCFD_BGR;                                  //
+   const Option : WideString;                       //
+   const Client_Number : WideString;                //
+   var ErrorCode : WideString;                      //
+   var ClientNumber : WideString                    //
+ ) : Integer;                                       //
+
+
+function execute_140_clients_Get_LastNotProgrammed //
+ ( myFP: TCFD_BGR;                                 //
+   const Option : WideString;                      //
+   const Client_Number : WideString;               //
+   var ErrorCode : WideString;                     //
+   var ClientNumber : WideString                   //
+ ) : Integer;                                      //
+
+
+function execute_061_config_Set_DateTime //
+ ( myFP: TCFD_BGR;                       //
+   const DateTime : WideString;          //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_066_config_Set_InvoiceRange //
+ ( myFP: TCFD_BGR;                           //
+   const StartValue : WideString;            //
+   const EndValue : WideString;              //
+   var ErrorCode : WideString;               //
+   var Value_Start : WideString;             //
+   var Value_End : WideString;               //
+   var Value_Current : WideString            //
+ ) : Integer;                                //
+
+
+function execute_066_config_Set_InvoiceRange_01 //
+ ( myFP: TCFD_BGR;                              //
+   const EndValue : WideString;                 //
+   var ErrorCode : WideString;                  //
+   var Value_Start : WideString;                //
+   var Value_End : WideString;                  //
+   var Value_Current : WideString               //
+ ) : Integer;                                   //
+
+
+function execute_101_config_Set_OperatorPassword //
+ ( myFP: TCFD_BGR;                               //
+   const OperatorCode : WideString;              //
+   const OldPassword : WideString;               //
+   const NewPassword : WideString;               //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_127_config_Set_StampName //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   const StampName : WideString;          //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_202_config_Start_LogoLoading //
+ ( myFP: TCFD_BGR;                            //
+   const ParamValue : WideString;             //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_202_config_Logo_Loading //
+ ( myFP: TCFD_BGR;                       //
+   const DataValue : WideString;         //
+   var ErrorCode : WideString;           //
+   var CheckSum : WideString             //
+ ) : Integer;                            //
+
+
+function execute_202_config_Stop_LogoLoading //
+ ( myFP: TCFD_BGR;                           //
+   const ParamValue : WideString;            //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_203_config_Start_StampLoading //
+ ( myFP: TCFD_BGR;                             //
+   const ParamValue : WideString;              //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_203_config_Stamp_Loading //
+ ( myFP: TCFD_BGR;                        //
+   const DataValue : WideString;          //
+   var ErrorCode : WideString;            //
+   var CheckSum : WideString              //
+ ) : Integer;                             //
+
+
+function execute_203_config_Stop_StampLoading //
+ ( myFP: TCFD_BGR;                            //
+   const ParamValue : WideString;             //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_FpComBaudRate //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_AutoPaperCutting //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_PaperCuttingType //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_BarCodeHeight //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_BarcodeName //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_255_config_Set_ComPortBaudRate //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_ComPortProtocol //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_MainInterfaceType //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_TimeOutBeforePrintFlush //
+ ( myFP: TCFD_BGR;                                      //
+   const VariableName : WideString;                     //
+   const Index : WideString;                            //
+   const Value : WideString;                            //
+   var ErrorCode : WideString                           //
+ ) : Integer;                                           //
+
+
+function execute_255_config_Set_WorkBatteryIncluded //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_Dec2xLineSpacing //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_PrintFontType //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_FooterEmptyLines //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_HeaderMinLines //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_LogoPrintAfterFooter //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_EnableNearPaperEnd //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_DateFromNAPServDisable //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+function execute_255_config_Set_AutoPowerOff //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_BkLight_AutoOff //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_PinpadComPort //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_PinpadComBaudRate //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_PinpadType //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_PinpadConnectionType //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_PinpadReceiptCopies //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_PinpadReceiptInfo //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_PinpadPaymentMenu //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_PinpadLoyaltyPayment //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_BthEnable //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_255_config_Set_BthDiscoverability //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_BthPairing //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_BthPinCode //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_BthVersion //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_BthAddress //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_EcrLogNumber //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_EcrExtendedReceipt //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_EcrDoveriteli //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_EcrWithoutPasswords //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_EcrAskForPassword //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_EcrAskForVoidPassword //
+ ( myFP: TCFD_BGR;                                    //
+   const VariableName : WideString;                   //
+   const Index : WideString;                          //
+   const Value : WideString;                          //
+   var ErrorCode : WideString                         //
+ ) : Integer;                                         //
+
+
+function execute_255_config_Set_EcrConnectedOperReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+function execute_255_config_Set_EcrConnectedDeptReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+function execute_255_config_Set_EcrConnectedPluSalesReport //
+ ( myFP: TCFD_BGR;                                         //
+   const VariableName : WideString;                        //
+   const Index : WideString;                               //
+   const Value : WideString;                               //
+   var ErrorCode : WideString                              //
+ ) : Integer;                                              //
+
+
+function execute_255_config_Set_EcrConnectedGroupsReport //
+ ( myFP: TCFD_BGR;                                       //
+   const VariableName : WideString;                      //
+   const Index : WideString;                             //
+   const Value : WideString;                             //
+   var ErrorCode : WideString                            //
+ ) : Integer;                                            //
+
+
+function execute_255_config_Set_EcrConnectedCashReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+function execute_255_config_Set_EcrUserPeriodReports //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_EcrPluDailyClearing //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_EcrSafeOpening //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_EcrScaleBarMask //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_EcrNumberBarcode //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_RegModeOnIdle //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_FlushAtEndOnly //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_EcrMidnightWarning //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_EcrMandatorySubtotal //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_Seller //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_AutoMonthReport //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_EcrUnsentWarning //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_CurrNameLocal //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_CurrNameForeign //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_ExchangeRate //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_Unit_name //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_255_config_Set_Header //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_Footer //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_OperName //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_255_config_Set_OperPasw //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_255_config_Set_PayName //
+ ( myFP: TCFD_BGR;                      //
+   const VariableName : WideString;     //
+   const Index : WideString;            //
+   const Value : WideString;            //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+function execute_255_config_Set_Payment_forbidden //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_DPxx_PluCode //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_KeyNDB_value //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_KeyNDB_percentage //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_KeyOTS_value //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_KeyOTS_percentage //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+function execute_255_config_Set_KeyNDB_forbidden //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_KeyOTS_forbidden //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_ServPasw //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_255_config_Set_ServMessage //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_255_config_Set_ServiceDate //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_255_config_Set_PrnQuality //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_PrintColumns //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_EmptyLineAfterTotal //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_DblHeigh_totalinreg //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_Bold_payments //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+function execute_255_config_Set_DublReceipts //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_IntUseReceipts //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_BarcodePrint //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_LogoPrint //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_255_config_Set_DoveriteliPrint //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_ForeignPrint //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+function execute_255_config_Set_VatPrintEnable //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_CondensedPrint //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_DsblKeyZreport //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_DsblKeyXreport //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_DsblKeyDiagnostics //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_DsblKeyFmReports //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+function execute_255_config_Set_DsblKeyJournal //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_DsblKeyDateTime //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_DsblKeyCloseReceipt //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+function execute_255_config_Set_DsblKeyCancelReceipt //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+function execute_255_config_Set_ModemModel //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_SimPin //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_LanMAC //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_DHCPenable //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_LAN_IP //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+function execute_255_config_Set_LAN_NetMask //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_255_config_Set_LAN_Gateway //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_255_config_Set_LAN_PriDNS //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_LAN_SecDNS //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_LANport_fpCommands //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+function execute_255_config_Set_ItemGroups_name //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+function execute_255_config_Set_Dept_price //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+function execute_255_config_Set_Dept_name //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+function execute_255_config_Set_DHL_Algo //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_255_config_Set_EIK_validation //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_EGN_validation //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_Bonuses //
+ ( myFP: TCFD_BGR;                      //
+   const VariableName : WideString;     //
+   const Index : WideString;            //
+   const Value : WideString;            //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+function execute_255_config_Set_TextReducedVAT //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+function execute_255_config_Set_TAXlabel //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_050_info_Get_TaxRatesByPeriod //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var nZreport : WideString;                  //
+   var TaxA : WideString;                      //
+   var TaxB : WideString;                      //
+   var TaxC : WideString;                      //
+   var TaxD : WideString;                      //
+   var TaxE : WideString;                      //
+   var TaxF : WideString;                      //
+   var TaxG : WideString;                      //
+   var TaxH : WideString;                      //
+   var EntDate : WideString                    //
+ ) : Integer;                                  //
+
+
+function execute_062_info_Get_DateTime //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var DateTime : WideString           //
+ ) : Integer;                          //
+
+
+function execute_066_info_Get_InvoiceRange //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Value_Start : WideString;           //
+   var Value_End : WideString;             //
+   var Value_Current : WideString          //
+ ) : Integer;                              //
+
+
+function execute_062_info_Get_DateTime_01 //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Day : WideString;                  //
+   var Month : WideString;                //
+   var Year : WideString;                 //
+   var Hour : WideString;                 //
+   var Minute : WideString;               //
+   var Second : WideString;               //
+   var DST : WideString                   //
+ ) : Integer;                             //
+
+
+function execute_064_info_Get_LastFiscRecord //
+ ( myFP: TCFD_BGR;                           //
+   const DataType : WideString;              //
+   var ErrorCode : WideString;               //
+   var LastFRecordNumber : WideString;       //
+   var TaxA : WideString;                    //
+   var TaxB : WideString;                    //
+   var TaxC : WideString;                    //
+   var TaxD : WideString;                    //
+   var TaxE : WideString;                    //
+   var TaxF : WideString;                    //
+   var TaxG : WideString;                    //
+   var TaxH : WideString;                    //
+   var Date : WideString                     //
+ ) : Integer;                                //
+
+
+function execute_065_info_Get_AdditionalDailyInfo //
+ ( myFP: TCFD_BGR;                                //
+   const DataType : WideString;                   //
+   var ErrorCode : WideString;                    //
+   var nRep : WideString;                         //
+   var SumA : WideString;                         //
+   var SumB : WideString;                         //
+   var SumC : WideString;                         //
+   var SumD : WideString;                         //
+   var SumE : WideString;                         //
+   var SumF : WideString;                         //
+   var SumG : WideString;                         //
+   var SumH : WideString                          //
+ ) : Integer;                                     //
+
+
+function execute_068_info_Get_FreeFMRecords //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var ReportsLeft : WideString             //
+ ) : Integer;                               //
+
+
+function execute_070_info_Get_CashIn_CashOut //
+ ( myFP: TCFD_BGR;                           //
+   const AmountType : WideString;            //
+   const Amount : WideString;                //
+   var ErrorCode : WideString;               //
+   var CashSum : WideString;                 //
+   var ServIn : WideString;                  //
+   var ServOut : WideString                  //
+ ) : Integer;                                //
+
+
+function execute_071_info_Print_Diagnostic_0 //
+ ( myFP: TCFD_BGR;                           //
+   const InfoType : WideString;              //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+function execute_071_info_Get_TaxTerminalInfo //
+ ( myFP: TCFD_BGR;                            //
+   const InfoType : WideString;               //
+   var ErrorCode : WideString;                //
+   var LastDate : WideString;                 //
+   var NextDate : WideString;                 //
+   var Zrep : WideString;                     //
+   var ZErrZnum : WideString;                 //
+   var ZErrCnt : WideString;                  //
+   var ZErrNum : WideString;                  //
+   var SellErrnDoc : WideString;              //
+   var SellErrCnt : WideString;               //
+   var SellErrStatus : WideString;            //
+   var SellNumber : WideString;               //
+   var SellDate : WideString;                 //
+   var LastErr : WideString;                  //
+   var RemMinutes : WideString                //
+ ) : Integer;                                 //
+
+
+function execute_074_info_Get_StatusBytes //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var StatusBytes : WideString           //
+ ) : Integer;                             //
+
+
+function execute_076_info_Get_FTransactionStatus //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var IsOpen : WideString;                      //
+   var Number : WideString;                      //
+   var Items : WideString;                       //
+   var Amount : WideString;                      //
+   var Payed : WideString                        //
+ ) : Integer;                                    //
+
+
+function execute_086_info_Get_FMRecord_LastDateTime //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var DateTime : WideString                        //
+ ) : Integer;                                       //
+
+
+function execute_087_info_Get_ItemGroup //
+ ( myFP: TCFD_BGR;                      //
+   const ItemGroup : WideString;        //
+   var ErrorCode : WideString;          //
+   var TotSales : WideString;           //
+   var TotSum : WideString;             //
+   var GroupName : WideString           //
+ ) : Integer;                           //
+
+
+function execute_088_info_Get_DepartmentInfo //
+ ( myFP: TCFD_BGR;                           //
+   const DepartmentNumber : WideString;      //
+   var ErrorCode : WideString;               //
+   var TaxGr : WideString;                   //
+   var Price : WideString;                   //
+   var TotSales : WideString;                //
+   var TotSum : WideString;                  //
+   var StTotSales : WideString;              //
+   var StTotSum : WideString;                //
+   var DepartmentName : WideString           //
+ ) : Integer;                                //
+
+
+function execute_090_info_Get_DiagnosticInfo //
+ ( myFP: TCFD_BGR;                           //
+   const CalcCRC : WideString;               //
+   var ErrorCode : WideString;               //
+   var DeviceName : WideString;              //
+   var FirmwareRevision : WideString;        //
+   var FirmwareDate : WideString;            //
+   var FirmwareTime : WideString;            //
+   var CheckSum : WideString;                //
+   var Switches : WideString;                //
+   var SerialNumber : WideString;            //
+   var FiscalMemoryNumber : WideString       //
+ ) : Integer;                                //
+
+
+function execute_099_info_Get_EIKValue //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var EIK_Value : WideString          //
+ ) : Integer;                          //
+
+
+function execute_100_info_Get_ErrorDescription //
+ ( myFP: TCFD_BGR;                             //
+   const TargetCode : WideString;              //
+   var ErrorCode : WideString;                 //
+   var CodeValue : WideString;                 //
+   var CodeDescription : WideString            //
+ ) : Integer;                                  //
+
+
+function execute_103_info_Get_CurrentRecieptInfo //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var CanVd : WideString;                       //
+   var TaxA : WideString;                        //
+   var TaxB : WideString;                        //
+   var TaxC : WideString;                        //
+   var TaxD : WideString;                        //
+   var TaxE : WideString;                        //
+   var TaxF : WideString;                        //
+   var TaxG : WideString;                        //
+   var TaxH : WideString;                        //
+   var Inv : WideString;                         //
+   var InvNum : WideString;                      //
+   var RecieptType : WideString                  //
+ ) : Integer;                                    //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C00 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Pay1 : WideString;                             //
+   var Pay2 : WideString;                             //
+   var Pay3 : WideString;                             //
+   var Pay4 : WideString;                             //
+   var Pay5 : WideString;                             //
+   var Pay6 : WideString;                             //
+   var ForeignPay : WideString                        //
+ ) : Integer;                                         //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C01 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Pay1 : WideString;                             //
+   var Pay2 : WideString;                             //
+   var Pay3 : WideString;                             //
+   var Pay4 : WideString;                             //
+   var Pay5 : WideString;                             //
+   var Pay6 : WideString;                             //
+   var ForeignPay : WideString                        //
+ ) : Integer;                                         //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C02 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Clients : WideString;                          //
+   var Sums : WideString                              //
+ ) : Integer;                                         //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C03 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Surcharges : WideString;                       //
+   var Surcharges_Sum : WideString;                   //
+   var Discounts : WideString;                        //
+   var Discounts_Sum : WideString                     //
+ ) : Integer;                                         //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C04 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Corrections : WideString;                      //
+   var Corrections_Sum : WideString;                  //
+   var AnnulledReceipts : WideString;                 //
+   var AnnulledReceipts_Sum : WideString              //
+ ) : Integer;                                         //
+
+
+function execute_110_info_Get_AdditionalDailyInfo_C05 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var CashIn : WideString;                           //
+   var CashIn_Sum : WideString;                       //
+   var CashOut : WideString;                          //
+   var CashOut_Sum : WideString;                      //
+   var CurrencyCashIn : WideString;                   //
+   var CurrencyCashIn_Sum : WideString;               //
+   var CurrencyCashOut : WideString;                  //
+   var CurrencyCashOut_Sum : WideString               //
+ ) : Integer;                                         //
+
+
+function execute_112_info_Get_OperatorsData //
+ ( myFP: TCFD_BGR;                          //
+   const Operator : WideString;             //
+   var ErrorCode : WideString;              //
+   var FReceipts_Count : WideString;        //
+   var Sales_Sum : WideString;              //
+   var Discounts_Count : WideString;        //
+   var Discounts_Sum : WideString;          //
+   var Surcharges_Count : WideString;       //
+   var Surcharges_Sum : WideString;         //
+   var Voids_Count : WideString;            //
+   var Voids_Sum : WideString               //
+ ) : Integer;                               //
+
+
+function execute_123_info_Get_DeviceInfo_01 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var SerialNumber : WideString;           //
+   var FiscalMemoryNumber : WideString;     //
+   var Headerline1 : WideString;            //
+   var Headerline2 : WideString;            //
+   var TAXnumber : WideString;              //
+   var Headerline3 : WideString;            //
+   var Headerline4 : WideString             //
+ ) : Integer;                               //
+
+
+function execute_123_info_Get_DeviceInfo_02 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var MainBattery : WideString;            //
+   var RamBattery : WideString;             //
+   var Signal : WideString;                 //
+   var NetworkStatus : WideString           //
+ ) : Integer;                               //
+
+
+function execute_123_info_Get_DeviceInfo_03     //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   var ErrorCode : WideString;                  //
+   var LastFiscalReceipt_Number : WideString;   //
+   var DateTime_LastFiscalReceipt : WideString; //
+   var LastZReport_Number : WideString;         //
+   var DateTime_LastZReport : WideString        //
+ ) : Integer;                                   //
+
+
+function execute_123_info_Get_DeviceInfo_04 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_123_info_Get_DeviceInfo_05 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var MainBattery : WideString;            //
+   var ChargeLevel : WideString             //
+ ) : Integer;                               //
+
+
+function execute_135_info_Get_Modem_IMEI //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var IMEI : WideString                 //
+ ) : Integer;                            //
+
+
+function execute_135_info_Get_IMSI //
+ ( myFP: TCFD_BGR;                 //
+   const Option : WideString;      //
+   var ErrorCode : WideString;     //
+   var IMSI : WideString           //
+ ) : Integer;                      //
+
+
+function execute_135_info_Get_ModemStatus //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   var ErrorCode : WideString;            //
+   var SignalLevel : WideString;          //
+   var IMEI : WideString;                 //
+   var IMSI : WideString;                 //
+   var MobileOperator : WideString        //
+ ) : Integer;                             //
+
+
+function execute_140_info_Get_ClientsInfo //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   var ErrorCode : WideString;            //
+   var Count_Total : WideString;          //
+   var Count_Programmed : WideString;     //
+   var NameLength : WideString            //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_FpComBaudRate //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_AutoPaperCutting //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_PaperCuttingType //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_BarCodeHeight //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_BarcodeName //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_ComPortBaudRate //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_ComPortProtocol //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_MainInterfaceType //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_TimeOutBeforePrintFlush //
+ ( myFP: TCFD_BGR;                                    //
+   var ErrorCode : WideString;                        //
+   var Variable_Value : WideString                    //
+ ) : Integer;                                         //
+
+
+function execute_255_info_Get_WorkBatteryIncluded //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_Dec2xLineSpacing //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_PrintFontType //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_FooterEmptyLines //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_HeaderMinLines //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_LogoPrintAfterFooter //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_EnableNearPaperEnd //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_DateFromNAPServDisable //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+function execute_255_info_Get_AutoPowerOff //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_BkLight_AutoOff //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_PinpadComPort //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_PinpadComBaudRate //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_PinpadType //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_PinpadConnectionType //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_PinpadReceiptCopies //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_PinpadReceiptInfo //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_PinpadPaymentMenu //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_PinpadLoyaltyPayment //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_BthEnable //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_BthDiscoverability //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_BthPairing //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_BthPinCode //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_BthVersion //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_BthAddress //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_EcrLogNumber //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_EcrExtendedReceipt //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_EcrDoveriteli //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_EcrWithoutPasswords //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_EcrAskForPassword //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_EcrAskForVoidPassword //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var Variable_Value : WideString                  //
+ ) : Integer;                                       //
+
+
+function execute_255_info_Get_EcrConnectedOperReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+function execute_255_info_Get_EcrConnectedDeptReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+function execute_255_info_Get_EcrConnectedPluSalesReport //
+ ( myFP: TCFD_BGR;                                       //
+   var ErrorCode : WideString;                           //
+   var Variable_Value : WideString                       //
+ ) : Integer;                                            //
+
+
+function execute_255_info_Get_EcrConnectedGroupsReport //
+ ( myFP: TCFD_BGR;                                     //
+   var ErrorCode : WideString;                         //
+   var Variable_Value : WideString                     //
+ ) : Integer;                                          //
+
+
+function execute_255_info_Get_EcrConnectedCashReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+function execute_255_info_Get_EcrUserPeriodReports //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_EcrPluDailyClearing //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_EcrSafeOpening //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_EcrScaleBarMask //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_EcrNumberBarcode //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_RegModeOnIdle //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_FlushAtEndOnly //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_EcrMidnightWarning //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_EcrMandatorySubtotal //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_Seller //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_AutoMonthReport //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_EcrUnsentWarning //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_CurrNameLocal //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_CurrNameForeign //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_ExchangeRate //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_Unit_name //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_Header //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_Footer //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_OperName //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_OperPasw //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_PayName //
+ ( myFP: TCFD_BGR;                    //
+   var ErrorCode : WideString;        //
+   var Variable_Value : WideString    //
+ ) : Integer;                         //
+
+
+function execute_255_info_Get_Payment_forbidden //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_DPxx_PluCode //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_KeyNDB_value //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_KeyNDB_percentage //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_KeyOTS_value //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_KeyOTS_percentage //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_KeyNDB_forbidden //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_KeyOTS_forbidden //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_ServPasw //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_ServMessage //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_ServiceDate //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_PrnQuality //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_PrintColumns //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_EmptyLineAfterTotal //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_DblHeigh_totalinreg //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_Bold_payments //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_DublReceipts //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_IntUseReceipts //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_BarcodePrint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_LogoPrint //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_DoveriteliPrint //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_ForeignPrint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_VatPrintEnable //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_CondensedPrint //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_DsblKeyZreport //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_DsblKeyXreport //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_DsblKeyDiagnostics //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_DsblKeyFmReports //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_DsblKeyJournal //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_DsblKeyDateTime //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_DsblKeyCloseReceipt //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+function execute_255_info_Get_DsblKeyCancelReceipt //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+function execute_255_info_Get_ModemModel //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_SimPin //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_LanMAC //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_DHCPenable //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_LAN_IP //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_LAN_NetMask //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_LAN_Gateway //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_LAN_PriDNS //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_LAN_SecDNS //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_LANport_fpCommands //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+function execute_255_info_Get_ItemGroups_name //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_Dept_price //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_Dept_name //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_DHL_Algo //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_EIK_validation //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_EGN_validation //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_Bonuses //
+ ( myFP: TCFD_BGR;                    //
+   var ErrorCode : WideString;        //
+   var Variable_Value : WideString    //
+ ) : Integer;                         //
+
+
+function execute_255_info_Get_TextReducedVAT //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_TAXlabel //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_nZreport //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_nReset //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_nVatChanges //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_nIDnumberChanges //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_nFMnumberChanges //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+function execute_255_info_Get_nTAXnumberChanges //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+function execute_255_info_Get_valVat //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+function execute_255_info_Get_FMDeviceID //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_IDnumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_FMnumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_TAXnumber //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_FmWriteDateTime //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_LastValiddate //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_UNP  //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString;     //
+   var Variable_Value : WideString //
+ ) : Integer;                      //
+
+
+function execute_255_info_Get_StornoUNP //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_Fiscalized //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_DFR_needed //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+function execute_255_info_Get_DecimalPoint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_255_info_Get_nBon //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString;     //
+   var Variable_Value : WideString //
+ ) : Integer;                      //
+
+
+function execute_255_info_Get_nFBon //
+ ( myFP: TCFD_BGR;                  //
+   var ErrorCode : WideString;      //
+   var Variable_Value : WideString  //
+ ) : Integer;                       //
+
+
+function execute_255_info_Get_nInvoice //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_InvoiceRangeBeg //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_InvoiceRangeEnd //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_nFBonDailyCount //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+function execute_255_info_Get_nLastFiscalDoc //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+function execute_255_info_Get_CurrClerk //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+function execute_255_info_Get_EJNewJurnal //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+function execute_255_info_Get_EJNumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+function execute_255_info_Get_DateLastSucceededSent //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var Variable_Value : WideString                  //
+ ) : Integer;                                       //
+
+
+function execute_255_info_Get_NapRegistered //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+function execute_255_info_Get_DeregOnSever //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+function execute_124_klen_Documents_InRange //
+ ( myFP: TCFD_BGR;                          //
+   const From_DateTime : WideString;        //
+   const To_DateTime : WideString;          //
+   const Input_DocType : WideString;        //
+   var ErrorCode : WideString;              //
+   var Start_DateTime : WideString;         //
+   var End_DateTime : WideString;           //
+   var First_DocumentNumber : WideString;   //
+   var Last_DocumentNumber : WideString     //
+ ) : Integer;                               //
+
+
+function execute_125_klen_SetDocument_ToRead //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const DocNum : WideString;                //
+   const RecType : WideString;               //
+   var ErrorCode : WideString;               //
+   var DocNumber : WideString;               //
+   var RecNumber : WideString;               //
+   var DateTime : WideString;                //
+   var DocType : WideString;                 //
+   var Znumber : WideString                  //
+ ) : Integer;                                //
+
+
+function execute_125_klen_GetLine_AsText //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var TextData : WideString             //
+ ) : Integer;                            //
+
+
+function execute_125_klen_GetLine_AsData //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var Base64Data : WideString           //
+ ) : Integer;                            //
+
+
+function execute_125_klen_Print_Document //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   const DocNum : WideString;            //
+   const RecType : WideString;           //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+function execute_125_klen_SetCSVDocument_ToRead //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   const FirstDoc : WideString;                 //
+   const LastDoc : WideString;                  //
+   var ErrorCode : WideString;                  //
+   var DocNumber : WideString;                  //
+   var RecNumber : WideString;                  //
+   var DateTime : WideString;                   //
+   var DocType : WideString;                    //
+   var Znumber : WideString                     //
+ ) : Integer;                                   //
+
+
+function execute_125_klen_Get_CSVData_AsText //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   var ErrorCode : WideString;               //
+   var Column_01 : WideString;               //
+   var Column_02 : WideString;               //
+   var Column_03 : WideString;               //
+   var Column_04 : WideString;               //
+   var Column_05 : WideString;               //
+   var Column_06 : WideString;               //
+   var Column_07 : WideString;               //
+   var Column_08 : WideString;               //
+   var Column_09 : WideString;               //
+   var Column_10 : WideString;               //
+   var Column_11 : WideString;               //
+   var Column_12 : WideString;               //
+   var Column_13 : WideString;               //
+   var Column_14 : WideString                //
+ ) : Integer;                                //
+
+
+function execute_045_other_Check_Connection //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+function execute_080_other_Sound_Signal //
+ ( myFP: TCFD_BGR;                      //
+   const Hz : WideString;               //
+   const mSec : WideString;             //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+function execute_202_other_Power_Off //
+ ( myFP: TCFD_BGR;                   //
+   const ParamValue : WideString;    //
+   var ErrorCode : WideString        //
+ ) : Integer;                        //
+
+
+function execute_202_other_Restart //
+ ( myFP: TCFD_BGR;                 //
+   const ParamValue : WideString;  //
+   var ErrorCode : WideString      //
+ ) : Integer;                      //
+
+
+function execute_083_service_Set_DecimalsAndTaxRates //
+ ( myFP: TCFD_BGR;                                   //
+   const TaxA : WideString;                          //
+   const TaxB : WideString;                          //
+   const TaxC : WideString;                          //
+   const TaxD : WideString;                          //
+   const TaxE : WideString;                          //
+   const TaxF : WideString;                          //
+   const TaxG : WideString;                          //
+   const TaxH : WideString;                          //
+   const Decimal_Point : WideString;                 //
+   var ErrorCode : WideString;                       //
+   var RemainingChanges : WideString                 //
+ ) : Integer;                                        //
+
+
+function execute_089_service_Test_FiscalMemory //
+ ( myFP: TCFD_BGR;                             //
+   const TestType : WideString;                //
+   var ErrorCode : WideString;                 //
+   var Records : WideString                    //
+ ) : Integer;                                  //
+
+
+function execute_091_service_Set_SerialNumber //
+ ( myFP: TCFD_BGR;                            //
+   const SerialNumber : WideString;           //
+   const FMNumber : WideString;               //
+   var ErrorCode : WideString;                //
+   var Country : WideString                   //
+ ) : Integer;                                 //
+
+
+
+implementation
+
+function execute_033_display_Clear //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString      //
+ ) : Integer;                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        myFP.execute_Command_ByName('033_display_Clear');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('033_display_Clear', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_035_display_Show_LowerLine //
+ ( myFP: TCFD_BGR;                          //
+   const TextData : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('035_display_Show_LowerLine', 'TextData', TextData ) <> 0 then Exit;
+        myFP.execute_Command_ByName('035_display_Show_LowerLine');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('035_display_Show_LowerLine', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_047_display_Show_UpperLine //
+ ( myFP: TCFD_BGR;                          //
+   const TextData : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('047_display_Show_UpperLine', 'TextData', TextData ) <> 0 then Exit;
+        myFP.execute_Command_ByName('047_display_Show_UpperLine');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('047_display_Show_UpperLine', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_063_display_Show_DateTime //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var DateTime : WideString               //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('063_display_Show_DateTime') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('063_display_Show_DateTime', 'DateTime',DateTime);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('063_display_Show_DateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_038_receipt_NonFiscal_Open //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('038_receipt_NonFiscal_Open') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('038_receipt_NonFiscal_Open', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('038_receipt_NonFiscal_Open', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_039_receipt_NonFiscal_Close //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('039_receipt_NonFiscal_Close') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('039_receipt_NonFiscal_Close', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('039_receipt_NonFiscal_Close', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_042_receipt_NonFiscal_Text //
+ ( myFP: TCFD_BGR;                          //
+   const InputText : WideString;            //
+   const Bold : WideString;                 //
+   const Italic : WideString;               //
+   const Height : WideString;               //
+   const UnderLine : WideString;            //
+   const Alignment : WideString;            //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'InputText', InputText ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'Bold', Bold ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'Italic', Italic ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'Height', Height ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'UnderLine', UnderLine ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_NonFiscal_Text', 'Alignment', Alignment ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('042_receipt_NonFiscal_Text');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('042_receipt_NonFiscal_Text', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_042_receipt_PNonFiscal_Text //
+ ( myFP: TCFD_BGR;                           //
+   const InputText : WideString;             //
+   const Bold : WideString;                  //
+   const Italic : WideString;                //
+   const Height : WideString;                //
+   const UnderLine : WideString;             //
+   const Alignment : WideString;             //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'InputText', InputText ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'Bold', Bold ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'Italic', Italic ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'Height', Height ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'UnderLine', UnderLine ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('042_receipt_PNonFiscal_Text', 'Alignment', Alignment ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('042_receipt_PNonFiscal_Text');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('042_receipt_PNonFiscal_Text', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C01  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C01', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C01') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C01', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C02  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C02', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C02') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C02', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C02', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C03  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C03', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C03') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C03', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C03', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C04  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C04', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C04') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C04', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C04', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C05  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C05', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C05') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C05', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C05', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_043_receipt_StornoOpen_C06  //
+ ( myFP: TCFD_BGR;                           //
+   const OperatorNumber : WideString;        //
+   const OperatorPassword : WideString;      //
+   const TillNumber : WideString;            //
+   const Storno_Type : WideString;           //
+   const Storno_DocumentNumber : WideString; //
+   const Storno_DateTime : WideString;       //
+   const Storno_FMNumber : WideString;       //
+   const InvoiceNumber : WideString;         //
+   const Storno_Reason : WideString;         //
+   const Storno_UNP : WideString;            //
+   var ErrorCode : WideString;               //
+   var SlipNumber : WideString               //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'TillNumber', TillNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_Type', Storno_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_DocumentNumber', Storno_DocumentNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_DateTime', Storno_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_FMNumber', Storno_FMNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'InvoiceNumber', InvoiceNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_Reason', Storno_Reason ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('043_receipt_StornoOpen_C06', 'Storno_UNP', Storno_UNP ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('043_receipt_StornoOpen_C06') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C06', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('043_receipt_StornoOpen_C06', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_048_receipt_FiscalOpen_C01 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C01', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C01', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C01', 'TillNumber', TillNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('048_receipt_FiscalOpen_C01') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C01', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_048_receipt_FiscalOpen_C03 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const UNP : WideString;                  //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C03', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C03', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C03', 'UNP', UNP ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C03', 'TillNumber', TillNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('048_receipt_FiscalOpen_C03') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C03', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C03', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_048_receipt_Fiscal_Open //
+ ( myFP: TCFD_BGR;                       //
+   const OperatorNumber : WideString;    //
+   const OperatorPassword : WideString;  //
+   const UNP : WideString;               //
+   const TillNumber : WideString;        //
+   var ErrorCode : WideString;           //
+   var SlipNumber : WideString           //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('048_receipt_Fiscal_Open', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_Fiscal_Open', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_Fiscal_Open', 'UNP', UNP ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_Fiscal_Open', 'TillNumber', TillNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('048_receipt_Fiscal_Open') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('048_receipt_Fiscal_Open', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('048_receipt_Fiscal_Open', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_056_receipt_Fiscal_Close //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var SlipNumber : WideString            //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('056_receipt_Fiscal_Close') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('056_receipt_Fiscal_Close', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('056_receipt_Fiscal_Close', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_048_receipt_FiscalOpen_C02 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C02', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C02', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C02', 'TillNumber', TillNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('048_receipt_FiscalOpen_C02') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C02', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C02', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_048_receipt_FiscalOpen_C04 //
+ ( myFP: TCFD_BGR;                          //
+   const OperatorNumber : WideString;       //
+   const OperatorPassword : WideString;     //
+   const UNP : WideString;                  //
+   const TillNumber : WideString;           //
+   var ErrorCode : WideString;              //
+   var SlipNumber : WideString              //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C04', 'OperatorNumber', OperatorNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C04', 'OperatorPassword', OperatorPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C04', 'UNP', UNP ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('048_receipt_FiscalOpen_C04', 'TillNumber', TillNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('048_receipt_FiscalOpen_C04') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C04', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('048_receipt_FiscalOpen_C04', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_057_receipt_PrintClientInfo_15 //
+ ( myFP: TCFD_BGR;                              //
+   const SellerName : WideString;               //
+   const ReceiverName : WideString;             //
+   const ClientName : WideString;               //
+   const Address1 : WideString;                 //
+   const Address2 : WideString;                 //
+   const EIKType : WideString;                  //
+   const EIK : WideString;                      //
+   const TaxNo : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'SellerName', SellerName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'ReceiverName', ReceiverName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'ClientName', ClientName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'Address1', Address1 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'Address2', Address2 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'EIKType', EIKType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'EIK', EIK ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('057_receipt_PrintClientInfo_15', 'TaxNo', TaxNo ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('057_receipt_PrintClientInfo_15');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('057_receipt_PrintClientInfo_15', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_049_receipt_Sale     //
+ ( myFP: TCFD_BGR;                    //
+   const TextRow1 : WideString;       //
+   const TaxGroup : WideString;       //
+   const SinglePrice : WideString;    //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   const Department : WideString;     //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'TextRow1', TextRow1 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'TaxGroup', TaxGroup ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'SinglePrice', SinglePrice ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'Quantity', Quantity ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'Discount_Type', Discount_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'Discount_Value', Discount_Value ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale', 'Department', Department ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('049_receipt_Sale') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('049_receipt_Sale', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('049_receipt_Sale', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_049_receipt_Sale_Un  //
+ ( myFP: TCFD_BGR;                    //
+   const TextRow1 : WideString;       //
+   const TaxGroup : WideString;       //
+   const SinglePrice : WideString;    //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   const Department : WideString;     //
+   const Measure : WideString;        //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'TextRow1', TextRow1 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'TaxGroup', TaxGroup ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'SinglePrice', SinglePrice ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'Quantity', Quantity ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'Discount_Type', Discount_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'Discount_Value', Discount_Value ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'Department', Department ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('049_receipt_Sale_Un', 'Measure', Measure ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('049_receipt_Sale_Un') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('049_receipt_Sale_Un', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('049_receipt_Sale_Un', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_058_receipt_PLU_Sale //
+ ( myFP: TCFD_BGR;                    //
+   const Target_PLU : WideString;     //
+   const Quantity : WideString;       //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString        //
+ ) : Integer;                         //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('058_receipt_PLU_Sale', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('058_receipt_PLU_Sale', 'Quantity', Quantity ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('058_receipt_PLU_Sale', 'Discount_Type', Discount_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('058_receipt_PLU_Sale', 'Discount_Value', Discount_Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('058_receipt_PLU_Sale') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('058_receipt_PLU_Sale', 'SlipNumber',SlipNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('058_receipt_PLU_Sale', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_051_receipt_Subtotal //
+ ( myFP: TCFD_BGR;                    //
+   const ToPrint : WideString;        //
+   const ToDisplay : WideString;      //
+   const Discount_Type : WideString;  //
+   const Discount_Value : WideString; //
+   var ErrorCode : WideString;        //
+   var SlipNumber : WideString;       //
+   var Subtotal : WideString;         //
+   var TaxA : WideString;             //
+   var TaxB : WideString;             //
+   var TaxC : WideString;             //
+   var TaxD : WideString;             //
+   var TaxE : WideString;             //
+   var TaxF : WideString;             //
+   var TaxG : WideString;             //
+   var TaxH : WideString              //
+ ) : Integer;                         //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('051_receipt_Subtotal', 'ToPrint', ToPrint ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('051_receipt_Subtotal', 'ToDisplay', ToDisplay ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('051_receipt_Subtotal', 'Discount_Type', Discount_Type ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('051_receipt_Subtotal', 'Discount_Value', Discount_Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'SlipNumber',SlipNumber);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'Subtotal',Subtotal);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxA',TaxA);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxB',TaxB);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxC',TaxC);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxD',TaxD);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxE',TaxE);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxF',TaxF);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxG',TaxG);
+   myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'TaxH',TaxH);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('051_receipt_Subtotal') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('051_receipt_Subtotal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_053_receipt_Total     //
+ ( myFP: TCFD_BGR;                     //
+   const PaidMode : WideString;        //
+   const InputAmount : WideString;     //
+   const PinPad_PaidMode : WideString; //
+   var ErrorCode : WideString;         //
+   var AnswerField_01 : WideString;    //
+   var AnswerField_02 : WideString     //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('053_receipt_Total', 'PaidMode', PaidMode ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('053_receipt_Total', 'InputAmount', InputAmount ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('053_receipt_Total', 'PinPad_PaidMode', PinPad_PaidMode ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('053_receipt_Total', 'AnswerField_01',AnswerField_01);
+   myFP.get_OutputParam_ByName('053_receipt_Total', 'AnswerField_02',AnswerField_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('053_receipt_Total') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('053_receipt_Total', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_053_receipt_Total_Currency //
+ ( myFP: TCFD_BGR;                          //
+   const PaidMode : WideString;             //
+   const InputAmount : WideString;          //
+   const CurrencyType : WideString;         //
+   var ErrorCode : WideString;              //
+   var AnswerField_01 : WideString;         //
+   var AnswerField_02 : WideString          //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('053_receipt_Total_Currency', 'PaidMode', PaidMode ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('053_receipt_Total_Currency', 'InputAmount', InputAmount ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('053_receipt_Total_Currency', 'CurrencyType', CurrencyType ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('053_receipt_Total_Currency', 'AnswerField_01',AnswerField_01);
+   myFP.get_OutputParam_ByName('053_receipt_Total_Currency', 'AnswerField_02',AnswerField_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('053_receipt_Total_Currency') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('053_receipt_Total_Currency', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_044_receipt_Paper_Feed //
+ ( myFP: TCFD_BGR;                      //
+   const LinesCount : WideString;       //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('044_receipt_Paper_Feed', 'LinesCount', LinesCount ) <> 0 then Exit;
+        myFP.execute_Command_ByName('044_receipt_Paper_Feed');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('044_receipt_Paper_Feed', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_046_receipt_Paper_Cut //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        myFP.execute_Command_ByName('046_receipt_Paper_Cut');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('046_receipt_Paper_Cut', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_054_receipt_Fiscal_Text //
+ ( myFP: TCFD_BGR;                       //
+   const InputText : WideString;         //
+   const Bold : WideString;              //
+   const Italic : WideString;            //
+   const DoubleHeight : WideString;      //
+   const UnderLine : WideString;         //
+   const Alignment : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'InputText', InputText ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'Bold', Bold ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'Italic', Italic ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'DoubleHeight', DoubleHeight ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'UnderLine', UnderLine ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_Fiscal_Text', 'Alignment', Alignment ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('054_receipt_Fiscal_Text');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('054_receipt_Fiscal_Text', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_054_receipt_PFiscal_Text //
+ ( myFP: TCFD_BGR;                        //
+   const InputText : WideString;          //
+   const Bold : WideString;               //
+   const Italic : WideString;             //
+   const Height : WideString;             //
+   const UnderLine : WideString;          //
+   const Alignment : WideString;          //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'InputText', InputText ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'Bold', Bold ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'Italic', Italic ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'Height', Height ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'UnderLine', UnderLine ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('054_receipt_PFiscal_Text', 'Alignment', Alignment ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('054_receipt_PFiscal_Text');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('054_receipt_PFiscal_Text', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_060_receipt_Fiscal_Cancel //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        myFP.execute_Command_ByName('060_receipt_Fiscal_Cancel');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('060_receipt_Fiscal_Cancel', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_070_receipt_CashIn_CashOut //
+ ( myFP: TCFD_BGR;                          //
+   const AmountType : WideString;           //
+   const Amount : WideString;               //
+   var ErrorCode : WideString;              //
+   var CashSum : WideString;                //
+   var ServIn : WideString;                 //
+   var ServOut : WideString                 //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('070_receipt_CashIn_CashOut', 'CashSum',CashSum);
+   myFP.get_OutputParam_ByName('070_receipt_CashIn_CashOut', 'ServIn',ServIn);
+   myFP.get_OutputParam_ByName('070_receipt_CashIn_CashOut', 'ServOut',ServOut);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('070_receipt_CashIn_CashOut', 'AmountType', AmountType ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('070_receipt_CashIn_CashOut', 'Amount', Amount ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('070_receipt_CashIn_CashOut') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('070_receipt_CashIn_CashOut', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_084_receipt_Print_Barcode //
+ ( myFP: TCFD_BGR;                         //
+   const BarcodeType : WideString;         //
+   const BarcodeData : WideString;         //
+   const QRCodeSize : WideString;          //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('084_receipt_Print_Barcode', 'BarcodeType', BarcodeType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('084_receipt_Print_Barcode', 'BarcodeData', BarcodeData ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('084_receipt_Print_Barcode', 'QRCodeSize', QRCodeSize ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('084_receipt_Print_Barcode');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('084_receipt_Print_Barcode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_092_receipt_Separating_Line //
+ ( myFP: TCFD_BGR;                           //
+   const LineType : WideString;              //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('092_receipt_Separating_Line', 'LineType', LineType ) <> 0 then Exit;
+        myFP.execute_Command_ByName('092_receipt_Separating_Line');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('092_receipt_Separating_Line', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_103_receipt_Current_Info //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var TaxA : WideString;                 //
+   var TaxB : WideString;                 //
+   var TaxC : WideString;                 //
+   var TaxD : WideString;                 //
+   var TaxE : WideString;                 //
+   var TaxF : WideString;                 //
+   var TaxG : WideString;                 //
+   var TaxH : WideString;                 //
+   var Inv : WideString;                  //
+   var InvNmb : WideString;               //
+   var fStorno : WideString               //
+ ) : Integer;                             //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxA',TaxA);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxB',TaxB);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxC',TaxC);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxD',TaxD);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxE',TaxE);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxF',TaxF);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxG',TaxG);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'TaxH',TaxH);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'Inv',Inv);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'InvNmb',InvNmb);
+   myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'fStorno',fStorno);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('103_receipt_Current_Info') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('103_receipt_Current_Info', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_106_receipt_Drawer_KickOut //
+ ( myFP: TCFD_BGR;                          //
+   const mSec : WideString;                 //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('106_receipt_Drawer_KickOut', 'mSec', mSec ) <> 0 then Exit;
+        myFP.execute_Command_ByName('106_receipt_Drawer_KickOut');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('106_receipt_Drawer_KickOut', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_109_receipt_Print_Duplicate //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        myFP.execute_Command_ByName('109_receipt_Print_Duplicate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('109_receipt_Print_Duplicate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_122_receipt_PVerticalFiscal_Text //
+ ( myFP: TCFD_BGR;                                //
+   const InputText : WideString;                  //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('122_receipt_PVerticalFiscal_Text', 'InputText', InputText ) <> 0 then Exit;
+        myFP.execute_Command_ByName('122_receipt_PVerticalFiscal_Text');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('122_receipt_PVerticalFiscal_Text', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_127_receipt_Print_Stamp //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   const StampName : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('127_receipt_Print_Stamp', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('127_receipt_Print_Stamp', 'StampName', StampName ) <> 0 then Exit;
+        myFP.execute_Command_ByName('127_receipt_Print_Stamp');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('127_receipt_Print_Stamp', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_069_report_DailyClosure_01 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var nRep : WideString;                   //
+   var TotalSum_A : WideString;             //
+   var TotalSum_B : WideString;             //
+   var TotalSum_C : WideString;             //
+   var TotalSum_D : WideString;             //
+   var TotalSum_E : WideString;             //
+   var TotalSum_F : WideString;             //
+   var TotalSum_G : WideString;             //
+   var TotalSum_H : WideString;             //
+   var StornoSum_A : WideString;            //
+   var StornoSum_B : WideString;            //
+   var StornoSum_C : WideString;            //
+   var StornoSum_D : WideString;            //
+   var StornoSum_E : WideString;            //
+   var StornoSum_F : WideString;            //
+   var StornoSum_G : WideString;            //
+   var StornoSum_H : WideString             //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'nRep',nRep);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_A',TotalSum_A);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_B',TotalSum_B);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_C',TotalSum_C);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_D',TotalSum_D);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_E',TotalSum_E);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_F',TotalSum_F);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_G',TotalSum_G);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'TotalSum_H',TotalSum_H);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_A',StornoSum_A);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_B',StornoSum_B);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_C',StornoSum_C);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_D',StornoSum_D);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_E',StornoSum_E);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_F',StornoSum_F);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_G',StornoSum_G);
+   myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'StornoSum_H',StornoSum_H);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('069_report_DailyClosure_01', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('069_report_DailyClosure_01') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('069_report_DailyClosure_01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_069_report_DailyClosure_02 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('069_report_DailyClosure_02', 'Option', Option ) <> 0 then Exit;
+        myFP.execute_Command_ByName('069_report_DailyClosure_02');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('069_report_DailyClosure_02', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_087_report_Item_Groups //
+ ( myFP: TCFD_BGR;                      //
+   const ItemGroup : WideString;        //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('087_report_Item_Groups', 'ItemGroup', ItemGroup ) <> 0 then Exit;
+        myFP.execute_Command_ByName('087_report_Item_Groups');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('087_report_Item_Groups', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_088_report_Department_Info //
+ ( myFP: TCFD_BGR;                          //
+   const DepartmentNumber : WideString;     //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('088_report_Department_Info', 'DepartmentNumber', DepartmentNumber ) <> 0 then Exit;
+        myFP.execute_Command_ByName('088_report_Department_Info');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('088_report_Department_Info', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_095_report_FMByNumRange //
+ ( myFP: TCFD_BGR;                       //
+   const ReportType : WideString;        //
+   const StartNumber : WideString;       //
+   const EndNumber : WideString;         //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange', 'ReportType', ReportType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange', 'StartNumber', StartNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange', 'EndNumber', EndNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('095_report_FMByNumRange');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('095_report_FMByNumRange', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_095_report_FMByNumRange_Short //
+ ( myFP: TCFD_BGR;                             //
+   const ReportType : WideString;              //
+   const StartNumber : WideString;             //
+   const EndNumber : WideString;               //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange_Short', 'ReportType', ReportType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange_Short', 'StartNumber', StartNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('095_report_FMByNumRange_Short', 'EndNumber', EndNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('095_report_FMByNumRange_Short');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('095_report_FMByNumRange_Short', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_105_report_Operators      //
+ ( myFP: TCFD_BGR;                         //
+   const OperatorsCode_Start : WideString; //
+   const OperatorsCode_End : WideString;   //
+   const ToClear : WideString;             //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('105_report_Operators', 'OperatorsCode_Start', OperatorsCode_Start ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('105_report_Operators', 'OperatorsCode_End', OperatorsCode_End ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('105_report_Operators', 'ToClear', ToClear ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('105_report_Operators');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('105_report_Operators', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_111_report_Items //
+ ( myFP: TCFD_BGR;                //
+   const Option : WideString;     //
+   const StartPLU : WideString;   //
+   const EndPLU : WideString;     //
+   var ErrorCode : WideString     //
+ ) : Integer;                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('111_report_Items', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('111_report_Items', 'StartPLU', StartPLU ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('111_report_Items', 'EndPLU', EndPLU ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('111_report_Items');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('111_report_Items', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_ItemsInformation //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   var ErrorCode : WideString;                  //
+   var Total : WideString;                      //
+   var Prog : WideString;                       //
+   var Len : WideString                         //
+ ) : Integer;                                   //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_ItemsInformation', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_ItemsInformation', 'Prog',Prog);
+   myFP.get_OutputParam_ByName('107_items_Get_ItemsInformation', 'Len',Len);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_ItemsInformation', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_ItemsInformation') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_ItemsInformation', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Set_Item //
+ ( myFP: TCFD_BGR;                  //
+   const Option : WideString;       //
+   const Target_PLU : WideString;   //
+   const TaxGroup : WideString;     //
+   const Department : WideString;   //
+   const Group : WideString;        //
+   const PriceType : WideString;    //
+   const SinglePrice : WideString;  //
+   const AddQty : WideString;       //
+   const Quantity : WideString;     //
+   const Barcode_01 : WideString;   //
+   const Barcode_02 : WideString;   //
+   const Barcode_03 : WideString;   //
+   const Barcode_04 : WideString;   //
+   const ItemName : WideString;     //
+   var ErrorCode : WideString       //
+ ) : Integer;                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'TaxGroup', TaxGroup ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Department', Department ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Group', Group ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'PriceType', PriceType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'SinglePrice', SinglePrice ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'AddQty', AddQty ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Quantity', Quantity ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Barcode_01', Barcode_01 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Barcode_02', Barcode_02 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Barcode_03', Barcode_03 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'Barcode_04', Barcode_04 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_Item', 'ItemName', ItemName ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Set_Item');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Set_Item', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Set_ItemUn  //
+ ( myFP: TCFD_BGR;                     //
+   const Option : WideString;          //
+   const Target_PLU : WideString;      //
+   const TaxGroup : WideString;        //
+   const Department : WideString;      //
+   const Group : WideString;           //
+   const PriceType : WideString;       //
+   const SinglePrice : WideString;     //
+   const AddQty : WideString;          //
+   const Quantity : WideString;        //
+   const Barcode_01 : WideString;      //
+   const Barcode_02 : WideString;      //
+   const Barcode_03 : WideString;      //
+   const Barcode_04 : WideString;      //
+   const ItemName : WideString;        //
+   const MeasurementUnit : WideString; //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'TaxGroup', TaxGroup ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Department', Department ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Group', Group ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'PriceType', PriceType ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'SinglePrice', SinglePrice ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'AddQty', AddQty ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Quantity', Quantity ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Barcode_01', Barcode_01 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Barcode_02', Barcode_02 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Barcode_03', Barcode_03 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'Barcode_04', Barcode_04 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'ItemName', ItemName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemUn', 'MeasurementUnit', MeasurementUnit ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Set_ItemUn');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Set_ItemUn', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Set_ItemQuantity //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   const Quantity : WideString;             //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemQuantity', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemQuantity', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Set_ItemQuantity', 'Quantity', Quantity ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Set_ItemQuantity');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Set_ItemQuantity', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Delete_Item //
+ ( myFP: TCFD_BGR;                     //
+   const Option : WideString;          //
+   const PLU_Start : WideString;       //
+   const PLU_End : WideString;         //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Delete_Item', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_Item', 'PLU_Start', PLU_Start ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_Item', 'PLU_End', PLU_End ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Delete_Item');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Delete_Item', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Delete_ItemsInRange //
+ ( myFP: TCFD_BGR;                             //
+   const Option : WideString;                  //
+   const PLU_Start : WideString;               //
+   const PLU_End : WideString;                 //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Delete_ItemsInRange', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_ItemsInRange', 'PLU_Start', PLU_Start ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_ItemsInRange', 'PLU_End', PLU_End ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Delete_ItemsInRange');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Delete_ItemsInRange', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Delete_All_Items //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const DeleteAll : WideString;            //
+   const PLU_End : WideString;              //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('107_items_Delete_All_Items', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_All_Items', 'DeleteAll', DeleteAll ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('107_items_Delete_All_Items', 'PLU_End', PLU_End ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('107_items_Delete_All_Items');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Delete_All_Items', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_Item //
+ ( myFP: TCFD_BGR;                  //
+   const Option : WideString;       //
+   const Target_PLU : WideString;   //
+   var ErrorCode : WideString;      //
+   var PLU : WideString;            //
+   var TaxGroup : WideString;       //
+   var Department : WideString;     //
+   var Group : WideString;          //
+   var PriceType : WideString;      //
+   var SinglePrice : WideString;    //
+   var Total : WideString;          //
+   var Sold : WideString;           //
+   var Available : WideString;      //
+   var Barcode_01 : WideString;     //
+   var Barcode_02 : WideString;     //
+   var Barcode_03 : WideString;     //
+   var Barcode_04 : WideString;     //
+   var ItemName : WideString;       //
+   var MeasurementUnit : WideString //
+ ) : Integer;                       //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_Item', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_Item', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_Item', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_Item') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_Item', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_FirstFoundItem //
+ ( myFP: TCFD_BGR;                            //
+   const Option : WideString;                 //
+   const Target_PLU : WideString;             //
+   var ErrorCode : WideString;                //
+   var PLU : WideString;                      //
+   var TaxGroup : WideString;                 //
+   var Department : WideString;               //
+   var Group : WideString;                    //
+   var PriceType : WideString;                //
+   var SinglePrice : WideString;              //
+   var Total : WideString;                    //
+   var Sold : WideString;                     //
+   var Available : WideString;                //
+   var Barcode_01 : WideString;               //
+   var Barcode_02 : WideString;               //
+   var Barcode_03 : WideString;               //
+   var Barcode_04 : WideString;               //
+   var ItemName : WideString;                 //
+   var MeasurementUnit : WideString           //
+ ) : Integer;                                 //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstFoundItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstFoundItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_FirstFoundItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_FirstFoundItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_LastFoundItem //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const Target_PLU : WideString;            //
+   var ErrorCode : WideString;               //
+   var PLU : WideString;                     //
+   var TaxGroup : WideString;                //
+   var Department : WideString;              //
+   var Group : WideString;                   //
+   var PriceType : WideString;               //
+   var SinglePrice : WideString;             //
+   var Total : WideString;                   //
+   var Sold : WideString;                    //
+   var Available : WideString;               //
+   var Barcode_01 : WideString;              //
+   var Barcode_02 : WideString;              //
+   var Barcode_03 : WideString;              //
+   var Barcode_04 : WideString;              //
+   var ItemName : WideString;                //
+   var MeasurementUnit : WideString          //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastFoundItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastFoundItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_LastFoundItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_LastFoundItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_NextItem //
+ ( myFP: TCFD_BGR;                      //
+   const Option : WideString;           //
+   var ErrorCode : WideString;          //
+   var PLU : WideString;                //
+   var TaxGroup : WideString;           //
+   var Department : WideString;         //
+   var Group : WideString;              //
+   var PriceType : WideString;          //
+   var SinglePrice : WideString;        //
+   var Total : WideString;              //
+   var Sold : WideString;               //
+   var Available : WideString;          //
+   var Barcode_01 : WideString;         //
+   var Barcode_02 : WideString;         //
+   var Barcode_03 : WideString;         //
+   var Barcode_04 : WideString;         //
+   var ItemName : WideString;           //
+   var MeasurementUnit : WideString     //
+ ) : Integer;                           //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_NextItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_NextItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_NextItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_FirstSoldItem //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const Target_PLU : WideString;            //
+   var ErrorCode : WideString;               //
+   var PLU : WideString;                     //
+   var TaxGroup : WideString;                //
+   var Department : WideString;              //
+   var Group : WideString;                   //
+   var PriceType : WideString;               //
+   var SinglePrice : WideString;             //
+   var Total : WideString;                   //
+   var Sold : WideString;                    //
+   var Available : WideString;               //
+   var Barcode_01 : WideString;              //
+   var Barcode_02 : WideString;              //
+   var Barcode_03 : WideString;              //
+   var Barcode_04 : WideString;              //
+   var ItemName : WideString;                //
+   var MeasurementUnit : WideString          //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstSoldItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstSoldItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_FirstSoldItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_FirstSoldItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_LastSoldItem //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   var ErrorCode : WideString;              //
+   var PLU : WideString;                    //
+   var TaxGroup : WideString;               //
+   var Department : WideString;             //
+   var Group : WideString;                  //
+   var PriceType : WideString;              //
+   var SinglePrice : WideString;            //
+   var Total : WideString;                  //
+   var Sold : WideString;                   //
+   var Available : WideString;              //
+   var Barcode_01 : WideString;             //
+   var Barcode_02 : WideString;             //
+   var Barcode_03 : WideString;             //
+   var Barcode_04 : WideString;             //
+   var ItemName : WideString;               //
+   var MeasurementUnit : WideString         //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastSoldItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastSoldItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_LastSoldItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_LastSoldItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_NextSoldItem //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Target_PLU : WideString;           //
+   var ErrorCode : WideString;              //
+   var PLU : WideString;                    //
+   var TaxGroup : WideString;               //
+   var Department : WideString;             //
+   var Group : WideString;                  //
+   var PriceType : WideString;              //
+   var SinglePrice : WideString;            //
+   var Total : WideString;                  //
+   var Sold : WideString;                   //
+   var Available : WideString;              //
+   var Barcode_01 : WideString;             //
+   var Barcode_02 : WideString;             //
+   var Barcode_03 : WideString;             //
+   var Barcode_04 : WideString;             //
+   var ItemName : WideString;               //
+   var MeasurementUnit : WideString         //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'PLU',PLU);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'TaxGroup',TaxGroup);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Department',Department);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Group',Group);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'PriceType',PriceType);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'SinglePrice',SinglePrice);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Total',Total);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Sold',Sold);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Available',Available);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Barcode_01',Barcode_01);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Barcode_02',Barcode_02);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Barcode_03',Barcode_03);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'Barcode_04',Barcode_04);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'ItemName',ItemName);
+   myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'MeasurementUnit',MeasurementUnit);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_NextSoldItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_NextSoldItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_NextSoldItem') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_NextSoldItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_FirstNotProgrammedItem //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   const Target_PLU : WideString;                     //
+   var ErrorCode : WideString;                        //
+   var PLU : WideString                               //
+ ) : Integer;                                         //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstNotProgrammedItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_FirstNotProgrammedItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_FirstNotProgrammedItem') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('107_items_Get_FirstNotProgrammedItem', 'PLU',PLU);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_FirstNotProgrammedItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_107_items_Get_LastNotProgrammedItem //
+ ( myFP: TCFD_BGR;                                   //
+   const Option : WideString;                        //
+   const Target_PLU : WideString;                    //
+   var ErrorCode : WideString;                       //
+   var PLU : WideString                              //
+ ) : Integer;                                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastNotProgrammedItem', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('107_items_Get_LastNotProgrammedItem', 'Target_PLU', Target_PLU ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('107_items_Get_LastNotProgrammedItem') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('107_items_Get_LastNotProgrammedItem', 'PLU',PLU);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('107_items_Get_LastNotProgrammedItem', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Set_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Client_Number : WideString;        //
+   const Client_Name : WideString;          //
+   const Type_TAXN : WideString;            //
+   const TAX_Number : WideString;           //
+   const Reciever_Name : WideString;        //
+   const VAT_Number : WideString;           //
+   const Address_01 : WideString;           //
+   const Address_02 : WideString;           //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Client_Number', Client_Number ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Client_Name', Client_Name ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Type_TAXN', Type_TAXN ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'TAX_Number', TAX_Number ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Reciever_Name', Reciever_Name ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'VAT_Number', VAT_Number ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Address_01', Address_01 ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Set_ClientData', 'Address_02', Address_02 ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('140_clients_Set_ClientData');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Set_ClientData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Del_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const First_ClientNumber : WideString;   //
+   const Last_ClientNumber : WideString;    //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('140_clients_Del_ClientData', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Del_ClientData', 'First_ClientNumber', First_ClientNumber ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('140_clients_Del_ClientData', 'Last_ClientNumber', Last_ClientNumber ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('140_clients_Del_ClientData');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Del_ClientData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Del_AllClientData //
+ ( myFP: TCFD_BGR;                             //
+   const Option : WideString;                  //
+   const First_ClientNumber : WideString;      //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Del_AllClientData', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Del_AllClientData', 'First_ClientNumber', First_ClientNumber ) <> 0 then Exit;
+        myFP.execute_Command_ByName('140_clients_Del_AllClientData');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Del_AllClientData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_ClientData //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   const Client_Number : WideString;        //
+   var ErrorCode : WideString;              //
+   var ClientNumber : WideString;           //
+   var ClientName : WideString;             //
+   var TypeTAXNumver : WideString;          //
+   var TAXNumber : WideString;              //
+   var RecieverName : WideString;           //
+   var VATNumber : WideString;              //
+   var Address_01 : WideString;             //
+   var Address_02 : WideString              //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'ClientNumber',ClientNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'ClientName',ClientName);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'TypeTAXNumver',TypeTAXNumver);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'TAXNumber',TAXNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'RecieverName',RecieverName);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'VATNumber',VATNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'Address_01',Address_01);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'Address_02',Address_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_ClientData', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_ClientData', 'Client_Number', Client_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_ClientData') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_ClientData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_FirstProgrammedClient //
+ ( myFP: TCFD_BGR;                                     //
+   const Option : WideString;                          //
+   const Client_Number : WideString;                   //
+   var ErrorCode : WideString;                         //
+   var ClientNumber : WideString;                      //
+   var ClientName : WideString;                        //
+   var TypeTAXNumver : WideString;                     //
+   var TAXNumber : WideString;                         //
+   var RecieverName : WideString;                      //
+   var VATNumber : WideString;                         //
+   var Address_01 : WideString;                        //
+   var Address_02 : WideString                         //
+ ) : Integer;                                          //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'ClientNumber',ClientNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'ClientName',ClientName);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'TypeTAXNumver',TypeTAXNumver);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'TAXNumber',TAXNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'RecieverName',RecieverName);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'VATNumber',VATNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'Address_01',Address_01);
+   myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'Address_02',Address_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_FirstProgrammedClient', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_FirstProgrammedClient', 'Client_Number', Client_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_FirstProgrammedClient') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_FirstProgrammedClient', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_LastProgrammedClient //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   const Client_Number : WideString;                  //
+   var ErrorCode : WideString;                        //
+   var ClientNumber : WideString;                     //
+   var ClientName : WideString;                       //
+   var TypeTAXNumver : WideString;                    //
+   var TAXNumber : WideString;                        //
+   var RecieverName : WideString;                     //
+   var VATNumber : WideString;                        //
+   var Address_01 : WideString;                       //
+   var Address_02 : WideString                        //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'ClientNumber',ClientNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'ClientName',ClientName);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'TypeTAXNumver',TypeTAXNumver);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'TAXNumber',TAXNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'RecieverName',RecieverName);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'VATNumber',VATNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'Address_01',Address_01);
+   myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'Address_02',Address_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_LastProgrammedClient', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_LastProgrammedClient', 'Client_Number', Client_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_LastProgrammedClient') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_LastProgrammedClient', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_NextProgrammedClient //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var ClientNumber : WideString;                     //
+   var ClientName : WideString;                       //
+   var TypeTAXNumver : WideString;                    //
+   var TAXNumber : WideString;                        //
+   var RecieverName : WideString;                     //
+   var VATNumber : WideString;                        //
+   var Address_01 : WideString;                       //
+   var Address_02 : WideString                        //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'ClientNumber',ClientNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'ClientName',ClientName);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'TypeTAXNumver',TypeTAXNumver);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'TAXNumber',TAXNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'RecieverName',RecieverName);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'VATNumber',VATNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'Address_01',Address_01);
+   myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'Address_02',Address_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_NextProgrammedClient', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_NextProgrammedClient') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_NextProgrammedClient', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_ClientByTaxNumber //
+ ( myFP: TCFD_BGR;                                 //
+   const Option : WideString;                      //
+   const TAX_Number : WideString;                  //
+   var ErrorCode : WideString;                     //
+   var ClientNumber : WideString;                  //
+   var ClientName : WideString;                    //
+   var TypeTAXNumver : WideString;                 //
+   var TAXNumber : WideString;                     //
+   var RecieverName : WideString;                  //
+   var VATNumber : WideString;                     //
+   var Address_01 : WideString;                    //
+   var Address_02 : WideString                     //
+ ) : Integer;                                      //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'ClientNumber',ClientNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'ClientName',ClientName);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'TypeTAXNumver',TypeTAXNumver);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'TAXNumber',TAXNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'RecieverName',RecieverName);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'VATNumber',VATNumber);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'Address_01',Address_01);
+   myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'Address_02',Address_02);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_ClientByTaxNumber', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_ClientByTaxNumber', 'TAX_Number', TAX_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_ClientByTaxNumber') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_ClientByTaxNumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_FirstNotProgrammed //
+ ( myFP: TCFD_BGR;                                  //
+   const Option : WideString;                       //
+   const Client_Number : WideString;                //
+   var ErrorCode : WideString;                      //
+   var ClientNumber : WideString                    //
+ ) : Integer;                                       //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_FirstNotProgrammed', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_FirstNotProgrammed', 'Client_Number', Client_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_FirstNotProgrammed') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('140_clients_Get_FirstNotProgrammed', 'ClientNumber',ClientNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_FirstNotProgrammed', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_clients_Get_LastNotProgrammed //
+ ( myFP: TCFD_BGR;                                 //
+   const Option : WideString;                      //
+   const Client_Number : WideString;               //
+   var ErrorCode : WideString;                     //
+   var ClientNumber : WideString                   //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_LastNotProgrammed', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('140_clients_Get_LastNotProgrammed', 'Client_Number', Client_Number ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_clients_Get_LastNotProgrammed') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('140_clients_Get_LastNotProgrammed', 'ClientNumber',ClientNumber);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_clients_Get_LastNotProgrammed', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_061_config_Set_DateTime //
+ ( myFP: TCFD_BGR;                       //
+   const DateTime : WideString;          //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('061_config_Set_DateTime', 'DateTime', DateTime ) <> 0 then Exit;
+        myFP.execute_Command_ByName('061_config_Set_DateTime');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('061_config_Set_DateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_066_config_Set_InvoiceRange //
+ ( myFP: TCFD_BGR;                           //
+   const StartValue : WideString;            //
+   const EndValue : WideString;              //
+   var ErrorCode : WideString;               //
+   var Value_Start : WideString;             //
+   var Value_End : WideString;               //
+   var Value_Current : WideString            //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange', 'Value_Start',Value_Start);
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange', 'Value_End',Value_End);
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange', 'Value_Current',Value_Current);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('066_config_Set_InvoiceRange', 'StartValue', StartValue ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('066_config_Set_InvoiceRange', 'EndValue', EndValue ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('066_config_Set_InvoiceRange') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_066_config_Set_InvoiceRange_01 //
+ ( myFP: TCFD_BGR;                              //
+   const EndValue : WideString;                 //
+   var ErrorCode : WideString;                  //
+   var Value_Start : WideString;                //
+   var Value_End : WideString;                  //
+   var Value_Current : WideString               //
+ ) : Integer;                                   //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange_01', 'Value_Start',Value_Start);
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange_01', 'Value_End',Value_End);
+   myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange_01', 'Value_Current',Value_Current);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('066_config_Set_InvoiceRange_01', 'EndValue', EndValue ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('066_config_Set_InvoiceRange_01') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('066_config_Set_InvoiceRange_01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_101_config_Set_OperatorPassword //
+ ( myFP: TCFD_BGR;                               //
+   const OperatorCode : WideString;              //
+   const OldPassword : WideString;               //
+   const NewPassword : WideString;               //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('101_config_Set_OperatorPassword', 'OperatorCode', OperatorCode ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('101_config_Set_OperatorPassword', 'OldPassword', OldPassword ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('101_config_Set_OperatorPassword', 'NewPassword', NewPassword ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('101_config_Set_OperatorPassword');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('101_config_Set_OperatorPassword', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_127_config_Set_StampName //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   const StampName : WideString;          //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('127_config_Set_StampName', 'Option', Option ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('127_config_Set_StampName', 'StampName', StampName ) <> 0 then Exit;
+        myFP.execute_Command_ByName('127_config_Set_StampName');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('127_config_Set_StampName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_202_config_Start_LogoLoading //
+ ( myFP: TCFD_BGR;                            //
+   const ParamValue : WideString;             //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('202_config_Start_LogoLoading', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('202_config_Start_LogoLoading');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('202_config_Start_LogoLoading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_202_config_Logo_Loading //
+ ( myFP: TCFD_BGR;                       //
+   const DataValue : WideString;         //
+   var ErrorCode : WideString;           //
+   var CheckSum : WideString             //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('202_config_Logo_Loading', 'DataValue', DataValue ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('202_config_Logo_Loading') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('202_config_Logo_Loading', 'CheckSum',CheckSum);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('202_config_Logo_Loading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_202_config_Stop_LogoLoading //
+ ( myFP: TCFD_BGR;                           //
+   const ParamValue : WideString;            //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('202_config_Stop_LogoLoading', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('202_config_Stop_LogoLoading');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('202_config_Stop_LogoLoading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_203_config_Start_StampLoading //
+ ( myFP: TCFD_BGR;                             //
+   const ParamValue : WideString;              //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('203_config_Start_StampLoading', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('203_config_Start_StampLoading');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('203_config_Start_StampLoading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_203_config_Stamp_Loading //
+ ( myFP: TCFD_BGR;                        //
+   const DataValue : WideString;          //
+   var ErrorCode : WideString;            //
+   var CheckSum : WideString              //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('203_config_Stamp_Loading', 'DataValue', DataValue ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('203_config_Stamp_Loading') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('203_config_Stamp_Loading', 'CheckSum',CheckSum);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('203_config_Stamp_Loading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_203_config_Stop_StampLoading //
+ ( myFP: TCFD_BGR;                            //
+   const ParamValue : WideString;             //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('203_config_Stop_StampLoading', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('203_config_Stop_StampLoading');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('203_config_Stop_StampLoading', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_FpComBaudRate //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_FpComBaudRate', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FpComBaudRate', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FpComBaudRate', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_FpComBaudRate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_FpComBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_AutoPaperCutting //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPaperCutting', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPaperCutting', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPaperCutting', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_AutoPaperCutting');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_AutoPaperCutting', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PaperCuttingType //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PaperCuttingType', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PaperCuttingType', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PaperCuttingType', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PaperCuttingType');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PaperCuttingType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BarCodeHeight //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BarCodeHeight', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarCodeHeight', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarCodeHeight', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BarCodeHeight');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BarCodeHeight', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BarcodeName //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodeName', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodeName', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodeName', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BarcodeName');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BarcodeName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ComPortBaudRate //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortBaudRate', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortBaudRate', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortBaudRate', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ComPortBaudRate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ComPortBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ComPortProtocol //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortProtocol', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortProtocol', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ComPortProtocol', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ComPortProtocol');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ComPortProtocol', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_MainInterfaceType //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_MainInterfaceType', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_MainInterfaceType', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_MainInterfaceType', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_MainInterfaceType');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_MainInterfaceType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_TimeOutBeforePrintFlush //
+ ( myFP: TCFD_BGR;                                      //
+   const VariableName : WideString;                     //
+   const Index : WideString;                            //
+   const Value : WideString;                            //
+   var ErrorCode : WideString                           //
+ ) : Integer;                                           //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_TimeOutBeforePrintFlush', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TimeOutBeforePrintFlush', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TimeOutBeforePrintFlush', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_TimeOutBeforePrintFlush');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_TimeOutBeforePrintFlush', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_WorkBatteryIncluded //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_WorkBatteryIncluded', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_WorkBatteryIncluded', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_WorkBatteryIncluded', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_WorkBatteryIncluded');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_WorkBatteryIncluded', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Dec2xLineSpacing //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Dec2xLineSpacing', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dec2xLineSpacing', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dec2xLineSpacing', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Dec2xLineSpacing');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Dec2xLineSpacing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PrintFontType //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintFontType', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintFontType', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintFontType', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PrintFontType');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PrintFontType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_FooterEmptyLines //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_FooterEmptyLines', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FooterEmptyLines', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FooterEmptyLines', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_FooterEmptyLines');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_FooterEmptyLines', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_HeaderMinLines //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_HeaderMinLines', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_HeaderMinLines', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_HeaderMinLines', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_HeaderMinLines');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_HeaderMinLines', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LogoPrintAfterFooter //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrintAfterFooter', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrintAfterFooter', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrintAfterFooter', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LogoPrintAfterFooter');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LogoPrintAfterFooter', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EnableNearPaperEnd //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EnableNearPaperEnd', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EnableNearPaperEnd', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EnableNearPaperEnd', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EnableNearPaperEnd');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EnableNearPaperEnd', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DateFromNAPServDisable //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DateFromNAPServDisable', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DateFromNAPServDisable', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DateFromNAPServDisable', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DateFromNAPServDisable');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DateFromNAPServDisable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_AutoPowerOff //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPowerOff', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPowerOff', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoPowerOff', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_AutoPowerOff');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_AutoPowerOff', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BkLight_AutoOff //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BkLight_AutoOff', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BkLight_AutoOff', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BkLight_AutoOff', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BkLight_AutoOff');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BkLight_AutoOff', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadComPort //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComPort', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComPort', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComPort', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadComPort');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadComPort', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadComBaudRate //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComBaudRate', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComBaudRate', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadComBaudRate', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadComBaudRate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadComBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadType //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadType', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadType', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadType', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadType');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadConnectionType //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadConnectionType', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadConnectionType', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadConnectionType', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadConnectionType');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadConnectionType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadReceiptCopies //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptCopies', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptCopies', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptCopies', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadReceiptCopies');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadReceiptCopies', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadReceiptInfo //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptInfo', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptInfo', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadReceiptInfo', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadReceiptInfo');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadReceiptInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadPaymentMenu //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadPaymentMenu', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadPaymentMenu', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadPaymentMenu', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadPaymentMenu');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadPaymentMenu', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PinpadLoyaltyPayment //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadLoyaltyPayment', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadLoyaltyPayment', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PinpadLoyaltyPayment', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PinpadLoyaltyPayment');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PinpadLoyaltyPayment', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthEnable //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthEnable', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthEnable', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthEnable', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthEnable');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthEnable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthDiscoverability //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthDiscoverability', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthDiscoverability', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthDiscoverability', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthDiscoverability');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthDiscoverability', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthPairing //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPairing', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPairing', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPairing', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthPairing');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthPairing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthPinCode //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPinCode', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPinCode', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthPinCode', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthPinCode');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthPinCode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthVersion //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthVersion', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthVersion', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthVersion', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthVersion');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthVersion', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BthAddress //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BthAddress', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthAddress', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BthAddress', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BthAddress');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BthAddress', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrLogNumber //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrLogNumber', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrLogNumber', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrLogNumber', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrLogNumber');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrLogNumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrExtendedReceipt //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrExtendedReceipt', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrExtendedReceipt', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrExtendedReceipt', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrExtendedReceipt');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrExtendedReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrDoveriteli //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrDoveriteli', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrDoveriteli', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrDoveriteli', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrDoveriteli');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrDoveriteli', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrWithoutPasswords //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrWithoutPasswords', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrWithoutPasswords', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrWithoutPasswords', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrWithoutPasswords');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrWithoutPasswords', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrAskForPassword //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForPassword', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForPassword', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForPassword', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrAskForPassword');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrAskForPassword', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrAskForVoidPassword //
+ ( myFP: TCFD_BGR;                                    //
+   const VariableName : WideString;                   //
+   const Index : WideString;                          //
+   const Value : WideString;                          //
+   var ErrorCode : WideString                         //
+ ) : Integer;                                         //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForVoidPassword', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForVoidPassword', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrAskForVoidPassword', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrAskForVoidPassword');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrAskForVoidPassword', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrConnectedOperReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedOperReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedOperReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedOperReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrConnectedOperReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrConnectedOperReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrConnectedDeptReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedDeptReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedDeptReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedDeptReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrConnectedDeptReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrConnectedDeptReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrConnectedPluSalesReport //
+ ( myFP: TCFD_BGR;                                         //
+   const VariableName : WideString;                        //
+   const Index : WideString;                               //
+   const Value : WideString;                               //
+   var ErrorCode : WideString                              //
+ ) : Integer;                                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedPluSalesReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedPluSalesReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedPluSalesReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrConnectedPluSalesReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrConnectedPluSalesReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrConnectedGroupsReport //
+ ( myFP: TCFD_BGR;                                       //
+   const VariableName : WideString;                      //
+   const Index : WideString;                             //
+   const Value : WideString;                             //
+   var ErrorCode : WideString                            //
+ ) : Integer;                                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedGroupsReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedGroupsReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedGroupsReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrConnectedGroupsReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrConnectedGroupsReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrConnectedCashReport //
+ ( myFP: TCFD_BGR;                                     //
+   const VariableName : WideString;                    //
+   const Index : WideString;                           //
+   const Value : WideString;                           //
+   var ErrorCode : WideString                          //
+ ) : Integer;                                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedCashReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedCashReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrConnectedCashReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrConnectedCashReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrConnectedCashReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrUserPeriodReports //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUserPeriodReports', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUserPeriodReports', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUserPeriodReports', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrUserPeriodReports');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrUserPeriodReports', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrPluDailyClearing //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrPluDailyClearing', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrPluDailyClearing', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrPluDailyClearing', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrPluDailyClearing');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrPluDailyClearing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrSafeOpening //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrSafeOpening', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrSafeOpening', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrSafeOpening', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrSafeOpening');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrSafeOpening', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrScaleBarMask //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrScaleBarMask', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrScaleBarMask', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrScaleBarMask', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrScaleBarMask');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrScaleBarMask', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrNumberBarcode //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrNumberBarcode', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrNumberBarcode', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrNumberBarcode', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrNumberBarcode');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrNumberBarcode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_RegModeOnIdle //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_RegModeOnIdle', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_RegModeOnIdle', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_RegModeOnIdle', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_RegModeOnIdle');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_RegModeOnIdle', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_FlushAtEndOnly //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_FlushAtEndOnly', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FlushAtEndOnly', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_FlushAtEndOnly', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_FlushAtEndOnly');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_FlushAtEndOnly', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrMidnightWarning //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMidnightWarning', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMidnightWarning', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMidnightWarning', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrMidnightWarning');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrMidnightWarning', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrMandatorySubtotal //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMandatorySubtotal', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMandatorySubtotal', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrMandatorySubtotal', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrMandatorySubtotal');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrMandatorySubtotal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Seller //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Seller', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Seller', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Seller', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Seller');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Seller', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_AutoMonthReport //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoMonthReport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoMonthReport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_AutoMonthReport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_AutoMonthReport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_AutoMonthReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EcrUnsentWarning //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUnsentWarning', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUnsentWarning', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EcrUnsentWarning', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EcrUnsentWarning');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EcrUnsentWarning', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_CurrNameLocal //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameLocal', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameLocal', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameLocal', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_CurrNameLocal');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_CurrNameLocal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_CurrNameForeign //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameForeign', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameForeign', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CurrNameForeign', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_CurrNameForeign');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_CurrNameForeign', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ExchangeRate //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ExchangeRate', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ExchangeRate', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ExchangeRate', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ExchangeRate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ExchangeRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Unit_name //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Unit_name', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Unit_name', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Unit_name', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Unit_name');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Unit_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Header //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Header', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Header', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Header', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Header');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Header', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Footer //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Footer', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Footer', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Footer', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Footer');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Footer', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_OperName //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_OperName', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_OperName', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_OperName', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_OperName');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_OperName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_OperPasw //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_OperPasw', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_OperPasw', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_OperPasw', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_OperPasw');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_OperPasw', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PayName //
+ ( myFP: TCFD_BGR;                      //
+   const VariableName : WideString;     //
+   const Index : WideString;            //
+   const Value : WideString;            //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PayName', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PayName', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PayName', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PayName');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PayName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Payment_forbidden //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Payment_forbidden', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Payment_forbidden', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Payment_forbidden', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Payment_forbidden');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Payment_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DPxx_PluCode //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DPxx_PluCode', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DPxx_PluCode', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DPxx_PluCode', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DPxx_PluCode');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DPxx_PluCode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyNDB_value //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_value', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_value', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_value', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyNDB_value');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyNDB_value', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyNDB_percentage //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_percentage', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_percentage', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_percentage', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyNDB_percentage');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyNDB_percentage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyOTS_value //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_value', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_value', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_value', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyOTS_value');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyOTS_value', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyOTS_percentage //
+ ( myFP: TCFD_BGR;                                //
+   const VariableName : WideString;               //
+   const Index : WideString;                      //
+   const Value : WideString;                      //
+   var ErrorCode : WideString                     //
+ ) : Integer;                                     //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_percentage', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_percentage', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_percentage', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyOTS_percentage');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyOTS_percentage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyNDB_forbidden //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_forbidden', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_forbidden', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyNDB_forbidden', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyNDB_forbidden');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyNDB_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_KeyOTS_forbidden //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_forbidden', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_forbidden', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_KeyOTS_forbidden', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_KeyOTS_forbidden');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_KeyOTS_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ServPasw //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ServPasw', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServPasw', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServPasw', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ServPasw');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ServPasw', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ServMessage //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ServMessage', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServMessage', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServMessage', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ServMessage');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ServMessage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ServiceDate //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ServiceDate', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServiceDate', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ServiceDate', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ServiceDate');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ServiceDate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PrnQuality //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PrnQuality', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrnQuality', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrnQuality', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PrnQuality');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PrnQuality', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_PrintColumns //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintColumns', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintColumns', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_PrintColumns', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_PrintColumns');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_PrintColumns', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EmptyLineAfterTotal //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EmptyLineAfterTotal', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EmptyLineAfterTotal', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EmptyLineAfterTotal', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EmptyLineAfterTotal');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EmptyLineAfterTotal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DblHeigh_totalinreg //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DblHeigh_totalinreg', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DblHeigh_totalinreg', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DblHeigh_totalinreg', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DblHeigh_totalinreg');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DblHeigh_totalinreg', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Bold_payments //
+ ( myFP: TCFD_BGR;                            //
+   const VariableName : WideString;           //
+   const Index : WideString;                  //
+   const Value : WideString;                  //
+   var ErrorCode : WideString                 //
+ ) : Integer;                                 //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Bold_payments', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Bold_payments', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Bold_payments', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Bold_payments');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Bold_payments', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DublReceipts //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DublReceipts', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DublReceipts', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DublReceipts', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DublReceipts');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DublReceipts', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_IntUseReceipts //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_IntUseReceipts', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_IntUseReceipts', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_IntUseReceipts', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_IntUseReceipts');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_IntUseReceipts', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_BarcodePrint //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodePrint', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodePrint', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_BarcodePrint', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_BarcodePrint');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_BarcodePrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LogoPrint //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrint', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrint', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LogoPrint', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LogoPrint');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LogoPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DoveriteliPrint //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DoveriteliPrint', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DoveriteliPrint', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DoveriteliPrint', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DoveriteliPrint');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DoveriteliPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ForeignPrint //
+ ( myFP: TCFD_BGR;                           //
+   const VariableName : WideString;          //
+   const Index : WideString;                 //
+   const Value : WideString;                 //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ForeignPrint', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ForeignPrint', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ForeignPrint', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ForeignPrint');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ForeignPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_VatPrintEnable //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_VatPrintEnable', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_VatPrintEnable', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_VatPrintEnable', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_VatPrintEnable');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_VatPrintEnable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_CondensedPrint //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_CondensedPrint', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CondensedPrint', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_CondensedPrint', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_CondensedPrint');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_CondensedPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyZreport //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyZreport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyZreport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyZreport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyZreport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyZreport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyXreport //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyXreport', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyXreport', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyXreport', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyXreport');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyXreport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyDiagnostics //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDiagnostics', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDiagnostics', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDiagnostics', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyDiagnostics');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyDiagnostics', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyFmReports //
+ ( myFP: TCFD_BGR;                               //
+   const VariableName : WideString;              //
+   const Index : WideString;                     //
+   const Value : WideString;                     //
+   var ErrorCode : WideString                    //
+ ) : Integer;                                    //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyFmReports', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyFmReports', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyFmReports', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyFmReports');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyFmReports', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyJournal //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyJournal', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyJournal', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyJournal', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyJournal');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyJournal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyDateTime //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDateTime', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDateTime', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyDateTime', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyDateTime');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyDateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyCloseReceipt //
+ ( myFP: TCFD_BGR;                                  //
+   const VariableName : WideString;                 //
+   const Index : WideString;                        //
+   const Value : WideString;                        //
+   var ErrorCode : WideString                       //
+ ) : Integer;                                       //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCloseReceipt', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCloseReceipt', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCloseReceipt', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyCloseReceipt');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyCloseReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DsblKeyCancelReceipt //
+ ( myFP: TCFD_BGR;                                   //
+   const VariableName : WideString;                  //
+   const Index : WideString;                         //
+   const Value : WideString;                         //
+   var ErrorCode : WideString                        //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCancelReceipt', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCancelReceipt', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DsblKeyCancelReceipt', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DsblKeyCancelReceipt');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DsblKeyCancelReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ModemModel //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ModemModel', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ModemModel', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ModemModel', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ModemModel');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ModemModel', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_SimPin //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_SimPin', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_SimPin', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_SimPin', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_SimPin');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_SimPin', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LanMAC //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LanMAC', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LanMAC', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LanMAC', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LanMAC');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LanMAC', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DHCPenable //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DHCPenable', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DHCPenable', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DHCPenable', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DHCPenable');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DHCPenable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LAN_IP //
+ ( myFP: TCFD_BGR;                     //
+   const VariableName : WideString;    //
+   const Index : WideString;           //
+   const Value : WideString;           //
+   var ErrorCode : WideString          //
+ ) : Integer;                          //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_IP', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_IP', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_IP', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LAN_IP');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LAN_IP', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LAN_NetMask //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_NetMask', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_NetMask', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_NetMask', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LAN_NetMask');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LAN_NetMask', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LAN_Gateway //
+ ( myFP: TCFD_BGR;                          //
+   const VariableName : WideString;         //
+   const Index : WideString;                //
+   const Value : WideString;                //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_Gateway', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_Gateway', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_Gateway', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LAN_Gateway');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LAN_Gateway', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LAN_PriDNS //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_PriDNS', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_PriDNS', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_PriDNS', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LAN_PriDNS');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LAN_PriDNS', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LAN_SecDNS //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_SecDNS', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_SecDNS', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LAN_SecDNS', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LAN_SecDNS');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LAN_SecDNS', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_LANport_fpCommands //
+ ( myFP: TCFD_BGR;                                 //
+   const VariableName : WideString;                //
+   const Index : WideString;                       //
+   const Value : WideString;                       //
+   var ErrorCode : WideString                      //
+ ) : Integer;                                      //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_LANport_fpCommands', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LANport_fpCommands', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_LANport_fpCommands', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_LANport_fpCommands');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_LANport_fpCommands', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_ItemGroups_name //
+ ( myFP: TCFD_BGR;                              //
+   const VariableName : WideString;             //
+   const Index : WideString;                    //
+   const Value : WideString;                    //
+   var ErrorCode : WideString                   //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_ItemGroups_name', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ItemGroups_name', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_ItemGroups_name', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_ItemGroups_name');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_ItemGroups_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Dept_price //
+ ( myFP: TCFD_BGR;                         //
+   const VariableName : WideString;        //
+   const Index : WideString;               //
+   const Value : WideString;               //
+   var ErrorCode : WideString              //
+ ) : Integer;                              //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_price', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_price', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_price', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Dept_price');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Dept_price', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Dept_name //
+ ( myFP: TCFD_BGR;                        //
+   const VariableName : WideString;       //
+   const Index : WideString;              //
+   const Value : WideString;              //
+   var ErrorCode : WideString             //
+ ) : Integer;                             //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_name', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_name', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Dept_name', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Dept_name');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Dept_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_DHL_Algo //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_DHL_Algo', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DHL_Algo', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_DHL_Algo', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_DHL_Algo');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_DHL_Algo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EIK_validation //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EIK_validation', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EIK_validation', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EIK_validation', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EIK_validation');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EIK_validation', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_EGN_validation //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_EGN_validation', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EGN_validation', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_EGN_validation', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_EGN_validation');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_EGN_validation', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_Bonuses //
+ ( myFP: TCFD_BGR;                      //
+   const VariableName : WideString;     //
+   const Index : WideString;            //
+   const Value : WideString;            //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_Bonuses', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Bonuses', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_Bonuses', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_Bonuses');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_Bonuses', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_TextReducedVAT //
+ ( myFP: TCFD_BGR;                             //
+   const VariableName : WideString;            //
+   const Index : WideString;                   //
+   const Value : WideString;                   //
+   var ErrorCode : WideString                  //
+ ) : Integer;                                  //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_TextReducedVAT', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TextReducedVAT', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TextReducedVAT', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_TextReducedVAT');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_TextReducedVAT', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_config_Set_TAXlabel //
+ ( myFP: TCFD_BGR;                       //
+   const VariableName : WideString;      //
+   const Index : WideString;             //
+   const Value : WideString;             //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('255_config_Set_TAXlabel', 'VariableName', VariableName ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TAXlabel', 'Index', Index ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('255_config_Set_TAXlabel', 'Value', Value ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('255_config_Set_TAXlabel');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_config_Set_TAXlabel', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_050_info_Get_TaxRatesByPeriod //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var nZreport : WideString;                  //
+   var TaxA : WideString;                      //
+   var TaxB : WideString;                      //
+   var TaxC : WideString;                      //
+   var TaxD : WideString;                      //
+   var TaxE : WideString;                      //
+   var TaxF : WideString;                      //
+   var TaxG : WideString;                      //
+   var TaxH : WideString;                      //
+   var EntDate : WideString                    //
+ ) : Integer;                                  //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'nZreport',nZreport);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxA',TaxA);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxB',TaxB);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxC',TaxC);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxD',TaxD);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxE',TaxE);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxF',TaxF);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxG',TaxG);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'TaxH',TaxH);
+   myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'EntDate',EntDate);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('050_info_Get_TaxRatesByPeriod') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('050_info_Get_TaxRatesByPeriod', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_062_info_Get_DateTime //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var DateTime : WideString           //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('062_info_Get_DateTime') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('062_info_Get_DateTime', 'DateTime',DateTime);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('062_info_Get_DateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_066_info_Get_InvoiceRange //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Value_Start : WideString;           //
+   var Value_End : WideString;             //
+   var Value_Current : WideString          //
+ ) : Integer;                              //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('066_info_Get_InvoiceRange', 'Value_Start',Value_Start);
+   myFP.get_OutputParam_ByName('066_info_Get_InvoiceRange', 'Value_End',Value_End);
+   myFP.get_OutputParam_ByName('066_info_Get_InvoiceRange', 'Value_Current',Value_Current);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('066_info_Get_InvoiceRange') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('066_info_Get_InvoiceRange', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_062_info_Get_DateTime_01 //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Day : WideString;                  //
+   var Month : WideString;                //
+   var Year : WideString;                 //
+   var Hour : WideString;                 //
+   var Minute : WideString;               //
+   var Second : WideString;               //
+   var DST : WideString                   //
+ ) : Integer;                             //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Day',Day);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Month',Month);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Year',Year);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Hour',Hour);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Minute',Minute);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'Second',Second);
+   myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'DST',DST);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('062_info_Get_DateTime_01') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('062_info_Get_DateTime_01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_064_info_Get_LastFiscRecord //
+ ( myFP: TCFD_BGR;                           //
+   const DataType : WideString;              //
+   var ErrorCode : WideString;               //
+   var LastFRecordNumber : WideString;       //
+   var TaxA : WideString;                    //
+   var TaxB : WideString;                    //
+   var TaxC : WideString;                    //
+   var TaxD : WideString;                    //
+   var TaxE : WideString;                    //
+   var TaxF : WideString;                    //
+   var TaxG : WideString;                    //
+   var TaxH : WideString;                    //
+   var Date : WideString                     //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'LastFRecordNumber',LastFRecordNumber);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxA',TaxA);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxB',TaxB);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxC',TaxC);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxD',TaxD);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxE',TaxE);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxF',TaxF);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxG',TaxG);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'TaxH',TaxH);
+   myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'Date',Date);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('064_info_Get_LastFiscRecord', 'DataType', DataType ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('064_info_Get_LastFiscRecord') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('064_info_Get_LastFiscRecord', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_065_info_Get_AdditionalDailyInfo //
+ ( myFP: TCFD_BGR;                                //
+   const DataType : WideString;                   //
+   var ErrorCode : WideString;                    //
+   var nRep : WideString;                         //
+   var SumA : WideString;                         //
+   var SumB : WideString;                         //
+   var SumC : WideString;                         //
+   var SumD : WideString;                         //
+   var SumE : WideString;                         //
+   var SumF : WideString;                         //
+   var SumG : WideString;                         //
+   var SumH : WideString                          //
+ ) : Integer;                                     //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'nRep',nRep);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumA',SumA);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumB',SumB);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumC',SumC);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumD',SumD);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumE',SumE);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumF',SumF);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumG',SumG);
+   myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'SumH',SumH);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('065_info_Get_AdditionalDailyInfo', 'DataType', DataType ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('065_info_Get_AdditionalDailyInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('065_info_Get_AdditionalDailyInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_068_info_Get_FreeFMRecords //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var ReportsLeft : WideString             //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('068_info_Get_FreeFMRecords') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('068_info_Get_FreeFMRecords', 'ReportsLeft',ReportsLeft);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('068_info_Get_FreeFMRecords', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_070_info_Get_CashIn_CashOut //
+ ( myFP: TCFD_BGR;                           //
+   const AmountType : WideString;            //
+   const Amount : WideString;                //
+   var ErrorCode : WideString;               //
+   var CashSum : WideString;                 //
+   var ServIn : WideString;                  //
+   var ServOut : WideString                  //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('070_info_Get_CashIn_CashOut', 'CashSum',CashSum);
+   myFP.get_OutputParam_ByName('070_info_Get_CashIn_CashOut', 'ServIn',ServIn);
+   myFP.get_OutputParam_ByName('070_info_Get_CashIn_CashOut', 'ServOut',ServOut);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('070_info_Get_CashIn_CashOut', 'AmountType', AmountType ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('070_info_Get_CashIn_CashOut', 'Amount', Amount ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('070_info_Get_CashIn_CashOut') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('070_info_Get_CashIn_CashOut', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_071_info_Print_Diagnostic_0 //
+ ( myFP: TCFD_BGR;                           //
+   const InfoType : WideString;              //
+   var ErrorCode : WideString                //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('071_info_Print_Diagnostic_0', 'InfoType', InfoType ) <> 0 then Exit;
+        myFP.execute_Command_ByName('071_info_Print_Diagnostic_0');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('071_info_Print_Diagnostic_0', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+
+function execute_071_info_Get_TaxTerminalInfo //
+ ( myFP: TCFD_BGR;                            //
+   const InfoType : WideString;               //
+   var ErrorCode : WideString;                //
+   var LastDate : WideString;                 //
+   var NextDate : WideString;                 //
+   var Zrep : WideString;                     //
+   var ZErrZnum : WideString;                 //
+   var ZErrCnt : WideString;                  //
+   var ZErrNum : WideString;                  //
+   var SellErrnDoc : WideString;              //
+   var SellErrCnt : WideString;               //
+   var SellErrStatus : WideString;            //
+   var SellNumber : WideString;               //
+   var SellDate : WideString;                 //
+   var LastErr : WideString;                  //
+   var RemMinutes : WideString                //
+ ) : Integer;                                 //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'LastDate',LastDate);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'NextDate',NextDate);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'Zrep',Zrep);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'ZErrZnum',ZErrZnum);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'ZErrCnt',ZErrCnt);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'ZErrNum',ZErrNum);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'SellErrnDoc',SellErrnDoc);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'SellErrCnt',SellErrCnt);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'SellErrStatus',SellErrStatus);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'SellNumber',SellNumber);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'SellDate',SellDate);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'LastErr',LastErr);
+   myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'RemMinutes',RemMinutes);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('071_info_Get_TaxTerminalInfo', 'InfoType', InfoType ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('071_info_Get_TaxTerminalInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('071_info_Get_TaxTerminalInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_074_info_Get_StatusBytes //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var StatusBytes : WideString           //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('074_info_Get_StatusBytes') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('074_info_Get_StatusBytes', 'StatusBytes',StatusBytes);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('074_info_Get_StatusBytes', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_076_info_Get_FTransactionStatus //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var IsOpen : WideString;                      //
+   var Number : WideString;                      //
+   var Items : WideString;                       //
+   var Amount : WideString;                      //
+   var Payed : WideString                        //
+ ) : Integer;                                    //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'IsOpen',IsOpen);
+   myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'Number',Number);
+   myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'Items',Items);
+   myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'Amount',Amount);
+   myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'Payed',Payed);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('076_info_Get_FTransactionStatus') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('076_info_Get_FTransactionStatus', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_086_info_Get_FMRecord_LastDateTime //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var DateTime : WideString                        //
+ ) : Integer;                                       //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('086_info_Get_FMRecord_LastDateTime') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('086_info_Get_FMRecord_LastDateTime', 'DateTime',DateTime);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('086_info_Get_FMRecord_LastDateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_087_info_Get_ItemGroup //
+ ( myFP: TCFD_BGR;                      //
+   const ItemGroup : WideString;        //
+   var ErrorCode : WideString;          //
+   var TotSales : WideString;           //
+   var TotSum : WideString;             //
+   var GroupName : WideString           //
+ ) : Integer;                           //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('087_info_Get_ItemGroup', 'TotSales',TotSales);
+   myFP.get_OutputParam_ByName('087_info_Get_ItemGroup', 'TotSum',TotSum);
+   myFP.get_OutputParam_ByName('087_info_Get_ItemGroup', 'GroupName',GroupName);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('087_info_Get_ItemGroup', 'ItemGroup', ItemGroup ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('087_info_Get_ItemGroup') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('087_info_Get_ItemGroup', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_088_info_Get_DepartmentInfo //
+ ( myFP: TCFD_BGR;                           //
+   const DepartmentNumber : WideString;      //
+   var ErrorCode : WideString;               //
+   var TaxGr : WideString;                   //
+   var Price : WideString;                   //
+   var TotSales : WideString;                //
+   var TotSum : WideString;                  //
+   var StTotSales : WideString;              //
+   var StTotSum : WideString;                //
+   var DepartmentName : WideString           //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'TaxGr',TaxGr);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'Price',Price);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'TotSales',TotSales);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'TotSum',TotSum);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'StTotSales',StTotSales);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'StTotSum',StTotSum);
+   myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'DepartmentName',DepartmentName);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('088_info_Get_DepartmentInfo', 'DepartmentNumber', DepartmentNumber ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('088_info_Get_DepartmentInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('088_info_Get_DepartmentInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_090_info_Get_DiagnosticInfo //
+ ( myFP: TCFD_BGR;                           //
+   const CalcCRC : WideString;               //
+   var ErrorCode : WideString;               //
+   var DeviceName : WideString;              //
+   var FirmwareRevision : WideString;        //
+   var FirmwareDate : WideString;            //
+   var FirmwareTime : WideString;            //
+   var CheckSum : WideString;                //
+   var Switches : WideString;                //
+   var SerialNumber : WideString;            //
+   var FiscalMemoryNumber : WideString       //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'DeviceName',DeviceName);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'FirmwareRevision',FirmwareRevision);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'FirmwareDate',FirmwareDate);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'FirmwareTime',FirmwareTime);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'CheckSum',CheckSum);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'Switches',Switches);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'SerialNumber',SerialNumber);
+   myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'FiscalMemoryNumber',FiscalMemoryNumber);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('090_info_Get_DiagnosticInfo', 'CalcCRC', CalcCRC ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('090_info_Get_DiagnosticInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('090_info_Get_DiagnosticInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_099_info_Get_EIKValue //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var EIK_Value : WideString          //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('099_info_Get_EIKValue') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('099_info_Get_EIKValue', 'EIK_Value',EIK_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('099_info_Get_EIKValue', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_100_info_Get_ErrorDescription //
+ ( myFP: TCFD_BGR;                             //
+   const TargetCode : WideString;              //
+   var ErrorCode : WideString;                 //
+   var CodeValue : WideString;                 //
+   var CodeDescription : WideString            //
+ ) : Integer;                                  //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('100_info_Get_ErrorDescription', 'CodeValue',CodeValue);
+   myFP.get_OutputParam_ByName('100_info_Get_ErrorDescription', 'CodeDescription',CodeDescription);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('100_info_Get_ErrorDescription', 'TargetCode', TargetCode ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('100_info_Get_ErrorDescription') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('100_info_Get_ErrorDescription', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_103_info_Get_CurrentRecieptInfo //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var CanVd : WideString;                       //
+   var TaxA : WideString;                        //
+   var TaxB : WideString;                        //
+   var TaxC : WideString;                        //
+   var TaxD : WideString;                        //
+   var TaxE : WideString;                        //
+   var TaxF : WideString;                        //
+   var TaxG : WideString;                        //
+   var TaxH : WideString;                        //
+   var Inv : WideString;                         //
+   var InvNum : WideString;                      //
+   var RecieptType : WideString                  //
+ ) : Integer;                                    //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'CanVd',CanVd);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxA',TaxA);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxB',TaxB);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxC',TaxC);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxD',TaxD);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxE',TaxE);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxF',TaxF);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxG',TaxG);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'TaxH',TaxH);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'Inv',Inv);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'InvNum',InvNum);
+   myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'RecieptType',RecieptType);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('103_info_Get_CurrentRecieptInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('103_info_Get_CurrentRecieptInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C00 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Pay1 : WideString;                             //
+   var Pay2 : WideString;                             //
+   var Pay3 : WideString;                             //
+   var Pay4 : WideString;                             //
+   var Pay5 : WideString;                             //
+   var Pay6 : WideString;                             //
+   var ForeignPay : WideString                        //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay1',Pay1);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay2',Pay2);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay3',Pay3);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay4',Pay4);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay5',Pay5);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Pay6',Pay6);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'ForeignPay',ForeignPay);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C00') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C00', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C01 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Pay1 : WideString;                             //
+   var Pay2 : WideString;                             //
+   var Pay3 : WideString;                             //
+   var Pay4 : WideString;                             //
+   var Pay5 : WideString;                             //
+   var Pay6 : WideString;                             //
+   var ForeignPay : WideString                        //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay1',Pay1);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay2',Pay2);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay3',Pay3);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay4',Pay4);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay5',Pay5);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Pay6',Pay6);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'ForeignPay',ForeignPay);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C01') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C02 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Clients : WideString;                          //
+   var Sums : WideString                              //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C02', 'Clients',Clients);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C02', 'Sums',Sums);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C02', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C02') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C02', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C03 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Surcharges : WideString;                       //
+   var Surcharges_Sum : WideString;                   //
+   var Discounts : WideString;                        //
+   var Discounts_Sum : WideString                     //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'Surcharges',Surcharges);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'Surcharges_Sum',Surcharges_Sum);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'Discounts',Discounts);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'Discounts_Sum',Discounts_Sum);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C03') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C03', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C04 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var Corrections : WideString;                      //
+   var Corrections_Sum : WideString;                  //
+   var AnnulledReceipts : WideString;                 //
+   var AnnulledReceipts_Sum : WideString              //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'Corrections',Corrections);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'Corrections_Sum',Corrections_Sum);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'AnnulledReceipts',AnnulledReceipts);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'AnnulledReceipts_Sum',AnnulledReceipts_Sum);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C04') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C04', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_110_info_Get_AdditionalDailyInfo_C05 //
+ ( myFP: TCFD_BGR;                                    //
+   const Option : WideString;                         //
+   var ErrorCode : WideString;                        //
+   var CashIn : WideString;                           //
+   var CashIn_Sum : WideString;                       //
+   var CashOut : WideString;                          //
+   var CashOut_Sum : WideString;                      //
+   var CurrencyCashIn : WideString;                   //
+   var CurrencyCashIn_Sum : WideString;               //
+   var CurrencyCashOut : WideString;                  //
+   var CurrencyCashOut_Sum : WideString               //
+ ) : Integer;                                         //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CashIn',CashIn);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CashIn_Sum',CashIn_Sum);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CashOut',CashOut);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CashOut_Sum',CashOut_Sum);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CurrencyCashIn',CurrencyCashIn);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CurrencyCashIn_Sum',CurrencyCashIn_Sum);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CurrencyCashOut',CurrencyCashOut);
+   myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'CurrencyCashOut_Sum',CurrencyCashOut_Sum);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('110_info_Get_AdditionalDailyInfo_C05') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('110_info_Get_AdditionalDailyInfo_C05', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_112_info_Get_OperatorsData //
+ ( myFP: TCFD_BGR;                          //
+   const Operator : WideString;             //
+   var ErrorCode : WideString;              //
+   var FReceipts_Count : WideString;        //
+   var Sales_Sum : WideString;              //
+   var Discounts_Count : WideString;        //
+   var Discounts_Sum : WideString;          //
+   var Surcharges_Count : WideString;       //
+   var Surcharges_Sum : WideString;         //
+   var Voids_Count : WideString;            //
+   var Voids_Sum : WideString               //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'FReceipts_Count',FReceipts_Count);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Sales_Sum',Sales_Sum);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Discounts_Count',Discounts_Count);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Discounts_Sum',Discounts_Sum);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Surcharges_Count',Surcharges_Count);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Surcharges_Sum',Surcharges_Sum);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Voids_Count',Voids_Count);
+   myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'Voids_Sum',Voids_Sum);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('112_info_Get_OperatorsData', 'Operator', Operator ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('112_info_Get_OperatorsData') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('112_info_Get_OperatorsData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_123_info_Get_DeviceInfo_01 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var SerialNumber : WideString;           //
+   var FiscalMemoryNumber : WideString;     //
+   var Headerline1 : WideString;            //
+   var Headerline2 : WideString;            //
+   var TAXnumber : WideString;              //
+   var Headerline3 : WideString;            //
+   var Headerline4 : WideString             //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'SerialNumber',SerialNumber);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'FiscalMemoryNumber',FiscalMemoryNumber);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'Headerline1',Headerline1);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'Headerline2',Headerline2);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'TAXnumber',TAXnumber);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'Headerline3',Headerline3);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'Headerline4',Headerline4);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('123_info_Get_DeviceInfo_01', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('123_info_Get_DeviceInfo_01') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_01', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_123_info_Get_DeviceInfo_02 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var MainBattery : WideString;            //
+   var RamBattery : WideString;             //
+   var Signal : WideString;                 //
+   var NetworkStatus : WideString           //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_02', 'MainBattery',MainBattery);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_02', 'RamBattery',RamBattery);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_02', 'Signal',Signal);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_02', 'NetworkStatus',NetworkStatus);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('123_info_Get_DeviceInfo_02', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('123_info_Get_DeviceInfo_02') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_02', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_123_info_Get_DeviceInfo_03     //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   var ErrorCode : WideString;                  //
+   var LastFiscalReceipt_Number : WideString;   //
+   var DateTime_LastFiscalReceipt : WideString; //
+   var LastZReport_Number : WideString;         //
+   var DateTime_LastZReport : WideString        //
+ ) : Integer;                                   //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_03', 'LastFiscalReceipt_Number',LastFiscalReceipt_Number);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_03', 'DateTime_LastFiscalReceipt',DateTime_LastFiscalReceipt);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_03', 'LastZReport_Number',LastZReport_Number);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_03', 'DateTime_LastZReport',DateTime_LastZReport);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('123_info_Get_DeviceInfo_03', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('123_info_Get_DeviceInfo_03') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_03', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_123_info_Get_DeviceInfo_04 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('123_info_Get_DeviceInfo_04', 'Option', Option ) <> 0 then Exit;
+        myFP.execute_Command_ByName('123_info_Get_DeviceInfo_04');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_04', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_123_info_Get_DeviceInfo_05 //
+ ( myFP: TCFD_BGR;                          //
+   const Option : WideString;               //
+   var ErrorCode : WideString;              //
+   var MainBattery : WideString;            //
+   var ChargeLevel : WideString             //
+ ) : Integer;                               //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_05', 'MainBattery',MainBattery);
+   myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_05', 'ChargeLevel',ChargeLevel);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('123_info_Get_DeviceInfo_05', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('123_info_Get_DeviceInfo_05') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('123_info_Get_DeviceInfo_05', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_135_info_Get_Modem_IMEI //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var IMEI : WideString                 //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('135_info_Get_Modem_IMEI', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('135_info_Get_Modem_IMEI') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('135_info_Get_Modem_IMEI', 'IMEI',IMEI);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('135_info_Get_Modem_IMEI', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_135_info_Get_IMSI //
+ ( myFP: TCFD_BGR;                 //
+   const Option : WideString;      //
+   var ErrorCode : WideString;     //
+   var IMSI : WideString           //
+ ) : Integer;                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('135_info_Get_IMSI', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('135_info_Get_IMSI') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('135_info_Get_IMSI', 'IMSI',IMSI);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('135_info_Get_IMSI', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_135_info_Get_ModemStatus //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   var ErrorCode : WideString;            //
+   var SignalLevel : WideString;          //
+   var IMEI : WideString;                 //
+   var IMSI : WideString;                 //
+   var MobileOperator : WideString        //
+ ) : Integer;                             //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('135_info_Get_ModemStatus', 'SignalLevel',SignalLevel);
+   myFP.get_OutputParam_ByName('135_info_Get_ModemStatus', 'IMEI',IMEI);
+   myFP.get_OutputParam_ByName('135_info_Get_ModemStatus', 'IMSI',IMSI);
+   myFP.get_OutputParam_ByName('135_info_Get_ModemStatus', 'MobileOperator',MobileOperator);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('135_info_Get_ModemStatus', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('135_info_Get_ModemStatus') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('135_info_Get_ModemStatus', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_140_info_Get_ClientsInfo //
+ ( myFP: TCFD_BGR;                        //
+   const Option : WideString;             //
+   var ErrorCode : WideString;            //
+   var Count_Total : WideString;          //
+   var Count_Programmed : WideString;     //
+   var NameLength : WideString            //
+ ) : Integer;                             //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('140_info_Get_ClientsInfo', 'Count_Total',Count_Total);
+   myFP.get_OutputParam_ByName('140_info_Get_ClientsInfo', 'Count_Programmed',Count_Programmed);
+   myFP.get_OutputParam_ByName('140_info_Get_ClientsInfo', 'NameLength',NameLength);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('140_info_Get_ClientsInfo', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('140_info_Get_ClientsInfo') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('140_info_Get_ClientsInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FpComBaudRate //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FpComBaudRate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FpComBaudRate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FpComBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_AutoPaperCutting //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_AutoPaperCutting') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_AutoPaperCutting', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_AutoPaperCutting', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PaperCuttingType //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PaperCuttingType') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PaperCuttingType', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PaperCuttingType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BarCodeHeight //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BarCodeHeight') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BarCodeHeight', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BarCodeHeight', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BarcodeName //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BarcodeName') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BarcodeName', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BarcodeName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ComPortBaudRate //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ComPortBaudRate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ComPortBaudRate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ComPortBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ComPortProtocol //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ComPortProtocol') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ComPortProtocol', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ComPortProtocol', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_MainInterfaceType //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_MainInterfaceType') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_MainInterfaceType', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_MainInterfaceType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_TimeOutBeforePrintFlush //
+ ( myFP: TCFD_BGR;                                    //
+   var ErrorCode : WideString;                        //
+   var Variable_Value : WideString                    //
+ ) : Integer;                                         //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_TimeOutBeforePrintFlush') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_TimeOutBeforePrintFlush', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_TimeOutBeforePrintFlush', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_WorkBatteryIncluded //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_WorkBatteryIncluded') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_WorkBatteryIncluded', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_WorkBatteryIncluded', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Dec2xLineSpacing //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Dec2xLineSpacing') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Dec2xLineSpacing', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Dec2xLineSpacing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PrintFontType //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PrintFontType') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PrintFontType', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PrintFontType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FooterEmptyLines //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FooterEmptyLines') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FooterEmptyLines', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FooterEmptyLines', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_HeaderMinLines //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_HeaderMinLines') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_HeaderMinLines', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_HeaderMinLines', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LogoPrintAfterFooter //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LogoPrintAfterFooter') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LogoPrintAfterFooter', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LogoPrintAfterFooter', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EnableNearPaperEnd //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EnableNearPaperEnd') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EnableNearPaperEnd', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EnableNearPaperEnd', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DateFromNAPServDisable //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DateFromNAPServDisable') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DateFromNAPServDisable', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DateFromNAPServDisable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_AutoPowerOff //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_AutoPowerOff') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_AutoPowerOff', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_AutoPowerOff', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BkLight_AutoOff //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BkLight_AutoOff') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BkLight_AutoOff', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BkLight_AutoOff', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadComPort //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadComPort') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadComPort', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadComPort', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadComBaudRate //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadComBaudRate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadComBaudRate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadComBaudRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadType //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadType') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadType', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadConnectionType //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadConnectionType') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadConnectionType', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadConnectionType', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadReceiptCopies //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadReceiptCopies') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadReceiptCopies', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadReceiptCopies', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadReceiptInfo //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadReceiptInfo') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadReceiptInfo', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadReceiptInfo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadPaymentMenu //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadPaymentMenu') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadPaymentMenu', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadPaymentMenu', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PinpadLoyaltyPayment //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PinpadLoyaltyPayment') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PinpadLoyaltyPayment', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PinpadLoyaltyPayment', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthEnable //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthEnable') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthEnable', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthEnable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthDiscoverability //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthDiscoverability') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthDiscoverability', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthDiscoverability', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthPairing //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthPairing') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthPairing', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthPairing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthPinCode //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthPinCode') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthPinCode', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthPinCode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthVersion //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthVersion') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthVersion', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthVersion', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BthAddress //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BthAddress') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BthAddress', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BthAddress', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrLogNumber //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrLogNumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrLogNumber', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrLogNumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrExtendedReceipt //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrExtendedReceipt') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrExtendedReceipt', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrExtendedReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrDoveriteli //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrDoveriteli') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrDoveriteli', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrDoveriteli', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrWithoutPasswords //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrWithoutPasswords') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrWithoutPasswords', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrWithoutPasswords', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrAskForPassword //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrAskForPassword') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrAskForPassword', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrAskForPassword', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrAskForVoidPassword //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var Variable_Value : WideString                  //
+ ) : Integer;                                       //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrAskForVoidPassword') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrAskForVoidPassword', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrAskForVoidPassword', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrConnectedOperReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrConnectedOperReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedOperReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedOperReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrConnectedDeptReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrConnectedDeptReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedDeptReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedDeptReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrConnectedPluSalesReport //
+ ( myFP: TCFD_BGR;                                       //
+   var ErrorCode : WideString;                           //
+   var Variable_Value : WideString                       //
+ ) : Integer;                                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrConnectedPluSalesReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedPluSalesReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedPluSalesReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrConnectedGroupsReport //
+ ( myFP: TCFD_BGR;                                     //
+   var ErrorCode : WideString;                         //
+   var Variable_Value : WideString                     //
+ ) : Integer;                                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrConnectedGroupsReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedGroupsReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedGroupsReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrConnectedCashReport //
+ ( myFP: TCFD_BGR;                                   //
+   var ErrorCode : WideString;                       //
+   var Variable_Value : WideString                   //
+ ) : Integer;                                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrConnectedCashReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedCashReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrConnectedCashReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrUserPeriodReports //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrUserPeriodReports') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrUserPeriodReports', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrUserPeriodReports', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrPluDailyClearing //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrPluDailyClearing') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrPluDailyClearing', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrPluDailyClearing', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrSafeOpening //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrSafeOpening') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrSafeOpening', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrSafeOpening', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrScaleBarMask //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrScaleBarMask') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrScaleBarMask', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrScaleBarMask', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrNumberBarcode //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrNumberBarcode') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrNumberBarcode', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrNumberBarcode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_RegModeOnIdle //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_RegModeOnIdle') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_RegModeOnIdle', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_RegModeOnIdle', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FlushAtEndOnly //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FlushAtEndOnly') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FlushAtEndOnly', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FlushAtEndOnly', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrMidnightWarning //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrMidnightWarning') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrMidnightWarning', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrMidnightWarning', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrMandatorySubtotal //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrMandatorySubtotal') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrMandatorySubtotal', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrMandatorySubtotal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Seller //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Seller') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Seller', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Seller', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_AutoMonthReport //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_AutoMonthReport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_AutoMonthReport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_AutoMonthReport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EcrUnsentWarning //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EcrUnsentWarning') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EcrUnsentWarning', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EcrUnsentWarning', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_CurrNameLocal //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_CurrNameLocal') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_CurrNameLocal', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_CurrNameLocal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_CurrNameForeign //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_CurrNameForeign') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_CurrNameForeign', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_CurrNameForeign', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ExchangeRate //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ExchangeRate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ExchangeRate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ExchangeRate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Unit_name //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Unit_name') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Unit_name', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Unit_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Header //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Header') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Header', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Header', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Footer //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Footer') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Footer', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Footer', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_OperName //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_OperName') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_OperName', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_OperName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_OperPasw //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_OperPasw') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_OperPasw', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_OperPasw', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PayName //
+ ( myFP: TCFD_BGR;                    //
+   var ErrorCode : WideString;        //
+   var Variable_Value : WideString    //
+ ) : Integer;                         //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PayName') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PayName', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PayName', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Payment_forbidden //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Payment_forbidden') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Payment_forbidden', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Payment_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DPxx_PluCode //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DPxx_PluCode') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DPxx_PluCode', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DPxx_PluCode', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyNDB_value //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyNDB_value') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_value', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_value', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyNDB_percentage //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyNDB_percentage') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_percentage', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_percentage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyOTS_value //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyOTS_value') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_value', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_value', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyOTS_percentage //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyOTS_percentage') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_percentage', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_percentage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyNDB_forbidden //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyNDB_forbidden') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_forbidden', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyNDB_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_KeyOTS_forbidden //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_KeyOTS_forbidden') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_forbidden', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_KeyOTS_forbidden', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ServPasw //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ServPasw') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ServPasw', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ServPasw', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ServMessage //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ServMessage') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ServMessage', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ServMessage', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ServiceDate //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ServiceDate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ServiceDate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ServiceDate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PrnQuality //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PrnQuality') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PrnQuality', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PrnQuality', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_PrintColumns //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_PrintColumns') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_PrintColumns', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_PrintColumns', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EmptyLineAfterTotal //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EmptyLineAfterTotal') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EmptyLineAfterTotal', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EmptyLineAfterTotal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DblHeigh_totalinreg //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DblHeigh_totalinreg') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DblHeigh_totalinreg', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DblHeigh_totalinreg', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Bold_payments //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Bold_payments') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Bold_payments', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Bold_payments', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DublReceipts //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DublReceipts') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DublReceipts', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DublReceipts', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_IntUseReceipts //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_IntUseReceipts') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_IntUseReceipts', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_IntUseReceipts', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_BarcodePrint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_BarcodePrint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_BarcodePrint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_BarcodePrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LogoPrint //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LogoPrint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LogoPrint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LogoPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DoveriteliPrint //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DoveriteliPrint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DoveriteliPrint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DoveriteliPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ForeignPrint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ForeignPrint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ForeignPrint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ForeignPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_VatPrintEnable //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_VatPrintEnable') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_VatPrintEnable', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_VatPrintEnable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_CondensedPrint //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_CondensedPrint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_CondensedPrint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_CondensedPrint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyZreport //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyZreport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyZreport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyZreport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyXreport //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyXreport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyXreport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyXreport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyDiagnostics //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyDiagnostics') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyDiagnostics', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyDiagnostics', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyFmReports //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyFmReports') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyFmReports', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyFmReports', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyJournal //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyJournal') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyJournal', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyJournal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyDateTime //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyDateTime') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyDateTime', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyDateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyCloseReceipt //
+ ( myFP: TCFD_BGR;                                //
+   var ErrorCode : WideString;                    //
+   var Variable_Value : WideString                //
+ ) : Integer;                                     //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyCloseReceipt') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyCloseReceipt', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyCloseReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DsblKeyCancelReceipt //
+ ( myFP: TCFD_BGR;                                 //
+   var ErrorCode : WideString;                     //
+   var Variable_Value : WideString                 //
+ ) : Integer;                                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DsblKeyCancelReceipt') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DsblKeyCancelReceipt', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DsblKeyCancelReceipt', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ModemModel //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ModemModel') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ModemModel', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ModemModel', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_SimPin //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_SimPin') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_SimPin', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_SimPin', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LanMAC //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LanMAC') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LanMAC', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LanMAC', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DHCPenable //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DHCPenable') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DHCPenable', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DHCPenable', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LAN_IP //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LAN_IP') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LAN_IP', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LAN_IP', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LAN_NetMask //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LAN_NetMask') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LAN_NetMask', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LAN_NetMask', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LAN_Gateway //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LAN_Gateway') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LAN_Gateway', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LAN_Gateway', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LAN_PriDNS //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LAN_PriDNS') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LAN_PriDNS', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LAN_PriDNS', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LAN_SecDNS //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LAN_SecDNS') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LAN_SecDNS', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LAN_SecDNS', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LANport_fpCommands //
+ ( myFP: TCFD_BGR;                               //
+   var ErrorCode : WideString;                   //
+   var Variable_Value : WideString               //
+ ) : Integer;                                    //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LANport_fpCommands') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LANport_fpCommands', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LANport_fpCommands', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_ItemGroups_name //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_ItemGroups_name') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_ItemGroups_name', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_ItemGroups_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Dept_price //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Dept_price') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Dept_price', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Dept_price', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Dept_name //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Dept_name') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Dept_name', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Dept_name', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DHL_Algo //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DHL_Algo') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DHL_Algo', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DHL_Algo', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EIK_validation //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EIK_validation') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EIK_validation', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EIK_validation', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EGN_validation //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EGN_validation') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EGN_validation', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EGN_validation', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Bonuses //
+ ( myFP: TCFD_BGR;                    //
+   var ErrorCode : WideString;        //
+   var Variable_Value : WideString    //
+ ) : Integer;                         //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Bonuses') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Bonuses', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Bonuses', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_TextReducedVAT //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_TextReducedVAT') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_TextReducedVAT', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_TextReducedVAT', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_TAXlabel //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_TAXlabel') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_TAXlabel', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_TAXlabel', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nZreport //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nZreport') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nZreport', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nZreport', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nReset //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nReset') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nReset', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nReset', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nVatChanges //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nVatChanges') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nVatChanges', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nVatChanges', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nIDnumberChanges //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nIDnumberChanges') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nIDnumberChanges', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nIDnumberChanges', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nFMnumberChanges //
+ ( myFP: TCFD_BGR;                             //
+   var ErrorCode : WideString;                 //
+   var Variable_Value : WideString             //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nFMnumberChanges') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nFMnumberChanges', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nFMnumberChanges', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nTAXnumberChanges //
+ ( myFP: TCFD_BGR;                              //
+   var ErrorCode : WideString;                  //
+   var Variable_Value : WideString              //
+ ) : Integer;                                   //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nTAXnumberChanges') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nTAXnumberChanges', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nTAXnumberChanges', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_valVat //
+ ( myFP: TCFD_BGR;                   //
+   var ErrorCode : WideString;       //
+   var Variable_Value : WideString   //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_valVat') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_valVat', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_valVat', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FMDeviceID //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FMDeviceID') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FMDeviceID', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FMDeviceID', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_IDnumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_IDnumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_IDnumber', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_IDnumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FMnumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FMnumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FMnumber', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FMnumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_TAXnumber //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_TAXnumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_TAXnumber', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_TAXnumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_FmWriteDateTime //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_FmWriteDateTime') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_FmWriteDateTime', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_FmWriteDateTime', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_LastValiddate //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_LastValiddate') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_LastValiddate', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_LastValiddate', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_UNP  //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString;     //
+   var Variable_Value : WideString //
+ ) : Integer;                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_UNP') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_UNP', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_UNP', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_StornoUNP //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_StornoUNP') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_StornoUNP', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_StornoUNP', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_Fiscalized //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_Fiscalized') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_Fiscalized', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_Fiscalized', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DFR_needed //
+ ( myFP: TCFD_BGR;                       //
+   var ErrorCode : WideString;           //
+   var Variable_Value : WideString       //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DFR_needed') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DFR_needed', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DFR_needed', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DecimalPoint //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DecimalPoint') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DecimalPoint', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DecimalPoint', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nBon //
+ ( myFP: TCFD_BGR;                 //
+   var ErrorCode : WideString;     //
+   var Variable_Value : WideString //
+ ) : Integer;                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nBon') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nBon', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nBon', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nFBon //
+ ( myFP: TCFD_BGR;                  //
+   var ErrorCode : WideString;      //
+   var Variable_Value : WideString  //
+ ) : Integer;                       //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nFBon') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nFBon', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nFBon', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nInvoice //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nInvoice') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nInvoice', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nInvoice', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_InvoiceRangeBeg //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_InvoiceRangeBeg') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_InvoiceRangeBeg', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_InvoiceRangeBeg', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_InvoiceRangeEnd //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_InvoiceRangeEnd') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_InvoiceRangeEnd', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_InvoiceRangeEnd', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nFBonDailyCount //
+ ( myFP: TCFD_BGR;                            //
+   var ErrorCode : WideString;                //
+   var Variable_Value : WideString            //
+ ) : Integer;                                 //
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nFBonDailyCount') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nFBonDailyCount', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nFBonDailyCount', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_nLastFiscalDoc //
+ ( myFP: TCFD_BGR;                           //
+   var ErrorCode : WideString;               //
+   var Variable_Value : WideString           //
+ ) : Integer;                                //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_nLastFiscalDoc') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_nLastFiscalDoc', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_nLastFiscalDoc', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_CurrClerk //
+ ( myFP: TCFD_BGR;                      //
+   var ErrorCode : WideString;          //
+   var Variable_Value : WideString      //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_CurrClerk') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_CurrClerk', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_CurrClerk', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EJNewJurnal //
+ ( myFP: TCFD_BGR;                        //
+   var ErrorCode : WideString;            //
+   var Variable_Value : WideString        //
+ ) : Integer;                             //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EJNewJurnal') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EJNewJurnal', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EJNewJurnal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_EJNumber //
+ ( myFP: TCFD_BGR;                     //
+   var ErrorCode : WideString;         //
+   var Variable_Value : WideString     //
+ ) : Integer;                          //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_EJNumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_EJNumber', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_EJNumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DateLastSucceededSent //
+ ( myFP: TCFD_BGR;                                  //
+   var ErrorCode : WideString;                      //
+   var Variable_Value : WideString                  //
+ ) : Integer;                                       //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DateLastSucceededSent') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DateLastSucceededSent', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DateLastSucceededSent', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_NapRegistered //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString;              //
+   var Variable_Value : WideString          //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_NapRegistered') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_NapRegistered', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_NapRegistered', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_255_info_Get_DeregOnSever //
+ ( myFP: TCFD_BGR;                         //
+   var ErrorCode : WideString;             //
+   var Variable_Value : WideString         //
+ ) : Integer;                              //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.execute_Command_ByName('255_info_Get_DeregOnSever') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('255_info_Get_DeregOnSever', 'Variable_Value',Variable_Value);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('255_info_Get_DeregOnSever', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_124_klen_Documents_InRange //
+ ( myFP: TCFD_BGR;                          //
+   const From_DateTime : WideString;        //
+   const To_DateTime : WideString;          //
+   const Input_DocType : WideString;        //
+   var ErrorCode : WideString;              //
+   var Start_DateTime : WideString;         //
+   var End_DateTime : WideString;           //
+   var First_DocumentNumber : WideString;   //
+   var Last_DocumentNumber : WideString     //
+ ) : Integer;                               //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('124_klen_Documents_InRange', 'From_DateTime', From_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('124_klen_Documents_InRange', 'To_DateTime', To_DateTime ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('124_klen_Documents_InRange', 'Input_DocType', Input_DocType ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('124_klen_Documents_InRange', 'Start_DateTime',Start_DateTime);
+   myFP.get_OutputParam_ByName('124_klen_Documents_InRange', 'End_DateTime',End_DateTime);
+   myFP.get_OutputParam_ByName('124_klen_Documents_InRange', 'First_DocumentNumber',First_DocumentNumber);
+   myFP.get_OutputParam_ByName('124_klen_Documents_InRange', 'Last_DocumentNumber',Last_DocumentNumber);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('124_klen_Documents_InRange') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('124_klen_Documents_InRange', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_SetDocument_ToRead //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   const DocNum : WideString;                //
+   const RecType : WideString;               //
+   var ErrorCode : WideString;               //
+   var DocNumber : WideString;               //
+   var RecNumber : WideString;               //
+   var DateTime : WideString;                //
+   var DocType : WideString;                 //
+   var Znumber : WideString                  //
+ ) : Integer;                                //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('125_klen_SetDocument_ToRead', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_SetDocument_ToRead', 'DocNum', DocNum ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_SetDocument_ToRead', 'RecType', RecType ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'DocNumber',DocNumber);
+   myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'RecNumber',RecNumber);
+   myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'DateTime',DateTime);
+   myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'DocType',DocType);
+   myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'Znumber',Znumber);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('125_klen_SetDocument_ToRead') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_SetDocument_ToRead', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_GetLine_AsText //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var TextData : WideString             //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('125_klen_GetLine_AsText', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('125_klen_GetLine_AsText') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('125_klen_GetLine_AsText', 'TextData',TextData);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_GetLine_AsText', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_GetLine_AsData //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   var ErrorCode : WideString;           //
+   var Base64Data : WideString           //
+ ) : Integer;                            //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('125_klen_GetLine_AsData', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('125_klen_GetLine_AsData') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('125_klen_GetLine_AsData', 'Base64Data',Base64Data);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_GetLine_AsData', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_Print_Document //
+ ( myFP: TCFD_BGR;                       //
+   const Option : WideString;            //
+   const DocNum : WideString;            //
+   const RecType : WideString;           //
+   var ErrorCode : WideString            //
+ ) : Integer;                            //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('125_klen_Print_Document', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_Print_Document', 'DocNum', DocNum ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_Print_Document', 'RecType', RecType ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        myFP.execute_Command_ByName('125_klen_Print_Document');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_Print_Document', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_SetCSVDocument_ToRead //
+ ( myFP: TCFD_BGR;                              //
+   const Option : WideString;                   //
+   const FirstDoc : WideString;                 //
+   const LastDoc : WideString;                  //
+   var ErrorCode : WideString;                  //
+   var DocNumber : WideString;                  //
+   var RecNumber : WideString;                  //
+   var DateTime : WideString;                   //
+   var DocType : WideString;                    //
+   var Znumber : WideString                     //
+ ) : Integer;                                   //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('125_klen_SetCSVDocument_ToRead', 'Option', Option ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_SetCSVDocument_ToRead', 'FirstDoc', FirstDoc ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('125_klen_SetCSVDocument_ToRead', 'LastDoc', LastDoc ) <> 0 then Exit;
+   Result := True;
+ end;
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'DocNumber',DocNumber);
+   myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'RecNumber',RecNumber);
+   myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'DateTime',DateTime);
+   myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'DocType',DocType);
+   myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'Znumber',Znumber);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('125_klen_SetCSVDocument_ToRead') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_SetCSVDocument_ToRead', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_125_klen_Get_CSVData_AsText //
+ ( myFP: TCFD_BGR;                           //
+   const Option : WideString;                //
+   var ErrorCode : WideString;               //
+   var Column_01 : WideString;               //
+   var Column_02 : WideString;               //
+   var Column_03 : WideString;               //
+   var Column_04 : WideString;               //
+   var Column_05 : WideString;               //
+   var Column_06 : WideString;               //
+   var Column_07 : WideString;               //
+   var Column_08 : WideString;               //
+   var Column_09 : WideString;               //
+   var Column_10 : WideString;               //
+   var Column_11 : WideString;               //
+   var Column_12 : WideString;               //
+   var Column_13 : WideString;               //
+   var Column_14 : WideString                //
+ ) : Integer;                                //
+
+
+
+ procedure set_Output;
+ begin
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_01',Column_01);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_02',Column_02);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_03',Column_03);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_04',Column_04);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_05',Column_05);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_06',Column_06);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_07',Column_07);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_08',Column_08);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_09',Column_09);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_10',Column_10);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_11',Column_11);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_12',Column_12);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_13',Column_13);
+   myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'Column_14',Column_14);
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('125_klen_Get_CSVData_AsText', 'Option', Option ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('125_klen_Get_CSVData_AsText') <> 0 then Exit;
+        set_Output;
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('125_klen_Get_CSVData_AsText', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_045_other_Check_Connection //
+ ( myFP: TCFD_BGR;                          //
+   var ErrorCode : WideString               //
+ ) : Integer;                               //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        myFP.execute_Command_ByName('045_other_Check_Connection');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('045_other_Check_Connection', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_080_other_Sound_Signal //
+ ( myFP: TCFD_BGR;                      //
+   const Hz : WideString;               //
+   const mSec : WideString;             //
+   var ErrorCode : WideString           //
+ ) : Integer;                           //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('080_other_Sound_Signal', 'Hz', Hz ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('080_other_Sound_Signal', 'mSec', mSec ) <> 0 then Exit;
+        myFP.execute_Command_ByName('080_other_Sound_Signal');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('080_other_Sound_Signal', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_202_other_Power_Off //
+ ( myFP: TCFD_BGR;                   //
+   const ParamValue : WideString;    //
+   var ErrorCode : WideString        //
+ ) : Integer;                        //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('202_other_Power_Off', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('202_other_Power_Off');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('202_other_Power_Off', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_202_other_Restart //
+ ( myFP: TCFD_BGR;                 //
+   const ParamValue : WideString;  //
+   var ErrorCode : WideString      //
+ ) : Integer;                      //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('202_other_Restart', 'ParamValue', ParamValue ) <> 0 then Exit;
+        myFP.execute_Command_ByName('202_other_Restart');
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('202_other_Restart', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_083_service_Set_DecimalsAndTaxRates //
+ ( myFP: TCFD_BGR;                                   //
+   const TaxA : WideString;                          //
+   const TaxB : WideString;                          //
+   const TaxC : WideString;                          //
+   const TaxD : WideString;                          //
+   const TaxE : WideString;                          //
+   const TaxF : WideString;                          //
+   const TaxG : WideString;                          //
+   const TaxH : WideString;                          //
+   const Decimal_Point : WideString;                 //
+   var ErrorCode : WideString;                       //
+   var RemainingChanges : WideString                 //
+ ) : Integer;                                        //
+
+
+
+ function set_Input : Boolean;
+ begin
+   Result := False;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxA', TaxA ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxB', TaxB ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxC', TaxC ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxD', TaxD ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxE', TaxE ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxF', TaxF ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxG', TaxG ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'TaxH', TaxH ) <> 0 then Exit;
+   if myFP.set_InputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'Decimal_Point', Decimal_Point ) <> 0 then Exit;
+   Result := True;
+ end;
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if not set_Input then Exit;
+        if myFP.execute_Command_ByName('083_service_Set_DecimalsAndTaxRates') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'RemainingChanges',RemainingChanges);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('083_service_Set_DecimalsAndTaxRates', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_089_service_Test_FiscalMemory //
+ ( myFP: TCFD_BGR;                             //
+   const TestType : WideString;                //
+   var ErrorCode : WideString;                 //
+   var Records : WideString                    //
+ ) : Integer;                                  //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('089_service_Test_FiscalMemory', 'TestType', TestType ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('089_service_Test_FiscalMemory') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('089_service_Test_FiscalMemory', 'Records',Records);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('089_service_Test_FiscalMemory', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+function execute_091_service_Set_SerialNumber //
+ ( myFP: TCFD_BGR;                            //
+   const SerialNumber : WideString;           //
+   const FMNumber : WideString;               //
+   var ErrorCode : WideString;                //
+   var Country : WideString                   //
+ ) : Integer;                                 //
+
+
+begin
+  Result := -1;
+  ErrorCode := '-1';
+  if not Assigned(myFP) then Exit;
+  try
+     try
+        if not myFP.connected_ToDevice then Exit;
+        if myFP.set_InputParam_ByName('091_service_Set_SerialNumber', 'SerialNumber', SerialNumber ) <> 0 then Exit;
+        if myFP.set_InputParam_ByName('091_service_Set_SerialNumber', 'FMNumber', FMNumber ) <> 0 then Exit;
+        if myFP.execute_Command_ByName('091_service_Set_SerialNumber') <> 0 then Exit;
+        myFP.get_OutputParam_ByName('091_service_Set_SerialNumber', 'Country',Country);
+     except
+        On E:Exception do ShowMessage(E.Message);
+     end;
+  finally
+     Result := myFP.lastError_Code;
+     myFP.get_OutputParam_ByName('091_service_Set_SerialNumber', 'ErrorCode',ErrorCode);
+  end;
+end;
+
+
+end.

@@ -1,0 +1,1850 @@
+date/time          : 2019-08-16, 12:25:26, 481ms
+computer name      : KASA_3
+user name          : User <admin>
+registered owner   : User
+operating system   : Windows 7 Service Pack 1 build 7601
+system language    : Bulgarian
+system up time     : 17 hours 54 minutes
+program up time    : 29 minutes 21 seconds
+processors         : 4x Intel(R) Celeron(R) CPU J1900 @ 1.99GHz
+physical memory    : 1398/1942 MB (free/total)
+free disk space    : (C:) 46.50 GB
+display mode       : 1366x768, 32 bit
+process id         : $4a0
+allocated memory   : 79.28 MB
+largest free block : 1.02 GB
+executable         : Kasa.exe
+exec. date/time    : 2019-08-13 10:14
+version            : 0.2.7164.34853
+bde version        : 5.2.0.2
+compiled with      : Delphi 10.3 Rio
+madExcept version  : 5.0.0
+callstack crc      : $d3e11809, $cbd0687a, $cbd0687a
+exception number   : 1
+exception class    : EDatabaseError
+exception message  : '20..' is not a valid floating point value for field 'CashPayment'.
+
+main thread ($444):
+0076c192 +0de Kasa.exe     Data.DB                      DatabaseError
+0076c231 +031 Kasa.exe     Data.DB                      DatabaseErrorFmt
+00772cb5 +059 Kasa.exe     Data.DB                      TNumericField.InvalidFloatValue
+0077469d +039 Kasa.exe     Data.DB                      TFloatField.SetAsString
+0077159a +002 Kasa.exe     Data.DB                      TField.SetText
+007711c5 +021 Kasa.exe     Data.DB                      TField.SetEditText
+008e15ca +036 Kasa.exe     Vcl.DBCtrls                  TDBEdit.UpdateData
+008e0fcf +01b Kasa.exe     Vcl.DBCtrls                  TFieldDataLink.UpdateData
+0077bda9 +021 Kasa.exe     Data.DB                      TDataLink.UpdateRecord
+0077bf2f +0c3 Kasa.exe     Data.DB                      TDataLink.DataEvent
+008e0fe7 +00f Kasa.exe     Vcl.DBCtrls                  TFieldDataLink.DataEvent
+0077c51f +063 Kasa.exe     Data.DB                      TDataSource.NotifyLinkTypes
+0077c552 +01e Kasa.exe     Data.DB                      TDataSource.NotifyDataLinks
+0077c57f +023 Kasa.exe     Data.DB                      TDataSource.DataEvent
+00783e84 +190 Kasa.exe     Data.DB                      TDataSet.DataEvent
+0081c84d +021 Kasa.exe     FireDAC.Comp.DataSet         TFDDataSet.DataEvent
+00783f76 +042 Kasa.exe     Data.DB                      TDataSet.UpdateRecord
+00784f62 +006 Kasa.exe     Data.DB                      TDataSet.Post
+0082405d +029 Kasa.exe     FireDAC.Comp.DataSet         TFDDataSet.Post
+00885bba +03a Kasa.exe     DataModule.Sale      429  +1 TDataModuleSale.UpdateSalePayments
+008a299a +19a Kasa.exe     Model.Sale           397  +3 TModelSale.UpdateSaleCashPayment
+008f511d +0cd Kasa.exe     ViewModel.Sale       508  +6 TViewModelSale.EditCashPaymentKeyPress
+008f8a5b +04f Kasa.exe     View.Sale            294  +1 TViewSale.EditCashPaymentKeyPress
+005de527 +017 Kasa.exe     Vcl.Controls                 TWinControl.KeyPress
+005f2066 +026 Kasa.exe     Vcl.StdCtrls                 TCustomEdit.KeyPress
+006be6e2 +00a Kasa.exe     Vcl.Mask                     TCustomMaskEdit.KeyPress
+008e1256 +00a Kasa.exe     Vcl.DBCtrls                  TDBEdit.KeyPress
+005de57a +04a Kasa.exe     Vcl.Controls                 TWinControl.DoKeyPress
+005de5a2 +00a Kasa.exe     Vcl.Controls                 TWinControl.WMChar
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                    TCustomForm.ShowModal
+008f9675 +021 Kasa.exe     View.Sale            556  +4 ShowViewSale
+00930ddb +007 Kasa.exe     ViewModel.Main       188  +1 TViewModelMain.Sale
+00931d27 +017 Kasa.exe     View.Main            148  +1 TViewMain.ButtonSaleClick
+005d820b +073 Kasa.exe     Vcl.Controls                 TControl.Click
+005f46c2 +01e Kasa.exe     Vcl.StdCtrls                 TCustomButton.Click
+008fcab6 +08e Kasa.exe     ButtonWithColor      830 +17 TBitBtnWithColor.Click
+005f51d8 +00c Kasa.exe     Vcl.StdCtrls                 TCustomButton.CNCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls                 TControl.Perform
+005dca17 +023 Kasa.exe     Vcl.Controls                 DoControlMsg
+005dd49b +00b Kasa.exe     Vcl.Controls                 TWinControl.WMCommand
+006aa645 +045 Kasa.exe     Vcl.Forms                    TCustomForm.WMCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+006a72c5 +64d Kasa.exe     Vcl.Forms                    TCustomForm.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584557d +044 USER32.dll                                SendMessageW
+75841b52 +016 USER32.dll                                CallWindowProcW
+005dc9c2 +0e6 Kasa.exe     Vcl.Controls                 TWinControl.DefaultHandler
+005d8658 +010 Kasa.exe     Vcl.Controls                 TControl.WMLButtonUp
+005d82f4 +088 Kasa.exe     Vcl.Controls                 TControl.DoMouseDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006b1029 +0c9 Kasa.exe     Vcl.Forms                    TApplication.Run
+0093ff97 +0cb Kasa.exe     FPTest2019           126  +9 initialization
+76be3c43 +010 kernel32.dll                              BaseThreadInitThunk
+
+thread $b14:
+771e6a02 +0a ntdll.dll     NtWaitForMultipleObjects
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $e6c:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $d48:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $dbc:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 Kasa.exe        0.2.7164.34853     C:\Eurocrypt
+4bde0000 IDAPI32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c1e0000 idbat32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c5e0000 idsql32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c9e0000 IDR20009.DLL    5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4cde0000 IDPDX32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4e8e0000 BANTAM.DLL      1.0.0.8            C:\Program Files\Common Files\Borland Shared\BDE
+6f380000 SHFolder.dll    6.1.7600.16385     C:\Windows\system32
+706b0000 winmm.dll       6.1.7601.17514     C:\Windows\system32
+706f0000 MPR.dll         6.1.7600.16385     C:\Windows\system32
+718f0000 winspool.drv    6.1.7601.17514     C:\Windows\system32
+71fe0000 odbc32.DLL      6.1.7601.17514     C:\Windows\system32
+720c0000 odbcint.dll     6.1.7600.16385     C:\Windows\system32
+728f0000 FaultRep.dll    6.1.7601.17514     C:\Windows\system32
+732f0000 oleacc.dll      7.0.0.0            C:\Windows\system32
+73670000 wsock32.dll     6.1.7600.16385     C:\Windows\system32
+73790000 wkscli.dll      6.1.7601.17514     C:\Windows\system32
+737a0000 netutils.dll    6.1.7601.17514     C:\Windows\system32
+737b0000 netapi32.dll    6.1.7601.17514     C:\Windows\system32
+73910000 wtsapi32.dll    6.1.7601.17514     C:\Windows\system32
+73be0000 ntmarta.dll     6.1.7600.16385     C:\Windows\system32
+73d40000 dwmapi.dll      6.1.7600.16385     C:\Windows\system32
+73da0000 DUser.dll       6.1.7600.16385     C:\Windows\system32
+74050000 propsys.dll     7.0.7601.17514     C:\Windows\system32
+74160000 uxtheme.dll     6.1.7600.16385     C:\Windows\system32
+74220000 COMCTL32.dll    6.10.7601.17514    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+74840000 version.dll     6.1.7600.16385     C:\Windows\system32
+74b60000 rsaenh.dll      6.1.7600.16385     C:\Windows\system32
+74dc0000 CRYPTSP.dll     6.1.7600.16385     C:\Windows\system32
+74ed0000 bcrypt.dll      6.1.7600.16385     C:\Windows\system32
+74fd0000 srvcli.dll      6.1.7601.17514     C:\Windows\system32
+75220000 SspiCli.dll     6.1.7601.17514     C:\Windows\system32
+75290000 WINSTA.dll      6.1.7601.17514     C:\Windows\system32
+752c0000 CRYPTBASE.dll   6.1.7600.16385     C:\Windows\system32
+752d0000 SXS.DLL         6.1.7601.17514     C:\Windows\system32
+75330000 RpcRtRemote.dll 6.1.7601.17514     C:\Windows\system32
+753c0000 CFGMGR32.dll    6.1.7601.17514     C:\Windows\system32
+753f0000 DEVOBJ.dll      6.1.7600.16385     C:\Windows\system32
+75530000 KERNELBASE.dll  6.1.7601.17514     C:\Windows\system32
+75640000 SETUPAPI.dll    6.1.7601.17514     C:\Windows\system32
+757e0000 GDI32.dll       6.1.7601.17514     C:\Windows\system32
+75830000 USER32.dll      6.1.7601.17514     C:\Windows\system32
+75900000 comdlg32.dll    6.1.7601.17514     C:\Windows\system32
+75b40000 USP10.dll       1.626.7601.17514   C:\Windows\system32
+75be0000 advapi32.dll    6.1.7601.17514     C:\Windows\system32
+75c80000 oleaut32.dll    6.1.7601.17514     C:\Windows\system32
+75e20000 msvcrt.dll      7.0.7600.16385     C:\Windows\system32
+75ed0000 sechost.dll     6.1.7600.16385     C:\Windows\SYSTEM32
+75ef0000 SHELL32.dll     6.1.7601.17514     C:\Windows\system32
+76b40000 WLDAP32.dll     6.1.7601.17514     C:\Windows\system32
+76b90000 kernel32.dll    6.1.7601.17514     C:\Windows\system32
+76c70000 WS2_32.dll      6.1.7601.17514     C:\Windows\system32
+76cb0000 ole32.dll       6.1.7601.17514     C:\Windows\system32
+76e10000 CLBCatQ.DLL     2001.12.8530.16385 C:\Windows\system32
+76ea0000 SHLWAPI.dll     6.1.7601.17514     C:\Windows\system32
+76f00000 MSCTF.dll       6.1.7600.16385     C:\Windows\system32
+76fd0000 RPCRT4.dll      6.1.7601.17514     C:\Windows\system32
+771a0000 ntdll.dll       6.1.7601.17514     C:\Windows\SYSTEM32
+772e0000 NSI.dll         6.1.7600.16385     C:\Windows\system32
+77350000 IMM32.DLL       6.1.7601.17514     C:\Windows\system32
+77370000 LPK.dll         6.1.7600.16385     C:\Windows\system32
+
+processes:
+000 Idle                      0 0   0
+004 System                    0 0   0
+100 smss.exe                  0 0   0
+184 csrss.exe                 0 0   0
+1bc wininit.exe               0 0   0
+1c4 csrss.exe                 1 0   0
+1f4 services.exe              0 0   0
+214 winlogon.exe              1 0   0
+230 lsass.exe                 0 0   0
+238 lsm.exe                   0 0   0
+298 svchost.exe               0 0   0
+2e8 svchost.exe               0 0   0
+34c svchost.exe               0 0   0
+374 svchost.exe               0 0   0
+3a0 svchost.exe               0 0   0
+42c svchost.exe               0 0   0
+47c igfxCUIService.exe        0 0   0
+4d4 svchost.exe               0 0   0
+544 spoolsv.exe               0 0   0
+56c svchost.exe               0 0   0
+628 vncserver.exe             0 0   0
+750 vncagent.exe              1 0   0
+7b4 taskhost.exe              1 64  34  normal C:\Windows\system32
+1b4 PresentationFontCache.exe 0 0   0
+1ec Dwm.exe                   1 4   2   normal C:\Windows\system32
+33c Explorer.EXE              1 263 189 normal C:\Windows
+6cc igfxEM.exe                1 8   13  normal C:\Windows\system32
+6fc igfxHK.exe                1 8   12  normal C:\Windows\system32
+2f8 vncserverui.exe           1 172 171 normal C:\Program Files\RealVNC\VNC Server
+5dc RtHDVCpl.exe              1 56  20  normal C:\Program Files\Realtek\Audio\HDA
+90c SearchIndexer.exe         0 0   0
+b78 svchost.exe               0 0   0
+bc0 svchost.exe               0 0   0
+4a0 Kasa.exe                  1 233 506 normal C:\Eurocrypt
+9a4 FP3530.exe                1 132 43  normal C:\PROGRA~1\DATECS~1\FPCOMU~1\FP3530~1
+c2c audiodg.exe               0 0   0
+
+hardware:
++ Computer
+  - ACPI x86-based PC
++ Disk drives
+  - ADATA SP600 ATA Device
++ Display adapters
+  - Intel(R) HD Graphics (driver 10.18.10.4226)
+  - VNC Mirror Driver (driver 1.8.0.0)
++ DVD/CD-ROM drives
+  - DTSOFT Virtual CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - ATA Channel 0
+  - Intel(R) Pentium(R) processor N- and J-series / Intel(R) Celeron(R) processor N- and J-series AHCI - 0F23 (driver 9.4.4.1005)
++ Keyboards
+  - HID Keyboard Device
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Nuvoton Communications Port (COM1) (driver 1.0.2011.1109)
+  - Nuvoton Communications Port (COM2) (driver 1.0.2011.1109)
++ Processors
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
++ Sound, video and game controllers
+  - Intel(R) Display Audio (driver 6.16.0.3154)
+  - Realtek High Definition Audio (driver 6.0.1.7592)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - DAEMON Tools Virtual Bus (driver 4.49.1.352)
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 1 - 0F48 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 2 - 0F4A (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 3 - 0F4C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 4 - 0F4E (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - LPC: Bridge to Intel Legacy Block - 0F1C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - SMBus Port - 0F12 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor SoC Transaction Router - 0F00 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Trusted Execution Engine Interface - 0F18 (driver 10.1.1.11)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - PCI bus
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Generic USB Hub
+  - Generic USB Hub
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor EHCI USB - 0F34 (driver 10.1.1.11)
+  - USB Composite Device
+  - USB Root Hub
+
+cpu registers:
+eax = 0a7dd020
+ebx = 00000000
+ecx = 00000000
+edx = 00171c30
+esi = 01ade8e4
+edi = 00000001
+eip = 0076c197
+esp = 0012edc4
+ebp = 0012ee38
+
+stack dump:
+0012edc4  97 c1 76 00 de fa ed 0e - 01 00 00 00 07 00 00 00  ..v.............
+0012edd4  d8 ed 12 00 97 c1 76 00 - 20 d0 7d 0a 00 00 00 00  ......v. .}.....
+0012ede4  e4 e8 ad 01 01 00 00 00 - 38 ee 12 00 f4 ed 12 00  ........8.......
+0012edf4  40 ee 12 00 c0 a0 40 00 - 38 ee 12 00 84 ee 12 00  @.....@.8.......
+0012ee04  ac aa b1 01 18 ee 12 00 - d7 54 45 00 34 b8 96 00  .........TE.4...
+0012ee14  01 00 00 00 00 00 00 00 - bc 54 45 00 58 ee 12 00  .........TE.X...
+0012ee24  34 b8 96 00 01 00 00 00 - 84 ee 12 00 ac aa b1 01  4...............
+0012ee34  00 00 00 00 5c ee 12 00 - 36 c2 76 00 68 ee 12 00  ....\...6.v.h...
+0012ee44  c0 a0 40 00 5c ee 12 00 - 00 00 00 00 ac d0 7d 0a  ..@.\.........}.
+0012ee54  b0 d4 b0 01 00 00 00 00 - 94 ee 12 00 ba 2c 77 00  .............,w.
+0012ee64  00 00 00 00 c8 ee 12 00 - c0 a0 40 00 94 ee 12 00  ..........@.....
+0012ee74  ac d0 7d 0a b0 d4 b0 01 - 00 00 00 00 00 00 00 00  ..}.............
+0012ee84  ac d0 7d 0a 11 00 00 00 - 1c a0 ba 01 11 ee 12 00  ..}.............
+0012ee94  dc ee 12 00 a2 46 77 00 - 20 4c 82 0a d8 ee 12 00  .....Fw. L......
+0012eea4  20 4c 82 0a 0f e9 6b 00 - 17 e9 6b 00 78 6f bd 01   L....k...k.xo..
+0012eeb4  20 4c 82 0a a0 15 77 00 - cb 11 77 00 20 4c 82 0a   L....w...w. L..
+0012eec4  cf 15 8e 00 ec ee 12 00 - c0 a0 40 00 dc ee 12 00  ..........@.....
+0012eed4  78 6f bd 01 00 00 00 00 - fc ee 12 00 d2 0f 8e 00  xo..............
+0012eee4  05 00 00 00 ac bd 77 00 - 9c ef 12 00 c0 a0 40 00  ......w.......@.
+0012eef4  fc ee 12 00 78 6f bd 01 - 40 ef 12 00 34 bf 77 00  ....xo..@...4.w.
+
+disassembling:
+[...]
+00885bae       sub     al, 2
+00885bb0       jnb     loc_885bc0
+00885bb2       mov     eax, [ebp-4]
+00885bb5       mov     eax, [eax+$6c]
+00885bb8       mov     edx, [eax]
+00885bba     > call    dword ptr [edx+$31c]
+00885bc0 430   mov     eax, [ebp-4]
+00885bc3       mov     eax, [eax+$6c]
+00885bc6       call    -$100e1f ($784dac)     ; Data.DB.TDataSet.Edit
+00885bcb 431   lea     edx, [ebp-$c]
+00885bce       mov     eax, [ebp-8]
+[...]
+
+date/time          : 2019-08-16, 18:48:18, 230ms
+computer name      : KASA_3
+user name          : User <admin>
+registered owner   : User
+operating system   : Windows 7 Service Pack 1 build 7601
+system language    : Bulgarian
+system up time     : 1 day
+program up time    : 6 hours 52 minutes
+processors         : 4x Intel(R) Celeron(R) CPU J1900 @ 1.99GHz
+physical memory    : 1360/1942 MB (free/total)
+free disk space    : (C:) 46.50 GB
+display mode       : 1366x768, 32 bit
+process id         : $4a0
+allocated memory   : 113.02 MB
+largest free block : 1006.25 MB
+executable         : Kasa.exe
+exec. date/time    : 2019-08-13 10:14
+version            : 0.2.7164.34853
+bde version        : 5.2.0.2
+compiled with      : Delphi 10.3 Rio
+madExcept version  : 5.0.0
+callstack crc      : $d3e11809, $87d8d049, $87d8d049
+count              : 2
+exception number   : 2
+exception class    : EDatabaseError
+exception message  : '44.23.' is not a valid floating point value for field 'CashPayment'.
+
+main thread ($444):
+0076c192 +0de Kasa.exe     Data.DB                      DatabaseError
+0076c231 +031 Kasa.exe     Data.DB                      DatabaseErrorFmt
+00772cb5 +059 Kasa.exe     Data.DB                      TNumericField.InvalidFloatValue
+0077469d +039 Kasa.exe     Data.DB                      TFloatField.SetAsString
+0077159a +002 Kasa.exe     Data.DB                      TField.SetText
+007711c5 +021 Kasa.exe     Data.DB                      TField.SetEditText
+008e15ca +036 Kasa.exe     Vcl.DBCtrls                  TDBEdit.UpdateData
+008e0fcf +01b Kasa.exe     Vcl.DBCtrls                  TFieldDataLink.UpdateData
+0077bda9 +021 Kasa.exe     Data.DB                      TDataLink.UpdateRecord
+0077bf2f +0c3 Kasa.exe     Data.DB                      TDataLink.DataEvent
+008e0fe7 +00f Kasa.exe     Vcl.DBCtrls                  TFieldDataLink.DataEvent
+0077c51f +063 Kasa.exe     Data.DB                      TDataSource.NotifyLinkTypes
+0077c552 +01e Kasa.exe     Data.DB                      TDataSource.NotifyDataLinks
+0077c57f +023 Kasa.exe     Data.DB                      TDataSource.DataEvent
+00783e84 +190 Kasa.exe     Data.DB                      TDataSet.DataEvent
+0081c84d +021 Kasa.exe     FireDAC.Comp.DataSet         TFDDataSet.DataEvent
+00783f76 +042 Kasa.exe     Data.DB                      TDataSet.UpdateRecord
+00784f62 +006 Kasa.exe     Data.DB                      TDataSet.Post
+0082405d +029 Kasa.exe     FireDAC.Comp.DataSet         TFDDataSet.Post
+00885bba +03a Kasa.exe     DataModule.Sale      429  +1 TDataModuleSale.UpdateSalePayments
+008a299a +19a Kasa.exe     Model.Sale           397  +3 TModelSale.UpdateSaleCashPayment
+008f511d +0cd Kasa.exe     ViewModel.Sale       508  +6 TViewModelSale.EditCashPaymentKeyPress
+008f8a5b +04f Kasa.exe     View.Sale            294  +1 TViewSale.EditCashPaymentKeyPress
+005de527 +017 Kasa.exe     Vcl.Controls                 TWinControl.KeyPress
+005f2066 +026 Kasa.exe     Vcl.StdCtrls                 TCustomEdit.KeyPress
+006be6e2 +00a Kasa.exe     Vcl.Mask                     TCustomMaskEdit.KeyPress
+008e1256 +00a Kasa.exe     Vcl.DBCtrls                  TDBEdit.KeyPress
+005de57a +04a Kasa.exe     Vcl.Controls                 TWinControl.DoKeyPress
+005de5a2 +00a Kasa.exe     Vcl.Controls                 TWinControl.WMChar
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                    TCustomForm.ShowModal
+008f9675 +021 Kasa.exe     View.Sale            556  +4 ShowViewSale
+00930ddb +007 Kasa.exe     ViewModel.Main       188  +1 TViewModelMain.Sale
+00931080 +01c Kasa.exe     ViewModel.Main       254  +3 TViewModelMain.CheckItem
+00930e00 +02c Kasa.exe     ViewModel.Main       191  +4 TViewModelMain.Sale
+00931d27 +017 Kasa.exe     View.Main            148  +1 TViewMain.ButtonSaleClick
+005d820b +073 Kasa.exe     Vcl.Controls                 TControl.Click
+005f46c2 +01e Kasa.exe     Vcl.StdCtrls                 TCustomButton.Click
+008fcab6 +08e Kasa.exe     ButtonWithColor      830 +17 TBitBtnWithColor.Click
+005f51d8 +00c Kasa.exe     Vcl.StdCtrls                 TCustomButton.CNCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls                 TControl.Perform
+005dca17 +023 Kasa.exe     Vcl.Controls                 DoControlMsg
+005dd49b +00b Kasa.exe     Vcl.Controls                 TWinControl.WMCommand
+006aa645 +045 Kasa.exe     Vcl.Forms                    TCustomForm.WMCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+006a72c5 +64d Kasa.exe     Vcl.Forms                    TCustomForm.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584557d +044 USER32.dll                                SendMessageW
+75841b52 +016 USER32.dll                                CallWindowProcW
+005dc9c2 +0e6 Kasa.exe     Vcl.Controls                 TWinControl.DefaultHandler
+005d8658 +010 Kasa.exe     Vcl.Controls                 TControl.WMLButtonUp
+005d82f4 +088 Kasa.exe     Vcl.Controls                 TControl.DoMouseDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006b1029 +0c9 Kasa.exe     Vcl.Forms                    TApplication.Run
+0093ff97 +0cb Kasa.exe     FPTest2019           126  +9 initialization
+76be3c43 +010 kernel32.dll                              BaseThreadInitThunk
+
+thread $b14:
+771e6a02 +0a ntdll.dll     NtWaitForMultipleObjects
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $f9c:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $ddc:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 Kasa.exe        0.2.7164.34853     C:\Eurocrypt
+4bde0000 IDAPI32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c1e0000 idbat32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c5e0000 idsql32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c9e0000 IDR20009.DLL    5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4cde0000 IDPDX32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4e8e0000 BANTAM.DLL      1.0.0.8            C:\Program Files\Common Files\Borland Shared\BDE
+6f380000 SHFolder.dll    6.1.7600.16385     C:\Windows\system32
+706b0000 winmm.dll       6.1.7601.17514     C:\Windows\system32
+706f0000 MPR.dll         6.1.7600.16385     C:\Windows\system32
+718f0000 winspool.drv    6.1.7601.17514     C:\Windows\system32
+71fe0000 odbc32.DLL      6.1.7601.17514     C:\Windows\system32
+720c0000 odbcint.dll     6.1.7600.16385     C:\Windows\system32
+728f0000 FaultRep.dll    6.1.7601.17514     C:\Windows\system32
+732f0000 oleacc.dll      7.0.0.0            C:\Windows\system32
+73670000 wsock32.dll     6.1.7600.16385     C:\Windows\system32
+73790000 wkscli.dll      6.1.7601.17514     C:\Windows\system32
+737a0000 netutils.dll    6.1.7601.17514     C:\Windows\system32
+737b0000 netapi32.dll    6.1.7601.17514     C:\Windows\system32
+73910000 wtsapi32.dll    6.1.7601.17514     C:\Windows\system32
+73be0000 ntmarta.dll     6.1.7600.16385     C:\Windows\system32
+73d40000 dwmapi.dll      6.1.7600.16385     C:\Windows\system32
+73da0000 DUser.dll       6.1.7600.16385     C:\Windows\system32
+74050000 propsys.dll     7.0.7601.17514     C:\Windows\system32
+74160000 uxtheme.dll     6.1.7600.16385     C:\Windows\system32
+74220000 COMCTL32.dll    6.10.7601.17514    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+74840000 version.dll     6.1.7600.16385     C:\Windows\system32
+74b60000 rsaenh.dll      6.1.7600.16385     C:\Windows\system32
+74dc0000 CRYPTSP.dll     6.1.7600.16385     C:\Windows\system32
+74ed0000 bcrypt.dll      6.1.7600.16385     C:\Windows\system32
+74fd0000 srvcli.dll      6.1.7601.17514     C:\Windows\system32
+75220000 SspiCli.dll     6.1.7601.17514     C:\Windows\system32
+75290000 WINSTA.dll      6.1.7601.17514     C:\Windows\system32
+752c0000 CRYPTBASE.dll   6.1.7600.16385     C:\Windows\system32
+752d0000 SXS.DLL         6.1.7601.17514     C:\Windows\system32
+75330000 RpcRtRemote.dll 6.1.7601.17514     C:\Windows\system32
+753b0000 MSASN1.dll      6.1.7601.17514     C:\Windows\system32
+753c0000 CFGMGR32.dll    6.1.7601.17514     C:\Windows\system32
+753f0000 DEVOBJ.dll      6.1.7600.16385     C:\Windows\system32
+75410000 CRYPT32.dll     6.1.7601.17514     C:\Windows\system32
+75530000 KERNELBASE.dll  6.1.7601.17514     C:\Windows\system32
+75610000 WINTRUST.dll    6.1.7601.17514     C:\Windows\system32
+75640000 SETUPAPI.dll    6.1.7601.17514     C:\Windows\system32
+757e0000 GDI32.dll       6.1.7601.17514     C:\Windows\system32
+75830000 USER32.dll      6.1.7601.17514     C:\Windows\system32
+75900000 comdlg32.dll    6.1.7601.17514     C:\Windows\system32
+75b40000 USP10.dll       1.626.7601.17514   C:\Windows\system32
+75be0000 advapi32.dll    6.1.7601.17514     C:\Windows\system32
+75c80000 oleaut32.dll    6.1.7601.17514     C:\Windows\system32
+75e20000 msvcrt.dll      7.0.7600.16385     C:\Windows\system32
+75ed0000 sechost.dll     6.1.7600.16385     C:\Windows\SYSTEM32
+75ef0000 SHELL32.dll     6.1.7601.17514     C:\Windows\system32
+76b40000 WLDAP32.dll     6.1.7601.17514     C:\Windows\system32
+76b90000 kernel32.dll    6.1.7601.17514     C:\Windows\system32
+76c70000 WS2_32.dll      6.1.7601.17514     C:\Windows\system32
+76cb0000 ole32.dll       6.1.7601.17514     C:\Windows\system32
+76e10000 CLBCatQ.DLL     2001.12.8530.16385 C:\Windows\system32
+76ea0000 SHLWAPI.dll     6.1.7601.17514     C:\Windows\system32
+76f00000 MSCTF.dll       6.1.7600.16385     C:\Windows\system32
+76fd0000 RPCRT4.dll      6.1.7601.17514     C:\Windows\system32
+771a0000 ntdll.dll       6.1.7601.17514     C:\Windows\SYSTEM32
+772e0000 NSI.dll         6.1.7600.16385     C:\Windows\system32
+77350000 IMM32.DLL       6.1.7601.17514     C:\Windows\system32
+77370000 LPK.dll         6.1.7600.16385     C:\Windows\system32
+77380000 psapi.dll       6.1.7600.16385     C:\Windows\system32
+
+processes:
+000 Idle                      0 0    0
+004 System                    0 0    0
+100 smss.exe                  0 0    0
+184 csrss.exe                 0 0    0
+1bc wininit.exe               0 0    0
+1c4 csrss.exe                 1 0    0
+1f4 services.exe              0 0    0
+214 winlogon.exe              1 0    0
+230 lsass.exe                 0 0    0
+238 lsm.exe                   0 0    0
+298 svchost.exe               0 0    0
+2e8 svchost.exe               0 0    0
+34c svchost.exe               0 0    0
+374 svchost.exe               0 0    0
+3a0 svchost.exe               0 0    0
+42c svchost.exe               0 0    0
+47c igfxCUIService.exe        0 0    0
+4d4 svchost.exe               0 0    0
+544 spoolsv.exe               0 0    0
+56c svchost.exe               0 0    0
+628 vncserver.exe             0 0    0
+750 vncagent.exe              1 0    0
+7b4 taskhost.exe              1 64   34   normal C:\Windows\system32
+1b4 PresentationFontCache.exe 0 0    0
+1ec Dwm.exe                   1 4    2    normal C:\Windows\system32
+33c Explorer.EXE              1 260  188  normal C:\Windows
+6cc igfxEM.exe                1 8    13   normal C:\Windows\system32
+6fc igfxHK.exe                1 8    12   normal C:\Windows\system32
+2f8 vncserverui.exe           1 172  171  normal C:\Program Files\RealVNC\VNC Server
+5dc RtHDVCpl.exe              1 56   20   normal C:\Program Files\Realtek\Audio\HDA
+90c SearchIndexer.exe         0 0    0
+b78 svchost.exe               0 0    0
+bc0 svchost.exe               0 0    0
+4a0 Kasa.exe                  1 1005 3146 normal C:\Eurocrypt
+9a4 FP3530.exe                1 132  44   normal C:\PROGRA~1\DATECS~1\FPCOMU~1\FP3530~1
+280 audiodg.exe               0 0    0
+
+hardware:
++ Computer
+  - ACPI x86-based PC
++ Disk drives
+  - ADATA SP600 ATA Device
++ Display adapters
+  - Intel(R) HD Graphics (driver 10.18.10.4226)
+  - VNC Mirror Driver (driver 1.8.0.0)
++ DVD/CD-ROM drives
+  - DTSOFT Virtual CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - ATA Channel 0
+  - Intel(R) Pentium(R) processor N- and J-series / Intel(R) Celeron(R) processor N- and J-series AHCI - 0F23 (driver 9.4.4.1005)
++ Keyboards
+  - HID Keyboard Device
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Nuvoton Communications Port (COM1) (driver 1.0.2011.1109)
+  - Nuvoton Communications Port (COM2) (driver 1.0.2011.1109)
++ Processors
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
++ Sound, video and game controllers
+  - Intel(R) Display Audio (driver 6.16.0.3154)
+  - Realtek High Definition Audio (driver 6.0.1.7592)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - DAEMON Tools Virtual Bus (driver 4.49.1.352)
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 1 - 0F48 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 2 - 0F4A (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 3 - 0F4C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 4 - 0F4E (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - LPC: Bridge to Intel Legacy Block - 0F1C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - SMBus Port - 0F12 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor SoC Transaction Router - 0F00 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Trusted Execution Engine Interface - 0F18 (driver 10.1.1.11)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - PCI bus
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Generic USB Hub
+  - Generic USB Hub
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor EHCI USB - 0F34 (driver 10.1.1.11)
+  - USB Composite Device
+  - USB Root Hub
+
+cpu registers:
+eax = 0cd9b540
+ebx = 00000000
+ecx = 00000000
+edx = 00171c30
+esi = 0ca892fc
+edi = 00000001
+eip = 0076c197
+esp = 0012ed64
+ebp = 0012edd8
+
+stack dump:
+0012ed64  97 c1 76 00 de fa ed 0e - 01 00 00 00 07 00 00 00  ..v.............
+0012ed74  78 ed 12 00 97 c1 76 00 - 40 b5 d9 0c 00 00 00 00  x.....v.@.......
+0012ed84  fc 92 a8 0c 01 00 00 00 - d8 ed 12 00 94 ed 12 00  ................
+0012ed94  e0 ed 12 00 c0 a0 40 00 - d8 ed 12 00 24 ee 12 00  ......@.....$...
+0012eda4  3c 8c f1 01 b8 ed 12 00 - d7 54 45 00 34 b8 96 00  <........TE.4...
+0012edb4  01 00 00 00 00 00 00 00 - bc 54 45 00 f8 ed 12 00  .........TE.....
+0012edc4  34 b8 96 00 01 00 00 00 - 24 ee 12 00 3c 8c f1 01  4.......$...<...
+0012edd4  00 00 00 00 fc ed 12 00 - 36 c2 76 00 08 ee 12 00  ........6.v.....
+0012ede4  c0 a0 40 00 fc ed 12 00 - 00 00 00 00 6c da d9 0c  ..@.........l...
+0012edf4  b0 d4 b0 01 00 00 00 00 - 34 ee 12 00 ba 2c 77 00  ........4....,w.
+0012ee04  00 00 00 00 68 ee 12 00 - c0 a0 40 00 34 ee 12 00  ....h.....@.4...
+0012ee14  6c da d9 0c b0 d4 b0 01 - 00 00 00 00 00 00 00 00  l...............
+0012ee24  6c da d9 0c 11 00 00 00 - 1c a0 ba 01 11 ee 12 00  l...............
+0012ee34  7c ee 12 00 a2 46 77 00 - 40 8b f8 0c 78 ee 12 00  |....Fw.@...x...
+0012ee44  40 8b f8 0c 0f e9 6b 00 - 17 e9 6b 00 28 6e fc 0b  @.....k...k.(n..
+0012ee54  40 8b f8 0c a0 15 77 00 - cb 11 77 00 40 8b f8 0c  @.....w...w.@...
+0012ee64  cf 15 8e 00 8c ee 12 00 - c0 a0 40 00 7c ee 12 00  ..........@.|...
+0012ee74  28 6e fc 0b 00 00 00 00 - 9c ee 12 00 d2 0f 8e 00  (n..............
+0012ee84  05 00 00 00 ac bd 77 00 - 3c ef 12 00 c0 a0 40 00  ......w.<.....@.
+0012ee94  9c ee 12 00 28 6e fc 0b - e0 ee 12 00 34 bf 77 00  ....(n......4.w.
+
+disassembling:
+[...]
+00885bae       sub     al, 2
+00885bb0       jnb     loc_885bc0
+00885bb2       mov     eax, [ebp-4]
+00885bb5       mov     eax, [eax+$6c]
+00885bb8       mov     edx, [eax]
+00885bba     > call    dword ptr [edx+$31c]
+00885bc0 430   mov     eax, [ebp-4]
+00885bc3       mov     eax, [eax+$6c]
+00885bc6       call    -$100e1f ($784dac)     ; Data.DB.TDataSet.Edit
+00885bcb 431   lea     edx, [ebp-$c]
+00885bce       mov     eax, [ebp-8]
+[...]
+
+date/time          : 2019-08-17, 16:24:19, 510ms
+computer name      : KASA_3
+user name          : User <admin>
+registered owner   : User
+operating system   : Windows 7 Service Pack 1 build 7601
+system language    : Bulgarian
+system up time     : 1 day 21 hours
+program up time    : 1 day 4 hours
+processors         : 4x Intel(R) Celeron(R) CPU J1900 @ 1.99GHz
+physical memory    : 1292/1942 MB (free/total)
+free disk space    : (C:) 46.49 GB
+display mode       : 1366x768, 32 bit
+process id         : $4a0
+allocated memory   : 170.24 MB
+largest free block : 950.50 MB
+executable         : Kasa.exe
+exec. date/time    : 2019-08-13 10:14
+version            : 0.2.7164.34853
+bde version        : 5.2.0.2
+compiled with      : Delphi 10.3 Rio
+madExcept version  : 5.0.0
+callstack crc      : $c83e7a83, $bf42a977, $bf42a977
+exception number   : 3
+exception class    : EConvertError
+exception message  : '' is not a valid integer value.
+
+main thread ($444):
+00452865 +019 Kasa.exe     System.SysUtils          ConvertErrorFmt
+00453ea8 +02c Kasa.exe     System.SysUtils          StrToInt
+0089d4ae +08e Kasa.exe     Device.FP700X    592 +16 TDeviceFP700X.Total
+0089fd83 +0eb Kasa.exe     Device.FP700X   1223 +10 TDeviceFP700X.Totals
+008a24ac +014 Kasa.exe     Model.Sale       344  +2 TModelSale.Totals
+008f48eb +3df Kasa.exe     ViewModel.Sale   411 +21 TViewModelSale.ActionSaveAndNewExecute
+008f85f7 +02f Kasa.exe     View.Sale        238  +1 TViewSale.ActionSaveAndNewExecute
+004f4d3b +00f Kasa.exe     System.Classes           TBasicAction.Execute
+005b96ba +086 Kasa.exe     Vcl.ActnList             TCustomAction.Execute
+0057720d +005 Kasa.exe     System.Actions           TContainedAction.HandleShortCut
+005b94ee +092 Kasa.exe     Vcl.ActnList             TCustomActionList.IsShortCut
+006ac62b +047 Kasa.exe     Vcl.Forms                DispatchShortCut
+006ac6b9 +059 Kasa.exe     Vcl.Forms                TCustomForm.IsShortCut
+005ded84 +068 Kasa.exe     Vcl.Controls             TWinControl.IsMenuKey
+005def4d +011 Kasa.exe     Vcl.Controls             TWinControl.CNSysKeyDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls             TControl.Perform
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584557d +044 USER32.dll                            SendMessageW
+006b09e4 +084 Kasa.exe     Vcl.Forms                TApplication.IsKeyMsg
+006b0c8f +0cf Kasa.exe     Vcl.Forms                TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                TCustomForm.ShowModal
+008f9675 +021 Kasa.exe     View.Sale        556  +4 ShowViewSale
+00930ddb +007 Kasa.exe     ViewModel.Main   188  +1 TViewModelMain.Sale
+00931080 +01c Kasa.exe     ViewModel.Main   254  +3 TViewModelMain.CheckItem
+00930e00 +02c Kasa.exe     ViewModel.Main   191  +4 TViewModelMain.Sale
+00931d27 +017 Kasa.exe     View.Main        148  +1 TViewMain.ButtonSaleClick
+005d820b +073 Kasa.exe     Vcl.Controls             TControl.Click
+005f46c2 +01e Kasa.exe     Vcl.StdCtrls             TCustomButton.Click
+008fcab6 +08e Kasa.exe     ButtonWithColor  830 +17 TBitBtnWithColor.Click
+005f51d8 +00c Kasa.exe     Vcl.StdCtrls             TCustomButton.CNCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls             TButtonControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls             TControl.Perform
+005dca17 +023 Kasa.exe     Vcl.Controls             DoControlMsg
+005dd49b +00b Kasa.exe     Vcl.Controls             TWinControl.WMCommand
+006aa645 +045 Kasa.exe     Vcl.Forms                TCustomForm.WMCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+006a72c5 +64d Kasa.exe     Vcl.Forms                TCustomForm.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584557d +044 USER32.dll                            SendMessageW
+75841b52 +016 USER32.dll                            CallWindowProcW
+005dc9c2 +0e6 Kasa.exe     Vcl.Controls             TWinControl.DefaultHandler
+005d8658 +010 Kasa.exe     Vcl.Controls             TControl.WMLButtonUp
+005d82f4 +088 Kasa.exe     Vcl.Controls             TControl.DoMouseDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls             TButtonControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584cc6b +00a USER32.dll                            DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                TApplication.HandleMessage
+006b1029 +0c9 Kasa.exe     Vcl.Forms                TApplication.Run
+0093ff97 +0cb Kasa.exe     FPTest2019       126  +9 initialization
+76be3c43 +010 kernel32.dll                          BaseThreadInitThunk
+
+thread $b14:
+771e6a02 +0a ntdll.dll     NtWaitForMultipleObjects
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $e90:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $cb4:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 Kasa.exe        0.2.7164.34853     C:\Eurocrypt
+4bde0000 IDAPI32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c1e0000 idbat32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c5e0000 idsql32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c9e0000 IDR20009.DLL    5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4cde0000 IDPDX32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4e8e0000 BANTAM.DLL      1.0.0.8            C:\Program Files\Common Files\Borland Shared\BDE
+6f380000 SHFolder.dll    6.1.7600.16385     C:\Windows\system32
+706b0000 winmm.dll       6.1.7601.17514     C:\Windows\system32
+706f0000 MPR.dll         6.1.7600.16385     C:\Windows\system32
+718f0000 winspool.drv    6.1.7601.17514     C:\Windows\system32
+71fe0000 odbc32.DLL      6.1.7601.17514     C:\Windows\system32
+720c0000 odbcint.dll     6.1.7600.16385     C:\Windows\system32
+728f0000 FaultRep.dll    6.1.7601.17514     C:\Windows\system32
+732f0000 oleacc.dll      7.0.0.0            C:\Windows\system32
+73670000 wsock32.dll     6.1.7600.16385     C:\Windows\system32
+73790000 wkscli.dll      6.1.7601.17514     C:\Windows\system32
+737a0000 netutils.dll    6.1.7601.17514     C:\Windows\system32
+737b0000 netapi32.dll    6.1.7601.17514     C:\Windows\system32
+73910000 wtsapi32.dll    6.1.7601.17514     C:\Windows\system32
+73be0000 ntmarta.dll     6.1.7600.16385     C:\Windows\system32
+73d40000 dwmapi.dll      6.1.7600.16385     C:\Windows\system32
+73da0000 DUser.dll       6.1.7600.16385     C:\Windows\system32
+74050000 propsys.dll     7.0.7601.17514     C:\Windows\system32
+74160000 uxtheme.dll     6.1.7600.16385     C:\Windows\system32
+74220000 COMCTL32.dll    6.10.7601.17514    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+74840000 version.dll     6.1.7600.16385     C:\Windows\system32
+74b60000 rsaenh.dll      6.1.7600.16385     C:\Windows\system32
+74dc0000 CRYPTSP.dll     6.1.7600.16385     C:\Windows\system32
+74ed0000 bcrypt.dll      6.1.7600.16385     C:\Windows\system32
+74fd0000 srvcli.dll      6.1.7601.17514     C:\Windows\system32
+75220000 SspiCli.dll     6.1.7601.17514     C:\Windows\system32
+75290000 WINSTA.dll      6.1.7601.17514     C:\Windows\system32
+752c0000 CRYPTBASE.dll   6.1.7600.16385     C:\Windows\system32
+752d0000 SXS.DLL         6.1.7601.17514     C:\Windows\system32
+75330000 RpcRtRemote.dll 6.1.7601.17514     C:\Windows\system32
+753b0000 MSASN1.dll      6.1.7601.17514     C:\Windows\system32
+753c0000 CFGMGR32.dll    6.1.7601.17514     C:\Windows\system32
+753f0000 DEVOBJ.dll      6.1.7600.16385     C:\Windows\system32
+75410000 CRYPT32.dll     6.1.7601.17514     C:\Windows\system32
+75530000 KERNELBASE.dll  6.1.7601.17514     C:\Windows\system32
+75610000 WINTRUST.dll    6.1.7601.17514     C:\Windows\system32
+75640000 SETUPAPI.dll    6.1.7601.17514     C:\Windows\system32
+757e0000 GDI32.dll       6.1.7601.17514     C:\Windows\system32
+75830000 USER32.dll      6.1.7601.17514     C:\Windows\system32
+75900000 comdlg32.dll    6.1.7601.17514     C:\Windows\system32
+75b40000 USP10.dll       1.626.7601.17514   C:\Windows\system32
+75be0000 advapi32.dll    6.1.7601.17514     C:\Windows\system32
+75c80000 oleaut32.dll    6.1.7601.17514     C:\Windows\system32
+75e20000 msvcrt.dll      7.0.7600.16385     C:\Windows\system32
+75ed0000 sechost.dll     6.1.7600.16385     C:\Windows\SYSTEM32
+75ef0000 SHELL32.dll     6.1.7601.17514     C:\Windows\system32
+76b40000 WLDAP32.dll     6.1.7601.17514     C:\Windows\system32
+76b90000 kernel32.dll    6.1.7601.17514     C:\Windows\system32
+76c70000 WS2_32.dll      6.1.7601.17514     C:\Windows\system32
+76cb0000 ole32.dll       6.1.7601.17514     C:\Windows\system32
+76e10000 CLBCatQ.DLL     2001.12.8530.16385 C:\Windows\system32
+76ea0000 SHLWAPI.dll     6.1.7601.17514     C:\Windows\system32
+76f00000 MSCTF.dll       6.1.7600.16385     C:\Windows\system32
+76fd0000 RPCRT4.dll      6.1.7601.17514     C:\Windows\system32
+771a0000 ntdll.dll       6.1.7601.17514     C:\Windows\SYSTEM32
+772e0000 NSI.dll         6.1.7600.16385     C:\Windows\system32
+77350000 IMM32.DLL       6.1.7601.17514     C:\Windows\system32
+77370000 LPK.dll         6.1.7600.16385     C:\Windows\system32
+77380000 psapi.dll       6.1.7600.16385     C:\Windows\system32
+
+processes:
+000 Idle                      0 0    0
+004 System                    0 0    0
+100 smss.exe                  0 0    0
+184 csrss.exe                 0 0    0
+1bc wininit.exe               0 0    0
+1c4 csrss.exe                 1 0    0
+1f4 services.exe              0 0    0
+214 winlogon.exe              1 0    0
+230 lsass.exe                 0 0    0
+238 lsm.exe                   0 0    0
+298 svchost.exe               0 0    0
+2e8 svchost.exe               0 0    0
+34c svchost.exe               0 0    0
+374 svchost.exe               0 0    0
+3a0 svchost.exe               0 0    0
+42c svchost.exe               0 0    0
+47c igfxCUIService.exe        0 0    0
+4d4 svchost.exe               0 0    0
+544 spoolsv.exe               0 0    0
+56c svchost.exe               0 0    0
+628 vncserver.exe             0 0    0
+750 vncagent.exe              1 0    0
+7b4 taskhost.exe              1 64   34   normal C:\Windows\system32
+1b4 PresentationFontCache.exe 0 0    0
+1ec Dwm.exe                   1 4    2    normal C:\Windows\system32
+33c Explorer.EXE              1 263  189  normal C:\Windows
+6cc igfxEM.exe                1 8    13   normal C:\Windows\system32
+6fc igfxHK.exe                1 8    12   normal C:\Windows\system32
+2f8 vncserverui.exe           1 172  171  normal C:\Program Files\RealVNC\VNC Server
+5dc RtHDVCpl.exe              1 56   20   normal C:\Program Files\Realtek\Audio\HDA
+90c SearchIndexer.exe         0 0    0
+b78 svchost.exe               0 0    0
+bc0 svchost.exe               0 0    0
+4a0 Kasa.exe                  1 2351 7754 normal C:\Eurocrypt
+9a4 FP3530.exe                1 132  44   normal C:\PROGRA~1\DATECS~1\FPCOMU~1\FP3530~1
+f9c audiodg.exe               0 0    0
+
+hardware:
++ Computer
+  - ACPI x86-based PC
++ Disk drives
+  - ADATA SP600 ATA Device
++ Display adapters
+  - Intel(R) HD Graphics (driver 10.18.10.4226)
+  - VNC Mirror Driver (driver 1.8.0.0)
++ DVD/CD-ROM drives
+  - DTSOFT Virtual CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - ATA Channel 0
+  - Intel(R) Pentium(R) processor N- and J-series / Intel(R) Celeron(R) processor N- and J-series AHCI - 0F23 (driver 9.4.4.1005)
++ Keyboards
+  - HID Keyboard Device
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Nuvoton Communications Port (COM1) (driver 1.0.2011.1109)
+  - Nuvoton Communications Port (COM2) (driver 1.0.2011.1109)
++ Processors
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
++ Sound, video and game controllers
+  - Intel(R) Display Audio (driver 6.16.0.3154)
+  - Realtek High Definition Audio (driver 6.0.1.7592)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - DAEMON Tools Virtual Bus (driver 4.49.1.352)
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 1 - 0F48 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 2 - 0F4A (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 3 - 0F4C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 4 - 0F4E (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - LPC: Bridge to Intel Legacy Block - 0F1C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - SMBus Port - 0F12 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor SoC Transaction Router - 0F00 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Trusted Execution Engine Interface - 0F18 (driver 10.1.1.11)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - PCI bus
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Generic USB Hub
+  - Generic USB Hub
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor EHCI USB - 0F34 (driver 10.1.1.11)
+  - USB Composite Device
+  - USB Root Hub
+
+cpu registers:
+eax = 10547700
+ebx = 00444b3c
+ecx = 00000000
+edx = 00171c30
+esi = 0012eebc
+edi = 00000000
+eip = 0045286a
+esp = 0012ee78
+ebp = 0012ef14
+
+stack dump:
+0012ee78  6a 28 45 00 de fa ed 0e - 01 00 00 00 07 00 00 00  j(E.............
+0012ee88  8c ee 12 00 6a 28 45 00 - 00 77 54 10 3c 4b 44 00  ....j(E..wT.<KD.
+0012ee98  bc ee 12 00 00 00 00 00 - 14 ef 12 00 a8 ee 12 00  ................
+0012eea8  80 c2 2c 10 00 00 00 00 - 00 00 00 00 ad 3e 45 00  ..,..........>E.
+0012eeb8  01 00 00 00 00 00 00 00 - 11 c2 2c 10 ec 81 57 00  ..........,...W.
+0012eec8  80 c2 2c 10 b3 d4 89 00 - dc ee 12 00 c0 a0 40 00  ..,...........@.
+0012eed8  14 ef 12 00 20 ef 12 00 - c0 a0 40 00 14 ef 12 00  .... .....@.....
+0012eee8  80 c2 2c 10 00 00 00 00 - 00 00 00 00 00 00 00 00  ..,.............
+0012eef8  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0012ef08  04 7d 5d 09 40 fe 89 00 - 00 87 ab 01 74 ef 12 00  .}].@.......t...
+0012ef18  88 fd 89 00 00 00 00 00 - 88 ef 12 00 c0 a0 40 00  ..............@.
+0012ef28  74 ef 12 00 00 00 00 00 - 00 00 00 00 00 00 00 00  t...............
+0012ef38  00 00 00 00 00 00 00 00 - 00 00 00 00 9c aa 6e 10  ..............n.
+0012ef48  94 6f 45 00 00 00 00 00 - 00 c0 44 40 00 00 00 00  .oE.......D@....
+0012ef58  00 00 00 00 00 00 12 00 - 00 00 00 00 00 00 00 00  ................
+0012ef68  00 00 00 00 2c c5 2c 10 - 00 87 ab 01 80 ef 12 00  ....,.,.........
+0012ef78  b1 24 8a 00 60 47 57 10 - 68 f0 12 00 ee 48 8f 00  .$..`GW.h....H..
+0012ef88  70 f0 12 00 c0 a0 40 00 - 68 f0 12 00 00 00 00 00  p.....@.h.......
+0012ef98  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0012efa8  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+
+disassembling:
+[...]
+0089d49e       jz      loc_89d4f2
+0089d4a0 592   lea     eax, [ebp-$28]
+0089d4a3       mov     edx, [ebp-$10]
+0089d4a6       call    -$491963 ($40bb48)     ; System.@UStrFromWStr
+0089d4ab       mov     eax, [ebp-$28]
+0089d4ae     > call    -$449637 ($453e7c)     ; System.SysUtils.StrToInt
+0089d4b3       mov     edx, eax
+0089d4b5       lea     ecx, [ebp-$24]
+0089d4b8       mov     eax, [ebp-4]
+0089d4bb       mov     eax, [eax+$3d0]
+0089d4c1       call    -$a376 ($893150)       ; FP3530_TLB.TCFD_BGR.get_ErrorMessageByCode
+[...]
+
+date/time          : 2019-08-17, 16:44:38, 485ms
+computer name      : KASA_3
+user name          : User <admin>
+registered owner   : User
+operating system   : Windows 7 Service Pack 1 build 7601
+system language    : Bulgarian
+system up time     : 1 day 22 hours
+program up time    : 1 day 4 hours
+processors         : 4x Intel(R) Celeron(R) CPU J1900 @ 1.99GHz
+physical memory    : 1290/1942 MB (free/total)
+free disk space    : (C:) 46.49 GB
+display mode       : 1366x768, 32 bit
+process id         : $4a0
+allocated memory   : 173.23 MB
+largest free block : 945.25 MB
+executable         : Kasa.exe
+exec. date/time    : 2019-08-13 10:14
+version            : 0.2.7164.34853
+bde version        : 5.2.0.2
+compiled with      : Delphi 10.3 Rio
+madExcept version  : 5.0.0
+callstack crc      : $c83e7a83, $3b1ea6f3, $3b1ea6f3
+exception number   : 4
+exception class    : EConvertError
+exception message  : '' is not a valid integer value.
+
+main thread ($444):
+00452865 +019 Kasa.exe     System.SysUtils          ConvertErrorFmt
+00453ea8 +02c Kasa.exe     System.SysUtils          StrToInt
+0089d4ae +08e Kasa.exe     Device.FP700X    592 +16 TDeviceFP700X.Total
+0089fd83 +0eb Kasa.exe     Device.FP700X   1223 +10 TDeviceFP700X.Totals
+008a24ac +014 Kasa.exe     Model.Sale       344  +2 TModelSale.Totals
+008f48eb +3df Kasa.exe     ViewModel.Sale   411 +21 TViewModelSale.ActionSaveAndNewExecute
+008f85f7 +02f Kasa.exe     View.Sale        238  +1 TViewSale.ActionSaveAndNewExecute
+004f4d3b +00f Kasa.exe     System.Classes           TBasicAction.Execute
+005b96ba +086 Kasa.exe     Vcl.ActnList             TCustomAction.Execute
+0057720d +005 Kasa.exe     System.Actions           TContainedAction.HandleShortCut
+005b94ee +092 Kasa.exe     Vcl.ActnList             TCustomActionList.IsShortCut
+006ac62b +047 Kasa.exe     Vcl.Forms                DispatchShortCut
+006ac6b9 +059 Kasa.exe     Vcl.Forms                TCustomForm.IsShortCut
+005ded84 +068 Kasa.exe     Vcl.Controls             TWinControl.IsMenuKey
+005def4d +011 Kasa.exe     Vcl.Controls             TWinControl.CNSysKeyDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584557d +044 USER32.dll                            SendMessageW
+006b09e4 +084 Kasa.exe     Vcl.Forms                TApplication.IsKeyMsg
+006b0c8f +0cf Kasa.exe     Vcl.Forms                TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                TCustomForm.ShowModal
+008f9675 +021 Kasa.exe     View.Sale        556  +4 ShowViewSale
+00930ddb +007 Kasa.exe     ViewModel.Main   188  +1 TViewModelMain.Sale
+00931080 +01c Kasa.exe     ViewModel.Main   254  +3 TViewModelMain.CheckItem
+00930e00 +02c Kasa.exe     ViewModel.Main   191  +4 TViewModelMain.Sale
+00931d27 +017 Kasa.exe     View.Main        148  +1 TViewMain.ButtonSaleClick
+005d820b +073 Kasa.exe     Vcl.Controls             TControl.Click
+005f46c2 +01e Kasa.exe     Vcl.StdCtrls             TCustomButton.Click
+008fcab6 +08e Kasa.exe     ButtonWithColor  830 +17 TBitBtnWithColor.Click
+005f51d8 +00c Kasa.exe     Vcl.StdCtrls             TCustomButton.CNCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls             TButtonControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls             TControl.Perform
+005dca17 +023 Kasa.exe     Vcl.Controls             DoControlMsg
+005dd49b +00b Kasa.exe     Vcl.Controls             TWinControl.WMCommand
+006aa645 +045 Kasa.exe     Vcl.Forms                TCustomForm.WMCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+006a72c5 +64d Kasa.exe     Vcl.Forms                TCustomForm.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584557d +044 USER32.dll                            SendMessageW
+75841b52 +016 USER32.dll                            CallWindowProcW
+005dc9c2 +0e6 Kasa.exe     Vcl.Controls             TWinControl.DefaultHandler
+005d8658 +010 Kasa.exe     Vcl.Controls             TControl.WMLButtonUp
+005d82f4 +088 Kasa.exe     Vcl.Controls             TControl.DoMouseDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls             TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls             TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls             TButtonControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls             TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes           StdWndProc
+7584cc6b +00a USER32.dll                            DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                TApplication.HandleMessage
+006b1029 +0c9 Kasa.exe     Vcl.Forms                TApplication.Run
+0093ff97 +0cb Kasa.exe     FPTest2019       126  +9 initialization
+76be3c43 +010 kernel32.dll                          BaseThreadInitThunk
+
+thread $b14:
+771e6a02 +0a ntdll.dll     NtWaitForMultipleObjects
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $aa0:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $aec:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 Kasa.exe        0.2.7164.34853     C:\Eurocrypt
+4bde0000 IDAPI32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c1e0000 idbat32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c5e0000 idsql32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c9e0000 IDR20009.DLL    5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4cde0000 IDPDX32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4e8e0000 BANTAM.DLL      1.0.0.8            C:\Program Files\Common Files\Borland Shared\BDE
+6f380000 SHFolder.dll    6.1.7600.16385     C:\Windows\system32
+706b0000 winmm.dll       6.1.7601.17514     C:\Windows\system32
+706f0000 MPR.dll         6.1.7600.16385     C:\Windows\system32
+718f0000 winspool.drv    6.1.7601.17514     C:\Windows\system32
+71fe0000 odbc32.DLL      6.1.7601.17514     C:\Windows\system32
+720c0000 odbcint.dll     6.1.7600.16385     C:\Windows\system32
+728f0000 FaultRep.dll    6.1.7601.17514     C:\Windows\system32
+732f0000 oleacc.dll      7.0.0.0            C:\Windows\system32
+73670000 wsock32.dll     6.1.7600.16385     C:\Windows\system32
+73790000 wkscli.dll      6.1.7601.17514     C:\Windows\system32
+737a0000 netutils.dll    6.1.7601.17514     C:\Windows\system32
+737b0000 netapi32.dll    6.1.7601.17514     C:\Windows\system32
+73910000 wtsapi32.dll    6.1.7601.17514     C:\Windows\system32
+73be0000 ntmarta.dll     6.1.7600.16385     C:\Windows\system32
+73d40000 dwmapi.dll      6.1.7600.16385     C:\Windows\system32
+73da0000 DUser.dll       6.1.7600.16385     C:\Windows\system32
+74050000 propsys.dll     7.0.7601.17514     C:\Windows\system32
+74160000 uxtheme.dll     6.1.7600.16385     C:\Windows\system32
+74220000 COMCTL32.dll    6.10.7601.17514    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+74840000 version.dll     6.1.7600.16385     C:\Windows\system32
+74b60000 rsaenh.dll      6.1.7600.16385     C:\Windows\system32
+74dc0000 CRYPTSP.dll     6.1.7600.16385     C:\Windows\system32
+74ed0000 bcrypt.dll      6.1.7600.16385     C:\Windows\system32
+74fd0000 srvcli.dll      6.1.7601.17514     C:\Windows\system32
+75220000 SspiCli.dll     6.1.7601.17514     C:\Windows\system32
+75290000 WINSTA.dll      6.1.7601.17514     C:\Windows\system32
+752c0000 CRYPTBASE.dll   6.1.7600.16385     C:\Windows\system32
+752d0000 SXS.DLL         6.1.7601.17514     C:\Windows\system32
+75330000 RpcRtRemote.dll 6.1.7601.17514     C:\Windows\system32
+753b0000 MSASN1.dll      6.1.7601.17514     C:\Windows\system32
+753c0000 CFGMGR32.dll    6.1.7601.17514     C:\Windows\system32
+753f0000 DEVOBJ.dll      6.1.7600.16385     C:\Windows\system32
+75410000 CRYPT32.dll     6.1.7601.17514     C:\Windows\system32
+75530000 KERNELBASE.dll  6.1.7601.17514     C:\Windows\system32
+75610000 WINTRUST.dll    6.1.7601.17514     C:\Windows\system32
+75640000 SETUPAPI.dll    6.1.7601.17514     C:\Windows\system32
+757e0000 GDI32.dll       6.1.7601.17514     C:\Windows\system32
+75830000 USER32.dll      6.1.7601.17514     C:\Windows\system32
+75900000 comdlg32.dll    6.1.7601.17514     C:\Windows\system32
+75b40000 USP10.dll       1.626.7601.17514   C:\Windows\system32
+75be0000 advapi32.dll    6.1.7601.17514     C:\Windows\system32
+75c80000 oleaut32.dll    6.1.7601.17514     C:\Windows\system32
+75e20000 msvcrt.dll      7.0.7600.16385     C:\Windows\system32
+75ed0000 sechost.dll     6.1.7600.16385     C:\Windows\SYSTEM32
+75ef0000 SHELL32.dll     6.1.7601.17514     C:\Windows\system32
+76b40000 WLDAP32.dll     6.1.7601.17514     C:\Windows\system32
+76b90000 kernel32.dll    6.1.7601.17514     C:\Windows\system32
+76c70000 WS2_32.dll      6.1.7601.17514     C:\Windows\system32
+76cb0000 ole32.dll       6.1.7601.17514     C:\Windows\system32
+76e10000 CLBCatQ.DLL     2001.12.8530.16385 C:\Windows\system32
+76ea0000 SHLWAPI.dll     6.1.7601.17514     C:\Windows\system32
+76f00000 MSCTF.dll       6.1.7600.16385     C:\Windows\system32
+76fd0000 RPCRT4.dll      6.1.7601.17514     C:\Windows\system32
+771a0000 ntdll.dll       6.1.7601.17514     C:\Windows\SYSTEM32
+772e0000 NSI.dll         6.1.7600.16385     C:\Windows\system32
+77350000 IMM32.DLL       6.1.7601.17514     C:\Windows\system32
+77370000 LPK.dll         6.1.7600.16385     C:\Windows\system32
+77380000 psapi.dll       6.1.7600.16385     C:\Windows\system32
+
+processes:
+000 Idle                      0 0    0
+004 System                    0 0    0
+100 smss.exe                  0 0    0
+184 csrss.exe                 0 0    0
+1bc wininit.exe               0 0    0
+1c4 csrss.exe                 1 0    0
+1f4 services.exe              0 0    0
+214 winlogon.exe              1 0    0
+230 lsass.exe                 0 0    0
+238 lsm.exe                   0 0    0
+298 svchost.exe               0 0    0
+2e8 svchost.exe               0 0    0
+34c svchost.exe               0 0    0
+374 svchost.exe               0 0    0
+3a0 svchost.exe               0 0    0
+42c svchost.exe               0 0    0
+47c igfxCUIService.exe        0 0    0
+4d4 svchost.exe               0 0    0
+544 spoolsv.exe               0 0    0
+56c svchost.exe               0 0    0
+628 vncserver.exe             0 0    0
+750 vncagent.exe              1 0    0
+7b4 taskhost.exe              1 64   34   normal C:\Windows\system32
+1b4 PresentationFontCache.exe 0 0    0
+1ec Dwm.exe                   1 4    2    normal C:\Windows\system32
+33c Explorer.EXE              1 263  189  normal C:\Windows
+6cc igfxEM.exe                1 8    13   normal C:\Windows\system32
+6fc igfxHK.exe                1 8    12   normal C:\Windows\system32
+2f8 vncserverui.exe           1 172  171  normal C:\Program Files\RealVNC\VNC Server
+5dc RtHDVCpl.exe              1 56   20   normal C:\Program Files\Realtek\Audio\HDA
+90c SearchIndexer.exe         0 0    0
+b78 svchost.exe               0 0    0
+bc0 svchost.exe               0 0    0
+4a0 Kasa.exe                  1 2400 7922 normal C:\Eurocrypt
+9a4 FP3530.exe                1 132  44   normal C:\PROGRA~1\DATECS~1\FPCOMU~1\FP3530~1
+ca4 audiodg.exe               0 0    0
+
+hardware:
++ Computer
+  - ACPI x86-based PC
++ Disk drives
+  - ADATA SP600 ATA Device
++ Display adapters
+  - Intel(R) HD Graphics (driver 10.18.10.4226)
+  - VNC Mirror Driver (driver 1.8.0.0)
++ DVD/CD-ROM drives
+  - DTSOFT Virtual CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - ATA Channel 0
+  - Intel(R) Pentium(R) processor N- and J-series / Intel(R) Celeron(R) processor N- and J-series AHCI - 0F23 (driver 9.4.4.1005)
++ Keyboards
+  - HID Keyboard Device
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Nuvoton Communications Port (COM1) (driver 1.0.2011.1109)
+  - Nuvoton Communications Port (COM2) (driver 1.0.2011.1109)
++ Processors
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
++ Sound, video and game controllers
+  - Intel(R) Display Audio (driver 6.16.0.3154)
+  - Realtek High Definition Audio (driver 6.0.1.7592)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - DAEMON Tools Virtual Bus (driver 4.49.1.352)
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 1 - 0F48 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 2 - 0F4A (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 3 - 0F4C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 4 - 0F4E (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - LPC: Bridge to Intel Legacy Block - 0F1C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - SMBus Port - 0F12 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor SoC Transaction Router - 0F00 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Trusted Execution Engine Interface - 0F18 (driver 10.1.1.11)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - PCI bus
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Generic USB Hub
+  - Generic USB Hub
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor EHCI USB - 0F34 (driver 10.1.1.11)
+  - USB Composite Device
+  - USB Root Hub
+
+cpu registers:
+eax = 02649600
+ebx = 00444b3c
+ecx = 00000000
+edx = 00171c30
+esi = 0012eebc
+edi = 00000000
+eip = 0045286a
+esp = 0012ee78
+ebp = 0012ef14
+
+stack dump:
+0012ee78  6a 28 45 00 de fa ed 0e - 01 00 00 00 07 00 00 00  j(E.............
+0012ee88  8c ee 12 00 6a 28 45 00 - 00 96 64 02 3c 4b 44 00  ....j(E...d.<KD.
+0012ee98  bc ee 12 00 00 00 00 00 - 14 ef 12 00 a8 ee 12 00  ................
+0012eea8  e0 25 5e 02 00 00 00 00 - 00 00 00 00 ad 3e 45 00  .%^..........>E.
+0012eeb8  01 00 00 00 00 00 00 00 - 11 25 5e 02 ec 81 57 00  .........%^...W.
+0012eec8  e0 25 5e 02 b3 d4 89 00 - dc ee 12 00 c0 a0 40 00  .%^...........@.
+0012eed8  14 ef 12 00 20 ef 12 00 - c0 a0 40 00 14 ef 12 00  .... .....@.....
+0012eee8  e0 25 5e 02 00 00 00 00 - 00 00 00 00 00 00 00 00  .%^.............
+0012eef8  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0012ef08  14 9a 5d 09 40 fe 89 00 - 00 87 ab 01 74 ef 12 00  ..].@.......t...
+0012ef18  88 fd 89 00 00 00 00 00 - 88 ef 12 00 c0 a0 40 00  ..............@.
+0012ef28  74 ef 12 00 00 00 00 00 - 00 00 00 00 00 00 00 00  t...............
+0012ef38  00 00 00 00 00 00 00 00 - 00 00 00 00 e4 36 5f 02  .............6_.
+0012ef48  94 6f 45 00 9a 99 99 99 - 99 99 25 40 00 00 00 00  .oE.......%@....
+0012ef58  00 00 00 00 00 00 12 00 - 00 00 00 00 00 00 00 00  ................
+0012ef68  00 00 00 00 8c 28 5e 02 - 00 87 ab 01 80 ef 12 00  .....(^.........
+0012ef78  b1 24 8a 00 80 9a 64 02 - 68 f0 12 00 ee 48 8f 00  .$....d.h....H..
+0012ef88  70 f0 12 00 c0 a0 40 00 - 68 f0 12 00 00 00 00 00  p.....@.h.......
+0012ef98  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0012efa8  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+
+disassembling:
+[...]
+0089d49e       jz      loc_89d4f2
+0089d4a0 592   lea     eax, [ebp-$28]
+0089d4a3       mov     edx, [ebp-$10]
+0089d4a6       call    -$491963 ($40bb48)     ; System.@UStrFromWStr
+0089d4ab       mov     eax, [ebp-$28]
+0089d4ae     > call    -$449637 ($453e7c)     ; System.SysUtils.StrToInt
+0089d4b3       mov     edx, eax
+0089d4b5       lea     ecx, [ebp-$24]
+0089d4b8       mov     eax, [ebp-4]
+0089d4bb       mov     eax, [eax+$3d0]
+0089d4c1       call    -$a376 ($893150)       ; FP3530_TLB.TCFD_BGR.get_ErrorMessageByCode
+[...]
+
+date/time          : 2019-08-17, 18:58:37, 306ms
+computer name      : KASA_3
+user name          : User <admin>
+registered owner   : User
+operating system   : Windows 7 Service Pack 1 build 7601
+system language    : Bulgarian
+system up time     : 2 days
+program up time    : 1 day 7 hours
+processors         : 4x Intel(R) Celeron(R) CPU J1900 @ 1.99GHz
+physical memory    : 1266/1942 MB (free/total)
+free disk space    : (C:) 46.49 GB
+display mode       : 1366x768, 32 bit
+process id         : $4a0
+allocated memory   : 193.07 MB
+largest free block : 926.50 MB
+executable         : Kasa.exe
+exec. date/time    : 2019-08-13 10:14
+version            : 0.2.7164.34853
+bde version        : 5.2.0.2
+compiled with      : Delphi 10.3 Rio
+madExcept version  : 5.0.0
+callstack crc      : $b4f485f3, $ccdf4fc9, $ccdf4fc9
+exception number   : 5
+exception class    : EOutOfResources
+exception message  : Not enough timers available.
+
+main thread ($444):
+0062e2f4 +064 Kasa.exe     Vcl.ExtCtrls                 TTimer.UpdateTimer
+0062e324 +008 Kasa.exe     Vcl.ExtCtrls                 TTimer.SetEnabled
+008f0b2c +040 Kasa.exe     ViewModel.SelectItem 158  +3 TViewModelSelectItem.GridKeyDown
+008f161a +03a Kasa.exe     View.SelectItem      139  +1 TViewSelectItem.GridKeyDown
+008ed32e +03a Kasa.exe     Vcl.DBGrids                  TCustomDBGrid.KeyDown
+005de376 +092 Kasa.exe     Vcl.Controls                 TWinControl.DoKeyDown
+005de3a2 +00a Kasa.exe     Vcl.Controls                 TWinControl.WMKeyDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+771e6feb +02b ntdll.dll                                 KiUserCallbackDispatcher
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                    TCustomForm.ShowModal
+008f1882 +04e Kasa.exe     View.SelectItem      221  +3 SelectItem
+008f4f5f +0d7 Kasa.exe     ViewModel.Sale       474 +13 TViewModelSale.GridKeyPress
+008f893e +036 Kasa.exe     View.Sale            279  +1 TViewSale.GridKeyPress
+005de527 +017 Kasa.exe     Vcl.Controls                 TWinControl.KeyPress
+006c85a7 +02b Kasa.exe     Vcl.Grids                    TCustomGrid.KeyPress
+008ed7bb +02b Kasa.exe     Vcl.DBGrids                  TCustomDBGrid.KeyPress
+005de57a +04a Kasa.exe     Vcl.Controls                 TWinControl.DoKeyPress
+005de5a2 +00a Kasa.exe     Vcl.Controls                 TWinControl.WMChar
+006c9e94 +034 Kasa.exe     Vcl.Grids                    TCustomGrid.WMChar
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006ac096 +1aa Kasa.exe     Vcl.Forms                    TCustomForm.ShowModal
+008f9675 +021 Kasa.exe     View.Sale            556  +4 ShowViewSale
+00930ddb +007 Kasa.exe     ViewModel.Main       188  +1 TViewModelMain.Sale
+00931080 +01c Kasa.exe     ViewModel.Main       254  +3 TViewModelMain.CheckItem
+00930e00 +02c Kasa.exe     ViewModel.Main       191  +4 TViewModelMain.Sale
+00931d27 +017 Kasa.exe     View.Main            148  +1 TViewMain.ButtonSaleClick
+005d820b +073 Kasa.exe     Vcl.Controls                 TControl.Click
+005f46c2 +01e Kasa.exe     Vcl.StdCtrls                 TCustomButton.Click
+008fcab6 +08e Kasa.exe     ButtonWithColor      830 +17 TBitBtnWithColor.Click
+005f51d8 +00c Kasa.exe     Vcl.StdCtrls                 TCustomButton.CNCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005d78ec +024 Kasa.exe     Vcl.Controls                 TControl.Perform
+005dca17 +023 Kasa.exe     Vcl.Controls                 DoControlMsg
+005dd49b +00b Kasa.exe     Vcl.Controls                 TWinControl.WMCommand
+006aa645 +045 Kasa.exe     Vcl.Forms                    TCustomForm.WMCommand
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+006a72c5 +64d Kasa.exe     Vcl.Forms                    TCustomForm.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584557d +044 USER32.dll                                SendMessageW
+75841b52 +016 USER32.dll                                CallWindowProcW
+005dc9c2 +0e6 Kasa.exe     Vcl.Controls                 TWinControl.DefaultHandler
+005d8658 +010 Kasa.exe     Vcl.Controls                 TControl.WMLButtonUp
+005d82f4 +088 Kasa.exe     Vcl.Controls                 TControl.DoMouseDown
+005d7cb2 +2be Kasa.exe     Vcl.Controls                 TControl.WndProc
+005dc8b3 +63b Kasa.exe     Vcl.Controls                 TWinControl.WndProc
+005f436c +06c Kasa.exe     Vcl.StdCtrls                 TButtonControl.WndProc
+005dbe80 +02c Kasa.exe     Vcl.Controls                 TWinControl.MainWndProc
+004f5a90 +014 Kasa.exe     System.Classes               StdWndProc
+7584cc6b +00a USER32.dll                                DispatchMessageW
+006b0cb3 +0f3 Kasa.exe     Vcl.Forms                    TApplication.ProcessMessage
+006b0cf6 +00a Kasa.exe     Vcl.Forms                    TApplication.HandleMessage
+006b1029 +0c9 Kasa.exe     Vcl.Forms                    TApplication.Run
+0093ff97 +0cb Kasa.exe     FPTest2019           126  +9 initialization
+76be3c43 +010 kernel32.dll                              BaseThreadInitThunk
+
+thread $b14:
+771e6a02 +0a ntdll.dll     NtWaitForMultipleObjects
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $3e8:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $6ac:
+771e6a32 +0a ntdll.dll     NtWaitForWorkViaWorkerFactory
+76be3c43 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 Kasa.exe        0.2.7164.34853     C:\Eurocrypt
+4bde0000 IDAPI32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c1e0000 idbat32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c5e0000 idsql32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4c9e0000 IDR20009.DLL    5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4cde0000 IDPDX32.DLL     5.2.0.2            C:\Program Files\Common Files\Borland Shared\BDE
+4e8e0000 BANTAM.DLL      1.0.0.8            C:\Program Files\Common Files\Borland Shared\BDE
+6f380000 SHFolder.dll    6.1.7600.16385     C:\Windows\system32
+706b0000 winmm.dll       6.1.7601.17514     C:\Windows\system32
+706f0000 MPR.dll         6.1.7600.16385     C:\Windows\system32
+718f0000 winspool.drv    6.1.7601.17514     C:\Windows\system32
+71fe0000 odbc32.DLL      6.1.7601.17514     C:\Windows\system32
+720c0000 odbcint.dll     6.1.7600.16385     C:\Windows\system32
+728f0000 FaultRep.dll    6.1.7601.17514     C:\Windows\system32
+732f0000 oleacc.dll      7.0.0.0            C:\Windows\system32
+73670000 wsock32.dll     6.1.7600.16385     C:\Windows\system32
+73790000 wkscli.dll      6.1.7601.17514     C:\Windows\system32
+737a0000 netutils.dll    6.1.7601.17514     C:\Windows\system32
+737b0000 netapi32.dll    6.1.7601.17514     C:\Windows\system32
+73910000 wtsapi32.dll    6.1.7601.17514     C:\Windows\system32
+73be0000 ntmarta.dll     6.1.7600.16385     C:\Windows\system32
+73d40000 dwmapi.dll      6.1.7600.16385     C:\Windows\system32
+73da0000 DUser.dll       6.1.7600.16385     C:\Windows\system32
+74050000 propsys.dll     7.0.7601.17514     C:\Windows\system32
+74160000 uxtheme.dll     6.1.7600.16385     C:\Windows\system32
+74220000 COMCTL32.dll    6.10.7601.17514    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+74840000 version.dll     6.1.7600.16385     C:\Windows\system32
+74b60000 rsaenh.dll      6.1.7600.16385     C:\Windows\system32
+74dc0000 CRYPTSP.dll     6.1.7600.16385     C:\Windows\system32
+74ed0000 bcrypt.dll      6.1.7600.16385     C:\Windows\system32
+74fd0000 srvcli.dll      6.1.7601.17514     C:\Windows\system32
+75220000 SspiCli.dll     6.1.7601.17514     C:\Windows\system32
+75290000 WINSTA.dll      6.1.7601.17514     C:\Windows\system32
+752c0000 CRYPTBASE.dll   6.1.7600.16385     C:\Windows\system32
+752d0000 SXS.DLL         6.1.7601.17514     C:\Windows\system32
+75330000 RpcRtRemote.dll 6.1.7601.17514     C:\Windows\system32
+753b0000 MSASN1.dll      6.1.7601.17514     C:\Windows\system32
+753c0000 CFGMGR32.dll    6.1.7601.17514     C:\Windows\system32
+753f0000 DEVOBJ.dll      6.1.7600.16385     C:\Windows\system32
+75410000 CRYPT32.dll     6.1.7601.17514     C:\Windows\system32
+75530000 KERNELBASE.dll  6.1.7601.17514     C:\Windows\system32
+75610000 WINTRUST.dll    6.1.7601.17514     C:\Windows\system32
+75640000 SETUPAPI.dll    6.1.7601.17514     C:\Windows\system32
+757e0000 GDI32.dll       6.1.7601.17514     C:\Windows\system32
+75830000 USER32.dll      6.1.7601.17514     C:\Windows\system32
+75900000 comdlg32.dll    6.1.7601.17514     C:\Windows\system32
+75b40000 USP10.dll       1.626.7601.17514   C:\Windows\system32
+75be0000 advapi32.dll    6.1.7601.17514     C:\Windows\system32
+75c80000 oleaut32.dll    6.1.7601.17514     C:\Windows\system32
+75e20000 msvcrt.dll      7.0.7600.16385     C:\Windows\system32
+75ed0000 sechost.dll     6.1.7600.16385     C:\Windows\SYSTEM32
+75ef0000 SHELL32.dll     6.1.7601.17514     C:\Windows\system32
+76b40000 WLDAP32.dll     6.1.7601.17514     C:\Windows\system32
+76b90000 kernel32.dll    6.1.7601.17514     C:\Windows\system32
+76c70000 WS2_32.dll      6.1.7601.17514     C:\Windows\system32
+76cb0000 ole32.dll       6.1.7601.17514     C:\Windows\system32
+76e10000 CLBCatQ.DLL     2001.12.8530.16385 C:\Windows\system32
+76ea0000 SHLWAPI.dll     6.1.7601.17514     C:\Windows\system32
+76f00000 MSCTF.dll       6.1.7600.16385     C:\Windows\system32
+76fd0000 RPCRT4.dll      6.1.7601.17514     C:\Windows\system32
+771a0000 ntdll.dll       6.1.7601.17514     C:\Windows\SYSTEM32
+772e0000 NSI.dll         6.1.7600.16385     C:\Windows\system32
+77350000 IMM32.DLL       6.1.7601.17514     C:\Windows\system32
+77370000 LPK.dll         6.1.7600.16385     C:\Windows\system32
+77380000 psapi.dll       6.1.7600.16385     C:\Windows\system32
+
+processes:
+000 Idle                      0 0    0
+004 System                    0 0    0
+100 smss.exe                  0 0    0
+184 csrss.exe                 0 0    0
+1bc wininit.exe               0 0    0
+1c4 csrss.exe                 1 0    0
+1f4 services.exe              0 0    0
+214 winlogon.exe              1 0    0
+230 lsass.exe                 0 0    0
+238 lsm.exe                   0 0    0
+298 svchost.exe               0 0    0
+2e8 svchost.exe               0 0    0
+34c svchost.exe               0 0    0
+374 svchost.exe               0 0    0
+3a0 svchost.exe               0 0    0
+42c svchost.exe               0 0    0
+47c igfxCUIService.exe        0 0    0
+4d4 svchost.exe               0 0    0
+544 spoolsv.exe               0 0    0
+56c svchost.exe               0 0    0
+628 vncserver.exe             0 0    0
+750 vncagent.exe              1 0    0
+7b4 taskhost.exe              1 64   34    normal C:\Windows\system32
+1b4 PresentationFontCache.exe 0 0    0
+1ec Dwm.exe                   1 4    2     normal C:\Windows\system32
+33c Explorer.EXE              1 265  189   normal C:\Windows
+6cc igfxEM.exe                1 8    13    normal C:\Windows\system32
+6fc igfxHK.exe                1 8    12    normal C:\Windows\system32
+2f8 vncserverui.exe           1 172  171   normal C:\Program Files\RealVNC\VNC Server
+5dc RtHDVCpl.exe              1 56   20    normal C:\Program Files\Realtek\Audio\HDA
+90c SearchIndexer.exe         0 0    0
+b78 svchost.exe               0 0    0
+bc0 svchost.exe               0 0    0
+4a0 Kasa.exe                  1 3011 10000 normal C:\Eurocrypt
+9a4 FP3530.exe                1 132  44    normal C:\PROGRA~1\DATECS~1\FPCOMU~1\FP3530~1
+d60 audiodg.exe               0 0    0
+
+hardware:
++ Computer
+  - ACPI x86-based PC
++ Disk drives
+  - ADATA SP600 ATA Device
++ Display adapters
+  - Intel(R) HD Graphics (driver 10.18.10.4226)
+  - VNC Mirror Driver (driver 1.8.0.0)
++ DVD/CD-ROM drives
+  - DTSOFT Virtual CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - ATA Channel 0
+  - Intel(R) Pentium(R) processor N- and J-series / Intel(R) Celeron(R) processor N- and J-series AHCI - 0F23 (driver 9.4.4.1005)
++ Keyboards
+  - HID Keyboard Device
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Nuvoton Communications Port (COM1) (driver 1.0.2011.1109)
+  - Nuvoton Communications Port (COM2) (driver 1.0.2011.1109)
++ Processors
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
+  - Intel(R) Celeron(R) CPU  J1900  @ 1.99GHz
++ Sound, video and game controllers
+  - Intel(R) Display Audio (driver 6.16.0.3154)
+  - Realtek High Definition Audio (driver 6.0.1.7592)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - DAEMON Tools Virtual Bus (driver 4.49.1.352)
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 1 - 0F48 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 2 - 0F4A (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 3 - 0F4C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor PCI Express - Root Port 4 - 0F4E (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - LPC: Bridge to Intel Legacy Block - 0F1C (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Platform Control Unit - SMBus Port - 0F12 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor SoC Transaction Router - 0F00 (driver 10.1.1.11)
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor Trusted Execution Engine Interface - 0F18 (driver 10.1.1.11)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - PCI bus
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Generic USB Hub
+  - Generic USB Hub
+  - Intel(R) Atom(TM)/Celeron(R)/Pentium(R) Processor EHCI USB - 0F34 (driver 10.1.1.11)
+  - USB Composite Device
+  - USB Root Hub
+
+cpu registers:
+eax = 11ce24e8
+ebx = 11978360
+ecx = 004b6a34
+edx = 0012d898
+esi = 000000c8
+edi = 0012db68
+eip = 0062e2f9
+esp = 0012d8c8
+ebp = 0012d910
+
+stack dump:
+0012d8c8  f9 e2 62 00 de fa ed 0e - 01 00 00 00 07 00 00 00  ..b.............
+0012d8d8  dc d8 12 00 f9 e2 62 00 - e8 24 ce 11 60 83 97 11  ......b..$..`...
+0012d8e8  c8 00 00 00 68 db 12 00 - 10 d9 12 00 f8 d8 12 00  ....h...........
+0012d8f8  1c d9 12 00 c0 a0 40 00 - 10 d9 12 00 f4 d2 8e 00  ......@.........
+0012d908  00 00 00 00 00 00 00 00 - 44 d9 12 00 29 e3 62 00  ........D...).b.
+0012d918  31 0b 8f 00 4c d9 12 00 - c0 a0 40 00 44 d9 12 00  1...L.....@.D...
+0012d928  64 05 8f 00 00 00 00 00 - 5c d9 00 00 b4 24 ce 11  d.......\....$..
+0012d938  2d 18 8f 00 9c d9 12 00 - 98 24 ce 11 6c d9 12 00  -........$..l...
+0012d948  1d 16 8f 00 38 db 12 00 - c0 a0 40 00 6c d9 12 00  ....8.....@.l...
+0012d958  9c d9 12 00 00 00 00 00 - 20 64 db 11 9c d9 12 00  ........ d......
+0012d968  00 60 db 11 90 d9 12 00 - 31 d3 8e 00 00 00 00 00  .`......1.......
+0012d978  f4 d2 8e 00 01 64 db 11 - e0 15 8f 00 00 60 db 11  .....d.......`..
+0012d988  d3 8f 00 00 20 64 db 11 - 00 00 00 00 7b e3 5d 00  .... d......{.].
+0012d998  e4 da 12 00 38 00 8f 00 - e4 da 12 00 e4 0e 8f 00  ....8...........
+0012d9a8  68 db 12 00 20 64 db 11 - a7 e3 5d 00 20 64 db 11  h... d....]. d..
+0012d9b8  68 db 12 00 b5 7c 5d 00 - f4 db 12 00 00 01 00 00  h....|].........
+0012d9c8  20 64 db 11 00 00 00 00 - b9 71 1e 77 40 da 12 00   d.......q.w@...
+0012d9d8  e8 d9 12 00 05 45 f0 76 - 00 00 00 00 a0 34 1b 00  .....E.v.....4..
+0012d9e8  50 db 12 00 61 0e f2 76 - a0 34 1b 00 38 00 00 00  P...a..v.4..8...
+0012d9f8  70 0e f2 76 00 00 00 00 - 00 00 00 00 50 da 12 00  p..v........P...
+
+disassembling:
+[...]
+008f0b1d       xor     edx, edx
+008f0b1f       call    -$2c2808 ($62e31c)     ; Vcl.ExtCtrls.TTimer.SetEnabled
+008f0b24 158   mov     eax, [ebp-4]
+008f0b27       mov     eax, [eax+$14]
+008f0b2a       mov     dl, 1
+008f0b2c     > call    -$2c2815 ($62e31c)     ; Vcl.ExtCtrls.TTimer.SetEnabled
+008f0b31 159   mov     eax, [ebp-8]
+008f0b34       mov     ax, [eax]
+008f0b37       sub     ax, 8
+008f0b3b       jz      loc_8f0b52
+008f0b3d       sub     ax, 5
+[...]
+

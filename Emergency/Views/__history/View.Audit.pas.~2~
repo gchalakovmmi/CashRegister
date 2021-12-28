@@ -1,0 +1,38 @@
+unit View.Audit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
+  ButtonWithColor;
+
+type
+  TViewAudit = class(TForm)
+    ButtonLogin: TBitBtnWithColor;
+    ButtonXReport: TBitBtnWithColor;
+    ButtonZReport: TBitBtnWithColor;
+    ButtonSale: TBitBtnWithColor;
+    ButtonPReport: TBitBtnWithColor;
+    ButtonSelectPrinter: TBitBtnWithColor;
+    ButtonCashIn: TBitBtnWithColor;
+    ButtonCashOut: TBitBtnWithColor;
+    StatusBar: TStatusBar;
+    ButtonReversal: TBitBtnWithColor;
+    ButtonAudit: TBitBtnWithColor;
+    ButtonItemCheck: TBitBtnWithColor;
+    ButtonAdmin: TBitBtnWithColor;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewAudit: TViewAudit;
+
+implementation
+
+{$R *.dfm}
+
+end.

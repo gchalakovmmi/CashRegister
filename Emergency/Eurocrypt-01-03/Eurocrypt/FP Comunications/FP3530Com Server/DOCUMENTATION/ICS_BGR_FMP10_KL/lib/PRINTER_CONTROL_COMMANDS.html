@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFMP_10_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>2Ch (44)	ПРИДВИЖВАНЕ НА ХАРТИЯТА</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_44_0_0.html" name="CMD_44_0_0">CMD_44_0_0</a></li></td>
+					<td><pre>
+2Ch (44)	ПРИДВИЖВАНЕ НА ХАРТИЯТА.
+
+	Област за данни:	
+				Lines
+	Отговор:	
+				Няма данни
+
+TRGT_LINES	Броят на редовете, с които да бъде придвижена хартията. 
+		Трябва да бъде положително число не по-голямо от 99 /1 или 2 байта/. 
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>5Ch (92)	ПЕЧАТ НА РАЗДЕЛИТЕЛНА ЛИНИЯ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_92_0_0.html" name="CMD_92_0_0">CMD_92_0_0</a></li></td>
+					<td><pre>
+5Ch (92)	ПЕЧАТ НА РАЗДЕЛИТЕЛНА ЛИНИЯ
+
+	Област за данни:	
+			LineType
+	Отговор:		
+			Няма данни
+
+	LineType		Един байт с допустима стойност:
+				'1'	Запълване със символа '-'.
+				'2'	Запълване последователно със символите '-' и ' '. 
+				'3'	Запълване със символа '='.
+
+
+Забележка:
+
+Принтерът печати разделителна линия от посочения тип по цялата ширина на хартията.
+Трябва да е отворен фискален или служебен бон.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

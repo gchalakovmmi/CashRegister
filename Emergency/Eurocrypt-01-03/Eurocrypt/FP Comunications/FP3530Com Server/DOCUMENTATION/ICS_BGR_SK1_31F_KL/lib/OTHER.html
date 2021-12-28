@@ -1,0 +1,330 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1251"/>
+<title>TFP_SK131_BGR_KL</title>
+<script type="text/javascript" src="../jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../jq.js"></script>
+<link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>4Ah (74)	ПОЛУЧАВАНЕ НА СТАТУСИТЕ</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_74_0_0.html" name="CMD_74_0_0">CMD_74_0_0</a></li></td>
+					<td><pre>
+4Ah (74)	ПОЛУЧАВАНЕ НА СТАТУСИТЕ
+
+	Област за данни:
+		Option
+	Отговор:	
+		S0
+		S1
+		S2
+		S3
+		S4
+		S5
+
+	Option	Един байт със следните значения:
+		W:	Първо чака да се отпечатат всички буфери на принтера.
+		X:	Не изчаква принтера.
+	Sn	Статус байт N.
+
+					</pre></td>
+				</tr>
+
+				<tr>
+					<td><li><a href="CMD_74_0_1.html" name="CMD_74_0_1">CMD_74_0_1</a></li></td>
+					<td><pre>
+4Ah (74)	ПОЛУЧАВАНЕ НА СТАТУСИТЕ
+
+	Област за данни:	None
+	Отговор:	
+		S0
+		S1
+		S2
+		S3
+		S4
+		S5
+
+	Sn	Status byte n.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>50h (80) SOUND SIGNAL</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CMD_80_0_0.html" name="CMD_80_0_0">CMD_80_0_0</a></li></td>
+					<td><pre>
+50H (80)	ЗВУКОВ СИГНАЛ
+
+	Област за данни:	
+			SoundData
+	Отговор:		Няма данни
+
+Командата служи за издаване на поредица от тонове със зададена честота и продължителност. 
+Ако няма входни данни, издава се звуков сигнал с честота 2 kHz и продължителност 300 ms.
+Ако входните данни са от вида: 
+<Hz>,<mSec> където Hz и mSec са цели числа, то се издава звуков сигнал с честота Hz херца (м/у 100 и 5000) и продължителност mSec милисекунди (м/у 50 и 2000).
+
+В останалите случаи данните са във формат, подобен на записа на ноти и могат да имат произволна дължина (не по-голяма от изискваната от протокола - 218 байта). 
+Първият невалиден символ прекъсва командата. 
+
+Допустимите подкоманди във данните са:
+•	Нота: 
+Една латинска главна буква със стойност от 'A' до'G'.
+	'C'	до
+	'D'	ре
+	'E'	ми
+	'F'	фа
+	'G'	сол
+	'A'	ла
+	'B'	си
+Ако непосредствено след нотата следва символът '#', то тя се повишава с един полутон (диез). 
+Ако след нотата следва символът '&', то тя се понижава с един полутон (бемол).
+•	Пауза: 
+Символът интервал (ASCII 20h).
+
+След нота или пауза може да има един или няколко байта, указващи продължителността. 
+
+Валидни символи са от '0' до '5', като те имат следното значение:
+	'0'	Базова продължителност
+	'1'	Базова продължителност * 2
+	'2'	Базова продължителност * 4
+	'3'	Базова продължителност * 8
+	'4'	Базова продължителност * 16
+	'5'	Базова продължителност * 32
+
+Ако има няколко продължителности една след друга, те се сумират.
+	•	Преминаване към по-висока гама: символът '+'.
+	•	Преминаване към по-ниска гама: символът '-'.
+	•	Задаване на темпо: Символът '^', следван от една цифра. 
+		Цифрата определя процентно продължителността на нотите и интервалите спрямо базовата. 
+		Допустима стойност:
+			'1'	200 %
+			'2'	175 %
+			'3'	140 %
+			'4'	120 %
+			'5'	100 %
+			'6'	80 %
+			'7'	60 %
+			'8'	50 %
+			'9'	40 %
+	•	Връщане към гама 1 (тя е и по подразбиране). Символът '@'. Тонът 'ла' за нея е 440 Hz.
+
+Изсвирването на изпратената последователност е фоново и принтерът може да изпълнява команди по време на звуковия сигнал.
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>CUSTOM COMMAND</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CUSTOM_CMD.html" name="CUSTOM_CMD">CUSTOM_CMD</a></li></td>
+					<td><pre>
+Custom command
+
+Answer type	: WordBool;
+
+		The command return false if:
+		- There isn't communication with the printer;
+		- when a serious technical or logical mistake has occurred (please check status bytes in this case);
+
+Parameters:
+
+   Cmd		: Integer;
+		The value of the command you want to accomplish. 
+		For example: 
+			"21h (33)	Clearing the display" - The value of "Cmd" must be 33
+
+   INPUT_STR	: AnsiString;
+		The input string (for the printer), described in the official communication protocol. 
+		For example: 
+			"35h (53)	CALCULATION OF A TOTAL"
+
+			If you want to pay some thing in cash and the amount should be 10 Shilling:
+			Cmd = 53
+			INPUT_STR = 'P+10.00'
+
+
+   OUTPUT_STR	: AnsiString;
+		Text answer from the printer - depends on the command and input text;
+
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>GET_LASTERROR</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="GET_LASTERROR.html" name="GET_LASTERROR">GET_LASTERROR</a></li></td>
+					<td><pre>
+function GET_LASTERROR(LANG_TRGT: Integer) : AnsiString;
+
+Answer type	: AnsiString;
+
+Parameters:
+
+LANG_TRGT	: Integer;
+
+0 : Bulgarian; [Windows1251]
+1 : Engliesh; [Windows1251]
+
+This function return the last error message if it exist.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>GET_STATUS_DESCRIPTIONEX</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="GET_STATUS_DESCRIPTIONEX.html" name="GET_STATUS_DESCRIPTIONEX">GET_STATUS_DESCRIPTIONEX</a></li></td>
+					<td><pre>
+Answer type	: WideString;
+
+Parameters:
+
+	BYTE_INDEX	- index of status byte;
+	BIT_INDEX	- index of status bit;
+	LANG_TRGT	-
+		0 : Bulgarian; [Windows1251]
+		1 : English; [Windows1251]
+
+The function returns the meaning of the status bit.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>GET_BIT_STATE</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="GET_BIT_STATE.html" name="GET_BIT_STATE">GET_BIT_STATE</a></li></td>
+					<td><pre>
+Answer type	: Boolean;
+
+Parameters:
+
+	BYTE_INDEX	- index of status byte;
+	BIT_INDEX	- index of status bit;
+
+The function returns current value of the status bit.
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+	  <td id="param">
+		<label><span>!</span>CUSTOM_CMD_2</label>
+			<div>
+			<table width="100%" border="1">
+				<tr>
+					<th width="300">Method name</th>
+					<th>Short description</th>
+				</tr>
+				<tr>
+					<td><li><a href="CUSTOM_CMD_2.html" name="CUSTOM_CMD_2">CUSTOM_CMD_2</a></li></td>
+					<td><pre>
+Custom command
+
+Answer type	: WideString;
+		Text answer from the printer - depends on the command and input text;
+
+Parameters:
+
+   Cmd		: Integer;
+		The value of the command you want to accomplish. 
+		For example: 
+			"21h (33)	Clearing the display" - The value of "Cmd" must be 33
+
+   INPUT_STR	: AnsiString;
+		The input string (for the printer), described in the official communication protocol. 
+		For example: 
+			"35h (53)	CALCULATION OF A TOTAL"
+
+			If you want to pay some thing in cash and the amount should be 10 Shilling:
+			Cmd = 53
+			INPUT_STR = 'P+10.00'
+					</pre></td>
+				</tr>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
