@@ -84,6 +84,8 @@ type
     procedure OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
 
     procedure CloseNonFiscalReceipt;
+
+    procedure Log(const AMessage: String);
   {$ENDREGION}
 
 
@@ -194,6 +196,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   System.DateUtils,
   Helper.MyFuncs,
   Model_FP700X,
@@ -245,6 +248,7 @@ end;
 
 procedure TDeviceFP700X.StartCOMServer;
 begin
+  Log('StartCOMServer');
   repeat
     FLastErrorCode := -1;
     try
@@ -266,6 +270,7 @@ end;
 
 procedure TDeviceFP700X.OpenConnection;
 begin
+  Log('OpenConnection');
   repeat
   	FLastErrorCode := 0;
     try
@@ -292,6 +297,7 @@ end;
 
 procedure TDeviceFP700X.CloseConnection;
 begin
+  Log('CloseConnection');
   repeat
     FLastErrorCode := -1;
     try
@@ -308,6 +314,7 @@ end;
 
 procedure TDeviceFP700X.StopCOMServer;
 begin
+  Log('StopCOMServer');
   repeat
     FLastErrorCode := -1;
 		try
@@ -337,6 +344,7 @@ var
   LSecond: WideString;
   LDST: WideString;
 begin
+  Log('ReadDateAndTime');
   repeat
     FLastErrorCode := -1;
     try
@@ -381,6 +389,7 @@ var
   LSecond: Word;
   LMilliSecond: Word;
 begin
+  Log('SetDateAndTime'+FormatDateTime('dd.mm.yyyy hh:nn:ss', ADateTime));
   repeat
     FLastErrorCode := -1;
     try
@@ -411,6 +420,7 @@ end;
 
 procedure TDeviceFP700X.CheckTheStatusOfTheFiscalTransaction;
 begin
+  Log('CheckTheStatusOfTheFiscalTransaction');
   repeat
     FLastErrorCode := -1;
     try
@@ -440,6 +450,7 @@ var
   LOutput: WideString;
   LResults: TArray<String>;
 begin
+  Log('CashInCashOut'+', '+AType+', '+AAmount);
   repeat
     FLastErrorCode := -1;
     try
@@ -483,6 +494,7 @@ var
   LStornoSumG: WideString;
   LStornoSumH: WideString;
 begin
+  Log('DailyReport'+', '+AType);
   repeat
     FLastErrorCode := -1;
     try
@@ -522,6 +534,24 @@ var
   LInput: WideString;
   LOutput: WideString;
 begin
+  if AShort then begin
+    LInput := '0\t'+
+      DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+'\t'+
+      DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+'\t';
+  end else begin
+    LInput := '1\t'+
+      DayOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodStart).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodStart)-2000).ToString.PadLeft(2, '0')+'\t'+
+      DayOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      MonthOf(APeriodFinish).ToString.PadLeft(2, '0')+'-'+
+      (YearOf(APeriodFinish)-2000).ToString.PadLeft(2, '0')+'\t';
+  end;
+  Log('PeriodReport'+', +'+LInput);
   repeat
     FLastErrorCode := -1;
     try
@@ -583,6 +613,7 @@ procedure TDeviceFP700X.CheckTimeDifference;
 var
   LDeviceDateTime: TDateTime;
 begin
+  Log('CheckTimeDifference');
   ReadDateAndTime(LDeviceDateTime);
   if SecondsBetween(Now, LDeviceDateTime) > 10 then begin
     SetDateAndTime(Now);
@@ -595,6 +626,7 @@ end;
 
 procedure TDeviceFP700X.OpenFiscalReceipt(const AOperatorNumber, AOperatorPassword, AUNP, ATillNumber: WideString);
 begin
+  Log('OpenFiscalReceipt'+', '+AOperatorNumber+', '+AOperatorPassword+', '+AUNP+', '+ATillNumber);
   repeat
     FLastErrorCode := -1;
     try
@@ -618,6 +650,7 @@ end;
 
 procedure TDeviceFP700X.PrintFiscalText(const AText: WideString);
 begin
+  Log('PrintFiscalText'+', '+AText);
   repeat
     FLastErrorCode := -1;
     try
@@ -642,6 +675,7 @@ end;
 
 procedure TDeviceFP700X.PrintSeparatingLine;
 begin
+  Log('PrintSeparatingLine');
   repeat
     FLastErrorCode := -1;
     try
@@ -665,6 +699,7 @@ var
   LPrice: String;
   LDiscountValue: String;
 begin
+  Log('SellItem'+', '+AItem+', '+ATaxCode+', '+APrice+', '+AQuantity+', '+ADiscountType+', '+ADiscountValue+', '+AMeasure);
   repeat
     FLastErrorCode := -1;
     try
@@ -709,6 +744,7 @@ var
   LTaxG: WideString;
   LTaxH: WideString;
 begin
+  Log('SubTotal');
   repeat
     FLastErrorCode := -1;
     try
@@ -750,6 +786,7 @@ var
   LTaxG: WideString;
   LTaxH: WideString;
 begin
+  Log('Discount');
   repeat
     FLastErrorCode := -1;
     try
@@ -782,6 +819,7 @@ end;
 
 procedure TDeviceFP700X.Total(const APaidMode, AAmountIn: WideString; var AStatus, AAmount: WideString);
 begin
+  Log('Total'+', '+APaidMode+', '+AAmountIn);
   repeat
     FLastErrorCode := -1;
     try
@@ -805,6 +843,7 @@ end;
 
 procedure TDeviceFP700X.DrawerKickOut;
 begin
+  Log('DrawerKickOut');
   repeat
     FLastErrorCode := -1;
     try
@@ -824,6 +863,7 @@ end;
 
 procedure TDeviceFP700X.CloseFiscalReceipt;
 begin
+  Log('CloseFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -843,6 +883,7 @@ end;
 
 procedure TDeviceFP700X.CancelFiscalReceipt;
 begin
+  Log('CancelFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -861,6 +902,7 @@ end;
 
 procedure TDeviceFP700X.DuplicateReceipt;
 begin
+  Log('DuplicateReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -880,6 +922,7 @@ end;
 
 procedure TDeviceFP700X.OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
 begin
+  Log('OpenReversalReceipt'+AOperatorNumber+', '+AOperatorPassword+', '+ATillNumber+', '+ADocNumber+', '+ADocDateTime+', '+AFiscalDeviceID+', '+AUNP);
   repeat
     FLastErrorCode := -1;
     try
@@ -910,6 +953,7 @@ end;
 
 procedure TDeviceFP700X.CloseNonFiscalReceipt;
 begin
+  Log('CloseNonFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -925,6 +969,21 @@ begin
       end;
     end;
   until FLastErrorCode = 0;
+end;
+
+procedure TDeviceFP700X.Log(const AMessage: String);
+const
+  CLogFileName = 'FP700X.log.txt';
+var
+  F: TextFile;
+begin
+  if TFile.Exists(CLogFileName) then begin
+    AssignFile(F, CLogFileName);
+    Append(F);
+    Writeln(F, FormatDateTime('hh:nn:ss', Now) + ': ' + AMessage);
+    Flush(F);
+    CloseFile(F);
+  end;
 end;
 
 
@@ -1013,6 +1072,17 @@ var
 begin
   SubTotal(LSubTotalBefore);
 
+  if ASaleDetails.VATRate = '0.00' then begin
+    SellItem(
+      ASaleDetails.ItemName,
+      '1',
+      ASaleDetails.ClientPrice,
+      ASaleDetails.Quantity,
+      ASaleDetails.DiscountType,
+      ASaleDetails.DiscountValue,
+      ASaleDetails.Measure
+    );
+  end;
   if ASaleDetails.VATRate = '9.00' then begin
     SellItem(
       ASaleDetails.ItemName,
@@ -1023,7 +1093,8 @@ begin
       ASaleDetails.DiscountValue,
       ASaleDetails.Measure
     );
-  end else begin
+  end;
+  if ASaleDetails.VATRate = '20.00' then begin
     SellItem(
       ASaleDetails.ItemName,
       '2',
@@ -1068,6 +1139,17 @@ var
 begin
   SubTotal(LSubTotalBefore);
 
+  if ASaleCancellation.VATRate = '0.00' then begin
+    SellItem(
+      ASaleCancellation.ItemName,
+      '1',
+      ASaleCancellation.ClientPrice,
+      ASaleCancellation.Quantity,
+      ASaleCancellation.DiscountType,
+      ASaleCancellation.DiscountValue,
+      ASaleCancellation.Measure
+    );
+  end;
   if ASaleCancellation.VATRate = '9.00' then begin
     SellItem(
       ASaleCancellation.ItemName,
@@ -1078,7 +1160,8 @@ begin
       ASaleCancellation.DiscountValue,
       ASaleCancellation.Measure
     );
-  end else begin
+  end;
+  if ASaleCancellation.VATRate = '20.00' then begin
     SellItem(
       ASaleCancellation.ItemName,
       '2',
@@ -1212,6 +1295,17 @@ var
 begin
   SubTotal(LSubTotalBefore);
 
+  if ASaleReversal.VATRate = '0.00' then begin
+    SellItem(
+      ASaleReversal.ItemName,
+      '1',
+      ASaleReversal.ClientPrice,
+      ASaleReversal.Quantity,
+      ASaleReversal.DiscountType,
+      ASaleReversal.DiscountValue,
+      ASaleReversal.Measure
+    );
+  end;
   if ASaleReversal.VATRate = '9.00' then begin
     SellItem(
       ASaleReversal.ItemName,
@@ -1222,7 +1316,8 @@ begin
       ASaleReversal.DiscountValue,
       ASaleReversal.Measure
     );
-  end else begin
+  end;
+  if ASaleReversal.VATRate = '20.00' then begin
     SellItem(
       ASaleReversal.ItemName,
       '2',
@@ -1360,14 +1455,11 @@ end;
 
 function TDeviceFP700X.OpenReceiptWithPartialPayment: Boolean;
 begin
-//  ShowMessage('101');
   CheckTheStatusOfTheFiscalTransaction;
-//  ShowMessage('102');
   Result :=
     (FTransactionIsOpen <> '0') and
     (FTransactionAmount <> FTransactionPayed) and
     (FTransactionPayed <> '0.00');
-//  ShowMessage('103');
 end;
 
 function TDeviceFP700X.OpenReceiptWithFullPayment: Boolean;

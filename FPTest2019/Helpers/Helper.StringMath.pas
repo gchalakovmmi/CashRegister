@@ -205,8 +205,6 @@ begin
 end;
 
 function TNumber.ToPrecision(const APrecision: Integer): INumber;
-var
-  LPrecision: Integer;
 begin
   if APrecision > MAX_PRECISION then Exit(nil);
 

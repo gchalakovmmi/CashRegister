@@ -159,9 +159,9 @@ end;
 // Setup/Teardown
 
 procedure TModelSale.SetupSale;
-var
-  LOpenReceiptNumber: WideString;
-  LOpenReceiptMissingPayment: WideString;
+//var
+//  LOpenReceiptNumber: WideString;
+//  LOpenReceiptMissingPayment: WideString;
 
   procedure RefreshData;
   begin
@@ -555,7 +555,7 @@ begin
     FormatFloat('0.0000', _Round(DataModuleItems.SelectedVENDORPRICE*DataModuleItems.SelectedCOEFF, 0.0001)),
     FormatFloat('0.00', _Round(DataModuleItems.SelectedCLIENTPRICE*DataModuleItems.SelectedCOEFF, 0.01)),
     DataModuleItems.SelectedDISCOUNT.ToString,
-    DataModuleItems.SelectedLOT,
+    FormatFloat('0.00', DataModuleItems.SelectedVAT),
     FSale.GID,
     FSale.SaleUniqueID,
     FSale.CreatedDate,

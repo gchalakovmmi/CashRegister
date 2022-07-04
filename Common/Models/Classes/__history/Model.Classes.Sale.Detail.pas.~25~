@@ -20,6 +20,7 @@ uses
     ASelectedVENDORPRICE,
     ASelectedCLIENTPRICE,
     ASelectedDISCOUNT,
+    ASelectedVAT,
     ASaleGID,
     ASaleUniqueID,
     ASaleCreatedDate,
@@ -244,7 +245,7 @@ type
     procedure UpdateInDataSet2;
 
     function ToJSON: TJSONObject;
-    function ToSaleDuplication: IModelClassSaleDetail;
+//    function ToSaleDuplication: IModelClassSaleDetail;
     function ToSaleCancellation: IModelClassSaleCancellation;
     function ToSaleReversal: IModelClassSaleReversal;
   {$ENDREGION}
@@ -273,6 +274,7 @@ function CreateFromSelectedItemModelClassSaleDetail(const
   ASelectedVENDORPRICE,
   ASelectedCLIENTPRICE,
   ASelectedDISCOUNT,
+  ASelectedVAT,
   ASaleGID,
   ASaleUniqueID,
   ASaleCreatedDate,
@@ -281,18 +283,18 @@ function CreateFromSelectedItemModelClassSaleDetail(const
   ASaleClientVIPStatus: String
 ): IModelClassSaleDetail;
 var
-  LQuantity: Integer;
-  LVendorPrice: Integer;
-  LClientPrice: Integer;
-  LPackDiscount: Integer;
-  LClientSurcharge: Integer;
-  LVIPPrice: Integer;
-  LPrice: Integer;
-  LTotal: Integer;
-  LClientPriceBase: Integer;
-  LDiscountValue: Integer;
-  LTotalBase: Integer;
-  LTotalVAT: Integer;
+  LQuantity: Int64;
+  LVendorPrice: Int64;
+  LClientPrice: Int64;
+  LPackDiscount: Int64;
+  LClientSurcharge: Int64;
+  LVIPPrice: Int64;
+  LPrice: Int64;
+  LTotal: Int64;
+  LClientPriceBase: Int64;
+  LDiscountValue: Int64;
+  LTotalBase: Int64;
+  LTotalVAT: Int64;
 begin
   Result := CreateModelClassSaleDetail;
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleDetailGID').ToString;
@@ -318,7 +320,7 @@ begin
 
   Result.ParentGID := ASaleGID;
   Result.SaleUniqueID := ASaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := ASaleCreatedDate;
   Result.CreatedTime := ASaleCreatedTime;
 
@@ -338,22 +340,78 @@ begin
   LPrice := ((LClientPrice * (10000 - LPackDiscount*100)) div 1000 + 5) div 10;
 
   if ASaleClientVIPStatus = '*' then begin
-    // 000
-    LVIPPrice := ((LVendorPrice * (10000 + LClientSurcharge*100)) div 1000 + 5) div 10;
+    // 0000*000/00000
+    LVIPPrice := ((LVendorPrice * (10000 + LClientSurcharge)) div 100000 + 5) div 10;
     // 000
     LPrice := Min(LPrice, LVIPPrice);
   end;
 
+
   // 000
-  LClientPriceBase := ((LPrice * 100) div 12 + 5) div 10;
+  LTotal := 0;
+  // 000
+  LTotalBase := 0;
 
   // 000*00 -> 00000
   LDiscountValue := LQuantity * (LClientPrice - LPrice);
 
-  // 000
-  LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
-  // 000
-  LTotalBase := ((LTotal * 100) div 12 + 5) div 10;
+  if (ASelectedVAT = '0.00') then begin
+    // 000
+    LClientPriceBase := ((LPrice * 1000) div 100 + 5) div 10;
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 1000) div 100 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 1000) div 100 - 5) div 10;
+      end;
+    end;
+  end;
+
+  if (ASelectedVAT = '9.00') then begin
+    // 000
+    LClientPriceBase := ((LPrice * 1000) div 109 + 5) div 10;
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 1000) div 109 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 1000) div 109 - 5) div 10;
+      end;
+    end;
+  end;
+
+  if (ASelectedVAT = '20.00') then begin
+    // 000
+    LClientPriceBase := ((LPrice * 1000) div 120 + 5) div 10;
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 1000) div 120 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 1000) div 120 - 5) div 10;
+      end;
+    end;
+  end;
+
   // 000
   LTotalVAT := LTotal - LTotalBase;
 
@@ -367,7 +425,7 @@ begin
   end;
 
   Result.TotalBase := FormatFloat('0.00', LTotalBase / 100);
-  Result.VATRate := '20.00';
+  Result.VATRate := ASelectedVAT;
   Result.TotalVAT := FormatFloat('0.00', LTotalVAT / 100);
   Result.Total := FormatFloat('0.00', LTotal / 100);
   Result.IsCancelled := 'не';
@@ -854,6 +912,7 @@ begin
   Result.AddPair('IsCancelled', IsCancelled);
 end;
 
+{*
 function TModelClassSaleDetail.ToSaleDuplication: IModelClassSaleDetail;
 var
   LTotal: Double;
@@ -862,7 +921,7 @@ begin
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleDetailGID').ToString;
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := CreatedDate;
   Result.CreatedTime := CreatedTime;
   Result.SaleDate := FormatDateTime('dd-mm-yy', Date);
@@ -900,14 +959,14 @@ begin
   Result.Total := FormatFloat('0.00', LTotal);
   Result.IsCancelled := 'не';
 end;
-
+  *}
 function TModelClassSaleDetail.ToSaleCancellation: IModelClassSaleCancellation;
 begin
   Result := CreateModelClassSaleCancellation;
   Result.GID := TGeneratorGIDs.NewGIDByName('SaleCancellationGID').ToString;
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CreatedDate := CreatedDate;
   Result.CreatedTime := CreatedTime;
   Result.CancellationDate := FormatDateTime('dd-mm-yy', Date);
@@ -940,7 +999,7 @@ begin
   Result.ParentGID := ParentGID;
   Result.SaleUniqueID := SaleUniqueID;
   Result.FiscalDeviceID := '';
-  Result.UserGID := G.UserGID.ToString;
+  Result.UserGID := G.UserID.ToString;
   Result.CompletedDate := '';
   Result.CompletedTime := '';
   Result.ReversalDate := FormatDateTime('dd-mm-yy', Date);

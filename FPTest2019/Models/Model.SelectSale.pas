@@ -10,6 +10,7 @@ uses
 implementation
 
 uses
+  System.UITypes,
   System.SysUtils,
   Vcl.Controls,
   Vcl.Dialogs,
@@ -100,8 +101,6 @@ end;
 
 function TModelSelectSale.SaleIsValidForReversal: Boolean;
 begin
-  Result := False;
-
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
@@ -226,7 +225,7 @@ begin
     FormatFloat('0.0000', _Round(ASaleDetail.VendorPrice.ToDouble*ASaleDetail.PackCoeff.ToDouble, 0.0001)),
     FormatFloat('0.00', _Round(ASaleDetail.ClientPrice.ToDouble*ASaleDetail.PackCoeff.ToDouble, 0.01)),
     ASaleDetail.PackDiscount,
-    ASaleDetail.VATRate.Substring(0, 1),
+    ASaleDetail.VATRate,
     FNewSale.GID,
     FNewSale.SaleUniqueID,
     FNewSale.CreatedDate,

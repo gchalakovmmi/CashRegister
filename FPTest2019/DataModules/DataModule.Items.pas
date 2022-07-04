@@ -39,6 +39,7 @@ type
         FDMemTableorgVendorPrice: TFloatField;
         FDMemTableorgClientPrice: TFloatField;
     FDMemTableLot: TStringField;
+    FDMemTableVAT: TFloatField;
 
   {$REGION 'Published Methods'}
     procedure FDMemTableFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -67,6 +68,7 @@ type
     FSelectedTYPED: string;
     FSelectedDISCOUNT: Double;
     FSelectedLOT: string;
+    FSelectedVAT: Double;
   {$ENDREGION}
 
   {$REGION 'Private Properties Getters/Setters'}
@@ -98,6 +100,7 @@ type
     property SelectedCOEFF: Double read FSelectedCOEFF write FSelectedCOEFF;
     property SelectedDISCOUNT: Double read FSelectedDISCOUNT write FSelectedDISCOUNT;
     property SelectedLOT: string read FSelectedLOT write FSelectedLOT;
+    property SelectedVAT: Double read FSelectedVAT write FSelectedVAT;
     property SelectedQUANTITY: Double read FSelectedQUANTITY write FSelectedQUANTITY;
     property SelectedVENDORPRICE: Double read FSelectedVENDORPRICE write FSelectedVENDORPRICE;
     property SelectedCLIENTPRICE: Double read FSelectedCLIENTPRICE write FSelectedCLIENTPRICE;
@@ -229,7 +232,7 @@ begin
   try
     LQuery.DatabaseName := G.ItemsFolder;
     LQuery.SQL.Clear;
-    LQuery.SQL.Add('SELECT Items.ID,ITEMS.GroupType,Items.Code,Items.Item,Measures.Coeff,Measures.Measure,Measures.BarCode, Measures.Factor, Measures.Minimum,Measures.Discount,Items.VendorPrice,Items.ClientPrice,Items.ShortName,Items.Lot FROM Items');
+    LQuery.SQL.Add('SELECT Items.ID,ITEMS.GroupType,Items.Code,Items.Item,Measures.Coeff,Measures.Measure,Measures.BarCode, Measures.Factor, Measures.Minimum,Measures.Discount,Items.VendorPrice,Items.ClientPrice,Items.ShortName,Items.Lot,Items.VAT FROM Items');
     LQuery.SQL.Add('LEFT JOIN Measures ON (Items.ID = Measures.ItemID)');
     LQuery.SQL.Add('WHERE (Items.Act = ''*'')');
     LQuery.SQL.Add('ORDER BY ITEM, BARCODE, COEFF');
@@ -254,6 +257,7 @@ begin
       FDMemTable.FieldByName('FACTOR').AsFloat := LQuery.FieldByName('FACTOR').AsFloat;
       FDMemTable.FieldByName('MINIMUM').AsFloat := LQuery.FieldByName('MINIMUM').AsFloat;
       FDMemTable.FieldByName('LOT').AsString := LQuery.FieldByName('LOT').AsString;
+      FDMemTable.FieldByName('VAT').AsFloat := LQuery.FieldByName('VAT').AsFloat;
       FDMemTable.FieldByName('orgMEASURE').AsString := LQuery.FieldByName('MEASURE').AsString;
       FDMemTable.FieldByName('orgVENDORPRICE').AsFloat := LQuery.FieldByName('VendorPrice').AsFloat;
       FDMemTable.FieldByName('orgCLIENTPRICE').AsFloat := LQuery.FieldByName('ClientPrice').AsFloat;
@@ -301,6 +305,7 @@ begin
   SelectedCOEFF := 0;
   SelectedDISCOUNT := 0;
   SelectedLOT := '';
+  SelectedVAT := 0;
   SelectedVENDORPRICE := 0;
   SelectedCLIENTPRICE := 0;
 end;
@@ -324,6 +329,7 @@ begin
   SelectedCOEFF := DataSource.DataSet.FieldByName('COEFF').AsFloat;
   SelectedDISCOUNT := DataSource.DataSet.FieldByName('DISCOUNT').AsFloat;
   SelectedLOT := DataSource.DataSet.FieldByName('LOT').AsString;
+  SelectedVAT := DataSource.DataSet.FieldByName('VAT').AsFloat;
   SelectedVENDORPRICE := DataSource.DataSet.FieldByName('orgVENDORPRICE').AsCurrency;
   SelectedCLIENTPRICE := DataSource.DataSet.FieldByName('orgCLIENTPRICE').AsCurrency;
   if FQuantity = '' then begin

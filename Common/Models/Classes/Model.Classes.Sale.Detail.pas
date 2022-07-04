@@ -20,7 +20,7 @@ uses
     ASelectedVENDORPRICE,
     ASelectedCLIENTPRICE,
     ASelectedDISCOUNT,
-    ASelectedLOT,
+    ASelectedVAT,
     ASaleGID,
     ASaleUniqueID,
     ASaleCreatedDate,
@@ -274,7 +274,7 @@ function CreateFromSelectedItemModelClassSaleDetail(const
   ASelectedVENDORPRICE,
   ASelectedCLIENTPRICE,
   ASelectedDISCOUNT,
-  ASelectedLOT,
+  ASelectedVAT,
   ASaleGID,
   ASaleUniqueID,
   ASaleCreatedDate,
@@ -347,12 +347,38 @@ begin
   end;
 
 
-  if (ASelectedLOT = '9') then begin
+  // 000
+  LTotal := 0;
+  // 000
+  LTotalBase := 0;
+  // 000
+  LClientPriceBase := 0;
+
+  // 000*00 -> 00000
+  LDiscountValue := LQuantity * (LClientPrice - LPrice);
+
+  if (ASelectedVAT = '0.00') then begin
+    // 000
+    LClientPriceBase := ((LPrice * 1000) div 100 + 5) div 10;
+
+    if LQuantity > 0 then begin
+      // 000
+      LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
+      // 000
+      LTotalBase := ((LTotal * 1000) div 100 + 5) div 10;
+    end else begin
+      if LQuantity < 0 then begin
+        // 000
+        LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
+        // 000
+        LTotalBase := ((LTotal * 1000) div 100 - 5) div 10;
+      end;
+    end;
+  end;
+
+  if (ASelectedVAT = '9.00') then begin
     // 000
     LClientPriceBase := ((LPrice * 1000) div 109 + 5) div 10;
-
-    // 000*00 -> 00000
-    LDiscountValue := LQuantity * (LClientPrice - LPrice);
 
     if LQuantity > 0 then begin
       // 000
@@ -365,37 +391,25 @@ begin
         LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
         // 000
         LTotalBase := ((LTotal * 1000) div 109 - 5) div 10;
-      end else begin
-        // 000
-        LTotal := 0;
-        // 000
-        LTotalBase := 0;
       end;
     end;
+  end;
 
-  end else begin
+  if (ASelectedVAT = '20.00') then begin
     // 000
-    LClientPriceBase := ((LPrice * 100) div 12 + 5) div 10;
-
-    // 000*00 -> 00000
-    LDiscountValue := LQuantity * (LClientPrice - LPrice);
+    LClientPriceBase := ((LPrice * 1000) div 120 + 5) div 10;
 
     if LQuantity > 0 then begin
       // 000
       LTotal := ((LQuantity * LPrice div 100) + 5) div 10;
       // 000
-      LTotalBase := ((LTotal * 100) div 12 + 5) div 10;
+      LTotalBase := ((LTotal * 1000) div 120 + 5) div 10;
     end else begin
       if LQuantity < 0 then begin
         // 000
         LTotal := ((LQuantity * LPrice div 100) - 5) div 10;
         // 000
-        LTotalBase := ((LTotal * 100) div 12 - 5) div 10;
-      end else begin
-        // 000
-        LTotal := 0;
-        // 000
-        LTotalBase := 0;
+        LTotalBase := ((LTotal * 1000) div 120 - 5) div 10;
       end;
     end;
   end;
@@ -413,11 +427,7 @@ begin
   end;
 
   Result.TotalBase := FormatFloat('0.00', LTotalBase / 100);
-  if (ASelectedLOT = '9') then begin
-    Result.VATRate := '9.00';
-  end else begin
-    Result.VATRate := '20.00';
-  end;
+  Result.VATRate := ASelectedVAT;
   Result.TotalVAT := FormatFloat('0.00', LTotalVAT / 100);
   Result.Total := FormatFloat('0.00', LTotal / 100);
   Result.IsCancelled := 'не';

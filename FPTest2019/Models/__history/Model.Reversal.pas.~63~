@@ -14,6 +14,7 @@ uses
   Vcl.Dialogs,
   System.UITypes,
   Helper.MyFuncs,
+  Model.AppSettings,
   Device.FP700X,
   DataModule.Sale,
   DataModule.Items,
@@ -75,7 +76,6 @@ type
     // Reversal Actions
     procedure RegistrationOfReversal;
     procedure RegistrationOfReversalAll;
-    procedure ToFile;
   {$ENDREGION}
 
 
@@ -100,26 +100,26 @@ begin
 
   if ASaleDetail.IsCancelled = '‰‡' then begin
     ViewMessage.ShowBadMessagePlus('“Œ«» ¿–“» ”À ≈ ¬≈◊≈ —“Œ–Õ»–¿Õ(¿Õ”À»–¿Õ)!');
-    Exit;
+    Exit(False);
   end;
 
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < ASaleDetail.Total.ToDouble then begin
     ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
-    Exit;
+    Exit(False);
   end;
 
   if not
-    MessageDlg(
+    (MessageDlg(
       Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ %s Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
-    Exit;
+    Exit(False);
   end;
 
   Result := True;
@@ -133,19 +133,19 @@ begin
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
     ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
-    Exit;
+    Exit(False);
   end;
 
   if not
-    MessageDlg(
+    (MessageDlg(
       Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ ÔÓ‰‡Ê·‡ Ì‡ ÒÚÓÈÌÓÒÚ %.2fÎ‚.', [FSale.Due.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
-    Exit;
+    Exit(False);
   end;
 
   Result := True;
@@ -218,12 +218,15 @@ begin
     LCurrentSaleDetail.IsCancelled := '‰‡';
     FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
     FSale.RegistrationOfReversal(LSaleReversal);
+    FSale.ReversalToFile(LSaleReversal);
 
     // Total on Reversal
     DeviceFP700X.TotalsOnReversal(LSaleReversal);
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 
@@ -262,6 +265,8 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 

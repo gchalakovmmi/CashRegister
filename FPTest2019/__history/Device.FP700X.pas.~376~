@@ -84,6 +84,8 @@ type
     procedure OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
 
     procedure CloseNonFiscalReceipt;
+
+    procedure Log(const AMessage: String);
   {$ENDREGION}
 
 
@@ -152,6 +154,8 @@ type
     procedure VoucherTotal(const ASale: IModelClassSale);
     procedure CardTotal(const ASale: IModelClassSale);
     procedure CashTotal(const ASale: IModelClassSale);
+    procedure CompleteTotal(const ASale: IModelClassSale);
+    procedure TopUpTotal;
     procedure CloseSale(const ASale: IModelClassSale);
     procedure DiscardSale(const ASale: IModelClassSale);
     procedure DuplicateReceipt;
@@ -192,6 +196,7 @@ var
 implementation
 
 uses
+  System.IOUtils,
   System.DateUtils,
   Helper.MyFuncs,
   Model_FP700X,
@@ -663,6 +668,7 @@ var
   LPrice: String;
   LDiscountValue: String;
 begin
+  Log('SellItem'+', '+AItem+', '+ATaxCode+', '+APrice+', '+AQuantity+', '+ADiscountType+', '+ADiscountValue+', '+AMeasure);
   repeat
     FLastErrorCode := -1;
     try
@@ -707,6 +713,7 @@ var
   LTaxG: WideString;
   LTaxH: WideString;
 begin
+  Log('SubTotal');
   repeat
     FLastErrorCode := -1;
     try
@@ -748,6 +755,7 @@ var
   LTaxG: WideString;
   LTaxH: WideString;
 begin
+  Log('Discount');
   repeat
     FLastErrorCode := -1;
     try
@@ -780,6 +788,7 @@ end;
 
 procedure TDeviceFP700X.Total(const APaidMode, AAmountIn: WideString; var AStatus, AAmount: WideString);
 begin
+  Log('Total'+', '+APaidMode+', '+AAmountIn);
   repeat
     FLastErrorCode := -1;
     try
@@ -803,6 +812,7 @@ end;
 
 procedure TDeviceFP700X.DrawerKickOut;
 begin
+  Log('DrawerKickOut');
   repeat
     FLastErrorCode := -1;
     try
@@ -822,6 +832,7 @@ end;
 
 procedure TDeviceFP700X.CloseFiscalReceipt;
 begin
+  Log('CloseFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -841,6 +852,7 @@ end;
 
 procedure TDeviceFP700X.CancelFiscalReceipt;
 begin
+  Log('CancelFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -859,6 +871,7 @@ end;
 
 procedure TDeviceFP700X.DuplicateReceipt;
 begin
+  Log('DuplicateReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -878,6 +891,7 @@ end;
 
 procedure TDeviceFP700X.OpenReversalReceipt(const AOperatorNumber, AOperatorPassword, ATillNumber, ADocNumber, ADocDateTime, AFiscalDeviceID, AUNP: WideString);
 begin
+  Log('OpenReversalReceipt'+AOperatorNumber+', '+AOperatorPassword+', '+ATillNumber+', '+ADocNumber+', '+ADocDateTime+', '+AFiscalDeviceID+', '+AUNP);
   repeat
     FLastErrorCode := -1;
     try
@@ -908,6 +922,7 @@ end;
 
 procedure TDeviceFP700X.CloseNonFiscalReceipt;
 begin
+  Log('CloseNonFiscalReceipt');
   repeat
     FLastErrorCode := -1;
     try
@@ -923,6 +938,21 @@ begin
       end;
     end;
   until FLastErrorCode = 0;
+end;
+
+procedure TDeviceFP700X.Log(const AMessage: String);
+const
+  CLogFileName = 'FP700X.log.txt';
+var
+  F: TextFile;
+begin
+  if TFile.Exists(CLogFileName) then begin
+    AssignFile(F, CLogFileName);
+    Append(F);
+    Writeln(F, FormatDateTime('hh:nn:ss', Now) + ': ' + AMessage);
+    Flush(F);
+    CloseFile(F);
+  end;
 end;
 
 
@@ -985,6 +1015,7 @@ end;
 
 procedure TDeviceFP700X.OpenSale(const ASale: IModelClassSale);
 begin
+  ShowMessage(ASale.ToJSON.ToString);
   OpenFiscalReceipt(
     ASale.UserGID,
     '0000',
@@ -1009,8 +1040,20 @@ var
   LSubTotalBefore: WideString;
   LSubTotalAfter: WideString;
 begin
+  ShowMessage(ASaleDetails.ToJSON.ToString);
   SubTotal(LSubTotalBefore);
 
+  if ASaleDetails.VATRate = '0.00' then begin
+    SellItem(
+      ASaleDetails.ItemName,
+      '1',
+      ASaleDetails.ClientPrice,
+      ASaleDetails.Quantity,
+      ASaleDetails.DiscountType,
+      ASaleDetails.DiscountValue,
+      ASaleDetails.Measure
+    );
+  end;
   if ASaleDetails.VATRate = '9.00' then begin
     SellItem(
       ASaleDetails.ItemName,
@@ -1021,7 +1064,8 @@ begin
       ASaleDetails.DiscountValue,
       ASaleDetails.Measure
     );
-  end else begin
+  end;
+  if ASaleDetails.VATRate = '20.00' then begin
     SellItem(
       ASaleDetails.ItemName,
       '2',
@@ -1066,6 +1110,17 @@ var
 begin
   SubTotal(LSubTotalBefore);
 
+  if ASaleCancellation.VATRate = '0.00' then begin
+    SellItem(
+      ASaleCancellation.ItemName,
+      '1',
+      ASaleCancellation.ClientPrice,
+      ASaleCancellation.Quantity,
+      ASaleCancellation.DiscountType,
+      ASaleCancellation.DiscountValue,
+      ASaleCancellation.Measure
+    );
+  end;
   if ASaleCancellation.VATRate = '9.00' then begin
     SellItem(
       ASaleCancellation.ItemName,
@@ -1076,7 +1131,8 @@ begin
       ASaleCancellation.DiscountValue,
       ASaleCancellation.Measure
     );
-  end else begin
+  end;
+  if ASaleCancellation.VATRate = '20.00' then begin
     SellItem(
       ASaleCancellation.ItemName,
       '2',
@@ -1137,6 +1193,42 @@ begin
   end;
 end;
 
+procedure TDeviceFP700X.CompleteTotal(const ASale: IModelClassSale);
+var
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  ASale.Due := OpenReceiptAmount;
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if OpenReceiptAmount.ToDouble > (ASale.CashPayment.ToDouble + OpenReceiptPayed.ToDouble) then begin
+      ASale.CashPayment := FormatFloat('0.00', OpenReceiptAmount.ToDouble - OpenReceiptPayed.ToDouble);
+    end;
+  end;
+  if OpenReceiptAmount.ToDouble = OpenReceiptPayed.ToDouble then begin
+    ASale.CashPayment := '0.00';
+  end;
+  ASale.Returned := FormatFloat('0.00', ASale.VoucherPayment.ToDouble + ASale.CardPayment.ToDouble + ASale.CashPayment.ToDouble - ASale.Due.ToDouble);
+  ASale.UpdateInDataSet;
+
+  if OpenReceiptAmount.ToDouble > OpenReceiptPayed.ToDouble then begin
+    if ASale.CashPayment <> '0.00' then begin
+      Total('0', ASale.CashPayment, LStatus, LAmount);
+    end;
+  end;
+end;
+
+procedure TDeviceFP700X.TopUpTotal;
+var
+  LSubTotal: WideString;
+  LStatus: WideString;
+  LAmount: WideString;
+begin
+  LSubTotal := OpenReceiptAmount;
+  Total('0', LSubTotal, LStatus, LAmount);
+end;
+
+
+
 procedure TDeviceFP700X.CloseSale(const ASale: IModelClassSale);
 begin
   DrawerKickOut;
@@ -1174,6 +1266,17 @@ var
 begin
   SubTotal(LSubTotalBefore);
 
+  if ASaleReversal.VATRate = '0.00' then begin
+    SellItem(
+      ASaleReversal.ItemName,
+      '1',
+      ASaleReversal.ClientPrice,
+      ASaleReversal.Quantity,
+      ASaleReversal.DiscountType,
+      ASaleReversal.DiscountValue,
+      ASaleReversal.Measure
+    );
+  end;
   if ASaleReversal.VATRate = '9.00' then begin
     SellItem(
       ASaleReversal.ItemName,
@@ -1184,7 +1287,8 @@ begin
       ASaleReversal.DiscountValue,
       ASaleReversal.Measure
     );
-  end else begin
+  end;
+  if ASaleReversal.VATRate = '20.00' then begin
     SellItem(
       ASaleReversal.ItemName,
       '2',
@@ -1322,14 +1426,14 @@ end;
 
 function TDeviceFP700X.OpenReceiptWithPartialPayment: Boolean;
 begin
-  ShowMessage('101');
+//  ShowMessage('101');
   CheckTheStatusOfTheFiscalTransaction;
-  ShowMessage('102');
+//  ShowMessage('102');
   Result :=
     (FTransactionIsOpen <> '0') and
     (FTransactionAmount <> FTransactionPayed) and
     (FTransactionPayed <> '0.00');
-  ShowMessage('103');
+//  ShowMessage('103');
 end;
 
 function TDeviceFP700X.OpenReceiptWithFullPayment: Boolean;

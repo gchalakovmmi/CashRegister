@@ -96,8 +96,6 @@ end;
 
 function TModelReversal.ItemIsValidForReversal(const ASaleDetail: IModelClassSaleDetail): Boolean;
 begin
-  Result := False;
-
   if ASaleDetail.IsCancelled = '‰‡' then begin
     ViewMessage.ShowBadMessagePlus('“Œ«» ¿–“» ”À ≈ ¬≈◊≈ —“Œ–Õ»–¿Õ(¿Õ”À»–¿Õ)!');
     Exit(False);
@@ -127,8 +125,6 @@ end;
 
 function TModelReversal.SaleIsValidForReversal: Boolean;
 begin
-  Result := False;
-
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
