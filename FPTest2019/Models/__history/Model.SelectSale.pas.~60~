@@ -1,4 +1,4 @@
-Ôªøunit Model.SelectSale;
+unit Model.SelectSale;
 
 interface
 
@@ -10,6 +10,7 @@ uses
 implementation
 
 uses
+  System.UITypes,
   System.SysUtils,
   Vcl.Controls,
   Vcl.Dialogs,
@@ -17,11 +18,17 @@ uses
   View.Message,
   Helper.MyFuncs,
   DataModule.Clients,
+  DataModule.Sale,
   View.SelectClient,
-  Model.Classes.Sale,
+  Model.AppSettings,
+
   Interfaces.Model.Classes.Sale,
+  Model.Classes.Sale,
   Interfaces.Model.Classes.Sale.Detail,
-  Interfaces.Model.Classes.Sale.Reversal, DataModule.Sale;
+  Model.Classes.Sale.Detail,
+  Interfaces.Model.Classes.Sale.Cancellation,
+  Model.Classes.Sale.Cancellation,
+  Interfaces.Model.Classes.Sale.Reversal;
 
 type
   TModelSelectSale = class(TInterfacedObject, IModelSelectSale)
@@ -30,11 +37,13 @@ type
   private
     function SaleIsValidForReversal: Boolean;
     procedure RegistrationOfReversalAll;
+    procedure RegistrationOfNewSale;
     procedure SetupNewSale;
-    procedure OpenSale;
-    procedure RegistrationOfSale;
-    procedure Totals;
-    procedure CloseSale;
+    procedure OpenNewSale;
+    function RegistrationOfNewSaleDetail(const ASaleDetail: IModelClassSaleDetail): IModelClassSaleDetail;
+    procedure RegistrationOfNewSaleCancellation(const ASaleDetail: IModelClassSaleDetail);
+    procedure NewTotals;
+    procedure CloseNewSale;
   {$ENDREGION}
 
 
@@ -53,8 +62,6 @@ type
 
   {$REGION 'Private Properties'}
   private
-    procedure CreateNewSale;
-    procedure RegistrationOfSaleAll;
 
   {$ENDREGION}
 
@@ -94,18 +101,16 @@ end;
 
 function TModelSelectSale.SaleIsValidForReversal: Boolean;
 begin
-  Result := False;
-
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
-    ViewMessage.ShowBadMessagePlus('–ù–Ø–ú–ê –î–û–°–¢–ê–¢–™–ß–ù–û –ù–ê–õ–ò–ß–ù–ò –°–†–ï–î–°–¢–í–ê –ó–ê –°–¢–û–†–ù–ò–†–ê–ù–ï!');
+    ViewMessage.ShowBadMessagePlus('ÕﬂÃ¿ ƒŒ—“¿“⁄◊ÕŒ Õ¿À»◊Õ» —–≈ƒ—“¬¿ «¿ —“Œ–Õ»–¿Õ≈!');
     Exit(False);
   end;
 
   if not
     (MessageDlg(
-      Format('–ü–æ—Ç–≤—ä—Ä–¥–µ—Ç–µ —Å—Ç–æ—Ä–Ω–∏—Ä–∞–Ω–µ –Ω–∞ –ø—Ä–æ–¥–∞–∂–±–∞ –Ω–∞ —Å—Ç–æ–π–Ω–æ—Å—Ç %.2f–ª–≤.', [FSale.Due.ToDouble]),
+      Format('œÓÚ‚˙‰ÂÚÂ ÒÚÓÌË‡ÌÂ Ì‡ ÔÓ‰‡Ê·‡ Ì‡ ÒÚÓÈÌÓÒÚ %.2f' + TAppSettings.GetSetting('MainCurrency'), [FSale.Due.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
@@ -131,7 +136,7 @@ begin
     DeviceFP700X.OpenReversal(FSale);
 
     for LCurrentSaleDetail in FSale.Details.List do begin
-      if LCurrentSaleDetail.IsCancelled <> '–¥–∞' then begin
+      if LCurrentSaleDetail.IsCancelled <> '‰‡' then begin
         LSaleReversal := LCurrentSaleDetail.ToSaleReversal;
         LSaleReversal.FiscalDeviceID := FSale.FiscalDeviceID;
         LSaleReversal.CompletedDate := FSale.CompletedDate;
@@ -141,7 +146,7 @@ begin
         DeviceFP700X.RegistrationOfReversal(LSaleReversal);
 
         // Store in Model
-        LCurrentSaleDetail.IsCancelled := '–¥–∞';
+        LCurrentSaleDetail.IsCancelled := '‰‡';
         FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
         FSale.RegistrationOfReversal(LSaleReversal);
         FSale.ReversalToFile(LSaleReversal);
@@ -153,35 +158,32 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 
+procedure TModelSelectSale.RegistrationOfNewSale;
+var
+  LSaleDetail: IModelClassSaleDetail;
+  LNewSaleDetail: IModelClassSaleDetail;
+begin
+  SetupNewSale;
+
+  OpenNewSale;
+
+  for LSaleDetail in FSale.Details.List do begin
+    LNewSaleDetail := RegistrationOfNewSaleDetail(LSaleDetail);
+    if LSaleDetail.IsCancelled = '‰‡' then begin
+      RegistrationOfNewSaleCancellation(LNewSaleDetail);
+    end;
+  end;
+
+  NewTotals;
+
+  CloseNewSale;
+end;
+
 procedure TModelSelectSale.SetupNewSale;
-begin
-
-end;
-
-procedure TModelSelectSale.OpenSale;
-begin
-
-end;
-
-procedure TModelSelectSale.RegistrationOfSale;
-begin
-
-end;
-
-procedure TModelSelectSale.Totals;
-begin
-
-end;
-
-procedure TModelSelectSale.CloseSale;
-begin
-
-end;
-
-procedure TModelSelectSale.CreateNewSale;
 begin
   FNewSale := CreateModelClassSale;
 
@@ -193,44 +195,86 @@ begin
   FNewSale.ClientAddress := '';
   FNewSale.ClientReceiver := '';
   FNewSale.ClientBuyer := '';
-  FNewSale.ClientVIPStatus := ''; if DataModuleClients.SelectedVIP then FSale.ClientVIPStatus := '*';
+  FNewSale.ClientVIPStatus := ''; if DataModuleClients.SelectedVIP then FNewSale.ClientVIPStatus := '*';
   FNewSale.ClientSurcharge := FormatFloat('0.00', DataModuleClients.SelectedMARKUP);
+
+  DeviceFP700X.SetupSale(FNewSale);
 end;
 
-procedure TModelSelectSale.RegistrationOfSaleAll;
-var
-  LSaleDetail: IModelClassSaleDetail;
-  LSaleReversal: IModelClassSaleReversal;
-  LDue: String;
+procedure TModelSelectSale.OpenNewSale;
 begin
-  LDue := FSale.Due;
+  // Open Fiscal Receipt
+  DeviceFP700X.OpenSale(FNewSale);
 
-  // Open Sale
-  DeviceFP700X.OpenSale(FSale);
+  // Open in Model
+  FNewSale.OpenSale;
+end;
 
-  for LSaleDetail in FSale.Details.List do begin
-    if LSaleDetail.IsCancelled <> '–¥–∞' then begin
-      LSaleReversal := LSaleDetail.ToSaleReversal;
-      LSaleReversal.FiscalDeviceID := FSale.FiscalDeviceID;
-      LSaleDetail.CompletedDate := FSale.CompletedDate;
-      LSaleReversal.CompletedTime := FSale.CompletedTime;
+function TModelSelectSale.RegistrationOfNewSaleDetail(const ASaleDetail: IModelClassSaleDetail): IModelClassSaleDetail;
+var
+  LNewSaleDetail: IModelClassSaleDetail;
+begin
+  LNewSaleDetail := CreateFromSelectedItemModelClassSaleDetail(
+    ASaleDetail.Typed,
+    ASaleDetail.ItemGID,
+    ASaleDetail.BarCode,
+    ASaleDetail.BaseItemName,
+    ASaleDetail.PackCoeff,
+    ASaleDetail.Measure,
+    FormatFloat('0.000', ASaleDetail.Quantity.ToDouble()),
+    FormatFloat('0.0000', _Round(ASaleDetail.VendorPrice.ToDouble*ASaleDetail.PackCoeff.ToDouble, 0.0001)),
+    FormatFloat('0.00', _Round(ASaleDetail.ClientPrice.ToDouble*ASaleDetail.PackCoeff.ToDouble, 0.01)),
+    ASaleDetail.PackDiscount,
+    ASaleDetail.VATRate,
+    FNewSale.GID,
+    FNewSale.SaleUniqueID,
+    FNewSale.CreatedDate,
+    FNewSale.CreatedTime,
+    FNewSale.ClientSurcharge,
+    FNewSale.ClientVIPStatus
+  );
 
-      // Fiscalization
-      DeviceFP700X.RegistrationOfSale(LSaleDetail);
+  // Fiscalization
+  DeviceFP700X.RegistrationOfSale(LNewSaleDetail);
 
-      // Store in Model
-      LSaleDetail.IsCancelled := '–¥–∞';
-      FSale.Due := FormatFloat('0.00', _Round(FSale.Due.ToDouble - LSaleReversal.Total.ToDouble, 0.01));
-      FSale.RegistrationOfReversal(LSaleReversal);
-      FSale.ReversalToFile(LSaleReversal);
+  // Store in Model
+  FNewSale.RegistrationOfSale(LNewSaleDetail);
+
+  Result := LNewSaleDetail;
+end;
+
+procedure TModelSelectSale.RegistrationOfNewSaleCancellation(const ASaleDetail: IModelClassSaleDetail);
+var
+  LSaleCancellation: IModelClassSaleCancellation;
+begin
+  LSaleCancellation := ASaleDetail.ToSaleCancellation;
+
+  // Fiscalization
+  DeviceFP700X.RegistrationOfCancelation(LSaleCancellation);
+
+  // Store in Model
+  ASaleDetail.IsCancelled := '‰‡';
+  FNewSale.RegistrationOfCancelation(LSaleCancellation);
+end;
+
+procedure TModelSelectSale.NewTotals;
+begin
+  FNewSale.CashPayment := FNewSale.Due;
+  if FNewSale.CashPayment.ToDouble > 0 then begin
+    if not FNewSale.Payments.Include('cash', FNewSale.CashPayment) then begin
+      DeviceFP700X.CashTotal(FNewSale);
+      FNewSale.CashTotal;
     end;
   end;
+end;
 
-  // Total on Sale
-  DeviceFP700X.TotalsOnReversalAll(LDue);
+procedure TModelSelectSale.CloseNewSale;
+begin
+  // Fiscalization
+  DeviceFP700X.CloseSale(FNewSale);
 
-  // Close Sale
-  DeviceFP700X.CloseSale(FSale);
+  // Close in Model
+  FNewSale.CloseSale;
 end;
 
 {$ENDREGION}
@@ -254,9 +298,8 @@ begin
   SelectClient('!');
   if DataModuleClients.SelectedID > 0 then begin
     FSale := CreateFromFileModelClassSale(DataModuleSale.FDMemTableSaleGID.AsString, DataModuleSale.FDMemTableSaleCreatedDate.AsString);
+    RegistrationOfNewSale;
     RegistrationOfReversalAll;
-
-
   end;
 end;
 

@@ -229,7 +229,7 @@ begin
   FDMemTable.CreateDataSet;
   // ================================================
   // Added by Georgi
-  FDMemTableClientPrice.DisplayFormat := '0.00' + TAppSettings.GetSetting('MainCurrency');
+  FDMemTableClientPrice.DisplayFormat := '0.00 ' + TAppSettings.GetSetting('MainCurrency');
   // ================================================
   FDMemTable.Filtered := False;
 

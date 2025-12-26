@@ -191,8 +191,8 @@ procedure TViewModelSale.SetupSale;
 begin
   SendNotification([actSaleDisableActions]);
   Model.SetupSale;
-  FInSale := False;
-  FVIPSale := False;
+  FInSale := (Model.Sale.Stage <> 'подготвена') and (Model.Sale.Stage <> 'приключена');
+  FVIPSale := FInSale and (Model.Sale.ClientVIPStatus <> '');
   SendNotification([actSaleEnableActions]);
   SendNotification([actSetupGUI]);
   SendNotification([actUpdateGUI]);
@@ -221,7 +221,7 @@ begin
   Result.Top := 0;
   Result.Left := 0;
   Result.Width := AClientWidth + 16;
-  Result.Height := AClientHeight + 16;
+  Result.Height := AClientHeight - 2;
 
   // Panel Buttons
   LWidth := AClientWidth - 16;
@@ -290,7 +290,7 @@ begin
   Result.LabelReturnedLeft := Result.LabelTotalLeft;
   Result.EditReturnedLeft := Result.LabelTotalLeft;
 
-  Result.LabelMinVIPCaption := 'Минималната сума ' + Formatfloat('0.00', TAppSettings.GetFloatSetting('MinVIPSale', 10)) + 'лв.не е достигната!';
+  Result.LabelMinVIPCaption := 'Минималната сума ' + Formatfloat('0.00', TAppSettings.GetFloatSetting('MinVIPSale', 10)) + TAppSettings.GetSetting('MainCurrency') + 'не е достигната!';
 end;
 
 function TViewModelSale.GetGUIActionsRecord: TViewSaleGUIActionsRecord;
@@ -310,7 +310,7 @@ end;
 function TViewModelSale.GetGUIRecord: TViewSaleGUIRecord;
 begin
   Result.Caption := 'АНЕТ 4 - ПРОДАЖБИ v ' + G.GetAppVersion + ' - [ПРОДАЖБА ' + Model.Sale.ClientName + ']';
-  if Model.Sale.SaleUniqueID <> '' then begin
+  if FInSale then begin
     Result.Caption := Result.Caption + ' [УНП: ' + Model.Sale.SaleUniqueID + ']';
   end;
 
@@ -519,6 +519,14 @@ begin
       Model.UpdateSaleCashPayment('0.00');
     end;
 
+    // Validate CashPayment Min
+    if (Model.Sale.VoucherPayment.ToDouble + Model.Sale.CardPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер и карта!');
+      Model.UpdateSaleCashPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditCardPayment]);
+    end;
+
     if (Model.Sale.Returned.ToDouble < -0.009) then begin
       ViewMessage.ShowBadMessage('Недостатъчно плащане!');
       SendNotification([actSaleActiveControlGrid]);
@@ -628,6 +636,16 @@ begin
       LCardPaymentUpdated := True;
     end;
 
+    // Validate Complete Payment
+    if (Model.Sale.VoucherPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер!');
+      Model.UpdateSaleCardPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditVoucherPayment]);
+
+      LCardPaymentUpdated := True;
+    end;
+
     if LCardPaymentUpdated then begin
       SendNotification([actSaleActiveControlEditCardPayment]);
     end else begin
@@ -680,6 +698,16 @@ begin
 
     LCardPaymentUpdated := True;
   end;
+
+    // Validate Complete Payment
+    if (Model.Sale.VoucherPayment.ToDouble = Model.Sale.Due.ToDouble) then begin
+      ViewMessage.ShowBadMessagePlus('Вече има цялостно заплащане с ваучер!');
+      Model.UpdateSaleCardPayment('0.00');
+      SendNotification([actSaleActiveControlGrid]);
+      SendNotification([actSaleActiveControlEditVoucherPayment]);
+
+      LCardPaymentUpdated := True;
+    end;
 
   if LCardPaymentUpdated then begin
     SendNotification([actSaleActiveControlEditCardPayment]);

@@ -14,6 +14,7 @@ uses
   Vcl.Dialogs,
   System.UITypes,
   Helper.MyFuncs,
+  Model.AppSettings,
   Device.FP700X,
   DataModule.Sale,
   DataModule.Items,
@@ -95,30 +96,28 @@ end;
 
 function TModelReversal.ItemIsValidForReversal(const ASaleDetail: IModelClassSaleDetail): Boolean;
 begin
-  Result := False;
-
   if ASaleDetail.IsCancelled = 'да' then begin
     ViewMessage.ShowBadMessagePlus('ТОЗИ АРТИКУЛ Е ВЕЧЕ СТОРНИРАН(АНУЛИРАН)!');
-    Exit;
+    Exit(False);
   end;
 
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < ASaleDetail.Total.ToDouble then begin
     ViewMessage.ShowBadMessagePlus('НЯМА ДОСТАТЪЧНО НАЛИЧНИ СРЕДСТВА ЗА СТОРНИРАНЕ!');
-    Exit;
+    Exit(False);
   end;
 
   if not
-    MessageDlg(
-      Format('Потвърдете сторниране на %s на стойност %.2fлв.', [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
+    (MessageDlg(
+      Format('Потвърдете сторниране на %s на стойност %.2f' + TAppSettings.GetSetting('MainCurrency'), [ASaleDetail.ItemName, ASaleDetail.Total.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
-    Exit;
+    Exit(False);
   end;
 
   Result := True;
@@ -126,8 +125,6 @@ end;
 
 function TModelReversal.SaleIsValidForReversal: Boolean;
 begin
-  Result := False;
-
   DeviceFP700X.CashCheck;
 
   if DeviceFP700X.Cash < FSale.Due.ToDouble then begin
@@ -136,13 +133,13 @@ begin
   end;
 
   if not
-    MessageDlg(
-      Format('Потвърдете сторниране на продажба на стойност %.2fлв.', [FSale.Due.ToDouble]),
+    (MessageDlg(
+      Format('Потвърдете сторниране на продажба на стойност %.2f' + TAppSettings.GetSetting('MainCurrency'), [FSale.Due.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
       mbYes
-    ) = mrYes
+    ) = mrYes)
   then begin
     Exit(False);
   end;
@@ -224,6 +221,8 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 
@@ -262,6 +261,8 @@ begin
 
     // Close Reversal
     DeviceFP700X.CloseReversal(FSale);
+
+    TAppSettings.SetSetting('LastSaleFileName', '');
   end;
 end;
 

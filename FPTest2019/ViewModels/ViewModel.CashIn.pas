@@ -143,7 +143,7 @@ end;
 
 function TViewModelCashIn.GetGUIRecord: TViewCashInGUIRecord;
 begin
-  Result.Cash := Format('Сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash]);
+  Result.Cash := Format('Сума до момента: %.2f ' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash]);
 end;
 
 procedure TViewModelCashIn.CashCheck;
@@ -162,7 +162,7 @@ begin
       Model.CashCheck;
       if
         MessageDlg(
-          Format('Натрупана сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency') + sLineBreak + ' Потвърдете въвеждане на %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash, LFloatAmount]),
+          Format('Натрупана сума до момента: %.2f ' + TAppSettings.GetSetting('MainCurrency') + sLineBreak + ' Потвърдете въвеждане на %.2f ' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash, LFloatAmount]),
           mtConfirmation,
           [mbYes, mbNo],
           0,
