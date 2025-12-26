@@ -290,7 +290,7 @@ begin
   Result.LabelReturnedLeft := Result.LabelTotalLeft;
   Result.EditReturnedLeft := Result.LabelTotalLeft;
 
-  Result.LabelMinVIPCaption := 'Минималната сума ' + Formatfloat('0.00', TAppSettings.GetFloatSetting('MinVIPSale', 10)) + 'лв.не е достигната!';
+  Result.LabelMinVIPCaption := 'Минималната сума ' + Formatfloat('0.00', TAppSettings.GetFloatSetting('MinVIPSale', 10)) + TAppSettings.GetSetting('MainCurrency') + 'не е достигната!';
 end;
 
 function TViewModelSale.GetGUIActionsRecord: TViewSaleGUIActionsRecord;

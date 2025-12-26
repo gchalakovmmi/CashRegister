@@ -1,58 +1,57 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.SelectSale.pas',0,1,135,1,135,0,0,,
-File_1=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.pas',0,1,399,1,438,0,0,,
-File_2=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Reversal.pas',0,1,1,1,25,0,0,,
-File_3=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.pas',0,1,205,1,215,0,0,,
-File_4=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Sale.pas',0,1,181,1,181,0,0,{{29,2},{33,13},{'Private Methods'}}{{36,2},{39,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{48,2},{51,13},{'Private Properties'}}{{54,2},{57,13},{'Interfaced Properties Getters/Setters'}}{{60,2},{63,13},{'Interfaced Properties'}}{{66,2},{88,13},{'Interfaced Methods'}}{{91,2},{94,13},{'Constructors/Destructors'}}{{104,0},{136,11},{'Private Methods'}}{{139,0},{141,11},{'Private Properties Getters/Setters'}}{{144,0},{151,11},{'Interfaced Properties Getters/Setters'}}{{383,0},{385,11},{'Constructors/Destructors'}},
-File_5=TSourceModule,'Z:\!anet4\Sources\Common\Interfaces\Interfaces.Enums.pas',0,1,89,1,108,0,0,,
-File_6=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Detail.pas',0,1,150,14,163,0,0,,
-File_7=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Reversal.pas',0,1,192,1,209,0,0,{{31,2},{36,13},{'Class Properties'}}{{39,2},{42,13},{'Private Methods'}}{{45,2},{75,13},{'Private Fields'}}{{78,2},{81,13},{'Private Properties Getters/Setters'}}{{84,2},{87,13},{'Private Properties'}}{{90,2},{148,13},{'Interfaced Properties Getters/Setters'}}{{212,2},{218,13},{'Interfaced Methods'}}{{221,2},{224,13},{'Constructors/Destructors'}}{{251,0},{253,11},{'Private Methods'}}{{256,0},{258,11},{'Private Properties Getters/Setters'}}{{261,0},{543,11},{'Interfaced Properties Getters/Setters'}}{{546,0},{653,11},{'Interfaced Methods'}}{{656,0},{690,11},{'Constructors/Destructors'}},
-File_8=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Model_FP700X.pas',0,1,3929,1,3936,0,0,,
-File_9=TSourceModule,'Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Reversal.pas',0,1,263,1,284,0,0,,
-File_10=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Reversals.pas',0,1,162,6,179,0,0,{{25,2},{30,13},{'Class Properties'}}{{32,2},{35,13},{'Private Methods'}}{{37,2},{40,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{47,2},{50,13},{'Private Properties'}}{{52,2},{55,13},{'Interfaced Properties Getters/Setters'}}{{57,2},{60,13},{'Interfaced Properties'}}{{62,2},{67,13},{'Interfaced Methods'}}{{69,2},{74,13},{'Constructors/Destructors'}}{{94,0},{96,11},{'Private Methods'}}{{98,0},{100,11},{'Private Properties Getters/Setters'}}{{102,0},{109,11},{'Interfaced Properties Getters/Setters'}}{{111,0},{157,11},{'Interfaced Methods'}},
-File_11=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Reversal.pas',0,1,141,1,152,0,0,,
-File_12=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Cancellations.pas',0,1,4,17,6,0,0,{{25,2},{30,13},{'Class Properties'}}{{32,2},{35,13},{'Private Methods'}}{{37,2},{40,13},{'Private Fields'}}{{42,2},{45,13},{'Private Properties Getters/Setters'}}{{47,2},{50,13},{'Private Properties'}}{{52,2},{55,13},{'Interfaced Properties Getters/Setters'}}{{57,2},{60,13},{'Interfaced Properties'}}{{62,2},{67,13},{'Interfaced Methods'}}{{69,2},{74,13},{'Constructors/Destructors'}}{{94,0},{96,11},{'Private Methods'}}{{98,0},{100,11},{'Private Properties Getters/Setters'}}{{102,0},{109,11},{'Interfaced Properties Getters/Setters'}}{{111,0},{157,11},{'Interfaced Methods'}}{{159,0},{185,11},{'Constructors/Destructors'}},
-File_13=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Cancellations.pas',0,1,1,5,24,0,0,,
-File_14=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Interfaces\Models\Interfaces.Model.Classes.Sale.Reversals.pas',0,1,1,45,1,0,0,,
+File_0=TSourceModule,'Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Sale.pas',0,1,460,1,494,0,0,{{153,2},{156,13},{'Private Methods'}}{{158,2},{161,13},{'Private Fields'}}{{163,2},{166,13},{'Private Properties Getters/Setters'}}{{168,2},{171,13},{'Private Properties'}}{{173,2},{176,13},{'Interfaced Properties Getters/Setters'}}{{178,2},{181,13},{'Interfaced Properties'}}{{206,2},{209,13},{'Constructors/Destructors'}}{{237,0},{244,11},{'Published Methods'}}{{247,0},{249,11},{'Private Methods'}}{{252,0},{254,11},{'Private Properties Getters/Setters'}}{{257,0},{269,11},{'Interfaced Properties Getters/Setters'}},
+File_1=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.SelectItem.pas',0,1,209,37,220,0,0,{{35,2},{41,13},{'Published Methods'}}{{43,2},{48,13},{'Private Methods'}}{{50,2},{55,13},{'Private Fields'}}{{57,2},{60,13},{'Private Properties Getters/Setters'}}{{62,2},{65,13},{'Private Properties'}}{{67,2},{72,13},{'Interfaced Properties Getters/Setters'}}{{74,2},{79,13},{'Interfaced Properties'}}{{81,2},{84,13},{'Interfaced Methods'}}{{86,2},{89,13},{'Constructors/Destructors'}}{{150,0},{178,11},{'Private Methods'}}{{181,0},{183,11},{'Private Properties Getters/Setters'}}{{186,0},{203,11},{'Interfaced Properties Getters/Setters'}}{{206,0},{208,11},{'Interfaced Methods'}}{{211,0},{213,11},{'Constructors/Destructors'}},
+File_2=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.SelectClient.pas',0,1,196,1,217,0,0,{{30,2},{36,13},{'Published Methods'}}{{38,2},{43,13},{'Private Methods'}}{{45,2},{50,13},{'Private Fields'}}{{52,2},{55,13},{'Private Properties Getters/Setters'}}{{57,2},{60,13},{'Private Properties'}}{{62,2},{67,13},{'Interfaced Properties Getters/Setters'}}{{69,2},{74,13},{'Interfaced Properties'}}{{76,2},{79,13},{'Interfaced Methods'}}{{81,2},{84,13},{'Constructors/Destructors'}}{{103,0},{140,11},{'Published Methods'}}{{143,0},{170,11},{'Private Methods'}}{{173,0},{175,11},{'Private Properties Getters/Setters'}}{{178,0},{195,11},{'Interfaced Properties Getters/Setters'}}{{198,0},{200,11},{'Interfaced Methods'}}{{203,0},{205,11},{'Constructors/Destructors'}},
+File_3=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CheckItem.pas',0,1,169,25,207,0,0,{{28,2},{32,13},{'Published Methods'}}{{34,2},{39,13},{'Private Methods'}}{{41,2},{46,13},{'Private Fields'}}{{48,2},{51,13},{'Private Properties Getters/Setters'}}{{53,2},{56,13},{'Private Properties'}}{{58,2},{63,13},{'Interfaced Properties Getters/Setters'}}{{65,2},{70,13},{'Interfaced Properties'}}{{72,2},{75,13},{'Interfaced Methods'}}{{77,2},{80,13},{'Constructors/Destructors'}}{{101,0},{133,11},{'Published Methods'}}{{136,0},{162,11},{'Private Methods'}}{{165,0},{167,11},{'Private Properties Getters/Setters'}}{{170,0},{187,11},{'Interfaced Properties Getters/Setters'}}{{190,0},{192,11},{'Interfaced Methods'}}{{195,0},{197,11},{'Constructors/Destructors'}},
+File_4=TSourceModule,'Z:\!anet4\Sources\Common\Models\Model.Generator.GIDs.pas',0,1,58,33,127,0,0,{{8,2},{11,13},{'Private Methods'}}{{13,2},{17,13},{'Private Fields'}}{{19,2},{23,13},{'Private Properties Getters/Setters'}}{{25,2},{28,13},{'Private Properties'}}{{30,2},{33,13},{'Interfaced Properties Getters/Setters'}}{{35,2},{40,13},{'Interfaced Properties'}}{{42,2},{45,13},{'Interfaced Methods'}}{{47,2},{50,13},{'Constructors/Destructors'}}{{61,0},{63,11},{'Private Methods'}}{{65,0},{77,11},{'Private Properties Getters/Setters'}}{{79,0},{81,11},{'Interfaced Properties Getters/Setters'}}{{83,0},{123,11},{'Interfaced Methods'}},
+File_5=TSourceModule,'Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas',0,1,3,39,10,0,0,,
+File_6=TSourceModule,'Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Detail.pas',0,1,459,21,473,0,0,,
+File_7=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.Sale.pas',0,1,539,1,560,0,0,{{80,2},{107,13},{'Published Methods'}}{{109,2},{117,13},{'Private Methods'}}{{119,2},{124,13},{'Private Fields'}}{{126,2},{129,13},{'Private Properties Getters/Setters'}}{{131,2},{134,13},{'Private Properties'}}{{136,2},{141,13},{'Interfaced Properties Getters/Setters'}}{{143,2},{148,13},{'Interfaced Properties'}}{{150,2},{153,13},{'Interfaced Methods'}}{{155,2},{158,13},{'Constructors/Destructors'}}{{179,0},{327,11},{'Published Methods'}}{{330,0},{512,11},{'Private Methods'}}{{515,0},{517,11},{'Private Properties Getters/Setters'}}{{520,0},{537,11},{'Interfaced Properties Getters/Setters'}}{{540,0},{542,11},{'Interfaced Methods'}}{{545,0},{547,11},{'Constructors/Destructors'}},
+File_8=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.Login.pas',0,1,153,1,181,0,0,{{25,2},{30,13},{'Published Methods'}}{{32,2},{37,13},{'Private Methods'}}{{39,2},{44,13},{'Private Fields'}}{{46,2},{49,13},{'Private Properties Getters/Setters'}}{{51,2},{54,13},{'Private Properties'}}{{56,2},{59,13},{'Interfaced Properties Getters/Setters'}}{{61,2},{66,13},{'Interfaced Properties'}}{{68,2},{71,13},{'Interfaced Methods'}}{{73,2},{76,13},{'Constructors/Destructors'}}{{89,0},{121,11},{'Published Methods'}}{{124,0},{146,11},{'Private Methods'}}{{149,0},{151,11},{'Private Properties Getters/Setters'}}{{154,0},{161,11},{'Interfaced Properties Getters/Setters'}}{{164,0},{166,11},{'Interfaced Methods'}}{{169,0},{171,11},{'Constructors/Destructors'}},
+File_9=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Model_FP700X.pas',0,1,11381,1,11396,0,0,,
+File_10=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Main.pas',0,1,48,23,73,0,0,{{20,2},{23,13},{'Private Methods'}}{{26,2},{29,13},{'Private Fields'}}{{32,2},{35,13},{'Private Properties Getters/Setters'}}{{38,2},{41,13},{'Private Properties'}}{{44,2},{47,13},{'Interfaced Properties Getters/Setters'}}{{50,2},{53,13},{'Interfaced Properties'}}{{56,2},{62,13},{'Interfaced Methods'}}{{65,2},{68,13},{'Constructors/Destructors'}}{{78,0},{80,11},{'Private Methods'}}{{83,0},{85,11},{'Private Properties Getters/Setters'}}{{88,0},{90,11},{'Interfaced Properties Getters/Setters'}}{{93,0},{138,11},{'Interfaced Methods'}}{{141,0},{143,11},{'Constructors/Destructors'}},
+File_11=TSourceModule,'Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Users.pas',0,1,51,50,64,0,0,,
+File_12=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Models\Model.Sale.pas',0,1,347,4,370,0,0,{{31,2},{35,13},{'Private Methods'}}{{38,2},{41,13},{'Private Fields'}}{{44,2},{47,13},{'Private Properties Getters/Setters'}}{{50,2},{53,13},{'Private Properties'}}{{56,2},{59,13},{'Interfaced Properties Getters/Setters'}}{{62,2},{65,13},{'Interfaced Properties'}}{{92,2},{95,13},{'Constructors/Destructors'}}{{105,0},{137,11},{'Private Methods'}}{{140,0},{142,11},{'Private Properties Getters/Setters'}}{{145,0},{152,11},{'Interfaced Properties Getters/Setters'}}{{377,0},{379,11},{'Constructors/Destructors'}},
+File_13=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas',0,1,1370,36,1383,0,0,,
+File_14=TSourceModule,'Z:\!anet4\Sources\FPTest2019\Views\View.CashInOut.pas',0,1,158,25,200,0,0,{{27,2},{32,13},{'Published Methods'}}{{34,2},{39,13},{'Private Methods'}}{{41,2},{46,13},{'Private Fields'}}{{48,2},{51,13},{'Private Properties Getters/Setters'}}{{53,2},{56,13},{'Private Properties'}}{{58,2},{63,13},{'Interfaced Properties Getters/Setters'}}{{65,2},{70,13},{'Interfaced Properties'}}{{72,2},{75,13},{'Interfaced Methods'}}{{77,2},{80,13},{'Constructors/Destructors'}}{{95,0},{127,11},{'Published Methods'}}{{130,0},{151,11},{'Private Methods'}}{{154,0},{156,11},{'Private Properties Getters/Setters'}}{{159,0},{179,11},{'Interfaced Properties Getters/Setters'}}{{182,0},{184,11},{'Interfaced Methods'}}{{187,0},{189,11},{'Constructors/Destructors'}},
 
 [Modules]
-Module0=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
-Module1=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
-Module2=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
-Module3=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
-Module4=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
-Module5=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
+Module0=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas
+Module1=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas
+Module2=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Store.pas
+Module3=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas
+Module4=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Stores.pas
+Module5=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sales.pas
 Count=6
 EditWindowCount=1
 
-[Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas]
+[Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas]
+[Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas]
+[Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Store.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas]
+[Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas]
+[Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Stores.pas]
 ModuleType=TSourceModule
 
-[Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas]
+[Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sales.pas]
 ModuleType=TSourceModule
 
 [EditWindow0]
-ViewCount=7
-CurrentEditView=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
+ViewCount=6
+CurrentEditView=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
 View5=5
-View6=6
 PercentageSizes=1
 Create=1
 Visible=1
@@ -71,93 +70,82 @@ BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
 LeftPanelSize=1896
 LeftPanelClients=PropertyInspector,DockSite3
-LeftPanelData=00000800010100000000A20D0000000000000168070000000000000100000000580E000009000000446F636B53697465330100000000D81A00001100000050726F7065727479496E73706563746F72FFFFFFFF
+LeftPanelData=00000800010100000000FD100000000000000168070000000000000100000000580E000009000000446F636B53697465330100000000742100001100000050726F7065727479496E73706563746F72FFFFFFFF
 RightPanelSize=2000
 RightPanelClients=DockSite2,DockSite4
-RightPanelData=00000800010100000000A20D00000000000001D00700000000000001000000004512000009000000446F636B53697465320100000000D81A000009000000446F636B5369746534FFFFFFFF
-BottomPanelSize=1610
+RightPanelData=00000800010100000000FD1000000000000001D00700000000000001000000004512000009000000446F636B536974653201000000007421000009000000446F636B5369746534FFFFFFFF
+BottomPanelSize=0
 BottomPanelClients=DockSite1,MessageView
-BottomPanelData=0000080001020100000009000000446F636B5369746531484C000000000000024A060000000000000100000000484C00000F0000004D65737361676556696577466F726DFFFFFFFF
+BottomPanelData=0000080001020200000009000000446F636B53697465310F0000004D65737361676556696577466F726D484C000000000000024A060000000000000100000000484C00000F0000004D65737361676556696577466F726DFFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
-BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779B1D00000000000002F906000000000000FFFFFFFF
+BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E6756696577AC2D000000000000026B0A000000000000FFFFFFFF
 
 [View0]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
-CursorX=28
-CursorY=142
-TopLine=130
+Module=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sales.pas
+CursorX=1
+CursorY=166
+TopLine=83
 LeftCol=1
-Elisions={{32,2},{40,13},{'Published Methods'}}{{42,2},{47,13},{'Private Methods'}}{{49,2},{54,13},{'Private Fields'}}{{56,2},{59,13},{'Private Properties Getters/Setters'}}{{61,2},{64,13},{'Private Properties'}}{{66,2},{71,13},{'Interfaced Properties Getters/Setters'}}{{73,2},{78,13},{'Interfaced Properties'}}{{80,2},{83,13},{'Interfaced Methods'}}{{85,2},{88,13},{'Constructors/Destructors'}}{{166,0},{193,11},{'Private Methods'}}{{196,0},{198,11},{'Private Properties Getters/Setters'}}{{221,0},{223,11},{'Interfaced Methods'}}{{226,0},{228,11},{'Constructors/Destructors'}}
+Elisions={{23,2},{28,13},{'Class Properties'}}{{30,2},{33,13},{'Private Methods'}}{{35,2},{38,13},{'Private Fields'}}{{40,2},{43,13},{'Private Properties Getters/Setters'}}{{45,2},{48,13},{'Private Properties'}}{{50,2},{53,13},{'Interfaced Properties Getters/Setters'}}{{55,2},{58,13},{'Interfaced Properties'}}{{60,2},{65,13},{'Interfaced Methods'}}{{67,2},{71,13},{'Constructors/Destructors'}}{{86,0},{88,11},{'Private Methods'}}{{90,0},{92,11},{'Private Properties Getters/Setters'}}{{94,0},{101,11},{'Interfaced Properties Getters/Setters'}}{{103,0},{147,11},{'Interfaced Methods'}}
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.SelectSale.pas
+EditViewName=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sales.pas
 
 [View1]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Sale.pas
-CursorX=1
-CursorY=395
-TopLine=370
+Module=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Stores.pas
+CursorX=30
+CursorY=16
+TopLine=1
 LeftCol=1
-Elisions={{153,2},{156,13},{'Private Methods'}}{{158,2},{161,13},{'Private Fields'}}{{163,2},{166,13},{'Private Properties Getters/Setters'}}{{168,2},{171,13},{'Private Properties'}}{{173,2},{176,13},{'Interfaced Properties Getters/Setters'}}{{178,2},{181,13},{'Interfaced Properties'}}{{206,2},{209,13},{'Constructors/Destructors'}}{{237,0},{244,11},{'Published Methods'}}{{247,0},{249,11},{'Private Methods'}}{{252,0},{254,11},{'Private Properties Getters/Setters'}}{{257,0},{269,11},{'Interfaced Properties Getters/Setters'}}{{491,0},{493,11},{'Constructors/Destructors'}}
+Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\DataModules\DataModule.Sale.pas
+EditViewName=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Stores.pas
 
 [View2]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
-CursorX=1
-CursorY=30
-TopLine=18
+Module=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas
+CursorX=5
+CursorY=1512
+TopLine=1100
 LeftCol=1
-Elisions=
+Elisions={{48,2},{53,13},{'Class Properties'}}{{55,2},{68,13},{'Private Methods'}}{{70,2},{109,13},{'Private Fields'}}{{111,2},{114,13},{'Private Properties Getters/Setters'}}{{116,2},{119,13},{'Private Properties'}}{{121,2},{196,13},{'Interfaced Properties Getters/Setters'}}{{198,2},{273,13},{'Interfaced Properties'}}{{275,2},{294,13},{'Interfaced Methods'}}{{296,2},{301,13},{'Constructors/Destructors'}}{{349,0},{494,11},{'Private Methods'}}{{497,0},{499,11},{'Private Properties Getters/Setters'}}{{502,0},{865,11},{'Interfaced Properties Getters/Setters'}}
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Views\View.Reversal.pas
+EditViewName=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas
 
 [View3]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
+Module=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Store.pas
 CursorX=1
-CursorY=287
-TopLine=273
+CursorY=1
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\ViewModels\ViewModel.Reversal.pas
+EditViewName=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Store.pas
 
 [View4]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
-CursorX=28
-CursorY=180
-TopLine=161
+Module=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas
+CursorX=1
+CursorY=222
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Models\Model.Reversal.pas
+EditViewName=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas
 
 [View5]
 CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
-CursorX=40
-CursorY=927
-TopLine=910
+Module=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas
+CursorX=29
+CursorY=13
+TopLine=1
 LeftCol=1
-Elisions={{52,2},{59,13},{'Class Properties'}}{{62,2},{65,13},{'Private Methods'}}{{68,2},{99,13},{'Private Fields'}}{{102,2},{105,13},{'Private Properties Getters/Setters'}}{{108,2},{111,13},{'Private Properties'}}{{114,2},{174,13},{'Interfaced Properties Getters/Setters'}}{{177,2},{237,13},{'Interfaced Properties'}}{{253,2},{256,13},{'Constructors/Destructors'}}{{364,0},{366,11},{'Private Methods'}}{{369,0},{371,11},{'Private Properties Getters/Setters'}}{{374,0},{666,11},{'Interfaced Properties Getters/Setters'}}{{937,0},{972,11},{'Constructors/Destructors'}}
+Elisions=
 Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Models\Model.Classes.Sale.Detail.pas
-
-[View6]
-CustomEditViewType=TEditView
-Module=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
-CursorX=1
-CursorY=1217
-TopLine=1192
-LeftCol=1
-Elisions={{29,2},{32,13},{'Published Methods'}}{{34,2},{58,13},{'Private Methods'}}{{61,2},{67,13},{'Private Fields'}}{{70,2},{74,13},{'Private Properties Getters/Setters'}}{{77,2},{80,13},{'Private Properties'}}{{83,2},{87,13},{'Interfaced Properties Getters/Setters'}}{{90,2},{96,13},{'Interfaced Properties'}}{{128,2},{131,13},{'Constructors/Destructors'}}{{150,0},{166,11},{'Published Methods'}}{{716,0},{728,11},{'Private Properties Getters/Setters'}}{{731,0},{743,11},{'Interfaced Properties Getters/Setters'}}{{1217,0},{1219,11},{'Constructors/Destructors'}}
-Bookmarks=
-EditViewName=Z:\!anet4\Sources\FPTest2019\Device.FP700X.pas
+EditViewName=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Store.pas
 
 [UndockedDesigner]
 Count=0
@@ -218,14 +206,14 @@ Create=1
 Visible=1
 Docked=0
 State=2
-Left=146
-Top=278
-Width=8932
-Height=8524
+Left=16
+Top=21
+Width=3323
+Height=4235
 MaxLeft=-5
 MaxTop=-11
-MaxWidth=8932
-MaxHeight=8524
+MaxWidth=3323
+MaxHeight=4235
 ClientWidth=10021
 ClientHeight=9765
 BottomPanelSize=8564
@@ -254,7 +242,7 @@ StayOnTop=0
 [MessageView]
 PercentageSizes=1
 Create=1
-Visible=1
+Visible=0
 Docked=1
 State=0
 Left=0
@@ -279,11 +267,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=2032
+Height=3797
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=2032
+ClientHeight=3797
 TBDockHeight=7155
 LRDockWidth=2000
 Dockable=1
@@ -298,12 +286,12 @@ State=0
 Left=0
 Top=0
 Width=1969
-Height=4759
+Height=4257
 MaxLeft=-5
 MaxTop=-11
 ClientWidth=1885
-ClientHeight=4342
-TBDockHeight=4759
+ClientHeight=3840
+TBDockHeight=4257
 LRDockWidth=1969
 Dockable=1
 StayOnTop=0
@@ -317,12 +305,12 @@ State=0
 Left=0
 Top=0
 Width=1375
-Height=5487
+Height=5348
 MaxLeft=-5
 MaxTop=-11
 ClientWidth=1292
-ClientHeight=5070
-TBDockHeight=5487
+ClientHeight=4930
+TBDockHeight=5348
 LRDockWidth=1375
 Dockable=1
 StayOnTop=0
@@ -336,11 +324,11 @@ State=0
 Left=0
 Top=382
 Width=1896
-Height=3080
+Height=4845
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
-ClientHeight=3080
+ClientHeight=4845
 TBDockHeight=9016
 LRDockWidth=1896
 Dockable=1
@@ -375,11 +363,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1176
+Height=2225
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1176
+ClientHeight=2225
 TBDockHeight=4834
 LRDockWidth=3562
 Dockable=1
@@ -394,11 +382,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1176
+Height=2225
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1176
+ClientHeight=2225
 TBDockHeight=4834
 LRDockWidth=3562
 Dockable=1
@@ -535,11 +523,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1176
+Height=2225
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1176
+ClientHeight=2225
 TBDockHeight=2503
 LRDockWidth=3401
 Dockable=1
@@ -554,11 +542,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=941
+Height=1176
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=941
+ClientHeight=1176
 TBDockHeight=2321
 LRDockWidth=2823
 Dockable=1
@@ -592,11 +580,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1176
+Height=2225
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1176
+ClientHeight=2225
 TBDockHeight=1155
 LRDockWidth=3677
 Dockable=1
@@ -721,11 +709,11 @@ State=0
 Left=0
 Top=0
 Width=1823
-Height=6171
+Height=4257
 MaxLeft=-5
 MaxTop=-11
 ClientWidth=1740
-ClientHeight=5754
+ClientHeight=3840
 TBDockHeight=6171
 LRDockWidth=1823
 Dockable=1
@@ -742,20 +730,20 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=8
+Left=0
+Top=24
 Width=2339
-Height=1476
+Height=2524
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1476
-TBDockHeight=1476
+ClientHeight=2524
+TBDockHeight=2524
 LRDockWidth=2339
 Dockable=1
 StayOnTop=0
 TabPosition=1
-ActiveTabID=RefactoringForm
+ActiveTabID=ToDo List
 TabDockClients=RefactoringForm,PatchForm,FindReferencsForm,ToDo List,MetricsView,QAView
 
 [DockSite1]
@@ -841,11 +829,11 @@ State=0
 Left=0
 Top=480
 Width=2000
-Height=2032
+Height=3797
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=2032
+ClientHeight=3797
 TBDockHeight=9016
 LRDockWidth=2000
 Dockable=1

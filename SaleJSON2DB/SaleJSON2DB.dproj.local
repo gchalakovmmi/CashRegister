@@ -2,14 +2,14 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>1899.12.30 00:00:00.000.794,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Payments.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.567,C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.dfm=Z:\!anet4\Sources\SaleJSON2DB\Views\View.Main.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.239,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversal.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.117,=Z:\!anet4\Sources\Common\Interfaces\Interfaces.Enums.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.567,Z:\!anet4\Sources\SaleJSON2DB\Views\View.Main.dfm=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.165,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payment.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.277,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.606,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.567,Z:\!anet4\Sources\SaleJSON2DB\Views\View.Main.pas=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.922,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sales.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.098,Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.470,=Z:\!anet4\Sources\SaleJSON2DB\Views\View.Message.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.005,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Reversals.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.165,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payment.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.531,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Detail.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.908,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellation.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.436,=Z:\!anet4\Sources\Common\Helpers\Helper.MyFuncs.pas</Transaction>
@@ -19,23 +19,23 @@
     <Transaction>1899.12.30 00:00:00.000.833,=Z:\!anet4\Sources\SaleJSON2DB\DataModules\DataModule.Items.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.259,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sales.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.987,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Cancellations.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.567,C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas=Z:\!anet4\Sources\SaleJSON2DB\Views\View.Main.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.661,=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.949,=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.214,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Payments.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.588,=Z:\!anet4\Sources\SaleJSON2DB\DataModules\DataModule.Clients.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.920,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Reversal.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.086,Z:\!anet4\Sources\SaleJSON2DB\SaleJSON2DB.dproj=C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.502,=Z:\!anet4\Sources\SaleJSON2DB\DataModules\DataModule.Sale.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.086,C:\Users\Dev Toncho\Documents\Embarcadero\Studio\Projects\Project1.dproj=Z:\!anet4\Sources\SaleJSON2DB\SaleJSON2DB.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.067,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Detail.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.800,=Z:\!anet4\Sources\SaleJSON2DB\Models\Classes\Model.Classes.Sale.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.098,Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.164,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.277,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Reversals.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.606,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Cancellation.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.655,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.470,=Z:\!anet4\Sources\SaleJSON2DB\Views\View.Message.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.005,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Reversals.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.724,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Payment.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.140,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.588,=Z:\!anet4\Sources\SaleJSON2DB\DataModules\DataModule.Clients.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.498,=Z:\!anet4\Sources\Common\Models\Model.AppSettings.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.563,=Z:\!anet4\Sources\Common\Models\Model.Generator.GIDs.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.140,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.164,=Z:\!anet4\Sources\Common\Interfaces\Models\Classes\Interfaces.Model.Classes.Sale.Details.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.724,=Z:\!anet4\Sources\Common\Models\Classes\Model.Classes.Sale.Payment.pas</Transaction>
   </Transactions>
 </BorlandProject>

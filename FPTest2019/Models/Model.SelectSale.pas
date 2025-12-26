@@ -110,7 +110,7 @@ begin
 
   if not
     (MessageDlg(
-      Format('Потвърдете сторниране на продажба на стойност %.2fлв.', [FSale.Due.ToDouble]),
+      Format('Потвърдете сторниране на продажба на стойност %.2f' + TAppSettings.GetSetting('MainCurrency'), [FSale.Due.ToDouble]),
       mtConfirmation,
       [mbYes, mbNo],
       0,

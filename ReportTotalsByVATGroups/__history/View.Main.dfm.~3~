@@ -1,0 +1,34 @@
+object ViewMain: TViewMain
+  Left = 0
+  Top = 0
+  Caption = #1054#1058#1063#1045#1058' '#1054#1041#1054#1056#1054#1058#1048' '#1047#1040' '#1055#1045#1056#1048#1054#1044' '#1055#1054' '#1044#1040#1053#1066#1063#1053#1048' '#1043#1056#1059#1055#1048
+  ClientHeight = 434
+  ClientWidth = 902
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object DateTimePickerStart: TDateTimePicker
+    Left = 8
+    Top = 8
+    Width = 97
+    Height = 21
+    Date = 44753.000000000000000000
+    Time = 0.618458645833015900
+    TabOrder = 0
+  end
+  object DateTimePickerEnd: TDateTimePicker
+    Left = 111
+    Top = 8
+    Width = 98
+    Height = 21
+    Date = 44753.000000000000000000
+    Time = 0.618458645833015900
+    TabOrder = 1
+  end
+end

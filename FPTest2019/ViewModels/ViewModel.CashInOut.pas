@@ -25,7 +25,8 @@ uses
   Model.Notification,
 
   Interfaces.Model.CashInOut,
-  Model.CashInOut;
+  Model.CashInOut,
+  Model.AppSettings;
 
 type
   TViewModelCashInOut = class(TInterfacedObject, IViewModelCashInOut, IObserver, IObservable)
@@ -143,7 +144,7 @@ end;
 
 function TViewModelCashInOut.GetGUIRecord: TViewCashInOutGUIRecord;
 begin
-  Result.Cash := Format('Натрупана сума до момента: %.2fлв.', [Model.Cash]);
+  Result.Cash := Format('Натрупана сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash]);
 end;
 
 procedure TViewModelCashInOut.CashCheck;
@@ -156,7 +157,7 @@ begin
   Model.CashCheck;
   if
     MessageDlg(
-      Format('Натрупана сума до момента: %.2fлв.' + sLineBreak + ' Потвърдете въвеждане на 250.00лв.', [Model.Cash]),
+      Format('Натрупана сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency') + sLineBreak + ' Потвърдете въвеждане на 250.00' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash]),
       mtConfirmation,
       [mbYes, mbNo],
       0,
@@ -172,7 +173,7 @@ begin
   Model.CashCheck;
   if
     MessageDlg(
-      Format('Натрупана сума до момента: %.2fлв.' + sLineBreak + ' Потвърдете извеждане на %.2fлв.', [Model.Cash, Model.Cash]),
+      Format('Натрупана сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency') + sLineBreak + ' Потвърдете извеждане на %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash, Model.Cash]),
       mtConfirmation,
       [mbYes, mbNo],
       0,

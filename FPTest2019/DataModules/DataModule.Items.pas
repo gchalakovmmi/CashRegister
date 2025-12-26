@@ -17,7 +17,8 @@ uses
   FireDAC.DApt.Intf,
   FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client,
+  Model.AppSettings;
 
 type
   TDataModuleItems = class(TDataModule)
@@ -226,6 +227,10 @@ begin
   FDMemTable.DisableControls;
   FDMemTable.Close;
   FDMemTable.CreateDataSet;
+  // ================================================
+  // Added by Georgi
+  FDMemTableClientPrice.DisplayFormat := '0.00' + TAppSettings.GetSetting('MainCurrency');
+  // ================================================
   FDMemTable.Filtered := False;
 
   LQuery := TQuery.Create(Self);

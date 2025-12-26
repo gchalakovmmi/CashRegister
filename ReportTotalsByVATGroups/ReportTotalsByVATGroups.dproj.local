@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.573,C:\!anet4\Sources\ReportTotalsByVATGroups\View.Main.dfm=C:\Users\Toncho\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.573,C:\!anet4\Sources\ReportTotalsByVATGroups\View.Main.pas=C:\Users\Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.819,C:\!anet4\Sources\ReportTotalsByVATGroups\ReportTotalsByVATGroups.dproj=C:\Users\Toncho\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.636,=C:\Users\Toncho\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

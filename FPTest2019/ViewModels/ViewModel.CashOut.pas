@@ -25,7 +25,8 @@ uses
   Model.Notification,
 
   Interfaces.Model.CashOut,
-  Model.CashOut;
+  Model.CashOut,
+  Model.AppSettings;
 
 type
   TViewModelCashOut = class(TInterfacedObject, IViewModelCashOut, IObserver, IObservable)
@@ -142,7 +143,7 @@ end;
 
 function TViewModelCashOut.GetGUIRecord: TViewCashOutGUIRecord;
 begin
-  Result.Cash := Format('Сума до момента: %.2fлв.', [Model.Cash]);
+  Result.Cash := Format('Сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash]);
 end;
 
 procedure TViewModelCashOut.CashCheck;
@@ -161,7 +162,7 @@ begin
       Model.CashCheck;
       if
         MessageDlg(
-          Format('Натрупана сума до момента: %.2fлв.' + sLineBreak + ' Потвърдете извеждане на %.2fлв.', [Model.Cash, LFloatAmount]),
+          Format('Натрупана сума до момента: %.2f' + TAppSettings.GetSetting('MainCurrency') + sLineBreak + ' Потвърдете извеждане на %.2f' + TAppSettings.GetSetting('MainCurrency'), [Model.Cash, LFloatAmount]),
           mtConfirmation,
           [mbYes, mbNo],
           0,

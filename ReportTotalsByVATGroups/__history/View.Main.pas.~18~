@@ -1,0 +1,162 @@
+unit View.Main;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Vcl.StdCtrls;
+
+type
+  TViewMain = class(TForm)
+    DateTimePickerStart: TDateTimePicker;
+    DateTimePickerEnd: TDateTimePicker;
+    ButtonRecalc: TButton;
+    OpenDialog: TOpenDialog;
+    EditFiscalDevice: TEdit;
+    procedure FormActivate(Sender: TObject);
+    procedure ButtonRecalcClick(Sender: TObject);
+  private
+    procedure ProcessData(
+      const ADataFolder: String;
+      const AFiscalDevice:
+      String; const AStartDate: TDate;
+      const AEndDate: TDateTime
+    );
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ViewMain: TViewMain;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  FileCtrl,
+  System.DateUtils,
+  System.Types,
+  System.JSON,
+  System.IOUtils;
+
+procedure TViewMain.FormActivate(Sender: TObject);
+begin
+//  DateTimePickerStart.Date := Date;
+//  DateTimePickerEnd.Date := Date;
+end;
+
+procedure TViewMain.ButtonRecalcClick(Sender: TObject);
+var
+  LDir: string;
+begin
+  LDir := 'C:\!anet4\TestData';
+  if FileCtrl.SelectDirectory(LDir, [sdPrompt], 1000) then begin
+    ProcessData(LDir, EditFiscalDevice.Text, DateTimePickerStart.Date, DateTimePickerEnd.Date);
+  end;
+end;
+
+procedure TViewMain.ProcessData(
+  const ADataFolder: String;
+  const AFiscalDevice: String;
+  const AStartDate: TDate;
+  const AEndDate: TDateTime
+);
+var
+  LDate: TDateTime;
+  LFolderName: String;
+  LSearchOption: TSearchOption;
+  LImportFileName: String;
+  LList: TStringDynArray;
+  LText: String;
+  LJSONObject: TJSONObject;
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  LJSONObject2: TJSONObject;
+  i: Integer;
+  LTotal: Extended;
+  LTotal0: Extended;
+  LTotal9: Extended;
+  LTotal20: Extended;
+  LDateail: TJSONObject;
+  LExportText: String;
+  LDetailVATRate: String;
+  LDetailTotal: String;
+begin
+  // Import
+  if not TDirectory.Exists(ADataFolder) then Exit;
+
+  // Process
+  LDate := AStartDate;
+  while LDate <= AEndDate do begin
+    LTotal := 0; LTotal0 := 0; LTotal9 := 0; LTotal20 := 0;
+
+    LFolderName := ADataFolder;
+    LFolderName := TPath.Combine(LFolderName, YearOf(LDate).ToString);
+    LFolderName := TPath.Combine(LFolderName, MonthOf(LDate).ToString.PadLeft(2, '0'));
+    LFolderName := TPath.Combine(LFolderName, DayOf(LDate).ToString.PadLeft(2, '0'));
+
+    { Select the search option }
+    LSearchOption := TSearchOption.soTopDirectoryOnly;
+
+    if TDirectory.Exists(LFolderName) then begin
+      LList := TDirectory.GetFiles(LFolderName, 'Sale*.json', LSearchOption);
+
+      for i := 0 to Length(LList) - 1 do begin
+        LImportFileName := TPath.Combine(LFolderName, LList[i]);
+        if not TFile.Exists(LImportFileName) then Exit;
+        LText := TFile.ReadAllText(LImportFileName, TEncoding.UTF8);
+
+        LJSONObject := TJSONObject.ParseJSONValue(LText) as TJSONObject;
+
+        if (
+          ((AFiscalDevice = '') or (AFiscalDevice = (LJSONObject.GetValue('FiscalDeviceID') as TJSONString).Value))
+        ) then begin
+          LJSONArray := LJSONObject.GetValue('Details') as TJSONArray;
+          for LJSONValue in LJSONArray do begin
+            LJSONObject2 := LJSONValue as TJSONObject;
+            LDetailVATRate := (LJSONObject2.GetValue('VATRate') as TJSONString).Value;
+            LDetailTotal := (LJSONObject2.GetValue('Total') as TJSONString).Value;
+
+            if '302520535' = (LJSONObject.GetValue('GID') as TJSONString) then begin
+              LTotal := LTotal + 1;
+            end;
+
+            LTotal := LTotal + LDetailTotal.ToExtended;
+            if LDetailVATRate = '0.00' then begin
+              LTotal0 := LTotal0 + (LJSONObject2.GetValue('Total') as TJSONString).Value.ToExtended;
+            end;
+            if LDetailVATRate = '9.00' then begin
+              LTotal9 := LTotal9 + (LJSONObject2.GetValue('Total') as TJSONString).Value.ToExtended;
+            end;
+            if LDetailVATRate = '20.00' then begin
+              LTotal20 := LTotal20 + (LJSONObject2.GetValue('Total') as TJSONString).Value.ToExtended;
+            end;
+
+            LExportText := LExportText +
+              FormatDateTime('dd.mm.yyyy', LDate)+
+              FormatFloat('0.00', LTotal).PadRight(15)+
+              FormatFloat('0.00', LTotal0).PadRight(15)+
+              FormatFloat('0.00', LTotal9).PadRight(15)+
+              FormatFloat('0.00', LTotal20).PadRight(15)+
+              #$0D#$0A;
+          end;
+        end;
+      end;
+    end;
+    LDate := LDate + 1;
+  end;
+  TFile.WriteAllText('result.txt', LExportText);
+end;
+
+end.
