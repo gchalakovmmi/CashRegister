@@ -28,6 +28,7 @@ uses
   Interfaces.Model.Pattern.Observer,
   Interfaces.ViewModel.Sale,
   DataModule.Sale;
+  Model.AppSettings;
 
 type
   TViewSale = class(TForm, IObserver, IObservable)
@@ -74,8 +75,9 @@ type
       EditTotal: TDBEdit;
 
     LabelMinVIP: TLabel;
-
-    StatusBar: TStatusBar;
+    CurrencyAll: TLabel;
+    CurrencyCash: TLabel;
+    CurrencyChange: TLabel;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -187,6 +189,10 @@ begin
 
   FViewModel := CreateViewModelSale;
   FViewModel.Observable.Subscribe(FObserver);
+
+  CurrencyAll.Caption := 'TESTCHE';
+  CurrencyCash.Caption := 'TESTCHE';
+  CurrencyChange.Caption := 'TESTCHE';
 
   ViewModel.SetupSale;
 end;
@@ -371,12 +377,14 @@ begin
   if actCloseForm in AModelNotification.Actions then begin
     if actCheckItem in AModelNotification.Actions then begin
       G.ShowCheckItem := True;
+    end else begin
+      G.ShowCheckItem := False;
     end;
     FExitToMainMenu := True;
     Close;
   end;
   if actCloseFormAndRepeat in AModelNotification.Actions then begin
-    G.ShowCheckItem := True;
+    G.ShowCheckItem := False;
     FExitToMainMenu := False;
     Close;
   end;
@@ -551,7 +559,11 @@ begin
   FExitToMainMenu := False;
   repeat
     LViewSale := TViewSale.Create(nil);
-    LViewSale.ShowModal;
+    try
+      LViewSale.ShowModal;
+    finally
+      LViewSale.Free;
+    end;
   until FExitToMainMenu;
 end;
 

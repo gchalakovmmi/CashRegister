@@ -74,6 +74,9 @@ type
       EditTotal: TDBEdit;
 
     LabelMinVIP: TLabel;
+    CurrencyAll: TLabel;
+    CurrencyCash: TLabel;
+    CurrencyChange: TLabel;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -172,7 +175,8 @@ uses
   Interfaces.GUIRecords,
   Model.Pattern.Observer.Observer,
   Model.Pattern.Observer.Observable,
-  ViewModel.Sale;
+  ViewModel.Sale,
+  Model.AppSettings;
 
 {$REGION 'Published Methods'}
 
@@ -185,6 +189,10 @@ begin
 
   FViewModel := CreateViewModelSale;
   FViewModel.Observable.Subscribe(FObserver);
+
+  CurrencyAll.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
+  CurrencyCash.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
+  CurrencyChange.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
 
   ViewModel.SetupSale;
 end;

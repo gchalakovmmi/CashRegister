@@ -19,37 +19,6 @@ object ViewSale: TViewSale
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 23
-  object StatusBar: TStatusBar
-    Left = 0
-    Top = 704
-    Width = 1205
-    Height = 19
-    Panels = <
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end>
-    ParentColor = True
-    ParentFont = True
-    UseSystemFont = False
-    StyleElements = []
-  end
   object PanelButtons: TPanel
     Left = 0
     Top = 0
@@ -58,7 +27,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 1
+    TabOrder = 0
     object ButtonSaveAndNew: TButton
       Left = 764
       Top = 6
@@ -129,20 +98,6 @@ object ViewSale: TViewSale
       ParentFont = False
       TabOrder = 4
     end
-    object ButtonPrevSales: TButton
-      Left = 1016
-      Top = 6
-      Width = 120
-      Height = 33
-      Action = ActionPrevOperations
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 36608
-      Font.Height = -11
-      Font.Name = 'Verdana'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 5
-    end
     object ButtonRemoveItem: TButton
       Left = 512
       Top = 6
@@ -155,7 +110,7 @@ object ViewSale: TViewSale
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 6
+      TabOrder = 5
     end
     object ButtonVoucherPayment: TButton
       Left = 134
@@ -169,7 +124,7 @@ object ViewSale: TViewSale
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 7
+      TabOrder = 6
     end
     object ButtonDiscard: TButton
       Left = 890
@@ -177,6 +132,20 @@ object ViewSale: TViewSale
       Width = 120
       Height = 33
       Action = ActionDiscard
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 7
+    end
+    object ButtonDuplicateReceipt: TButton
+      Left = 1016
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionDuplicateReceipt
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = 36608
       Font.Height = -11
@@ -194,7 +163,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 2
+    TabOrder = 1
     object EditShow: TDBEdit
       Left = 8
       Top = 6
@@ -217,13 +186,14 @@ object ViewSale: TViewSale
   end
   object PanelPayment: TPanel
     Left = 0
-    Top = 430
+    Top = 449
     Width = 1205
     Height = 274
     Align = alBottom
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 3
+    TabOrder = 2
+    ExplicitTop = 441
     object LabelReturned: TLabel
       Left = 784
       Top = 200
@@ -290,8 +260,8 @@ object ViewSale: TViewSale
       ParentFont = False
     end
     object LabelMinVIP: TLabel
-      Left = 8
-      Top = 36
+      Left = 5
+      Top = 33
       Width = 690
       Height = 32
       Caption = #1052#1080#1085#1080#1084#1072#1083#1085#1072#1090#1072' '#1089#1091#1084#1072' 20.00'#1083#1074'.'#1085#1077' '#1077' '#1076#1086#1089#1090#1080#1075#1085#1072#1090#1072'!'
@@ -302,6 +272,45 @@ object ViewSale: TViewSale
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
+    end
+    object CurrencyAll: TLabel
+      Left = 696
+      Top = 31
+      Width = 65
+      Height = 32
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
+    end
+    object CurrencyCash: TLabel
+      Left = 696
+      Top = 91
+      Width = 65
+      Height = 32
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
+    end
+    object CurrencyChange: TLabel
+      Left = 696
+      Top = 224
+      Width = 65
+      Height = 32
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
     end
     object EditTotal: TDBEdit
       Left = 784
@@ -405,16 +414,22 @@ object ViewSale: TViewSale
     Left = 0
     Top = 105
     Width = 1205
-    Height = 325
+    Height = 344
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 4
+    TabOrder = 3
     object Grid: TDBGrid
-      Left = 0
-      Top = 6
-      Width = 1200
-      Height = 341
+      AlignWithMargins = True
+      Left = 8
+      Top = 0
+      Width = 1189
+      Height = 344
+      Margins.Left = 8
+      Margins.Top = 0
+      Margins.Right = 8
+      Margins.Bottom = 0
+      Align = alClient
       Color = 12582847
       DataSource = DataModuleSale.DataSourceSaleDetails
       Font.Charset = RUSSIAN_CHARSET
@@ -527,10 +542,10 @@ object ViewSale: TViewSale
       ShortCut = 16506
       OnExecute = ActionDiscardExecute
     end
-    object ActionPrevOperations: TAction
-      Caption = 'F12 - '#1055#1056#1045#1044#1048#1064#1053#1048
-      ShortCut = 123
-      OnExecute = ActionPrevOperationsExecute
+    object ActionDuplicateReceipt: TAction
+      Caption = 'ALT+F12 - '#1044#1059#1041#1051#1048#1050#1040#1058
+      ShortCut = 32891
+      OnExecute = ActionDuplicateReceiptExecute
     end
   end
   object TimerClose: TTimer

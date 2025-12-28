@@ -74,8 +74,9 @@ type
       EditTotal: TDBEdit;
 
     LabelMinVIP: TLabel;
-
-    StatusBar: TStatusBar;
+    CurrencyAll: TLabel;
+    CurrencyCash: TLabel;
+    CurrencyChange: TLabel;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -175,6 +176,7 @@ uses
   Model.Pattern.Observer.Observer,
   Model.Pattern.Observer.Observable,
   ViewModel.Sale;
+  Model.AppSettings;
 
 {$REGION 'Published Methods'}
 
@@ -187,6 +189,10 @@ begin
 
   FViewModel := CreateViewModelSale;
   FViewModel.Observable.Subscribe(FObserver);
+
+  CurrencyAll.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
+  CurrencyCash.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
+  CurrencyChange.Caption := TAppSettings.GetSetting('MainCurrencyFullMajorPlural');
 
   ViewModel.SetupSale;
 end;
@@ -371,6 +377,8 @@ begin
   if actCloseForm in AModelNotification.Actions then begin
     if actCheckItem in AModelNotification.Actions then begin
       G.ShowCheckItem := True;
+    end else begin
+      G.ShowCheckItem := False;
     end;
     FExitToMainMenu := True;
     Close;
@@ -551,7 +559,11 @@ begin
   FExitToMainMenu := False;
   repeat
     LViewSale := TViewSale.Create(nil);
-    LViewSale.ShowModal;
+    try
+      LViewSale.ShowModal;
+    finally
+      LViewSale.Free;
+    end;
   until FExitToMainMenu;
 end;
 

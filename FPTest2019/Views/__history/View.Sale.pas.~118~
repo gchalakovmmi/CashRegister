@@ -74,8 +74,9 @@ type
       EditTotal: TDBEdit;
 
     LabelMinVIP: TLabel;
-
-    StatusBar: TStatusBar;
+    CurrencyAll: TLabel;
+    CurrencyCash: TLabel;
+    CurrencyChange: TLabel;
 
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
@@ -160,12 +161,16 @@ type
 
   procedure ShowViewSale;
 
+var
+  FExitToMainMenu: Boolean;
+
 implementation
 
 {$R *.dfm}
 
 uses
   System.UITypes,
+  Globals,
   Interfaces.Enums,
   Interfaces.GUIRecords,
   Model.Pattern.Observer.Observer,
@@ -184,6 +189,10 @@ begin
   FViewModel := CreateViewModelSale;
   FViewModel.Observable.Subscribe(FObserver);
 
+  CurrencyAll.Caption := 'TESTCHE';
+  CurrencyCash.Caption := 'TESTCHE';
+  CurrencyChange.Caption := 'TESTCHE';
+
   ViewModel.SetupSale;
 end;
 
@@ -195,6 +204,7 @@ begin
 
   Action := caFree;
 end;
+
 
 // Actions
 
@@ -238,11 +248,11 @@ begin
   ViewModel.ActionDiscardExecute;
 end;
 
-
 procedure TViewSale.ActionDuplicateReceiptExecute(Sender: TObject);
 begin
   ViewModel.ActionDuplicateReceiptExecute;
 end;
+
 
 // Edit Controls
 
@@ -255,6 +265,9 @@ procedure TViewSale.GridDrawColumnCell(Sender: TObject; const Rect: TRect; DataC
 begin
   with (Sender as TDBGrid) do begin
     if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'ItemName') then begin
+      Canvas.Font.Style := [fsBold, fsStrikeOut];
+    end;
+    if (DataSource.DataSet.FieldByName('IsCancelled').AsString = 'да') and (Column.FieldName = 'Total') then begin
       Canvas.Font.Style := [fsBold, fsStrikeOut];
     end;
     DefaultDrawColumnCell(Rect, DataCol, Column, State);
@@ -361,6 +374,17 @@ begin
     EnableActions;
   end;
   if actCloseForm in AModelNotification.Actions then begin
+    if actCheckItem in AModelNotification.Actions then begin
+      G.ShowCheckItem := True;
+    end else begin
+      G.ShowCheckItem := False;
+    end;
+    FExitToMainMenu := True;
+    Close;
+  end;
+  if actCloseFormAndRepeat in AModelNotification.Actions then begin
+    G.ShowCheckItem := False;
+    FExitToMainMenu := False;
     Close;
   end;
 end;
@@ -531,8 +555,15 @@ procedure ShowViewSale;
 var
   LViewSale: TViewSale;
 begin
-  LViewSale := TViewSale.Create(nil);
-  LViewSale.ShowModal;
+  FExitToMainMenu := False;
+  repeat
+    LViewSale := TViewSale.Create(nil);
+    try
+      LViewSale.ShowModal;
+    finally
+      LViewSale.Free;
+    end;
+  until FExitToMainMenu;
 end;
 
 end.

@@ -193,7 +193,7 @@ object ViewSale: TViewSale
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
-    ExplicitTop = 430
+    ExplicitTop = 441
     object LabelReturned: TLabel
       Left = 784
       Top = 200
@@ -260,8 +260,8 @@ object ViewSale: TViewSale
       ParentFont = False
     end
     object LabelMinVIP: TLabel
-      Left = 8
-      Top = 36
+      Left = 5
+      Top = 33
       Width = 690
       Height = 32
       Caption = #1052#1080#1085#1080#1084#1072#1083#1085#1072#1090#1072' '#1089#1091#1084#1072' 20.00'#1083#1074'.'#1085#1077' '#1077' '#1076#1086#1089#1090#1080#1075#1085#1072#1090#1072'!'
@@ -272,6 +272,48 @@ object ViewSale: TViewSale
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
+    end
+    object CurrencyAll: TLabel
+      Left = 696
+      Top = 31
+      Width = 65
+      Height = 32
+      Alignment = taRightJustify
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
+    end
+    object CurrencyCash: TLabel
+      Left = 696
+      Top = 91
+      Width = 65
+      Height = 32
+      Alignment = taRightJustify
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
+    end
+    object CurrencyChange: TLabel
+      Left = 696
+      Top = 224
+      Width = 65
+      Height = 32
+      Alignment = taRightJustify
+      Caption = #1077#1074#1088#1086
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -27
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
     end
     object EditTotal: TDBEdit
       Left = 784
@@ -380,7 +422,6 @@ object ViewSale: TViewSale
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 3
-    ExplicitHeight = 325
     object Grid: TDBGrid
       AlignWithMargins = True
       Left = 8

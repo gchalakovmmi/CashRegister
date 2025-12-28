@@ -75,8 +75,6 @@ type
 
     LabelMinVIP: TLabel;
 
-    StatusBar: TStatusBar;
-
   {$REGION 'Published Methods'}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -169,6 +167,7 @@ implementation
 
 uses
   System.UITypes,
+  Globals,
   Interfaces.Enums,
   Interfaces.GUIRecords,
   Model.Pattern.Observer.Observer,
@@ -370,12 +369,14 @@ begin
   if actCloseForm in AModelNotification.Actions then begin
     if actCheckItem in AModelNotification.Actions then begin
       G.ShowCheckItem := True;
+    end else begin
+      G.ShowCheckItem := False;
     end;
     FExitToMainMenu := True;
     Close;
   end;
   if actCloseFormAndRepeat in AModelNotification.Actions then begin
-    G.ShowCheckItem := True;
+    G.ShowCheckItem := False;
     FExitToMainMenu := False;
     Close;
   end;
@@ -550,7 +551,11 @@ begin
   FExitToMainMenu := False;
   repeat
     LViewSale := TViewSale.Create(nil);
-    LViewSale.ShowModal;
+    try
+      LViewSale.ShowModal;
+    finally
+      LViewSale.Free;
+    end;
   until FExitToMainMenu;
 end;
 

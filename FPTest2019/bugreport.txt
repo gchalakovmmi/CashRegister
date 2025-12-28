@@ -457,34 +457,34 @@ disassembling:
 008a977c      lea     edx, [ebp-$14]
 [...]
 
-date/time          : 2025-12-26, 20:40:02, 742ms
+date/time          : 2025-12-27, 15:08:41, 547ms
 computer name      : A10-WIN10
 user name          : Toncho
 registered owner   : Toncho
 operating system   : Windows 10 x64 build 19045
 system language    : Bulgarian
-system up time     : 2 hours 13 minutes
-program up time    : 5 seconds
+system up time     : 20 hours 42 minutes
+program up time    : 3 seconds
 processors         : 3x Intel(R) Core(TM) i7-6600U CPU @ 2.60GHz
-physical memory    : 7542/12270 MB (free/total)
-free disk space    : (C:) 332.10 GB (Z:) 432.53 GB
-display mode       : 1898x998, 32 bit
-process id         : $38c
-allocated memory   : 217.74 MB
-largest free block : 694.89 MB
+physical memory    : 7405/12270 MB (free/total)
+free disk space    : (C:) 332.15 GB (Z:) 431.92 GB
+display mode       : 1920x1039, 32 bit
+process id         : $1ea4
+allocated memory   : 216.95 MB
+largest free block : 695.19 MB
 executable         : FPTest2019.exe
-exec. date/time    : 2025-12-26 20:39
+exec. date/time    : 2025-12-27 15:08
 version            : 1.4.0.0
 bde version        : 5.1.1.1
 compiled with      : Delphi 10.3 Rio
 madExcept version  : 5.1.0
 callstack crc      : $aaf5792c, $dd6e72ea, $dd6e72ea
-count              : 18
+count              : 22
 exception number   : 1
 exception class    : EDBEngineError
 exception message  : Network initialization failed. Permission denied. File: C:\PDOXUSRS.NET Directory: C:\.
 
-thread $29d0:
+thread $2698:
 007aa9c9 +011 FPTest2019.exe Bde.DBTables             DbiError
 007b4fa1 +039 FPTest2019.exe Bde.DBTables             TDBDataSet.CheckOpen
 007b64f8 +100 FPTest2019.exe Bde.DBTables             TQuery.GetStatementHandle
@@ -498,16 +498,16 @@ thread $29d0:
 00784d2c +004 FPTest2019.exe Data.DB                  TDataSet.Open
 008ab314 +0c0 FPTest2019.exe DataModule.Users  59 +11 TDataModuleUsers.GetUsers
 008abf04 +010 FPTest2019.exe Model.Login      101  +1 TModelLogin.GetUsers
-00902634 +02c FPTest2019.exe ViewModel.Login  130  +1 TViewModelLogin.GetUsers
-009032dd +04d FPTest2019.exe View.Login       156  +3 TViewLogin.ResetGUI
-00902f9b +0a3 FPTest2019.exe View.Login       107  +9 TViewLogin.FormCreate
+00902774 +02c FPTest2019.exe ViewModel.Login  130  +1 TViewModelLogin.GetUsers
+0090341d +04d FPTest2019.exe View.Login       156  +3 TViewLogin.ResetGUI
+009030db +0a3 FPTest2019.exe View.Login       107  +9 TViewLogin.FormCreate
 006a9aa9 +031 FPTest2019.exe Vcl.Forms                TCustomForm.DoCreate
 006a96b5 +011 FPTest2019.exe Vcl.Forms                TCustomForm.AfterConstruction
 004093a1 +01d FPTest2019.exe System            13  +0 @AfterConstruction
 006a9667 +1ab FPTest2019.exe Vcl.Forms                TCustomForm.Create
-00903379 +00d FPTest2019.exe View.Login       192  +1 ShowViewLogin
-0093de4b +007 FPTest2019.exe ViewModel.Main   201  +1 TViewModelMain.Login
-0093ee7f +02f FPTest2019.exe View.Main        152  +4 TViewMain.TimerInitializeTimer
+009034b9 +00d FPTest2019.exe View.Login       192  +1 ShowViewLogin
+0093df8b +007 FPTest2019.exe ViewModel.Main   201  +1 TViewModelMain.Login
+0093efbf +02f FPTest2019.exe View.Main        152  +4 TViewMain.TimerInitializeTimer
 0063218f +00f FPTest2019.exe Vcl.ExtCtrls             TTimer.Timer
 00632073 +02b FPTest2019.exe Vcl.ExtCtrls             TTimer.WndProc
 004f68a8 +014 FPTest2019.exe System.Classes           StdWndProc
@@ -524,52 +524,53 @@ thread $29d0:
 0094dff0 +0e4 FPTest2019.exe FPTest2019       187 +11 initialization
 76f1fcc7 +017 KERNEL32.DLL                            BaseThreadInitThunk
 
-thread $1588:
+thread $6c:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
-thread $28fc:
+thread $2ae0:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
-thread $590:
+thread $2408:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
-thread $5fc:
+thread $1c78:
 7636ba7d +fd KERNELBASE.dll           WaitForMultipleObjectsEx
 004affad +0d FPTest2019.exe madExcept CallThreadProcSafe
 004b0012 +32 FPTest2019.exe madExcept ThreadExceptFrame
 76f1fcc7 +17 KERNEL32.DLL             BaseThreadInitThunk
->> created by thread $29d0 at:
+>> created by thread $2698 at:
 75d4e634 +00 combase.dll
 
-thread $151c:
+thread $2954:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
-thread $23b0:
+thread $150c:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
-thread $f94:
+thread $1214:
 76f1fcc7 +17 KERNEL32.DLL  BaseThreadInitThunk
 
 modules:
 00400000 FPTest2019.exe         1.4.0.0             Z:\Sources\FPTest2019
-06cc0000 propsys.dll            7.0.19041.5794      C:\Windows\system32
-08640000 wtsapi32.dll           10.0.19041.3636     C:\Windows\SYSTEM32
-08650000 WINSTA.dll             10.0.19041.3636     C:\Windows\SYSTEM32
-0cac0000 TextShaping.dll                            C:\Windows\SYSTEM32
-0cfa0000 textinputframework.dll 10.0.19041.5794     C:\Windows\SYSTEM32
-0d060000 CoreMessaging.dll      10.0.19041.5915     C:\Windows\System32
-0d100000 wintypes.dll           10.0.19041.5794     C:\Windows\SYSTEM32
-0d260000 DWMAPI.DLL             10.0.19041.5794     C:\Windows\SYSTEM32
-0d290000 MPR.dll                10.0.19041.3636     C:\Windows\SYSTEM32
-0d3b0000 odbc32.DLL             10.0.19041.5794     C:\Windows\SYSTEM32
-0d450000 DPAPI.DLL              10.0.19041.3636     C:\Windows\SYSTEM32
-0e8f0000 sxs.dll                10.0.19041.5438     C:\Windows\SYSTEM32
+069e0000 propsys.dll            7.0.19041.5794      C:\Windows\system32
+08770000 wtsapi32.dll           10.0.19041.3636     C:\Windows\SYSTEM32
+08780000 WINSTA.dll             10.0.19041.3636     C:\Windows\SYSTEM32
+0cd80000 TextShaping.dll                            C:\Windows\SYSTEM32
+0d120000 textinputframework.dll 10.0.19041.5794     C:\Windows\SYSTEM32
+0d1e0000 CoreMessaging.dll      10.0.19041.5915     C:\Windows\System32
+0d280000 wintypes.dll           10.0.19041.5794     C:\Windows\SYSTEM32
+0d3e0000 DWMAPI.DLL             10.0.19041.5794     C:\Windows\SYSTEM32
+0d410000 MPR.dll                10.0.19041.3636     C:\Windows\SYSTEM32
+0d530000 odbc32.DLL             10.0.19041.5794     C:\Windows\SYSTEM32
+0d5d0000 DPAPI.DLL              10.0.19041.3636     C:\Windows\SYSTEM32
+0e980000 sxs.dll                10.0.19041.5438     C:\Windows\SYSTEM32
 4bde0000 IDAPI32.DLL            5.1.1.1             C:\Program Files (x86)\Common Files\Borland Shared\BDE
 4c5e0000 idsql32.DLL            5.1.1.1             C:\Program Files (x86)\Common Files\Borland Shared\BDE
 4c9e0000 IDR20009.DLL           5.1.1.1             C:\Program Files (x86)\Common Files\Borland Shared\BDE
 4e8e0000 BANTAM.DLL             1.0.0.8             C:\Program Files (x86)\Common Files\Borland Shared\BDE
 67100000 madExcept32.dll        4.0.6.0             C:\Program Files (x86)\madCollection\madExcept\Dlls
-6b5a0000 SHFolder.dll           10.0.19041.1        C:\Windows\SYSTEM32
+68750000 SHFolder.dll           10.0.19041.1        C:\Windows\SYSTEM32
+6b530000 uvh.dll                                    C:\Program Files (x86)\UltraViewer
 6b940000 CoreUIComponents.dll   10.0.19041.3636     C:\Windows\System32
 6dcd0000 dbghelp.dll            10.0.19041.5848     C:\Windows\SYSTEM32
 6fc40000 uxtheme.dll            10.0.19041.5965     C:\Windows\system32
@@ -584,7 +585,7 @@ modules:
 71c40000 windows.storage.dll    10.0.19041.6033     C:\Windows\SYSTEM32
 72260000 winspool.drv           10.0.19041.5794     C:\Windows\SYSTEM32
 722f0000 SspiCli.dll            10.0.19041.4239     C:\Windows\SYSTEM32
-725b0000 comctl32.dll           6.10.19041.5915     C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.5915_none_a861f0a88675f0cd
+725b0000 COMCTL32.dll           6.10.19041.5915     C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.5915_none_a861f0a88675f0cd
 727c0000 winmm.dll              10.0.19041.3636     C:\Windows\SYSTEM32
 74f80000 version.dll            10.0.19041.3636     C:\Windows\SYSTEM32
 74f90000 kernel.appcore.dll     10.0.19041.3758     C:\Windows\SYSTEM32
@@ -657,7 +658,6 @@ processes:
 07bc svchost.exe                 0 0    0
 07fc svchost.exe                 0 0    0
 0484 svchost.exe                 0 0    0
-085c svchost.exe                 0 0    0
 08ec svchost.exe                 0 0    0
 0960 svchost.exe                 0 0    0
 09ec svchost.exe                 0 0    0
@@ -693,23 +693,23 @@ processes:
 15e4 svchost.exe                 1 0    1    normal       C:\Windows\System32
 1604 svchost.exe                 1 4    4    normal       C:\Windows\System32
 1678 svchost.exe                 0 0    0
-1698 taskhostw.exe               1 8    6    normal       C:\Windows\System32
+1698 taskhostw.exe               1 10   6    normal       C:\Windows\System32
 16d4 svchost.exe                 0 0    0
 1748 svchost.exe                 0 0    0
 179c ctfmon.exe                  1 0    0
 148c svchost.exe                 0 0    0
-1470 explorer.exe                1 233  249  normal       C:\Windows
+1470 explorer.exe                1 465  395  normal       C:\Windows
 1538 AggregatorHost.exe          0 0    0
 1894 svchost.exe                 1 0    8    normal       C:\Windows\System32
 1b98 StartMenuExperienceHost.exe 1 1    16   normal       C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy
 1974 svchost.exe                 0 0    0
-1c08 RuntimeBroker.exe           1 40   1    normal       C:\Windows\System32
+1c08 RuntimeBroker.exe           1 41   1    normal       C:\Windows\System32
 1c10 svchost.exe                 0 0    0
 1c84 svchost.exe                 0 0    0
 1ca0 MoUsoCoreWorker.exe         0 0    0
 1ca8 svchost.exe                 1 0    1    normal       C:\Windows\System32
-1e34 SearchApp.exe               1 14   55   normal       C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy
-1eb8 RuntimeBroker.exe           1 40   4    normal       C:\Windows\System32
+1e34 SearchApp.exe               1 15   66   normal       C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy
+1eb8 RuntimeBroker.exe           1 42   6    normal       C:\Windows\System32
 212c dllhost.exe                 1 0    3    normal       C:\Windows\System32
 21b4 svchost.exe                 0 0    0
 09dc svchost.exe                 0 0    0
@@ -717,19 +717,18 @@ processes:
 2014 SecurityHealthSystray.exe   1 7    5    normal       C:\Windows\System32
 0288 SecurityHealthService.exe   0 0    0
 0c4c VBoxTray.exe                1 7    23   normal       C:\Windows\System32
-0718 AnyDesk.exe                 1 107  16   normal       C:\Program Files (x86)\AnyDesk
+0718 AnyDesk.exe                 1 109  18   normal       C:\Program Files (x86)\AnyDesk
 20ec jusched.exe                 1 0    2    normal       C:\Program Files (x86)\Common Files\Java\Java Update
 2508 ShellExperienceHost.exe     1 11   34   normal       C:\Windows\SystemApps\ShellExperienceHost_cw5n1h2txyewy
 0cd8 RuntimeBroker.exe           1 0    3    normal       C:\Windows\System32
 1df4 svchost.exe                 0 0    0
 21c0 svchost.exe                 0 0    0
 24c8 svchost.exe                 0 0    0
-10fc bds.exe                     1 2391 1096 normal       C:\Program Files (x86)\Embarcadero\Studio\20.0\bin
+10fc bds.exe                     1 2471 1147 normal       C:\Program Files (x86)\Embarcadero\Studio\20.0\bin
 1330 svchost.exe                 0 0    0
-0970 PhoneExperienceHost.exe     1 0    15   normal       C:\Program Files\WindowsApps\Microsoft.YourPhone_1.25072.79.0_x64__8wekyb3d8bbwe
-0f44 jucheck.exe                 1 7    6    normal       C:\Program Files (x86)\Common Files\Java\Java Update
-1c30 OneDrive.exe                1 240  112  normal       C:\Users\Toncho\AppData\Local\Microsoft\OneDrive
-071c OneDrive.Sync.Service.exe   1 10   10   normal       C:\Users\Toncho\AppData\Local\Microsoft\OneDrive\25.222.1112.0002_1
+0f44 jucheck.exe                 1 9    6    normal       C:\Program Files (x86)\Common Files\Java\Java Update
+1c30 OneDrive.exe                1 242  112  normal       C:\Users\Toncho\AppData\Local\Microsoft\OneDrive
+071c OneDrive.Sync.Service.exe   1 12   10   normal       C:\Users\Toncho\AppData\Local\Microsoft\OneDrive\25.222.1112.0002_1
 24ec SearchApp.exe               1 0    22   normal       C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy
 1e64 msedgewebview2.exe          1 22   32   normal       C:\Program Files (x86)\Microsoft\EdgeWebView\Application\142.0.3595.94
 21ac msedgewebview2.exe          1 0    3    normal       C:\Program Files (x86)\Microsoft\EdgeWebView\Application\142.0.3595.94
@@ -745,17 +744,22 @@ processes:
 13e8 MsMpEng.exe                 0 0    0
 092c NisSrv.exe                  0 0    0
 1bc8 TextInputHost.exe           1 0    25   normal       C:\Windows\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy
-17e8 notepad++.exe               1 307  238  normal       C:\Program Files\Notepad++
-241c MusNotifyIcon.exe           1 7    4    below normal C:\Windows\System32
+17e8 notepad++.exe               1 308  238  normal       C:\Program Files\Notepad++
+241c MusNotifyIcon.exe           1 9    4    below normal C:\Windows\System32
 13bc SystemSettings.exe          1 11   34   normal       C:\Windows\ImmersiveControlPanel
-2388 ApplicationFrameHost.exe    1 20   18   normal       C:\Windows\System32
+2388 ApplicationFrameHost.exe    1 30   18   normal       C:\Windows\System32
 0e54 svchost.exe                 0 0    0
-2894 svchost.exe                 0 0    0
-2178 svchost.exe                 0 0    0
-1c40 svchost.exe                 0 0    0
-038c FPTest2019.exe              1 82   84   normal       \\VBoxSvr\SharedDirectory\Sources\FPTest2019
-1cf0 FP3530.exe                  1 136  44   normal       C:\PROGRA~2\DATECS~1\FPCOMU~1\FP3530~1
 1908 audiodg.exe                 0 0    0
+00e8 FileCoAuth.exe              1 0    3    normal       C:\Users\Toncho\AppData\Local\Microsoft\OneDrive\25.222.1112.0002_1
+0e4c UltraViewer_Desktop.exe     1 588  373  normal       C:\Program Files (x86)\UltraViewer
+10a8 UltraViewer_Desktop.exe     1 0    0
+0a74 uv_x64.exe                  1 0    0
+2a44 conhost.exe                 1 0    0
+23ac svchost.exe                 0 0    0
+1438 svchost.exe                 0 0    0
+2a88 AnyDesk.exe                 1 413  114  normal       C:\Program Files (x86)\AnyDesk
+1ea4 FPTest2019.exe              1 77   76   normal       \\VBoxSvr\SharedDirectory\Sources\FPTest2019
+22e8 FP3530.exe                  1 136  44   normal       C:\PROGRA~2\DATECS~1\FPCOMU~1\FP3530~1
 
 hardware:
 + {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
@@ -842,11 +846,11 @@ hardware:
   - Speakers (2- High Definition Audio Device)
 
 cpu registers:
-eax = 0d394fe0
-ebx = 10082c01
+eax = 0d514fe0
+ebx = 10172c01
 ecx = 00000000
-edx = 00ca1cb8
-esi = 0b188d74
+edx = 00cf19e8
+esi = 0cc26d74
 edi = 007a89a0
 eip = 007aa9ce
 esp = 0019f920
@@ -854,23 +858,23 @@ ebp = 0019f980
 
 stack dump:
 0019f920  ce a9 7a 00 de fa ed 0e - 01 00 00 00 07 00 00 00  ..z.............
-0019f930  34 f9 19 00 ce a9 7a 00 - e0 4f 39 0d 01 2c 08 10  4.....z..O9..,..
-0019f940  74 8d 18 0b a0 89 7a 00 - 80 f9 19 00 50 f9 19 00  t.....z.....P...
-0019f950  01 2c 08 10 a6 4f 7b 00 - 74 8d 18 0b fc 6e 39 0d  .,...O{.t....n9.
+0019f930  34 f9 19 00 ce a9 7a 00 - e0 4f 51 0d 01 2c 17 10  4.....z..OQ..,..
+0019f940  74 6d c2 0c a0 89 7a 00 - 80 f9 19 00 50 f9 19 00  tm....z.....P...
+0019f950  01 2c 17 10 a6 4f 7b 00 - 74 6d c2 0c fc 6e 51 0d  .,...O{.tm...nQ.
 0019f960  fd 64 7b 00 90 f9 19 00 - 53 a3 40 00 80 f9 19 00  .d{.....S.@.....
-0019f970  a0 89 7a 00 74 8d 18 0b - 74 8d 18 0b 74 8d 18 0b  ..z.t...t...t...
-0019f980  b0 f9 19 00 d1 63 7b 00 - 01 8d 18 0b 9e 5f 7b 00  .....c{......_{.
-0019f990  b8 f9 19 00 74 a1 40 00 - b0 f9 19 00 74 8d 18 0b  ....t.@.....t...
+0019f970  a0 89 7a 00 74 6d c2 0c - 74 6d c2 0c 74 6d c2 0c  ..z.tm..tm..tm..
+0019f980  b0 f9 19 00 d1 63 7b 00 - 01 6d c2 0c 9e 5f 7b 00  .....c{..m..._{.
+0019f990  b8 f9 19 00 74 a1 40 00 - b0 f9 19 00 74 6d c2 0c  ....t.@.....tm..
 0019f9a0  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
 0019f9b0  e0 f9 19 00 ad 61 7b 00 - c4 f9 19 00 74 a1 40 00  .....a{.....t.@.
 0019f9c0  e0 f9 19 00 ec f9 19 00 - 74 a1 40 00 e0 f9 19 00  ........t.@.....
-0019f9d0  00 00 00 00 00 00 00 00 - 2d 63 7b 01 74 8d 18 0b  ........-c{.t...
+0019f9d0  00 00 00 00 00 00 00 00 - 2d 63 7b 01 74 6d c2 0c  ........-c{.tm..
 0019f9e0  08 fa 19 00 47 62 7b 00 - 1a 0c 7b 00 20 fa 19 00  ....Gb{...{. ...
-0019f9f0  74 a1 40 00 08 fa 19 00 - 74 8d 18 0b 00 00 00 00  t.@.....t.......
-0019fa00  00 00 00 00 74 8d 18 0b - 34 fa 19 00 c6 4e 7b 00  ....t...4....N{.
+0019f9f0  74 a1 40 00 08 fa 19 00 - 74 6d c2 0c 00 00 00 00  t.@.....tm......
+0019fa00  00 00 00 00 74 6d c2 0c - 34 fa 19 00 c6 4e 7b 00  ....tm..4....N{.
 0019fa10  13 01 00 00 dc 96 6a 00 - 01 00 00 00 eb 4e 78 00  ......j......Nx.
-0019fa20  40 fa 19 00 74 a1 40 00 - 34 fa 19 00 04 6c d9 0a  @...t.@.4....l..
-0019fa30  74 8d 18 0b 70 fa 19 00 - 32 4d 78 00 19 b3 8a 00  t...p...2Mx.....
+0019fa20  40 fa 19 00 74 a1 40 00 - 34 fa 19 00 04 ac 85 0a  @...t.@.4.......
+0019fa30  74 6d c2 0c 70 fa 19 00 - 32 4d 78 00 19 b3 8a 00  tm..p...2Mx.....
 0019fa40  4c fa 19 00 74 a1 40 00 - 70 fa 19 00 88 fa 19 00  L...t.@.p.......
 0019fa50  74 a1 40 00 70 fa 19 00 - 00 00 00 00 00 00 00 00  t.@.p...........
 

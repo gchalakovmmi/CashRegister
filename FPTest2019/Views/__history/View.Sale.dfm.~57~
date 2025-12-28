@@ -19,37 +19,6 @@ object ViewSale: TViewSale
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 23
-  object StatusBar: TStatusBar
-    Left = 0
-    Top = 704
-    Width = 1205
-    Height = 19
-    Panels = <
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Width = 100
-      end>
-    ParentColor = True
-    ParentFont = True
-    UseSystemFont = False
-    StyleElements = []
-  end
   object PanelButtons: TPanel
     Left = 0
     Top = 0
@@ -58,7 +27,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 1
+    TabOrder = 0
     object ButtonSaveAndNew: TButton
       Left = 764
       Top = 6
@@ -171,6 +140,20 @@ object ViewSale: TViewSale
       ParentFont = False
       TabOrder = 7
     end
+    object ButtonDuplicateReceipt: TButton
+      Left = 1016
+      Top = 6
+      Width = 120
+      Height = 33
+      Action = ActionDuplicateReceipt
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 36608
+      Font.Height = -11
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 8
+    end
   end
   object PanelShow: TPanel
     Left = 0
@@ -180,7 +163,7 @@ object ViewSale: TViewSale
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 2
+    TabOrder = 1
     object EditShow: TDBEdit
       Left = 8
       Top = 6
@@ -203,13 +186,14 @@ object ViewSale: TViewSale
   end
   object PanelPayment: TPanel
     Left = 0
-    Top = 430
+    Top = 449
     Width = 1205
     Height = 274
     Align = alBottom
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 3
+    TabOrder = 2
+    ExplicitTop = 441
     object LabelReturned: TLabel
       Left = 784
       Top = 200
@@ -288,6 +272,27 @@ object ViewSale: TViewSale
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
+    end
+    object CurrencyAll: TLabel
+      Left = 723
+      Top = 43
+      Width = 46
+      Height = 23
+      Caption = #1077#1074#1088#1086
+    end
+    object CurrencyCash: TLabel
+      Left = 723
+      Top = 96
+      Width = 46
+      Height = 23
+      Caption = #1077#1074#1088#1086
+    end
+    object CurrencyChange: TLabel
+      Left = 723
+      Top = 224
+      Width = 46
+      Height = 23
+      Caption = #1077#1074#1088#1086
     end
     object EditTotal: TDBEdit
       Left = 784
@@ -391,16 +396,22 @@ object ViewSale: TViewSale
     Left = 0
     Top = 105
     Width = 1205
-    Height = 325
+    Height = 344
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 4
+    TabOrder = 3
     object Grid: TDBGrid
-      Left = 0
-      Top = 6
-      Width = 1200
-      Height = 341
+      AlignWithMargins = True
+      Left = 8
+      Top = 0
+      Width = 1189
+      Height = 344
+      Margins.Left = 8
+      Margins.Top = 0
+      Margins.Right = 8
+      Margins.Bottom = 0
+      Align = alClient
       Color = 12582847
       DataSource = DataModuleSale.DataSourceSaleDetails
       Font.Charset = RUSSIAN_CHARSET
@@ -512,6 +523,11 @@ object ViewSale: TViewSale
       Caption = 'CTRL+F11 - '#1054#1058#1050#1040#1047
       ShortCut = 16506
       OnExecute = ActionDiscardExecute
+    end
+    object ActionDuplicateReceipt: TAction
+      Caption = 'ALT+F12 - '#1044#1059#1041#1051#1048#1050#1040#1058
+      ShortCut = 32891
+      OnExecute = ActionDuplicateReceiptExecute
     end
   end
   object TimerClose: TTimer
